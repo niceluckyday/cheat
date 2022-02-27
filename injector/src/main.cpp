@@ -36,9 +36,8 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    ini.SaveFile(INIFileName);
-
     std::filesystem::current_path(path);
+    ini.SaveFile(INIFileName);
 
     std::string filename = (argc == 2 ? argv[1] : "CLibrary.dll");
     std::filesystem::path currentDllPath = std::filesystem::current_path() / filename;

@@ -3,6 +3,8 @@
 #define UNICODE
 #endif
 
+#include "util.h"
+
 #include <windows.h>
 #include <stdio.h>
 #include <iostream>

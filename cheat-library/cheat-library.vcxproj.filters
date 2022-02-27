@@ -78,9 +78,6 @@
     <ClInclude Include="vendor\include\simple-ini.hpp">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\include\HookLib.h">
-      <Filter>Header Files\include</Filter>
-    </ClInclude>
     <ClInclude Include="src\user\util\Config.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
@@ -102,6 +99,21 @@
     <ClInclude Include="vendor\imgui\backends\imgui_impl_dx12.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\user\util\dx11hook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\gui\renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\imgui\backends\imgui_impl_win32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\include\detours.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\include\detver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\user\main.cpp">
@@ -116,7 +128,7 @@
     <ClCompile Include="src\user\util\Config.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\util\util.cpp">
+    <ClCompile Include="src\user\util\close-handle.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="src\user\util\HookManager.cpp">
@@ -153,6 +165,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vendor\imgui\backends\imgui_impl_dx12.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\util\dx11hook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\gui\renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\backends\imgui_impl_win32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

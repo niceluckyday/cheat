@@ -11,15 +11,18 @@
 
 #include "il2cpp-init.h"
 #include "helpers.h"
-#include "util/Config.h"
+
 #include "debug-hooks.h"
 #include "protection-bypass.h"
+#include "util/Config.h"
+#include "gui/renderer.h"
+
 
 const char* INIFileName = "config.ini";
 
 void Run()
 {
-    Sleep(2000); // Waiting for il2cpp initialize
+    Sleep(4000); // Waiting for il2cpp initialize
     
     init_il2cpp();
 
@@ -37,4 +40,6 @@ void Run()
     InitProtectionBypass();
 
     InitDebugHooks();
+
+    InitRenderer();
 }
