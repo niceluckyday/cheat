@@ -1,6 +1,9 @@
 # GenshinCheat
 Simple cheat for genshin with protection bypass.
 
+## In development
+For the current time working only bypass mhyprot2.sys protection and check integrity bypass.
+
 ## Usage
 
 1. Build solution `genshincheat.sln`.
