@@ -13,7 +13,6 @@ static std::map<int32_t, std::string> correctSignatures;
 
 app::Byte__Array* RecordUserData_Hook(int32_t nType) {
 
-    std::cout << "Recording..." << std::endl;
     if (correctSignatures.count(nType))
     {
         auto byteClass = app::GetIl2Classes()[0x25];

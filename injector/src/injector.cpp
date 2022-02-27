@@ -16,7 +16,7 @@
 
 bool InjectDLL(HANDLE hProc, const std::string& filepath) {
 
-#ifndef _DEBUG // _DEBUG
+#ifdef _DEBUG // _DEBUG
 	// Using LoadLibrary inject to be able to debug DLL in attached process.
 	// NOTE. For debug also needs disable mhyprot protection. (See protection-bypass.h in cheat-library)
 	bool result = LoadLibraryInject(hProc, filepath);
