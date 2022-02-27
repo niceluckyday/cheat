@@ -166,7 +166,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <BufferSecurityCheck>
       </BufferSecurityCheck>
@@ -237,11 +237,22 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClInclude Include="src\framework\pch-il2cpp.h" />
     <ClInclude Include="src\user\util\util.h" />
     <ClInclude Include="src\user\main.h" />
+    <ClInclude Include="vendor\imgui\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="vendor\imgui\backends\imgui_impl_dx12.h" />
+    <ClInclude Include="vendor\imgui\imgui.h" />
+    <ClInclude Include="vendor\imgui\imgui_internal.h" />
     <ClInclude Include="vendor\include\HookLib.h" />
     <ClInclude Include="vendor\include\simple-ini.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\user\util\Config.cpp" />
+    <ClCompile Include="vendor\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="vendor\imgui\backends\imgui_impl_dx12.cpp" />
+    <ClCompile Include="vendor\imgui\imgui.cpp" />
+    <ClCompile Include="vendor\imgui\imgui_demo.cpp" />
+    <ClCompile Include="vendor\imgui\imgui_draw.cpp" />
+    <ClCompile Include="vendor\imgui\imgui_tables.cpp" />
+    <ClCompile Include="vendor\imgui\imgui_widgets.cpp" />
     <ClInclude Include="src\user\util\Config.h">
       <FileType>CppHeader</FileType>
     </ClInclude>
