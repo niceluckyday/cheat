@@ -9,6 +9,8 @@
 #include <iostream>
 #include <vector>
 
+#include <util/Logger.h>
+
 #include "il2cpp-metadata-version.h"
 
 #define GetSingleton(tpname) reinterpret_cast<app:: ## tpname ## *>(app::Singleton_GetInstance(nullptr, *app::Singleton_1_ ## tpname ## __get_Instance__MethodInfo))
@@ -53,7 +55,7 @@ template<typename KeyT, typename ValT>
 std::vector<std::pair<KeyT, ValT>> getUniDictPairs(UniDict<KeyT, ValT>* dictionary) {
     auto pairs = std::vector<std::pair<KeyT, ValT>>();
 
-#define DictCheckNull(field, msg) if (field == nullptr) { std::cout << "Failed to get dict pairs: " << msg << std::endl; return pairs; }
+#define DictCheckNull(field, msg) if (field == nullptr) { LOG_WARNING("Failed to get dict pairs: %s", msg); return pairs; }
 
     DictCheckNull(dictionary, "Dict pointer is null");
     DictCheckNull(dictionary->linkSlots, "LinkSlots pointer is null.");

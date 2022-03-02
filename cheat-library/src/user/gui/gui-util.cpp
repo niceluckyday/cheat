@@ -6,6 +6,20 @@
 #include <imgui.h>
 #include <misc/cpp/imgui_stdlib.h>
 
+
+void HelpMarker(const char* desc)
+{
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+        ImGui::TextUnformatted(desc);
+        ImGui::PopTextWrapPos();
+        ImGui::EndTooltip();
+    }
+}
+
 int HotkeyCallback(ImGuiInputTextCallbackData* data);
 
 struct HotkeyUD {
@@ -108,9 +122,6 @@ bool IsValueChanged(void* valuePtr, bool result) {
 bool ConfigWidget(const char* label, ConfigField<bool> field, const char* desc) 
 {
     bool result = ImGui::Checkbox(label, field.GetValuePtr());
-
-    if (result)
-        std::cout << "Check box changed value." << std::endl;
 
     if (result)
         field.Check();

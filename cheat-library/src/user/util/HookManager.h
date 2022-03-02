@@ -3,6 +3,8 @@
 #include <map>
 #include <iostream>
 
+#include <util/Logger.h>
+
 #include "detours.h"
 
 #define callOrigin(function, ...) \
@@ -20,7 +22,7 @@ public:
 	template <typename Fn>
 	[[nodiscard]] static Fn getOrigin(Fn handler) noexcept {
 		if (holderMap.count(reinterpret_cast<void*>(handler)) == 0) {
-			std::cerr << "Origin not found for handler." << std::endl;
+			LOG_CRIT("Origin not found for handler.");
 			system("pause");
 			exit(1);
 		}

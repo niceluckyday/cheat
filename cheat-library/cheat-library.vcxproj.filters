@@ -138,6 +138,9 @@
     <ClInclude Include="src\user\cheat\cheat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\user\util\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\user\main.cpp">
@@ -200,7 +203,7 @@
     <ClCompile Include="src\user\gui\modules\TeleportModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\teleport-to-mark.cpp">
+    <ClCompile Include="src\user\cheat\map-teleport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\util\Hotkey.cpp">
@@ -213,6 +216,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\gui\modules\SettingsModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\util\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

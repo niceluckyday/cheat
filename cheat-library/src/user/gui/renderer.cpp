@@ -12,6 +12,7 @@
 #include "modules/IGUIModule.h"
 #include "modules/SettingsModule.h"
 #include "modules/TeleportModule.h"
+#include <util/Logger.h>
 
 
 static bool prevMouseActive = false;
@@ -31,12 +32,11 @@ void OnKeyUp(WPARAM key, short& ioFlag);
 
 void InitRenderer(HMODULE hModule)
 {
-	std::cout << "[Renderer] Creating overlay..." << std::endl;
+	LOG_DEBUG("Started ImGUI installing...");
     LPBYTE pFont = nullptr;
     DWORD dFontSize = 0;
 	
     GetResourceMemory(hModule, IDR_RCDATA1, pFont, dFontSize);
-	std::cout << (void*)pFont << " " << &dFontSize << std::endl;
     createOverlay(GuiRender, OnKeyUp, pFont, dFontSize);
 }
 

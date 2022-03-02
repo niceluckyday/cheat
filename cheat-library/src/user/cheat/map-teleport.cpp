@@ -17,7 +17,7 @@ void CreateCustomMapMark_Hook(void* __this, app::Vector2 position, app::NOIPNNCF
 
     auto worldPosition = app::Miscs_GenWorldPos(nullptr, position, nullptr);
     auto groundHeight = app::Miscs_CalcCurrentGroundHeight(nullptr, worldPosition.x, worldPosition.z, nullptr);
-    std::cout << "[TP] Mark world position: " << il2cppi_to_string(worldPosition) << std::endl;
+    LOG_DEBUG("Stage 0. Teleporting to location %s", il2cppi_to_string(worldPosition).c_str());
 
     teleportPosition = app::Vector3();
     teleportPosition.x = worldPosition.x;
@@ -44,7 +44,7 @@ app::MBHLOBDPKEC_BHKOIJIKDFG GetWaypointInformation_Hook(app::MBHLOBDPKEC* __thi
     if (teleportStage != 3)
         return result;
 
-    std::cout << "[TP Stage 1/3] Changing waypoint location." << std::endl;
+    LOG_DEBUG("Stage 1. Changing waypoint location.");
 
     result.waypointLocation->fields.vector3 = teleportPosition;
 
@@ -57,7 +57,7 @@ void DoTeleport_Hook(app::FJIDMGGJMEF* __this, app::Vector3 position, app::MEPED
 {
     if (teleportStage == 2)
     {
-        std::cout << "[TP Stage 2/3] Changing loading location." << std::endl;
+        LOG_DEBUG("Stage 2. Changing loading location.");
         position = teleportPosition;
         teleportStage--;
     }
@@ -72,8 +72,8 @@ void Entity_SetPosition_Hook(app::EAPPPCHHMHO* __this, app::Vector3 position, bo
     if (__this == avatarEntity && teleportStage == 1)
     {
         position = teleportPosition;
-        std::cout << "[TP Stage 3/3] Changing avatar entity position." << std::endl;
-        std::cout << "[TP] Teleport to mark finished." << std::endl;
+        LOG_DEBUG("Stage 3. Changing avatar entity position.");
+        LOG_DEBUG("Finish.  Teleport to mark finished.");
         teleportStage--;
     }
 
@@ -84,9 +84,16 @@ void InitMapTPHooks() {
 
     // Teleport to mark hooks
     HookManager::install(app::DoTeleport_ECJDHNFLNAI, DoTeleport_Hook);
-    HookManager::install(app::GetWaypointInformation_MBHLOBDPKEC_BFKKBELGMLF, GetWaypointInformation_Hook);
-    HookManager::install(app::Entity_SetPosition, Entity_SetPosition_Hook);
-    HookManager::install(app::CreateCustomMapMark, CreateCustomMapMark_Hook);
+    LOG_TRACE("Hooked DoTeleport_ECJDHNFLNAI. Origin at 0x%p", HookManager::getOrigin(DoTeleport_Hook));
 
-    std::cout << "[TP-to-mark] Hooks installed." << std::endl;
+    HookManager::install(app::GetWaypointInformation_MBHLOBDPKEC_BFKKBELGMLF, GetWaypointInformation_Hook);
+    LOG_TRACE("Hooked GetWaypointInformation_MBHLOBDPKEC_BFKKBELGMLF. Origin at 0x%p", HookManager::getOrigin(GetWaypointInformation_Hook));
+
+    HookManager::install(app::Entity_SetPosition, Entity_SetPosition_Hook);
+    LOG_TRACE("Hooked Entity_SetPosition. Origin at 0x%p", HookManager::getOrigin(Entity_SetPosition_Hook));
+
+    HookManager::install(app::CreateCustomMapMark, CreateCustomMapMark_Hook);
+    LOG_TRACE("Hooked CreateCustomMapMark. Origin at 0x%p", HookManager::getOrigin(CreateCustomMapMark_Hook));
+
+    LOG_DEBUG("Hooks installed");
 }

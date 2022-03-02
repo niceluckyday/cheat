@@ -10,6 +10,7 @@
 #include <iostream>
 #include <wchar.h>
 #include <stdlib.h>
+#include <util/Logger.h>
 
 #pragma comment(lib,"ntdll.lib")
 
@@ -156,7 +157,7 @@ bool CloseHandleByName(const wchar_t* name)
     /* NtQuerySystemInformation stopped giving us STATUS_INFO_LENGTH_MISMATCH. */
     if (!NT_SUCCESS(status))
     {
-        std::cout << "NtQuerySystemInformation failed!" << std::endl;
+        LOG_ERROR("NtQuerySystemInformation failed!");
         return false;
     }
 

@@ -58,7 +58,10 @@ public:
 	// Is need to disable mhyprot2.sys protection.
 	static ConfigField<bool> cfgDisableMhyProt;
 	static ConfigField<Hotkey> cfgMenuEnableKey;
+
+	// Logging
 	static ConfigField<bool> cfgConsoleLogging;
+	static ConfigField<bool> cfgFileLogging;
 
 	// Teleportation
 	static ConfigField<bool> cfgTpToMarkEnable;

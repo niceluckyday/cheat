@@ -6,10 +6,15 @@
 
 #include "simple-ini.hpp"
 #include "helpers.h"
+#include <util/Logger.h>
 
 
+// Logging
+ConfigField<bool> Config::cfgConsoleLogging("Logging", "ConsoleLog", true, Config::OnChangeValue);
+ConfigField<bool> Config::cfgFileLogging("Logging", "FileLog", false, Config::OnChangeValue);
+
+// Main
 ConfigField<bool> Config::cfgDisableMhyProt("DLLUtil", "DisableMhyprot", true, Config::OnChangeValue);
-ConfigField<bool> Config::cfgConsoleLogging("DLLUtil", "ConsoleLog", true, Config::OnChangeValue);
 ConfigField<Hotkey> Config::cfgMenuEnableKey("DLLUtil", "MenuShowKey", Hotkey(VK_F1, 0), Config::OnChangeValue);
 
 // Teleportation
@@ -28,9 +33,8 @@ void Config::Init(const std::string configFile)
 	filename = configFile;
 
 	auto status = m_INIFile.LoadFile(configFile.c_str());
-	if (status < 0) {
-		printf("Failed to load config file.\n");
-	}
+	if (status < 0)
+		LOG_ERROR("Failed to load config file.");
 
 	LoadFieldValue(cfgDisableMhyProt);
 	LoadFieldValue(cfgConsoleLogging);
@@ -44,9 +48,8 @@ void Config::Init(const std::string configFile)
 void Config::Save()
 {
 	auto status = m_INIFile.SaveFile(filename.c_str());
-	if (status < 0) {
-		printf("Failed to save changes to config.\n");
-	}
+	if (status < 0)
+		LOG_ERROR("Failed to save changes to config.");
 }
 
 

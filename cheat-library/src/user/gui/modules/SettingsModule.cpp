@@ -8,13 +8,22 @@
 
 #include <gui/gui-util.h>
 #include <util/Config.h>
+#include <util/Logger.h>
 
 void SettingsModule::Draw()
 {
-    bool consoleChanged = ConfigWidget("Enable console", Config::cfgConsoleLogging, 
-        "Enables console for logging information. (Enabling will take effect after next launch)");
+    bool consoleChanged = ConfigWidget("Enable console logging", Config::cfgConsoleLogging, 
+        "Enable console for logging information. (Enabling will take effect after next launch)");
     if (consoleChanged && !Config::cfgConsoleLogging.GetValue()) {
         il2cppi_close_console();
+        Logger::SetLevel(Logger::Level::None, Logger::LoggerType::ConsoleLogger);
+    }
+
+    bool fileLogging = ConfigWidget("Enable file logging", Config::cfgFileLogging,
+        "Enable file logging. (Enabling will take effect after next launch)\n" \
+        "That's mean that in cheat directory will be created folder which will be contain file with logs.");
+    if (fileLogging && !Config::cfgFileLogging.GetValue()) {
+        Logger::SetLevel(Logger::Level::None, Logger::LoggerType::FileLogger);
     }
 
     ConfigWidget("Disable mhyprot on launch", Config::cfgDisableMhyProt,

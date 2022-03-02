@@ -8,6 +8,7 @@
 #include <string>
 #include <util/close-handle.h>
 #include <iostream>
+#include <util/Logger.h>
 
 static std::map<int32_t, std::string> correctSignatures;
 
@@ -34,7 +35,7 @@ app::Byte__Array* RecordUserData_Hook(int32_t nType) {
     auto stringValue = std::string((char*)result->vector, length);
     correctSignatures[nType] = stringValue;
 
-    std::cout << "Sniffed correct signature for type " << nType << " value " << stringValue << std::endl;
+    LOG_DEBUG("Sniffed correct signature for type %d value '%s'", nType, stringValue.c_str());
 
     return result;
 }
@@ -42,19 +43,19 @@ app::Byte__Array* RecordUserData_Hook(int32_t nType) {
 
 void InitProtectionBypass() {
     HookManager::install(app::Unity_RecordUserData, RecordUserData_Hook);
-    std::cout << "RecordUserData function address is 0x" << (void*)app::Unity_RecordUserData << std::endl;
+    LOG_DEBUG("Hooked UnityPlayer::RecordUserData. Origin at 0x%p", HookManager::getOrigin(RecordUserData_Hook));
 
     for (int i = 0; i < 4; i++) {
-        std::cout << "Emulating call of RecordUserData with type " << i << std::endl;
+        LOG_TRACE("Emulating call of RecordUserData with type %d", i);
         app::Application_RecordUserData(nullptr, i, nullptr);
     }
 
     if (Config::cfgDisableMhyProt.GetValue()) {
-        std::cout << "Trying to close mhyprot handle." << std::endl;
+        LOG_TRACE("Trying to close mhyprot handle.");
         if (CloseHandleByName(L"\\Device\\mhyprot2"))
-            std::cout << "Mhyprot2 handle successfuly closed. Happy hacking ^)" << std::endl;
+            LOG_INFO("Mhyprot2 handle successfuly closed. Happy hacking ^)");
         else
-            std::cout << "Failed closing mhyprot2 handle. Maybe dev updated driver." << std::endl;
+            LOG_ERROR("Failed closing mhyprot2 handle. Maybe dev updated anti-cheat.");
     }
     
 }

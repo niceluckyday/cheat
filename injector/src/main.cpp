@@ -10,7 +10,7 @@
 const std::string GlobalGenshinProcName = "GenshinImpact.exe";
 const std::string ChinaGenshinProcName = "YuanShen.exe";
 
-const char* INIFileName = "config.ini";
+const char* INIFileName = "cfg.ini";
 
 static CSimpleIni ini;
 
@@ -67,7 +67,7 @@ HANDLE OpenGenshinProcess() {
     }
 
     BOOL result = CreateProcessA(filePath->c_str(),
-        nullptr, 0, 0, false, CREATE_SUSPENDED, nullptr, nullptr, &startInfo, &processInformation);
+        nullptr, 0, 0, FALSE, CREATE_SUSPENDED, nullptr, nullptr, &startInfo, &processInformation);
     if (result == FALSE) {
         std::cout << "Failed to create game process." << std::endl;
         std::cout << "Error: " << GetLastErrorAsString() << std::endl;

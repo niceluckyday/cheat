@@ -248,6 +248,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClInclude Include="src\user\main.h" />
     <ClInclude Include="src\user\gui\modules\TeleportModule.h" />
     <ClInclude Include="src\user\util\Hotkey.h" />
+    <ClInclude Include="src\user\util\Logger.h" />
     <ClInclude Include="vendor\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="vendor\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="vendor\imgui\imgui.h" />
@@ -258,7 +259,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClInclude Include="vendor\include\simple-ini.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\user\cheat\teleport-to-mark.cpp" />
+    <ClCompile Include="src\user\cheat\map-teleport.cpp" />
     <ClCompile Include="src\user\gui\modules\SettingsModule.cpp" />
     <ClCompile Include="src\user\gui\renderer.cpp" />
     <ClCompile Include="src\user\gui\gui-util.cpp" />
@@ -266,6 +267,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClCompile Include="src\user\util\dx11hook.cpp" />
     <ClCompile Include="src\user\gui\modules\TeleportModule.cpp" />
     <ClCompile Include="src\user\util\Hotkey.cpp" />
+    <ClCompile Include="src\user\util\Logger.cpp" />
     <ClCompile Include="vendor\imgui\backends\imgui_impl_dx11.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

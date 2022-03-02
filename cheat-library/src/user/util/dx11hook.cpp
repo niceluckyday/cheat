@@ -18,6 +18,7 @@
 #include "backends/imgui_impl_win32.h"
 
 #include "HookManager.h"
+#include <util/Logger.h>
 
 void SetupImGuiStyle();
 
@@ -179,16 +180,17 @@ void createOverlay(const RenderCallback renderFunction, const OnKeyUpCallback on
 	pFont = fontData;
 	dFontSize = fontSize;
 
-	printf("Initializing D3D11 hook: started.\n");
+	LOG_DEBUG("Initializing D3D11 hook: started.");
 	fnIDXGISwapChainPresent = findDirect11Present();
 	if (fnIDXGISwapChainPresent == nullptr)
 	{
-		printf("[ERROR] Failed to find 'Present' function for D3D11.\n");
+		LOG_ERROR("Failed to find 'Present' function for D3D11.");
+		return;
 	}
-	printf("SwapChain Present: %p\n", fnIDXGISwapChainPresent);
+	LOG_DEBUG("SwapChain Present: %p", fnIDXGISwapChainPresent);
 
 	HookManager::install(fnIDXGISwapChainPresent, Present);
-	printf("Initializing D3D11 hook: done.\n");
+	LOG_DEBUG("Initializing D3D11 hook: done.");
 }
 
 void SetupImGuiStyle()
