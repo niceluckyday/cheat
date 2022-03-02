@@ -1,8 +1,24 @@
 # GenshinCheat
 Simple cheat for genshin with protection bypass.
 
-## In development
-For the current time working only bypass mhyprot2.sys protection and check integrity bypass.
+## Features
+- [X] Mhyprot bypass
+- [X] Check integrity bypass
+- [X] Ingame gui
+- [X] Map teleportation
+
+### Demo
+<details>
+  <summary>Map tp demo</summary>
+  In process.
+</details>
+
+
+## Planned
+- [ ] Standart cheat features (i.e. GM, No CD, Flying and so on)
+- [ ] Scene skip
+- [ ] Create database of all chests, oculi locations
+- [ ] etc...
 
 ## Usage
 
