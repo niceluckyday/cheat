@@ -12,7 +12,7 @@ class HookManager
 {
 public:
 	template <typename Fn>
-	static void set(Fn func, Fn handler) {
+	static void install(Fn func, Fn handler) {
 		enable(func, handler);
 		holderMap[reinterpret_cast<void*>(handler)] = reinterpret_cast<void*>(func);
 	}

@@ -3,7 +3,7 @@
 #define UNICODE
 #endif
 
-#include "util.h"
+#include "close-handle.h"
 
 #include <windows.h>
 #include <stdio.h>
@@ -139,7 +139,7 @@ bool CloseHandleByName(const wchar_t* name)
     ULONG handleInfoSize = 0x10000;
     PSYSTEM_HANDLE_INFORMATION handleInfo = (PSYSTEM_HANDLE_INFORMATION)malloc(handleInfoSize);
     
-    ULONG pid;
+    ULONG pid = 0;
     HANDLE processHandle = GetCurrentProcess();
     ULONG i;
 

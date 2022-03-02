@@ -43,3 +43,49 @@ DO_APP_FUNC_METHODINFO(0x0B1AA908, Array_SetValue_1__MethodInfo);
 
 DO_APP_FUNC(0x074AAAB0, Byte__Array*, Application_RecordUserData, (void* __this, int32_t nType, MethodInfo* method));
 DO_APP_FUNC(0x070598A0, Object*, Array_Clone, (Array* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x04D57F50, bool, LuaHomeTask_get_isRealPause, (LuaHomeTask* __this, MethodInfo* method));
+DO_APP_FUNC(0x07F63290, bool, LuaHomeTask_get_isBackGround, (LuaHomeTask* __this, MethodInfo* method));
+DO_APP_FUNC(0x04D51360, void, LuaHomeTask_Init, (LuaHomeTask* __this, LuaTaskType__Enum taskType, int32_t taskQueueID, BaseActor* actor, String* tag, MethodInfo* method));
+DO_APP_FUNC(0x04D559F0, void, LuaHomeTask_StartInit, (LuaHomeTask* __this, MethodInfo* method));
+DO_APP_FUNC(0x04D57470, void, LuaHomeTask_TryLoadAnime, (LuaHomeTask* __this, MethodInfo* method));
+DO_APP_FUNC(0x04D55F00, void, LuaHomeTask_StartTask, (LuaHomeTask* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x0140F770, Vector3, Miscs_GenWorldPos, (void* __this, Vector2 levelMapPos, MethodInfo* method));
+DO_APP_FUNC(0x0140EE70, Vector2, Miscs_GenLevelPos_1, (void* __this, Vector3 worldPos, MethodInfo* method));
+DO_APP_FUNC(0x018C3CD0, Vector3, ActorUtils_GetAvatarPos, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x018CBAA0, void, ActorUtils_SetAvatarPos, (void* __this, Vector3 pos, MethodInfo* method));
+DO_APP_FUNC(0x04BF7830, void, MonoMapMark_Init, (MonoMapMark* __this, HOOPGAGKHLD__Enum IGHPOMOHPNP, uint32_t DPLGNHJCBGB, NOIPNNCFAAH__Enum DDJHLKMOLEJ, GeneralMarkData* HBMFGMCKDNL, MethodInfo* method));
+DO_APP_FUNC(0x01402500, float, Miscs_CalcCurrentGroundHeight, (void* __this, float x, float z, MethodInfo* method));
+DO_APP_FUNC(0x01403060, float, Miscs_CalcCurrentWaterHeight, (void* __this, Vector3 pos, float rayUpLength, float rayDetectLength, MethodInfo* method));
+DO_APP_FUNC(0x01402C90, float, Miscs_CalcCurrentGroundWaterHeight, (void* __this, float x, float z, MethodInfo* method));
+
+// Teleport maybe
+// DO_APP_FUNC(0x02B916D0, void, MJONCIENKGD_BLPCHLFNNCO, (MJONCIENKGD* __this, Vector3 OKHBIDCKLCD, float PGDBGIMJIFD, CMHGHBNDBMG_ECPNDLCPDIE__Enum CGKIEHJAOFM, MEPEDAIKBDI__Enum FFFNAKEFEOA, uint32_t AJILLILMGOK, uint32_t BDFOCMLADLB, MethodInfo* method));
+
+// Teleport event starting
+DO_APP_FUNC(0x0165CF20, void, TeleportStart_FJIDMGGJMEF_LFNOBNMJELN, (FJIDMGGJMEF* __this, LDFJBNJCCCE* KJGLIPHELMG, MethodInfo* method));
+
+DO_APP_FUNC(0x01658880, void, DoTeleport_ECJDHNFLNAI, (FJIDMGGJMEF* __this, Vector3 position, MEPEDAIKBDI__Enum someEnum, uint32_t AJILLILMGOK, CMHGHBNDBMG_ECPNDLCPDIE__Enum teleportType, uint32_t BDFOCMLADLB, MethodInfo* method));
+
+DO_APP_FUNC(0x01656B10, void, SendTeleportToWaypoint_FJIDMGGJMEF_CBBKNIJAKDE, (FJIDMGGJMEF* __this, uint32_t waypointType, uint32_t waypointId, void* EDGMMFENFOB, MethodInfo* method));
+DO_APP_FUNC(0x01466540, MBHLOBDPKEC_BHKOIJIKDFG, GetWaypointInformation_MBHLOBDPKEC_BFKKBELGMLF, (MBHLOBDPKEC* __this, uint32_t waypointType, uint32_t waypointId, MethodInfo* method));
+DO_APP_FUNC(0x014D3D80, void, TransportToMapMark_EAFLDMPLBHM_KBCBGBIDJMG, (EAFLDMPLBHM* __this, MonoMapMark* mark, MethodInfo* method));
+
+DO_APP_FUNC(0x01E9F520, EAPPPCHHMHO*, GetAvatar_Entity, (AOFGMGFKONM* __this, MethodInfo* method));
+DO_APP_FUNC(0x0152E720, void, Entity_SetPosition, (EAPPPCHHMHO* __this, Vector3 position, bool someBool, MethodInfo* method));
+DO_APP_FUNC(0x0749EB80, float, Vector3_Distance, (void* __this, Vector3 a, Vector3 b, MethodInfo* method));
+
+DO_APP_FUNC(0x04E86BD0, MonoMapMark*, MonoInLevelMapPage_AddMark, (MonoInLevelMapPage* __this, BAEABLAJDLM PHDBMGDLIDJ, MethodInfo* method));
+
+DO_APP_FUNC(0x014CC1F0, void, CreateCustomMapMark, (void* __this, Vector2 position, NOIPNNCFAAH__Enum iconType, MethodInfo* method));
+
+DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));
+DO_APP_FUNC_METHODINFO(0x0B20F1E8, Singleton_1_MBHLOBDPKEC__get_Instance__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B1C5540, Singleton_1_FJIDMGGJMEF__get_Instance__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B18EF88, Singleton_1_AOFGMGFKONM__get_Instance__MethodInfo);
+
+
+DO_APP_FUNC(0x074BA270, void, Cursor_set_visible, (void* __this, bool value, MethodInfo* method));
+DO_APP_FUNC(0x074BA220, void, Cursor_set_lockState, (void* __this, CursorLockMode__Enum value, MethodInfo* method));
+DO_APP_FUNC(0x074BA1D0, bool, Cursor_get_visible, (void* __this, MethodInfo* method));

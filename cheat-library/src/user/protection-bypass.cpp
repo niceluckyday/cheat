@@ -6,7 +6,7 @@
 #include "util/Config.h"
 
 #include <string>
-#include <util/util.h>
+#include <util/close-handle.h>
 #include <iostream>
 
 static std::map<int32_t, std::string> correctSignatures;
@@ -41,7 +41,7 @@ app::Byte__Array* RecordUserData_Hook(int32_t nType) {
 
 
 void InitProtectionBypass() {
-    HookManager::set(app::Unity_RecordUserData, RecordUserData_Hook);
+    HookManager::install(app::Unity_RecordUserData, RecordUserData_Hook);
     std::cout << "RecordUserData function address is 0x" << (void*)app::Unity_RecordUserData << std::endl;
 
     for (int i = 0; i < 4; i++) {
@@ -49,7 +49,7 @@ void InitProtectionBypass() {
         app::Application_RecordUserData(nullptr, i, nullptr);
     }
 
-    if (Config::disableMhyProt) {
+    if (Config::cfgDisableMhyProt.GetValue()) {
         std::cout << "Trying to close mhyprot handle." << std::endl;
         if (CloseHandleByName(L"\\Device\\mhyprot2"))
             std::cout << "Mhyprot2 handle successfuly closed. Happy hacking ^)" << std::endl;

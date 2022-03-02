@@ -111,7 +111,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,7 +142,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -160,18 +160,19 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_AMD64_;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_DEBUG;CHEATLIBRARY_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <BufferSecurityCheck>
       </BufferSecurityCheck>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -204,7 +205,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -221,9 +222,16 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="res\resource.h" />
+    <ClInclude Include="src\user\cheat\cheat.h" />
     <ClInclude Include="src\user\debug-hooks.h" />
+    <ClInclude Include="src\user\gui\modules\SettingsModule.h" />
+    <ClInclude Include="src\user\gui\modules\IGUIModule.h" />
     <ClInclude Include="src\user\gui\renderer.h" />
+    <ClInclude Include="src\user\gui\gui-util.h" />
+    <ClInclude Include="src\user\util\close-handle.h" />
     <ClInclude Include="src\user\util\dx11hook.h" />
+    <ClInclude Include="src\user\util\Event.h" />
     <ClInclude Include="src\user\util\HookManager.h" />
     <ClInclude Include="src\appdata\il2cpp-unityplayer-functions.h" />
     <ClInclude Include="src\user\protection-bypass.h" />
@@ -237,20 +245,27 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClInclude Include="src\framework\il2cpp-appdata.h" />
     <ClInclude Include="src\framework\il2cpp-init.h" />
     <ClInclude Include="src\framework\pch-il2cpp.h" />
-    <ClInclude Include="src\user\util\util.h" />
     <ClInclude Include="src\user\main.h" />
+    <ClInclude Include="src\user\gui\modules\TeleportModule.h" />
+    <ClInclude Include="src\user\util\Hotkey.h" />
     <ClInclude Include="vendor\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="vendor\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="vendor\imgui\imgui.h" />
     <ClInclude Include="vendor\imgui\imgui_internal.h" />
+    <ClInclude Include="vendor\imgui\misc\cpp\imgui_stdlib.h" />
     <ClInclude Include="vendor\include\detours.h" />
     <ClInclude Include="vendor\include\detver.h" />
     <ClInclude Include="vendor\include\simple-ini.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\user\cheat\teleport-to-mark.cpp" />
+    <ClCompile Include="src\user\gui\modules\SettingsModule.cpp" />
     <ClCompile Include="src\user\gui\renderer.cpp" />
+    <ClCompile Include="src\user\gui\gui-util.cpp" />
     <ClCompile Include="src\user\util\Config.cpp" />
     <ClCompile Include="src\user\util\dx11hook.cpp" />
+    <ClCompile Include="src\user\gui\modules\TeleportModule.cpp" />
+    <ClCompile Include="src\user\util\Hotkey.cpp" />
     <ClCompile Include="vendor\imgui\backends\imgui_impl_dx11.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -293,6 +308,12 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="vendor\imgui\misc\cpp\imgui_stdlib.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClInclude Include="src\user\util\Config.h">
       <FileType>CppHeader</FileType>
     </ClInclude>
@@ -318,6 +339,12 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="res\Ruda-Bold.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

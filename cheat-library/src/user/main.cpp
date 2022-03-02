@@ -16,11 +16,11 @@
 #include "protection-bypass.h"
 #include "util/Config.h"
 #include "gui/renderer.h"
+#include "cheat/cheat.h"
 
+const char* INIFileName = "cfg.ini";
 
-const char* INIFileName = "config.ini";
-
-void Run()
+void Run(HMODULE* phModule)
 {
     Sleep(4000); // Waiting for il2cpp initialize
     
@@ -30,7 +30,7 @@ void Run()
 
     std::string configPath = (std::filesystem::current_path() / INIFileName).string();
     Config::Init(configPath);
-    if (Config::consoleLogging)
+    if (Config::cfgConsoleLogging.GetValue())
         il2cppi_new_console();
 
     std::cout << "Config path is " << (std::filesystem::current_path() / INIFileName).string() << std::endl;
@@ -41,5 +41,7 @@ void Run()
 
     InitDebugHooks();
 
-    InitRenderer();
+    InitMapTPHooks();
+
+    InitRenderer(*phModule);
 }

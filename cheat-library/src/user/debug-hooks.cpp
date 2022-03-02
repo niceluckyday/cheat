@@ -5,11 +5,8 @@
 #include "util/HookManager.h"
 #include "helpers.h"
 #include <iostream>
-
-app::Byte__Array* LoadCustomLuaFile_Hook(app::LuaManager* __this, app::String** filePath, bool* recycleBytes, MethodInfo* method) {
-    std::cout << "Load library: " << il2cppi_to_string(*filePath) << ".lua" << std::endl;
-    return callOrigin(LoadCustomLuaFile_Hook, __this, filePath, recycleBytes, method);
-}
+#include <vector>
+#include <Windows.h>
 
 void __stdcall SendInfo_Hook(app::GameLogin* __this, app::GKOJAICIOPA* info, MethodInfo* method) {
     std::cout << "Game sending game info to server." << std::endl;
@@ -39,12 +36,8 @@ void __stdcall SendInfo_Hook(app::GameLogin* __this, app::GKOJAICIOPA* info, Met
 
     callOrigin(SendInfo_Hook, __this, info, method);
 }
-
-
-void InitDebugHooks() {
-    HookManager::set(app::LuaManager_LoadCustomLuaFile, LoadCustomLuaFile_Hook);
-    std::cout << "Hooked LoadCustomLuaFile. Origin at 0x" << (void*)HookManager::getOrigin(LoadCustomLuaFile_Hook) << std::endl;
-    
-    HookManager::set(app::GameLogin_SendInfo_2, SendInfo_Hook);
+void InitDebugHooks() 
+{
+    HookManager::install(app::GameLogin_SendInfo_2, SendInfo_Hook);
     std::cout << "Hooked GameLogin::SendGameInfo. Origin at 0x" << (void*)HookManager::getOrigin(SendInfo_Hook) << std::endl;
 }
