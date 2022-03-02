@@ -10,7 +10,7 @@ Simple cheat for genshin with protection bypass.
 ### Demo
 <details>
   <summary>Map tp demo</summary>
-  In process.
+  <img src="demo/map-teleport-demo.gif"/>
 </details>
 
 
