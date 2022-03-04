@@ -5824,10 +5824,10 @@ namespace app {
         HNHPKDOJFPI__Enum JAAAEGMMPIF;
         struct POOHKMNLLPH MFKJEHNIJEE;
         struct LAFKDOLNGNA JJECIIGEMKM;
-        struct Vector vector1;
-        struct Vector vector2;
-        struct Vector3 vector3;
-        struct Vector vector4;
+        struct Vector3 vector1;
+        struct Vector3 vector2;
+        struct Vector3 tpPosition;
+        struct Vector3 vector4;
         bool EPJPENHIJOL;
         struct String* someString;
         bool GDMGFMPJLGN;
@@ -5840,10 +5840,168 @@ namespace app {
         struct CEHHMPEGDKF__Fields fields;
     };
 
+    struct Nullable_1_UnityEngine_Vector3_ {
+        struct Vector3 value;
+        bool has_value;
+    };
+
+    enum class ODNNFKEKALL__Enum : int32_t {
+        None = 0x00000000,
+        Fire = 0x00000001,
+        Water = 0x00000002,
+        Grass = 0x00000003,
+        Electric = 0x00000004,
+        Ice = 0x00000005,
+        Frozen = 0x00000006,
+        Wind = 0x00000007,
+        Rock = 0x00000008,
+        AntiFire = 0x00000009,
+        VehicleMuteIce = 0x0000000a,
+        COUNT = 0x0000000b,
+    };
+
+    enum class BOLKMOALBNA__Enum : int32_t {
+        LEVEL_NONE = 0x00000000,
+        LEVEL_1 = 0x00000001,
+        LEVEL_2 = 0x00000002,
+        LEVEL_3 = 0x00000003,
+        LEVEL_PLAY = 0x0000000a,
+    };
+
+    enum class CCJPPAHINEE__Enum : int32_t {
+        AREA_TERRAIN_NONE = 0x00000000,
+        AREA_TERRAIN_CITY = 0x00000001,
+        AREA_TERRAIN_OUTDOOR = 0x00000002,
+    };
+
+    struct CPJFKGCPOOM {
+        uint32_t HFEHLAGCDLL;
+    };
+
+    struct __declspec(align(8)) BKNNJMLFFMG__Fields {
+        struct POOHKMNLLPH CLHKDEAFLGP;
+        struct POOHKMNLLPH AGHEDFKHLCC;
+        BOLKMOALBNA__Enum level;
+        struct POOHKMNLLPH JOEAFJNGFMH;
+        struct POOHKMNLLPH CBIJIEBKDFP;
+        bool HLCFEAIOGBI;
+        uint32_t NGHJKDEJKGA;
+        struct POOHKMNLLPH KHBJPADPMAC;
+        ODNNFKEKALL__Enum effectType;
+        CCJPPAHINEE__Enum areaTerrain;
+        bool HHKMHKOCPKM;
+        struct CPJFKGCPOOM MGOHOBFBFGO;
+    };
+
+    struct BKNNJMLFFMG {
+        void* klass;
+        MonitorData* monitor;
+        struct BKNNJMLFFMG__Fields fields;
+    };
+
+    struct EAPPPCHHMHO__Array {
+        void* klass;
+        MonitorData* monitor;
+        Il2CppArrayBounds* bounds;
+        il2cpp_array_size_t max_length;
+        struct EAPPPCHHMHO* vector[32];
+    };
+
+    struct __declspec(align(8)) Dictionary_2_System_UInt32_EAPPPCHHMHO___Fields {
+        struct Int32__Array* table;
+        struct Link__Array* linkSlots;
+        struct UInt32__Array* keySlots;
+        struct EAPPPCHHMHO__Array* valueSlots;
+        int32_t touchedSlots;
+        int32_t emptySlot;
+        int32_t count;
+        int32_t threshold;
+        void* hcp;
+        void* serialization_info;
+        int32_t generation;
+    };
+
+    struct Dictionary_2_System_UInt32_EAPPPCHHMHO_ {
+        void* klass;
+        MonitorData* monitor;
+        struct Dictionary_2_System_UInt32_EAPPPCHHMHO___Fields fields;
+    };
+
+    struct __declspec(align(8)) Dictionary_2_System_String_EAPPPCHHMHO___Fields {
+        struct Int32__Array* table;
+        struct Link__Array* linkSlots;
+        struct String__Array* keySlots;
+        struct EAPPPCHHMHO__Array* valueSlots;
+        int32_t touchedSlots;
+        int32_t emptySlot;
+        int32_t count;
+        int32_t threshold;
+        void* hcp;
+        void* serialization_info;
+        int32_t generation;
+    };
+
+    struct Dictionary_2_System_String_EAPPPCHHMHO_ {
+        void* klass;
+        MonitorData* monitor;
+        struct Dictionary_2_System_String_EAPPPCHHMHO___Fields fields;
+    };
+
+    struct __declspec(align(8)) MBHLOBDPKEC__Fields {
+        struct Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG_* waypoints;
+        struct Vector3 ODGKNIMEEMD;
+        struct String* string1;
+        struct String* string2;
+        uint32_t JIHHMOAJDPP;
+        uint32_t _GONLPHELGLM_k__BackingField;
+        uint32_t _NONFHJKPJFM_k__BackingField;
+        uint32_t _PGKHJFCMHDC_k__BackingField;
+        uint32_t _JLIJNMLFAFC_k__BackingField;
+        uint32_t _HNAJCAOJILO_k__BackingField;
+        uint32_t _HNCKAOOIAHL_k__BackingField;
+        bool _NAILEAGILIG_k__BackingField;
+        void* NPKJAPNMBPI;
+        struct Nullable_1_UnityEngine_Vector3_ BBDLKBCJLMI;
+        void* PAGNEAEAEAN;
+        void* FNBIEPGABKN;
+        void* GLEOJIBPOAA;
+        void* OLJONACLPMB;
+        void* EPLACPMJLCG;
+        void* HOHHDMEHEFE;
+        void* ACIENPGKNEK;
+        uint32_t _CEIADDGBEEA_k__BackingField;
+        float GDGMDACHJIJ;
+        float KLKDOIJIAMG;
+        uint32_t _CODFBDCFOEC_k__BackingField;
+        void* BKAJAHKNELL;
+        void* CCDJCLGJCKK;
+        void* OMBMEBKGHPI;
+        struct BKNNJMLFFMG* areaInfo;
+        struct EAPPPCHHMHO* someEntity;
+        struct Dictionary_2_System_UInt32_EAPPPCHHMHO_* someEntities;
+        void* MLFBHJNHHJJ;
+        void* BJMIKECNLIC;
+        uint32_t JCIGCKMINJN;
+        struct Dictionary_2_System_String_EAPPPCHHMHO_* someEntities2;
+        bool KGPMJHCIGMB;
+        void* CKANHDIMMDM;
+        bool AKMCKGIJAMK;
+        void* EOLNAPMDOBP;
+        void* BDGOOFHEIAL;
+        void* NEBNANNODPO;
+        void* PAHAOOLCCMB;
+        void* AAPEHDGPFNJ;
+        void* ENLPOCMOPHD;
+        void* NDJMAOPCOKA;
+        struct Transform* JBGMGJGMOKI;
+        void* EEIPAHPBHFO;
+        void* APLPJKGDKGO;
+    };
+
     struct MBHLOBDPKEC {
         void* klass; // struct MBHLOBDPKEC__Class* klass;
         MonitorData* monitor;
-        char fields[32]; // struct MBHLOBDPKEC__Fields fields;
+        struct MBHLOBDPKEC__Fields fields;
     };
 
     struct MBHLOBDPKEC_BHKOIJIKDFG {
@@ -5871,6 +6029,68 @@ namespace app {
         None = 0x00000000,
         Locked = 0x00000001,
         Confined = 0x00000002,
+    };
+
+    struct Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Array {
+        struct Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Array__Class* klass;
+        MonitorData* monitor;
+        Il2CppArrayBounds* bounds;
+        il2cpp_array_size_t max_length;
+        struct Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG_* vector[32];
+    };
+
+    struct MBHLOBDPKEC_BHKOIJIKDFG__Array {
+        struct MBHLOBDPKEC_BHKOIJIKDFG__Array__Class* klass;
+        MonitorData* monitor;
+        Il2CppArrayBounds* bounds;
+        il2cpp_array_size_t max_length;
+        struct MBHLOBDPKEC_BHKOIJIKDFG vector[32];
+    };
+
+    struct __declspec(align(8)) Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Fields {
+        struct Int32__Array* table;
+        struct Link__Array* linkSlots;
+        struct UInt32__Array* keySlots;
+        struct MBHLOBDPKEC_BHKOIJIKDFG__Array* valueSlots;
+        int32_t touchedSlots;
+        int32_t emptySlot;
+        int32_t count;
+        int32_t threshold;
+        void* hcp;
+        void* serialization_info;
+        int32_t generation;
+    };
+
+    struct __declspec(align(8)) Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Fields {
+        struct Int32__Array* table;
+        struct Link__Array* linkSlots;
+        struct UInt32__Array* keySlots;
+        struct Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Array* valueSlots;
+        int32_t touchedSlots;
+        int32_t emptySlot;
+        int32_t count;
+        int32_t threshold;
+        void* hcp;
+        void* serialization_info;
+        int32_t generation;
+    };
+
+    struct Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG_ {
+        void* klass;
+        MonitorData* monitor;
+        struct Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Fields fields;
+    };
+
+    struct Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG_ {
+        void* klass;
+        MonitorData* monitor;
+        struct Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Fields fields;
+    };
+
+    struct Notify {
+        AJAPIFPNFKP__Enum type;
+        struct Object* body;
+        struct JDBPGPCCJJP* udpPacket;
     };
 
 #if !defined(_GHIDRA_) && !defined(_IDA_)

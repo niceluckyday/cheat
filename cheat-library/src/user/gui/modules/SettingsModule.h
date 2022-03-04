@@ -1,5 +1,5 @@
 #pragma once
-#include "IGUIModule.h"
+#include <gui/IGUIModule.h>
 
 class SettingsModule :
 	public IGUIModule
@@ -7,6 +7,5 @@ class SettingsModule :
 	void Draw() override;
 
 	std::string GetName() override;
-	bool CanBeUnpinned() override;
 };
 

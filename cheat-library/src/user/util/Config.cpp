@@ -1,32 +1,18 @@
 #include "pch-il2cpp.h"
+#include "Config.h"
 
 #include <sstream>
 
-#include "Config.h"
+#include <simple-ini.hpp>
 
-#include "simple-ini.hpp"
-#include "helpers.h"
+#include <helpers.h>
 #include <util/Logger.h>
 
-
-// Logging
-ConfigField<bool> Config::cfgConsoleLogging("Logging", "ConsoleLog", true, Config::OnChangeValue);
-ConfigField<bool> Config::cfgFileLogging("Logging", "FileLog", false, Config::OnChangeValue);
-
-// Main
-ConfigField<bool> Config::cfgDisableMhyProt("DLLUtil", "DisableMhyprot", true, Config::OnChangeValue);
-ConfigField<Hotkey> Config::cfgMenuEnableKey("DLLUtil", "MenuShowKey", Hotkey(VK_F1, 0), Config::OnChangeValue);
-
-// Teleportation
-ConfigField<bool> Config::cfgTpToMarkEnable("Teleport", "Enable", true, Config::OnChangeValue);
-ConfigField<float> Config::cfgTpHeight("Teleport", "TeleportHeight", 300.0f, Config::OnChangeValue);
-ConfigField<Hotkey> Config::cfgTpToMarkKey("Teleport", "MarkTeleportationKey", Hotkey('T', 0), Config::OnChangeValue);
-ConfigField<bool> Config::cfgUseOfflineTP("Teleport", "UseOfflineTeleport", false, Config::OnChangeValue);
-
-CSimpleIni Config::m_INIFile;
 static bool changed = false;
 
 static std::string filename;
+
+#define LoadToggleValue(field) LoadFieldValue(field); toggleFields.push_back(field)
 
 void Config::Init(const std::string configFile)
 {
@@ -36,13 +22,30 @@ void Config::Init(const std::string configFile)
 	if (status < 0)
 		LOG_ERROR("Failed to load config file.");
 
-	LoadFieldValue(cfgDisableMhyProt);
-	LoadFieldValue(cfgConsoleLogging);
+	LoadToggleValue(cfgGodModEnable);
+	LoadToggleValue(cfgInfiniteStaminaEnable);
+	LoadToggleValue(cfgInstantBowEnable);
+	LoadToggleValue(cfgNoCDEnable);
+	LoadToggleValue(cfgNoGravityEnable);
+	LoadToggleValue(cfgMoveSpeedhackEnable);
 
-	LoadFieldValue(cfgTpHeight);
-	LoadFieldValue(cfgTpToMarkEnable);
-	LoadFieldValue(cfgTpToMarkKey);
-	LoadFieldValue(cfgUseOfflineTP);
+	LoadToggleValue(cfgUnlockWaypointsEnable);
+	LoadToggleValue(cfgDummyEnemiesEnabled);
+
+	LoadToggleValue(cfgMapTPEnable);
+	LoadFieldValue(cfgTeleportHeight);
+	LoadFieldValue(cfgTeleportKey);
+	LoadFieldValue(cfgUseOfflineTeleport);
+
+	LoadFieldValue(cfgDisableMhyprot);
+	LoadFieldValue(cfgConsoleLogEnabled);
+	LoadFieldValue(cfgFileLogEnabled);
+	LoadFieldValue(cfgMoveStatusWindow);
+}
+
+std::vector<ToggleConfigField> Config::GetToggleFields()
+{
+	return toggleFields;
 }
 
 void Config::Save()
@@ -51,7 +54,6 @@ void Config::Save()
 	if (status < 0)
 		LOG_ERROR("Failed to save changes to config.");
 }
-
 
 void Config::SetValue(std::string section, std::string name, char* value) {
 	m_INIFile.SetValue(section.c_str(), name.c_str(), value);
@@ -100,4 +102,11 @@ void Config::LoadFieldValue(ConfigField<Hotkey>& field) {
 	int mKey = 0, aKey = 0;
 	stream >> mKey >> aKey;
 	field = Hotkey(mKey, aKey);
+}
+
+void Config::LoadFieldValue(ToggleConfigField& field) {
+	auto baseField = (ConfigField<bool>)field;
+	LoadFieldValue(baseField);
+	auto hotkeyField = field.GetHotkeyField();
+	LoadFieldValue(hotkeyField);
 }

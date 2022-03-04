@@ -23,10 +23,10 @@ uintptr_t il2cppi_get_unity_address() {
 void il2cppi_new_console() {
     AllocConsole();
     freopen_s((FILE**) stdout, "CONOUT$", "w", stdout);
+    freopen_s((FILE**) stderr, "CONOUT$", "w", stderr);
 }
 
 void il2cppi_close_console() {
-    fclose(stdin);
     fclose(stdout);
     fclose(stderr);  
     FreeConsole();

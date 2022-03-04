@@ -108,7 +108,7 @@
     <ClInclude Include="vendor\include\detver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\gui\modules\IGUIModule.h">
+    <ClInclude Include="src\user\gui\IGUIModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\user\gui\modules\TeleportModule.h">
@@ -139,6 +139,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\user\util\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\gui\modules\DebugModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\magic_enum\include\magic_enum.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\gui\modules\ActiveFeaturesModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\gui\modules\HotkeysModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\gui\modules\PlayerModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\gui\modules\WorldModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -219,6 +237,27 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\util\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\gui\modules\DebugModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\player-cheat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\gui\modules\ActiveFeaturesModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\gui\modules\HotkeysModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\cheat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\gui\modules\PlayerModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\gui\modules\WorldModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -37,6 +37,8 @@ struct UniArray {
 
 template<typename KeyT, typename ValT>
 struct __declspec(align(8)) UniDict {
+    void* klass;
+    MonitorData* monitor;
     struct app::Int32__Array* table;
     struct app::Link__Array* linkSlots;
     struct UniArray<KeyT>* keySlots;

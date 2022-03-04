@@ -9,6 +9,7 @@
 #include <string>
 #include <iostream>
 
+#include <magic_enum.hpp>
 #include "il2cpp-init.h"
 #include "helpers.h"
 
@@ -35,13 +36,13 @@ void Run(HMODULE* phModule)
     Config::Init(configPath);
 
     // Init logger
-    if (Config::cfgFileLogging.GetValue()) 
+    if (Config::cfgFileLogEnabled.GetValue()) 
     {
         Logger::PrepareFileLogging((std::filesystem::current_path() / "logs").string());
         Logger::SetLevel(Logger::Level::Trace, Logger::LoggerType::FileLogger);
     }
 
-    if (Config::cfgConsoleLogging.GetValue()) 
+    if (Config::cfgConsoleLogEnabled.GetValue()) 
     {
         Logger::SetLevel(Logger::Level::Debug, Logger::LoggerType::ConsoleLogger);
         il2cppi_new_console();
@@ -53,10 +54,8 @@ void Run(HMODULE* phModule)
     LOG_DEBUG("UnityPlayer.dll  at 0x%p", il2cppi_get_base_address());
 
     InitProtectionBypass();
-
     InitDebugHooks();
-
-    InitMapTPHooks();
+    InitCheats();
 
     InitRenderer(*phModule);
 }

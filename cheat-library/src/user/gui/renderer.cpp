@@ -9,21 +9,33 @@
 #include <util/Config.h>
 #include <imgui.h>
 
-#include "modules/IGUIModule.h"
 #include "modules/SettingsModule.h"
 #include "modules/TeleportModule.h"
+#include "modules/DebugModule.h"
+#include "modules/HotkeysModule.h"
+#include "modules/ActiveFeaturesModule.h"
+#include "modules/PlayerModule.h"
+#include "modules/WorldModule.h"
+
 #include <util/Logger.h>
 
 
 static bool prevMouseActive = false;
 static bool isShowMain = false;
+static bool isBlockInteraction = true;
+
 static ImFont* pFont;
 
-
 static std::vector<IGUIModule*> modules = {
+		new PlayerModule(),
+		new WorldModule(),
         new TeleportModule(),
-        new SettingsModule()
+        new SettingsModule(),
+		new HotkeysModule(),
+		new DebugModule()
 };
+
+static ActiveFeaturesModule statusModule{};
 
 bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& size);
 
@@ -40,7 +52,21 @@ void InitRenderer(HMODULE hModule)
     createOverlay(GuiRender, OnKeyUp, pFont, dFontSize);
 }
 
-void GuiRender() {
+void GuiRender() 
+{
+	// Drawing status window
+	ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground |
+		ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus |
+		ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse;
+
+	if (!Config::cfgMoveStatusWindow.GetValue())
+		flags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
+
+	ImGui::Begin("Cheat status", 0, flags);
+
+	statusModule.Draw();
+
+	ImGui::End();
 
     static IGUIModule* current = modules[0];
 	if (!isShowMain)
@@ -54,6 +80,10 @@ void GuiRender() {
         ImGui::PopFont();
 		return;
 	}
+
+	ImGui::BeginGroup();
+
+	ImGui::Checkbox("Block key/mouse", &isBlockInteraction);
 
     if (ImGui::BeginListBox("##listbox 2", ImVec2(175, -FLT_MIN)))
     {
@@ -69,6 +99,8 @@ void GuiRender() {
         }
         ImGui::EndListBox();
     }
+
+	ImGui::EndGroup();
 
     ImGui::SameLine();
 
@@ -87,8 +119,22 @@ void GuiRender() {
 	ImGui::End();
 }
 
+void CheckToggleHotkeys(short key)
+{
+	for (auto& field : Config::GetToggleFields()) 
+	{
+		if (field.GetHotkey()->IsPressed(key)) 
+		{
+			bool* value = field.GetValuePtr();
+			*value = !*value;
+			field.Check();
+		}
+	}
+}
+
 void OnKeyUp(WPARAM key, short& ioFlag) {
-	if (Config::cfgMenuEnableKey.GetValue().IsPressed((short)key)) {
+	if (Config::cfgMenuShowKey.GetValue().IsPressed((short)key)) 
+	{
 		isShowMain = !isShowMain;
 
 		if (isShowMain) {
@@ -104,10 +150,15 @@ void OnKeyUp(WPARAM key, short& ioFlag) {
 		}
 	}
 
+	if (!isShowMain)
+		CheckToggleHotkeys((short)key);
+
 	ioFlag = 0;
-	if (isShowMain) {
+	if (isShowMain) 
+	{
 		ioFlag |= BType_SendImGUI;
-	    ioFlag |= BType_Blocked;
+		if (isBlockInteraction)
+			ioFlag |= BType_Blocked;
 	}
 }
 

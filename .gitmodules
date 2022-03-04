@@ -1,3 +1,9 @@
 [submodule "cheat-library\\vendor\\imgui"]
 	path = cheat-library\\vendor\\imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "cheat-library\\vendor\\better-enums"]
+	path = cheat-library\\vendor\\better-enums
+	url = https://github.com/aantron/better-enums
+[submodule "cheat-library\\vendor\\magic_enum"]
+	path = cheat-library\\vendor\\magic_enum
+	url = https://github.com/Neargye/magic_enum

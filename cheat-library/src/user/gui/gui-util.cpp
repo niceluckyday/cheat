@@ -187,4 +187,29 @@ bool ConfigWidget(const char* label, ConfigField<std::string> field, const char*
     return result;
 }
 
+bool ConfigWidget(ConfigField<bool> field, const char* desc)
+{
+    return ConfigWidget(field.GetFriendlyName().c_str(), field, desc);
+}
+
+bool ConfigWidget(ConfigField<int> field, int step, int start, int end, const char* desc)
+{
+    return ConfigWidget(field.GetFriendlyName().c_str(), field, step, start, end, desc);
+}
+
+bool ConfigWidget(ConfigField<float> field, float step, float start, float end, const char* desc)
+{
+    return ConfigWidget(field.GetFriendlyName().c_str(), field, step, start, end, desc);
+}
+
+bool ConfigWidget(ConfigField<Hotkey> field, bool clearable, const char* desc)
+{
+    return ConfigWidget(field.GetFriendlyName().c_str(), field, clearable, desc);
+}
+
+bool ConfigWidget(ConfigField<std::string> field, const char* desc)
+{
+    return ConfigWidget(field.GetFriendlyName().c_str(), field, desc);;
+}
+
 #undef ShowDesc

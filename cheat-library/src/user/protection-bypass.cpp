@@ -50,7 +50,7 @@ void InitProtectionBypass() {
         app::Application_RecordUserData(nullptr, i, nullptr);
     }
 
-    if (Config::cfgDisableMhyProt.GetValue()) {
+    if (Config::cfgDisableMhyprot.GetValue()) {
         LOG_TRACE("Trying to close mhyprot handle.");
         if (CloseHandleByName(L"\\Device\\mhyprot2"))
             LOG_INFO("Mhyprot2 handle successfuly closed. Happy hacking ^)");

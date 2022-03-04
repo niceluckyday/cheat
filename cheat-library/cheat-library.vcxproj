@@ -111,7 +111,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui;$(ProjectDir)vendor/magic_enum/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,7 +142,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui;$(ProjectDir)vendor/magic_enum/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -166,7 +166,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui;$(ProjectDir)vendor/magic_enum/include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <BufferSecurityCheck>
       </BufferSecurityCheck>
@@ -205,7 +205,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui;$(ProjectDir)vendor/magic_enum/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -222,11 +222,16 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\user\gui\modules\ActiveFeaturesModule.h" />
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="src\user\cheat\cheat.h" />
     <ClInclude Include="src\user\debug-hooks.h" />
+    <ClInclude Include="src\user\gui\modules\DebugModule.h" />
+    <ClInclude Include="src\user\gui\modules\HotkeysModule.h" />
+    <ClInclude Include="src\user\gui\modules\PlayerModule.h" />
     <ClInclude Include="src\user\gui\modules\SettingsModule.h" />
-    <ClInclude Include="src\user\gui\modules\IGUIModule.h" />
+    <ClInclude Include="src\user\gui\IGUIModule.h" />
+    <ClInclude Include="src\user\gui\modules\WorldModule.h" />
     <ClInclude Include="src\user\gui\renderer.h" />
     <ClInclude Include="src\user\gui\gui-util.h" />
     <ClInclude Include="src\user\util\close-handle.h" />
@@ -257,10 +262,18 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClInclude Include="vendor\include\detours.h" />
     <ClInclude Include="vendor\include\detver.h" />
     <ClInclude Include="vendor\include\simple-ini.hpp" />
+    <ClInclude Include="vendor\magic_enum\include\magic_enum.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\user\cheat\cheat.cpp" />
+    <ClCompile Include="src\user\gui\modules\ActiveFeaturesModule.cpp" />
     <ClCompile Include="src\user\cheat\map-teleport.cpp" />
+    <ClCompile Include="src\user\cheat\player-cheat.cpp" />
+    <ClCompile Include="src\user\gui\modules\DebugModule.cpp" />
+    <ClCompile Include="src\user\gui\modules\HotkeysModule.cpp" />
+    <ClCompile Include="src\user\gui\modules\PlayerModule.cpp" />
     <ClCompile Include="src\user\gui\modules\SettingsModule.cpp" />
+    <ClCompile Include="src\user\gui\modules\WorldModule.cpp" />
     <ClCompile Include="src\user\gui\renderer.cpp" />
     <ClCompile Include="src\user\gui\gui-util.cpp" />
     <ClCompile Include="src\user\util\Config.cpp" />

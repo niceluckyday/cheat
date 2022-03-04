@@ -1,11 +1,13 @@
 #pragma once
 #include <gui/IGUIModule.h>
 
-class TeleportModule :
-    public IGUIModule
+class PlayerModule :
+	public IGUIModule
 {
 	void Draw() override;
 
 	std::string GetName() override;
 };
+
+
 

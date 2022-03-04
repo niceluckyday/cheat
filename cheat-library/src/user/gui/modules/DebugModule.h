@@ -1,8 +1,8 @@
 #pragma once
 #include <gui/IGUIModule.h>
 
-class TeleportModule :
-    public IGUIModule
+class DebugModule :
+	public IGUIModule
 {
 	void Draw() override;
 
