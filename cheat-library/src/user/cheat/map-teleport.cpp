@@ -32,6 +32,9 @@ std::vector<WaypointInfo> getUnlockedWaypoints() {
     auto waypointGroups = (UniDict<uint32_t, UniDict<uint32_t, app::MBHLOBDPKEC_BHKOIJIKDFG>*>*)singleton->fields.waypoints;
     for (const auto& [groupId, waypoints] : getUniDictPairs(waypointGroups))
     {
+        if (groupId != 3)
+            continue;
+
         for (const auto& [id, waypoint] : getUniDictPairs((UniDict<uint32_t, app::MBHLOBDPKEC_BHKOIJIKDFG>*)waypoints))
         {
             if (waypoint.isUnlocked)
