@@ -3,8 +3,9 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include "il2cpp-init.h"
-#include "main.h"
+
+#include <il2cpp-init.h>
+#include <main.h>
 
 // DLL entry point
 BOOL WINAPI DllMain( HMODULE hModule,

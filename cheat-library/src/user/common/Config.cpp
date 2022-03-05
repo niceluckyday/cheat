@@ -3,10 +3,8 @@
 
 #include <sstream>
 
-#include <simple-ini.hpp>
-
 #include <helpers.h>
-#include <util/Logger.h>
+#include <common/Logger.h>
 
 static bool changed = false;
 

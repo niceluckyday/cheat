@@ -5,13 +5,13 @@
 
 #include <magic_enum.hpp>
 
-#include <il2cpp-appdata.h>
 #include <helpers.h>
+#include <il2cpp-appdata.h>
+#include <common/HookManager.h>
+#include <common/Config.h>
+#include <common/Logger.h>
 
-#include <util/HookManager.h>
-#include <util/Config.h>
-
-struct WaypointInfo {
+static struct WaypointInfo {
     uint32_t groupId;
     uint32_t id;
     app::Vector3 position;
@@ -22,8 +22,7 @@ static int teleportStage = 0;
 static app::Vector3 teleportPosition{};
 //static WaypointInfo* targetWaypoint;
 
-
-std::vector<WaypointInfo> getUnlockedWaypoints() {
+static std::vector<WaypointInfo> getUnlockedWaypoints() {
     auto singleton = GetSingleton(MBHLOBDPKEC);
     if (singleton == nullptr)
         return {};
@@ -44,7 +43,7 @@ std::vector<WaypointInfo> getUnlockedWaypoints() {
     return result;
 }
 
-WaypointInfo FindNearestWaypoint(app::Vector3& position) 
+ WaypointInfo FindNearestWaypoint(app::Vector3& position) 
 {
     float minDistance = -1;
     WaypointInfo result {};
@@ -59,7 +58,7 @@ WaypointInfo FindNearestWaypoint(app::Vector3& position)
     return result;
 }
 
-void CreateCustomMapMark_Hook(void* __this, app::Vector2 position, app::NOIPNNCFAAH__Enum iconType, MethodInfo* method)
+ void CreateCustomMapMark_Hook(void* __this, app::Vector2 position, app::NOIPNNCFAAH__Enum iconType, MethodInfo* method)
 {
     if (!Config::cfgTeleportKey.GetValue().IsPressed())
         return callOrigin(CreateCustomMapMark_Hook, __this, position, iconType, method);
@@ -108,7 +107,7 @@ void CreateCustomMapMark_Hook(void* __this, app::Vector2 position, app::NOIPNNCF
     return callOrigin(CreateCustomMapMark_Hook, __this, position, iconType, method);
 }
 
-void DoTeleport_Hook(app::FJIDMGGJMEF* __this, app::Vector3 position, app::MEPEDAIKBDI__Enum someEnum,
+static void DoTeleport_Hook(app::FJIDMGGJMEF* __this, app::Vector3 position, app::MEPEDAIKBDI__Enum someEnum,
     uint32_t someUint1, app::CMHGHBNDBMG_ECPNDLCPDIE__Enum teleportType, uint32_t someUint2, MethodInfo* method)
 {
     if (teleportStage == 2)
@@ -121,7 +120,7 @@ void DoTeleport_Hook(app::FJIDMGGJMEF* __this, app::Vector3 position, app::MEPED
     callOrigin(DoTeleport_Hook, __this, position, someEnum, someUint1, teleportType, someUint2, method);
 }
 
-void Entity_SetPosition_Hook(app::EAPPPCHHMHO* __this, app::Vector3 position, bool someBool, MethodInfo* method)
+static void Entity_SetPosition_Hook(app::EAPPPCHHMHO* __this, app::Vector3 position, bool someBool, MethodInfo* method)
 {
     auto avatarSingleton = GetSingleton(AOFGMGFKONM);
     auto avatarEntity = app::GetAvatar_Entity(avatarSingleton, nullptr);

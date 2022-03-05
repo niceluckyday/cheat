@@ -36,12 +36,6 @@
     <ClInclude Include="src\user\main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\protection-bypass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\user\debug-hooks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\appdata\il2cpp-api-functions.h">
       <Filter>Header Files\appdata</Filter>
     </ClInclude>
@@ -78,10 +72,10 @@
     <ClInclude Include="vendor\include\simple-ini.hpp">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\util\Config.h">
+    <ClInclude Include="src\user\common\Config.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\util\HookManager.h">
+    <ClInclude Include="src\user\common\HookManager.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="vendor\imgui\imgui.h">
@@ -93,7 +87,7 @@
     <ClInclude Include="vendor\imgui\backends\imgui_impl_dx11.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\util\dx11hook.h">
+    <ClInclude Include="src\user\common\dx11-hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\user\gui\renderer.h">
@@ -108,22 +102,22 @@
     <ClInclude Include="vendor\include\detver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\gui\IGUIModule.h">
+    <ClInclude Include="src\user\gui\modules\IGUIModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\user\gui\modules\TeleportModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\util\Event.h">
+    <ClInclude Include="src\user\common\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\util\close-handle.h">
+    <ClInclude Include="src\user\common\close-handle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="res\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\util\Hotkey.h">
+    <ClInclude Include="src\user\common\Hotkey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\user\gui\gui-util.h">
@@ -138,7 +132,7 @@
     <ClInclude Include="src\user\cheat\cheat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\util\Logger.h">
+    <ClInclude Include="src\user\common\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\user\gui\modules\DebugModule.h">
@@ -147,7 +141,7 @@
     <ClInclude Include="vendor\magic_enum\include\magic_enum.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\gui\modules\ActiveFeaturesModule.h">
+    <ClInclude Include="src\user\gui\modules\StatusModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\user\gui\modules\HotkeysModule.h">
@@ -159,24 +153,33 @@
     <ClInclude Include="src\user\gui\modules\WorldModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\user\common\Patch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\common\util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\common\GlobalEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\gui\main-window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\user\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\protection-bypass.cpp">
+    <ClCompile Include="src\user\cheat\misc\protection-bypass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\debug-hooks.cpp">
+    <ClCompile Include="src\user\cheat\misc\debug-hooks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\util\Config.cpp">
+    <ClCompile Include="src\user\common\Config.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\util\close-handle.cpp">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
-    <ClCompile Include="src\user\util\HookManager.cpp">
+    <ClCompile Include="src\user\common\close-handle.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="src\framework\pch-il2cpp.cpp">
@@ -209,7 +212,7 @@
     <ClCompile Include="vendor\imgui\backends\imgui_impl_dx11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\util\dx11hook.cpp">
+    <ClCompile Include="src\user\common\dx11-hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\gui\renderer.cpp">
@@ -224,7 +227,7 @@
     <ClCompile Include="src\user\cheat\map-teleport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\util\Hotkey.cpp">
+    <ClCompile Include="src\user\common\Hotkey.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\gui\gui-util.cpp">
@@ -236,7 +239,7 @@
     <ClCompile Include="src\user\gui\modules\SettingsModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\util\Logger.cpp">
+    <ClCompile Include="src\user\common\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\gui\modules\DebugModule.cpp">
@@ -245,7 +248,7 @@
     <ClCompile Include="src\user\cheat\player-cheat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\gui\modules\ActiveFeaturesModule.cpp">
+    <ClCompile Include="src\user\gui\modules\StatusModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\gui\modules\HotkeysModule.cpp">
@@ -258,6 +261,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\gui\modules\WorldModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\common\Patch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\common\util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\gui\main-window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

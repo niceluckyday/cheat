@@ -1,11 +1,11 @@
 #include "pch-il2cpp.h"
 #include "TeleportModule.h"
 
-#include <il2cpp-appdata.h>
 #include <imgui.h>
 
+#include <il2cpp-appdata.h>
+#include <common/Config.h>
 #include <gui/gui-util.h>
-#include <util/Config.h>
 
 void TeleportModule::Draw()
 {

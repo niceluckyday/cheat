@@ -4,12 +4,11 @@
 #include <imgui.h>
 #include <magic_enum.hpp>
 
-#include <il2cpp-appdata.h>
 #include <helpers.h>
-
+#include <il2cpp-appdata.h>
 #include <gui/gui-util.h>
-#include <util/Config.h>
-#include <util/Logger.h>
+#include <common/Config.h>
+#include <common/Logger.h>
 
 void DrawEntity(struct app::EAPPPCHHMHO* entity) 
 {

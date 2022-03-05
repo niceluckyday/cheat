@@ -1,12 +1,11 @@
 #include "pch-il2cpp.h"
-#include "ActiveFeaturesModule.h"
+#include "StatusModule.h"
 
 #include <imgui.h>
-
+#include <common/Config.h>
 #include <gui/gui-util.h>
-#include <util/Config.h>
 
-void ActiveFeaturesModule::Draw()
+void StatusModule::Draw()
 {
 
     static ImGuiTableFlags tabFlags = ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg;
@@ -40,7 +39,7 @@ void ActiveFeaturesModule::Draw()
     }
 }
 
-std::string ActiveFeaturesModule::GetName()
+std::string StatusModule::GetName()
 {
     return "Active features";
 }

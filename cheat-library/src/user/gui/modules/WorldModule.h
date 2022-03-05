@@ -1,5 +1,5 @@
 #pragma once
-#include <gui/IGUIModule.h>
+#include "IGUIModule.h"
 
 class WorldModule :
 	public IGUIModule

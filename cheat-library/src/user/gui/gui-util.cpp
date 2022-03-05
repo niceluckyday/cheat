@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+
 #include <imgui.h>
 #include <misc/cpp/imgui_stdlib.h>
 
@@ -20,9 +21,9 @@ void HelpMarker(const char* desc)
     }
 }
 
-int HotkeyCallback(ImGuiInputTextCallbackData* data);
+static int HotkeyCallback(ImGuiInputTextCallbackData* data);
 
-struct HotkeyUD {
+static struct HotkeyUD {
     Hotkey* hotkey;
     bool* changed;
 };
@@ -58,7 +59,7 @@ bool InputHotkey(const char* label, Hotkey* hotkey, bool clearable) {
     return changed;
 }
 
-int HotkeyCallback(ImGuiInputTextCallbackData* data) {
+static int HotkeyCallback(ImGuiInputTextCallbackData* data) {
     data->SelectionStart = 0;
     data->SelectionEnd = 0;
     data->CursorPos = 0;
@@ -90,7 +91,7 @@ int HotkeyCallback(ImGuiInputTextCallbackData* data) {
 
 #define ShowDesc(msg) if (desc != nullptr) { ImGui::SameLine(); HelpMarker(msg); }
 
-struct ActiveInfo {
+static struct ActiveInfo {
     void* valuePtr;
     bool changed;
 };
@@ -98,7 +99,7 @@ struct ActiveInfo {
 static ActiveInfo prev;
 static ActiveInfo current;
 
-bool IsValueChanged(void* valuePtr, bool result) {
+static bool IsValueChanged(void* valuePtr, bool result) {
     if (ImGui::IsItemActivated()) {
         prev = current;
         current = { valuePtr, result };

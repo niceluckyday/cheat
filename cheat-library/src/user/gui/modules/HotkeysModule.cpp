@@ -3,8 +3,8 @@
 
 #include <imgui.h>
 
+#include <common/Config.h>
 #include <gui/gui-util.h>
-#include <util/Config.h>
 
 void HotkeysModule::Draw()
 {

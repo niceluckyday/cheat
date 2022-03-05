@@ -1,18 +1,16 @@
 #include "pch-il2cpp.h"
-
-#include "protection-bypass.h"
-
-#include "util/HookManager.h"
-#include "util/Config.h"
+#include <cheat/cheat.h>
 
 #include <string>
-#include <util/close-handle.h>
-#include <iostream>
-#include <util/Logger.h>
+
+#include <common/HookManager.h>
+#include <common/Config.h>
+#include <common/close-handle.h>
+#include <common/Logger.h>
 
 static std::map<int32_t, std::string> correctSignatures;
 
-app::Byte__Array* RecordUserData_Hook(int32_t nType) {
+static app::Byte__Array* RecordUserData_Hook(int32_t nType) {
 
     if (correctSignatures.count(nType))
     {

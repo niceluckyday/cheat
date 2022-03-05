@@ -1,16 +1,17 @@
 #include <pch-il2cpp.h>
+#include "close-handle.h"
+
 #ifndef UNICODE
 #define UNICODE
 #endif
 
-#include "close-handle.h"
-
-#include <windows.h>
+#include <Windows.h>
 #include <stdio.h>
 #include <iostream>
 #include <wchar.h>
 #include <stdlib.h>
-#include <util/Logger.h>
+
+#include <common/Logger.h>
 
 #pragma comment(lib,"ntdll.lib")
 
@@ -24,13 +25,13 @@
 
 static int num = 0;
 
-
 typedef NTSTATUS(NTAPI* _NtQuerySystemInformation)(
     ULONG SystemInformationClass,
     PVOID SystemInformation,
     ULONG SystemInformationLength,
     PULONG ReturnLength
     );
+
 typedef NTSTATUS(NTAPI* _NtDuplicateObject)(
     HANDLE SourceProcessHandle,
     HANDLE SourceHandle,
@@ -40,6 +41,7 @@ typedef NTSTATUS(NTAPI* _NtDuplicateObject)(
     ULONG Attributes,
     ULONG Options
     );
+
 typedef NTSTATUS(NTAPI* _NtQueryObject)(
     HANDLE ObjectHandle,
     ULONG ObjectInformationClass,
@@ -122,9 +124,12 @@ typedef struct _SYSTEM_PROCESS_INFO
     HANDLE                  InheritedFromProcessId;
 }SYSTEM_PROCESS_INFO, * PSYSTEM_PROCESS_INFO;
 
-PVOID GetLibraryProcAddress(LPCSTR LibraryName, LPCSTR ProcName)
+static PVOID GetLibraryProcAddress(LPCSTR LibraryName, LPCSTR ProcName)
 {
-    return GetProcAddress(GetModuleHandleA(LibraryName), ProcName);
+    auto hModule = GetModuleHandleA(LibraryName);
+    if (hModule == NULL) 
+        return nullptr;
+    return GetProcAddress(hModule, ProcName);
 }
 
 bool CloseHandleByName(const wchar_t* name)

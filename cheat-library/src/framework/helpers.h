@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 
-#include <util/Logger.h>
+#include <common/Logger.h>
 
 #include "il2cpp-metadata-version.h"
 

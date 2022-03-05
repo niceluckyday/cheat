@@ -3,12 +3,11 @@
 
 #include <imgui.h>
 
-#include <il2cpp-appdata.h>
 #include <helpers.h>
-
+#include <il2cpp-appdata.h>
+#include <common/Config.h>
+#include <common/Logger.h>
 #include <gui/gui-util.h>
-#include <util/Config.h>
-#include <util/Logger.h>
 
 void SettingsModule::Draw()
 {

@@ -3,9 +3,9 @@
 #include <map>
 #include <iostream>
 
-#include <util/Logger.h>
+#include <detours.h>
 
-#include "detours.h"
+#include <common/Logger.h>
 
 #define callOrigin(function, ...) \
 	HookManager::getOrigin(function)(__VA_ARGS__)
@@ -36,7 +36,7 @@ public:
 	}
 
 private:
-	static std::map<void*, void*> holderMap;
+	inline static std::map<void*, void*> holderMap{};
 
 	template <typename Fn>
 	static void disable(Fn handler)

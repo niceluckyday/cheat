@@ -1,7 +1,7 @@
 #pragma once
-#include <gui/IGUIModule.h>
+#include "IGUIModule.h"
 
-class ActiveFeaturesModule :
+class StatusModule :
 	public IGUIModule
 {
 public:

@@ -1,26 +1,18 @@
 #include "pch-il2cpp.h"
 #include "main.h"
 
-#define WIN32_LEAN_AND_MEAN
-
-#include <Windows.h>
-
 #include <filesystem>
 #include <string>
 #include <iostream>
 
 #include <magic_enum.hpp>
-#include "il2cpp-init.h"
-#include "helpers.h"
 
-#include "util/Config.h"
-#include "util/Logger.h"
-
-#include "debug-hooks.h"
-#include "protection-bypass.h"
-
-#include "gui/renderer.h"
-#include "cheat/cheat.h"
+#include <helpers.h>
+#include <il2cpp-init.h>
+#include <common/Config.h>
+#include <common/Logger.h>
+#include <gui/renderer.h>
+#include <cheat/cheat.h>
 
 const char* INIFileName = "cfg.ini";
 
@@ -48,14 +40,10 @@ void Run(HMODULE* phModule)
         il2cppi_new_console();
     }
         
-
     LOG_DEBUG("Config path is %s", configPath.c_str());
     LOG_DEBUG("UserAssembly.dll at 0x%p", il2cppi_get_base_address());
     LOG_DEBUG("UnityPlayer.dll  at 0x%p", il2cppi_get_base_address());
 
-    InitProtectionBypass();
-    InitDebugHooks();
     InitCheats();
-
     InitRenderer(*phModule);
 }

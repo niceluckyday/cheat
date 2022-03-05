@@ -4,174 +4,176 @@
 #include <iostream>
 #include <vector>
 
-#include <resource.h>
-#include <util/dx11hook.h>
-#include <util/Config.h>
 #include <imgui.h>
+#include <backends/imgui_impl_dx11.h>
+#include <backends/imgui_impl_win32.h>
 
-#include "modules/SettingsModule.h"
-#include "modules/TeleportModule.h"
-#include "modules/DebugModule.h"
-#include "modules/HotkeysModule.h"
-#include "modules/ActiveFeaturesModule.h"
-#include "modules/PlayerModule.h"
-#include "modules/WorldModule.h"
+#include <resource.h>
+#include <common/util.h>
+#include <common/dx11-hook.h>
+#include <common/GlobalEvents.h>
 
-#include <util/Logger.h>
-
-
-static bool prevMouseActive = false;
-static bool isShowMain = false;
-static bool isBlockInteraction = true;
+#include "main-window.h"
 
 static ImFont* pFont;
+static HMODULE hModule;
+static WNDPROC OriginalWndProcHandler;
+static ID3D11RenderTargetView* mainRenderTargetView;
 
-static std::vector<IGUIModule*> modules = {
-		new PlayerModule(),
-		new WorldModule(),
-        new TeleportModule(),
-        new SettingsModule(),
-		new HotkeysModule(),
-		new DebugModule()
-};
+static bool OnRender(ID3D11DeviceContext* pContext);
+static bool OnInitialize(HWND window, ID3D11Device* pDevice, ID3D11DeviceContext* pContext, IDXGISwapChain* pChain);
 
-static ActiveFeaturesModule statusModule{};
-
-bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& size);
-
-void GuiRender();
-void OnKeyUp(WPARAM key, short& ioFlag);
-
-void InitRenderer(HMODULE hModule)
+void InitRenderer(HMODULE hMod)
 {
-	LOG_DEBUG("Started ImGUI installing...");
-    LPBYTE pFont = nullptr;
-    DWORD dFontSize = 0;
-	
-    GetResourceMemory(hModule, IDR_RCDATA1, pFont, dFontSize);
-    createOverlay(GuiRender, OnKeyUp, pFont, dFontSize);
+	LOG_DEBUG("Initialize IMGui...");
+
+	hModule = hMod;
+
+	DX11Events::RenderEvent += FREE_METHOD_HANDLER(OnRender);
+	DX11Events::InitializeEvent += FREE_METHOD_HANDLER(OnInitialize);
+
+	InitializeWindow();
+	InitializeDX11Hooks();
 }
 
-void GuiRender() 
+static void SetupImGuiStyle();
+static LRESULT CALLBACK hWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+static bool OnInitialize(HWND window, ID3D11Device* pDevice, ID3D11DeviceContext* pContext, IDXGISwapChain* pChain)
 {
-	// Drawing status window
-	ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground |
-		ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus |
-		ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse;
 
-	if (!Config::cfgMoveStatusWindow.GetValue())
-		flags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
+	LPBYTE pFontData = nullptr;
+	DWORD dFontSize = 0;
+	if (!GetResourceMemory(hModule, IDR_RCDATA1, pFontData, dFontSize))
+		LOG_WARNING("Failed to get font from resources.");
 
-	ImGui::Begin("Cheat status", 0, flags);
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
-	statusModule.Draw();
+	if (pFontData != nullptr)
+		pFont = io.Fonts->AddFontFromMemoryTTF(pFontData, dFontSize, 16, nullptr, io.Fonts->GetGlyphRangesCyrillic());
+	else
+		pFont = io.FontDefault;
 
-	ImGui::End();
+	SetupImGuiStyle();
 
-    static IGUIModule* current = modules[0];
-	if (!isShowMain)
-		return;
+	//Set OriginalWndProcHandler to the Address of the Original WndProc function
+	OriginalWndProcHandler = reinterpret_cast<WNDPROC>(SetWindowLongPtr(window, GWLP_WNDPROC,
+		reinterpret_cast<LONG_PTR>(hWndProc)));
 
-	ImGui::SetNextWindowSize(ImVec2(600, 300), ImGuiCond_FirstUseEver);
+	ImGui_ImplWin32_Init(window);
+	ImGui_ImplDX11_Init(pDevice, pContext);
 
-	if (!ImGui::Begin("CCGenshin (Callow's cheat)"))
-	{
-		ImGui::End();
-        ImGui::PopFont();
-		return;
-	}
+	ID3D11Texture2D* pBackBuffer;
+	pChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(&pBackBuffer));
+	pDevice->CreateRenderTargetView(pBackBuffer, nullptr, &mainRenderTargetView);
+	pBackBuffer->Release();
 
-	ImGui::BeginGroup();
+	io.SetPlatformImeDataFn = nullptr; // F**king bug take 4 hours of my live
 
-	ImGui::Checkbox("Block key/mouse", &isBlockInteraction);
-
-    if (ImGui::BeginListBox("##listbox 2", ImVec2(175, -FLT_MIN)))
-    {
-        for (auto& mod: modules)
-        {
-            const bool is_selected = (current == mod);
-            if (ImGui::Selectable(mod->GetName().c_str(), is_selected))
-                current = mod;
-
-            if (is_selected)
-                ImGui::SetItemDefaultFocus();
-
-        }
-        ImGui::EndListBox();
-    }
-
-	ImGui::EndGroup();
-
-    ImGui::SameLine();
-
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_None;
-    ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
-    ImGui::BeginChild("ChildR", ImVec2(0, 0), true, window_flags);
-
-    ImGui::Text(current->GetName().c_str());
-    ImGui::Separator();
-
-    current->Draw();
-
-    ImGui::EndChild();
-    ImGui::PopStyleVar();
-
-	ImGui::End();
+	return true;
 }
 
-void CheckToggleHotkeys(short key)
+static bool OnRender(ID3D11DeviceContext* pContext) {
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+
+	ImGui::NewFrame();
+	ImGui::PushFont(pFont);
+
+	DrawWindow();
+
+	ImGui::PopFont();
+	ImGui::EndFrame();
+	ImGui::Render();
+
+	pContext->OMSetRenderTargets(1, &mainRenderTargetView, nullptr);
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+	return true;
+}
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+static LRESULT CALLBACK hWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	for (auto& field : Config::GetToggleFields()) 
-	{
-		if (field.GetHotkey()->IsPressed(key)) 
-		{
-			bool* value = field.GetValuePtr();
-			*value = !*value;
-			field.Check();
-		}
-	}
+	ImGuiIO& io = ImGui::GetIO();
+	POINT mPos;
+	GetCursorPos(&mPos);
+	ScreenToClient(hWnd, &mPos);
+	ImGui::GetIO().MousePos.x = mPos.x;
+	ImGui::GetIO().MousePos.y = mPos.y;
+
+	ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
+
+	bool canceled = false;
+	if (uMsg == WM_KEYUP)
+		canceled = !GlobalEvents::KeyUpEvent(wParam);
+
+	if (NeedInput())
+		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
+
+	if (canceled)
+		return true;
+
+	return CallWindowProc(OriginalWndProcHandler, hWnd, uMsg, wParam, lParam);
 }
 
-void OnKeyUp(WPARAM key, short& ioFlag) {
-	if (Config::cfgMenuShowKey.GetValue().IsPressed((short)key)) 
-	{
-		isShowMain = !isShowMain;
 
-		if (isShowMain) {
-			prevMouseActive = app::Cursor_get_visible(nullptr, nullptr);
-			if (!prevMouseActive) {
-				app::Cursor_set_visible(nullptr, true, nullptr);
-				app::Cursor_set_lockState(nullptr, app::CursorLockMode__Enum::None, nullptr);
-			}
-		}
-		else if (!prevMouseActive) {
-			app::Cursor_set_visible(nullptr, false, nullptr);
-			app::Cursor_set_lockState(nullptr, app::CursorLockMode__Enum::Locked, nullptr);
-		}
-	}
+static void SetupImGuiStyle()
+{
+	ImGui::GetStyle().FrameRounding = 4.0f;
+	ImGui::GetStyle().GrabRounding = 4.0f;
 
-	if (!isShowMain)
-		CheckToggleHotkeys((short)key);
+	ImVec4* colors = ImGui::GetStyle().Colors;
+	colors[ImGuiCol_TextDisabled] = ImVec4(0.10f, 0.12f, 0.14f, 1.00f);
+	colors[ImGuiCol_WindowBg] = ImVec4(0.04f, 0.05f, 0.05f, 1.00f);
+	colors[ImGuiCol_ChildBg] = ImVec4(0.05f, 0.06f, 0.07f, 1.00f);
+	colors[ImGuiCol_PopupBg] = ImVec4(0.06f, 0.06f, 0.06f, 0.94f);
+	colors[ImGuiCol_Border] = ImVec4(0.04f, 0.06f, 0.07f, 1.00f);
+	colors[ImGuiCol_FrameBg] = ImVec4(0.08f, 0.11f, 0.12f, 1.00f);
+	colors[ImGuiCol_FrameBgHovered] = ImVec4(0.06f, 0.10f, 0.14f, 1.00f);
+	colors[ImGuiCol_FrameBgActive] = ImVec4(0.06f, 0.08f, 0.09f, 1.00f);
+	colors[ImGuiCol_TitleBg] = ImVec4(0.08f, 0.10f, 0.12f, 0.65f);
+	colors[ImGuiCol_MenuBarBg] = ImVec4(0.07f, 0.08f, 0.10f, 1.00f);
+	colors[ImGuiCol_CheckMark] = ImVec4(0.54f, 0.64f, 0.78f, 1.00f);
+	colors[ImGuiCol_SliderGrab] = ImVec4(0.73f, 0.83f, 1.00f, 1.00f);
+	colors[ImGuiCol_SliderGrabActive] = ImVec4(0.68f, 0.80f, 1.00f, 1.00f);
+	colors[ImGuiCol_Button] = ImVec4(0.12f, 0.16f, 0.18f, 1.00f);
+	colors[ImGuiCol_ButtonHovered] = ImVec4(0.37f, 0.47f, 0.62f, 1.00f);
+	colors[ImGuiCol_ButtonActive] = ImVec4(0.37f, 0.51f, 0.64f, 1.00f);
+	colors[ImGuiCol_Header] = ImVec4(0.21f, 0.27f, 0.31f, 0.55f);
+	colors[ImGuiCol_HeaderHovered] = ImVec4(0.43f, 0.55f, 0.71f, 0.80f);
+	colors[ImGuiCol_HeaderActive] = ImVec4(0.25f, 0.34f, 0.44f, 1.00f);
+	colors[ImGuiCol_SeparatorHovered] = ImVec4(0.31f, 0.45f, 0.60f, 0.78f);
+	colors[ImGuiCol_SeparatorActive] = ImVec4(0.42f, 0.57f, 0.75f, 1.00f);
+	colors[ImGuiCol_ResizeGrip] = ImVec4(0.64f, 0.79f, 0.98f, 0.25f);
+	colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.65f, 0.75f, 0.87f, 0.67f);
+	colors[ImGuiCol_ResizeGripActive] = ImVec4(0.43f, 0.55f, 0.70f, 0.95f);
+	colors[ImGuiCol_TabHovered] = ImVec4(0.44f, 0.56f, 0.71f, 0.80f);
+	colors[ImGuiCol_TextSelectedBg] = ImVec4(0.26f, 0.59f, 1.00f, 0.35f);
 
-	ioFlag = 0;
-	if (isShowMain) 
-	{
-		ioFlag |= BType_SendImGUI;
-		if (isBlockInteraction)
-			ioFlag |= BType_Blocked;
-	}
-}
-
-bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& size) {
-	HRSRC hResource = FindResource(hInstance, MAKEINTRESOURCE(resId), RT_RCDATA);
-	if (hResource) {
-		HGLOBAL hGlob = LoadResource(hInstance, hResource);
-		if (hGlob) {
-			size = SizeofResource(hInstance, hResource);
-			pDest = static_cast<LPBYTE>(LockResource(hGlob));
-			if (size > 0 && pDest)
-				return true;
-		}
-	}
-	return false;
+	colors[ImGuiCol_Text] = ImVec4(0.95f, 0.96f, 0.98f, 1.00f);
+	colors[ImGuiCol_TitleBgActive] = ImVec4(0.08f, 0.10f, 0.12f, 1.00f);
+	colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.00f, 0.00f, 0.00f, 0.51f);
+	colors[ImGuiCol_ScrollbarBg] = ImVec4(0.02f, 0.02f, 0.02f, 0.39f);
+	colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.20f, 0.25f, 0.29f, 1.00f);
+	colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.18f, 0.22f, 0.25f, 1.00f);
+	colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.09f, 0.21f, 0.31f, 1.00f);
+	colors[ImGuiCol_Separator] = ImVec4(0.20f, 0.25f, 0.29f, 1.00f);
+	colors[ImGuiCol_Tab] = ImVec4(0.11f, 0.15f, 0.17f, 1.00f);
+	colors[ImGuiCol_TabActive] = ImVec4(0.20f, 0.25f, 0.29f, 1.00f);
+	colors[ImGuiCol_TabUnfocused] = ImVec4(0.11f, 0.15f, 0.17f, 1.00f);
+	colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.11f, 0.15f, 0.17f, 1.00f);
+	colors[ImGuiCol_PlotLines] = ImVec4(0.61f, 0.61f, 0.61f, 1.00f);
+	colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
+	colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
+	colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
+	colors[ImGuiCol_TextSelectedBg] = ImVec4(0.26f, 0.59f, 0.98f, 0.35f);
+	colors[ImGuiCol_DragDropTarget] = ImVec4(1.00f, 1.00f, 0.00f, 0.90f);
+	colors[ImGuiCol_NavHighlight] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+	colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
+	colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
+	colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 }

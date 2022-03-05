@@ -1,6 +1,6 @@
 #pragma once
 
-#include <util/Config.h>
+#include <common/Config.h>
 
 bool ConfigWidget(const char* label, ConfigField<bool> field, const char* desc = nullptr);
 bool ConfigWidget(const char* label, ConfigField<int> field, int step = 1, int start = 0, int end = 0, const char* desc = nullptr);

@@ -1,19 +1,17 @@
 #include "pch-il2cpp.h"
+#include <cheat/cheat.h>
 
-#include "debug-hooks.h"
-
-#include "util/HookManager.h"
-#include "helpers.h"
-#include <magic_enum.hpp>
-
+#include <Windows.h>
 #include <iostream>
 #include <vector>
 
+#include <magic_enum.hpp>
 
-#include <Windows.h>
-#include <util/Logger.h>
+#include <helpers.h>
+#include <common/HookManager.h>
+#include <common/Logger.h>
 
-void __stdcall SendInfo_Hook(app::GameLogin* __this, app::GKOJAICIOPA* info, MethodInfo* method) {
+static void __stdcall SendInfo_Hook(app::GameLogin* __this, app::GKOJAICIOPA* info, MethodInfo* method) {
     LOG_TRACE("Game sending game info to server.");
     LOG_TRACE("Content: ");
 
@@ -42,7 +40,7 @@ void __stdcall SendInfo_Hook(app::GameLogin* __this, app::GKOJAICIOPA* info, Met
     callOrigin(SendInfo_Hook, __this, info, method);
 }
 
-void BaseActor_SpawnMonster_Hook(app::BaseActor* __this, uint32_t configID, uint32_t level, app::Vector3 bornPos, app::Vector3 bornEuler, 
+static void BaseActor_SpawnMonster_Hook(app::BaseActor* __this, uint32_t configID, uint32_t level, app::Vector3 bornPos, app::Vector3 bornEuler,
     float scale, uint32_t sceneID, app::String* alias, uint32_t questId, uint32_t roomId, MethodInfo* method) {
     BaseActor_SpawnMonster_Hook(__this, configID, level, bornPos, bornEuler, scale, sceneID, alias, questId, roomId, method);
 

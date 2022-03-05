@@ -4,7 +4,7 @@
 
 #include <simple-ini.hpp>
 
-#include <util/Hotkey.h>
+#include <common/Hotkey.h>
 
 template<class FieldType>
 class ConfigField {
@@ -42,7 +42,7 @@ public:
 	}
 
 	void Check() {
-		if (*prevValue == *field)
+		if (callback == nullptr || *prevValue == *field)
 			return;
 
 		*prevValue = *field;
@@ -87,6 +87,7 @@ private:
 	ConfigField<Hotkey> hotkeyField;
 };
 
+#define NoSaveField(type, field, uname, section, def) inline static ConfigField<type> cfg## field = { uname, section, #field, def, nullptr }
 #define Field(type, field, uname, section, def) inline static ConfigField<type> cfg## field = { uname, section, #field, def, Config::OnChangeValue }
 #define ToggleField(field, uname, section, defBool) inline static ToggleConfigField cfg## field = { uname, section, #field, defBool, Config::OnChangeValue, Config::OnChangeValue }
 
@@ -130,6 +131,9 @@ public:
 	Field(bool,   DisableMhyprot,      "Disable protection",    "DLLUtil", true);
 	Field(Hotkey, MenuShowKey,         "Show cheat menu key",   "DLLUtil", Hotkey(VK_F1, 0));
 	Field(bool,   MoveStatusWindow,    "Move 'Active features'","DLLUtil", false);
+
+	// Not save configs
+	NoSaveField(bool, CheatWindowShowed, "", "", false);
 
 	static void Init(const std::string configFile);
 

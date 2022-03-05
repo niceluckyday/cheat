@@ -1,14 +1,14 @@
 #include "pch-il2cpp.h"
 #include "Logger.h"
 
+#include <Windows.h>
 #include <iostream>
 #include <chrono>
-#include <Windows.h>
-
-#include "helpers.h"
 #include <cstdarg>
 #include <fstream>
 #include <filesystem>
+
+#include <helpers.h>
 
 Logger::Level Logger::s_FileLogLevel = Logger::Level::None;
 Logger::Level Logger::s_ConsoleLogLevel = Logger::Level::None;

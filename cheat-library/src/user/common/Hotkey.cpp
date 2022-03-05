@@ -1,9 +1,8 @@
 #include "pch-il2cpp.h"
 #include "Hotkey.h"
 
-#include <string>
-
 #include <Windows.h>
+#include <string>
 
 Hotkey::Hotkey() : Hotkey(0, 0) {}
 
