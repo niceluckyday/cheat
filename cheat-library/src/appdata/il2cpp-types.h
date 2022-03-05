@@ -6093,6 +6093,107 @@ namespace app {
         struct JDBPGPCCJJP* udpPacket;
     };
 
+    struct __declspec(align(8)) Dictionary_2_JNHGGGCKJNA_JKNLDEEBGLL___Fields {
+        struct Int32__Array* table;
+        struct Link__Array* linkSlots;
+        struct JNHGGGCKJNA__Array* keySlots;
+        struct JKNLDEEBGLL__Array* valueSlots;
+        int32_t touchedSlots;
+        int32_t emptySlot;
+        int32_t count;
+        int32_t threshold;
+        struct IEqualityComparer_1_JNHGGGCKJNA_* hcp;
+        struct SerializationInfo* serialization_info;
+        int32_t generation;
+    };
+
+    struct JNHGGGCKJNA {
+        int64_t OBMDKAHDODE;
+        int64_t EEADNINIHGI;
+    };
+
+    struct JNHGGGCKJNA__Array {
+        struct JNHGGGCKJNA__Array__Class* klass;
+        MonitorData* monitor;
+        Il2CppArrayBounds* bounds;
+        il2cpp_array_size_t max_length;
+        struct JNHGGGCKJNA vector[32];
+    };
+
+    struct Dictionary_2_JNHGGGCKJNA_JKNLDEEBGLL_ {
+        void* klass;
+        MonitorData* monitor;
+        struct Dictionary_2_JNHGGGCKJNA_JKNLDEEBGLL___Fields fields;
+    };
+
+    struct JKNLDEEBGLL {
+        int64_t OBMDKAHDODE;
+        int64_t EEADNINIHGI;
+    };
+
+    struct JKNLDEEBGLL__Boxed {
+        struct JKNLDEEBGLL__Class* klass;
+        MonitorData* monitor;
+        struct JKNLDEEBGLL fields;
+    };
+
+    struct JKNLDEEBGLL__Array {
+        struct JKNLDEEBGLL__Array__Class* klass;
+        MonitorData* monitor;
+        Il2CppArrayBounds* bounds;
+        il2cpp_array_size_t max_length;
+        struct JKNLDEEBGLL vector[32];
+    };
+
+    enum class PropType__Enum : uint32_t {
+        PROP_NONE = 0x00000000,
+        PROP_EXP = 0x000003e9,
+        PROP_BREAK_LEVEL = 0x000003ea,
+        PROP_SATIATION_VAL = 0x000003eb,
+        PROP_SATIATION_PENALTY_TIME = 0x000003ec,
+        PROP_GEAR_START_VAL = 0x000007d1,
+        PROP_GEAR_STOP_VAL = 0x000007d2,
+        PROP_LEVEL = 0x00000fa1,
+        PROP_LAST_CHANGE_AVATAR_TIME = 0x00002711,
+        PROP_MAX_SPRING_VOLUME = 0x00002712,
+        PROP_CUR_SPRING_VOLUME = 0x00002713,
+        PROP_IS_SPRING_AUTO_USE = 0x00002714,
+        PROP_SPRING_AUTO_USE_PERCENT = 0x00002715,
+        PROP_IS_FLYABLE = 0x00002716,
+        PROP_IS_WEATHER_LOCKED = 0x00002717,
+        PROP_IS_GAME_TIME_LOCKED = 0x00002718,
+        PROP_IS_TRANSFERABLE = 0x00002719,
+        PROP_MAX_STAMINA = 0x0000271a,
+        PROP_CUR_PERSIST_STAMINA = 0x0000271b,
+        PROP_CUR_TEMPORARY_STAMINA = 0x0000271c,
+        PROP_PLAYER_LEVEL = 0x0000271d,
+        PROP_PLAYER_EXP = 0x0000271e,
+        PROP_PLAYER_HCOIN = 0x0000271f,
+        PROP_PLAYER_SCOIN = 0x00002720,
+        PROP_PLAYER_MP_SETTING_TYPE = 0x00002721,
+        PROP_IS_MP_MODE_AVAILABLE = 0x00002722,
+        PROP_PLAYER_WORLD_LEVEL = 0x00002723,
+        PROP_PLAYER_RESIN = 0x00002724,
+        PROP_PLAYER_WAIT_SUB_HCOIN = 0x00002726,
+        PROP_PLAYER_WAIT_SUB_SCOIN = 0x00002727,
+        PROP_IS_ONLY_MP_WITH_PS_PLAYER = 0x00002728,
+        PROP_PLAYER_MCOIN = 0x00002729,
+        PROP_PLAYER_WAIT_SUB_MCOIN = 0x0000272a,
+        PROP_PLAYER_LEGENDARY_KEY = 0x0000272b,
+        PROP_IS_HAS_FIRST_SHARE = 0x0000272c,
+        PROP_PLAYER_FORGE_POINT = 0x0000272d,
+        PROP_CUR_CLIMATE_METER = 0x00002733,
+        PROP_CUR_CLIMATE_TYPE = 0x00002734,
+        PROP_CUR_CLIMATE_AREA_ID = 0x00002735,
+        PROP_CUR_CLIMATE_AREA_CLIMATE_TYPE = 0x00002736,
+        PROP_PLAYER_WORLD_LEVEL_LIMIT = 0x00002737,
+        PROP_PLAYER_WORLD_LEVEL_ADJUST_CD = 0x00002738,
+        PROP_PLAYER_LEGENDARY_DAILY_TASK_NUM = 0x00002739,
+        PROP_PLAYER_HOME_COIN = 0x0000273a,
+        PROP_PLAYER_WAIT_SUB_HOME_COIN = 0x0000273b,
+        PROP_IS_AUTO_UNLOCK_SPECIFIC_EQUIP = 0x0000273c,
+    };
+
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }
 #endif

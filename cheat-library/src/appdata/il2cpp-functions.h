@@ -123,3 +123,8 @@ DO_APP_FUNC(0x074A1600, Vector3, Vector3_get_down, (void* __this, MethodInfo* me
 DO_APP_FUNC(0x02662A40, Notify, Notify_CreateNotify, (void* __this, AJAPIFPNFKP__Enum type, MethodInfo* method));
 
 DO_APP_FUNC(0x01407160, bool, Miscs_CheckTargetAttackable, (void* __this, EAPPPCHHMHO* attackerEntity, /* CBIKBDBKLEG */ EAPPPCHHMHO* targetEntity, MethodInfo* method));
+
+DO_APP_FUNC(0x07B4A950, void, AvatarPropDictionary_SetItem, (Dictionary_2_JNHGGGCKJNA_JKNLDEEBGLL_* __this, JNHGGGCKJNA key, JKNLDEEBGLL value, MethodInfo* method));
+DO_APP_FUNC(0x047E6420, double, AvatarProp_DecodePropValue, (void* __this, JKNLDEEBGLL EODGKCKCMDM, MethodInfo* method));
+DO_APP_FUNC(0x02707260, PropType__Enum, AvatarProp_DecodePropType, (void* __this, JNHGGGCKJNA EODGKCKCMDM, MethodInfo* method));
+DO_APP_FUNC_METHODINFO(0x0B1E2F18, AvatarPropDictionary_SetItem__MethodInfo);
