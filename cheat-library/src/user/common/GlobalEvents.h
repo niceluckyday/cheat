@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Event.h"
+#include "Config.h"
 
 class GlobalEvents {
 public:
-	inline static TEvent<short> KeyUpEvent{};
+	inline static TCancelableEvent<short> KeyUpEvent{};
 };

@@ -10,6 +10,7 @@
 #include <common/HookManager.h>
 #include <common/Config.h>
 #include <common/Logger.h>
+#include <common/Patch.h>
 
 // Godmode (return false when target is avatar, that mean avatar entity isn't attackable)
 static bool Miscs_CheckTargetAttackable_Hook(void* __this, app::EAPPPCHHMHO* attacker, app::EAPPPCHHMHO* target, MethodInfo* method)
@@ -37,7 +38,7 @@ static void AvatarPropDictionary_SetItem_Hook(app::Dictionary_2_JNHGGGCKJNA_JKNL
     callOrigin(AvatarPropDictionary_SetItem_Hook, __this, key, value, method);
 }
 
-void InitPlayerCheatHooks() 
+void InitPlayerCheats() 
 {
     // Teleport to mark hooks
     HookManager::install(app::Miscs_CheckTargetAttackable, Miscs_CheckTargetAttackable_Hook);

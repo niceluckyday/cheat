@@ -5,6 +5,8 @@
 #include <simple-ini.hpp>
 
 #include <common/Hotkey.h>
+#include <common/Event.h>
+#include <common/Logger.h>
 
 template<class FieldType>
 class ConfigField {
@@ -13,7 +15,7 @@ public:
 
 	void operator=(const FieldType& other) {
 		*field = other;
-		*prevValue = other;
+		*prevValue = other; 
 		callback(this);
 	}
 
@@ -41,12 +43,14 @@ public:
 		return field;
 	}
 
-	void Check() {
+	virtual bool Check()
+	{
 		if (callback == nullptr || *prevValue == *field)
-			return;
+			return false;
 
 		*prevValue = *field;
 		callback(this);
+		return true;
 	}
 
 private:
@@ -64,7 +68,10 @@ class ToggleConfigField : public ConfigField<bool>
 {
 public:
 
+	inline static TEvent<ToggleConfigField*> OnChangedEvent{};
+
 	using OnChangeCallbackHotkey = void (*)(ConfigField<Hotkey>* field);
+	using OnChangeCallback = void (*)(ConfigField<bool>* field);
 
 	ToggleConfigField(const std::string friendlyName, const std::string section, const std::string name, bool defaultValue, 
 		OnChangeCallback callback, OnChangeCallbackHotkey hotkeyCallback)
@@ -72,19 +79,32 @@ public:
 
 	ToggleConfigField(const std::string friendlyName, const std::string section, const std::string name, bool defaultValue, 
 		Hotkey hotkey, OnChangeCallback callback, OnChangeCallbackHotkey hotkeyCallback)
-		: ConfigField<bool>(friendlyName, section, name, defaultValue, callback), 
+		: ConfigField<bool>(friendlyName, section, name, defaultValue, callback),
 		hotkeyField(ConfigField<Hotkey>(friendlyName, "Hotkeys", name, hotkey, hotkeyCallback)) { }
 
-	Hotkey* GetHotkey() {
+	Hotkey* GetHotkey() 
+	{
 		return hotkeyField.GetValuePtr();
 	}
 
-	ConfigField<Hotkey> GetHotkeyField() {
+	ConfigField<Hotkey> GetHotkeyField() 
+	{
 		return hotkeyField;
 	}
 
+	virtual bool Check() override {
+		if (!ConfigField<bool>::Check())
+			return false;
+
+		OnChangedEvent(this);
+
+		return true;
+	}
+
 private:
+
 	ConfigField<Hotkey> hotkeyField;
+	
 };
 
 #define NoSaveField(type, field, uname, section, def) inline static ConfigField<type> cfg## field = { uname, section, #field, def, nullptr }
@@ -115,7 +135,7 @@ public:
 
 	// World 
 	ToggleField(UnlockWaypointsEnable, "Unlock waypoints", "World", false);
-	ToggleField(DummyEnemiesEnabled,   "Dummy enemies", "World", false);
+	ToggleField(DumbEnemiesEnabled,    "Dumb enemies", "World", false);
 
 	// Teleportation
 	ToggleField(  MapTPEnable,         "Map teleport",         "Teleport", true);
@@ -139,12 +159,12 @@ public:
 
 	static void Save();
 
-	static std::vector<ToggleConfigField> GetToggleFields();
+	static std::vector<ToggleConfigField*> GetToggleFields();
 
 private:
 
 	inline static CSimpleIni m_INIFile{};
-	inline static std::vector<ToggleConfigField> toggleFields{};
+	inline static std::vector<ToggleConfigField*> toggleFields{};
 
 	static void SetValue(std::string section, std::string name, bool value);
 	static void SetValue(std::string section, std::string name, int value);

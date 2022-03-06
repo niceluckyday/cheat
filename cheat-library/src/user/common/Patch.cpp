@@ -30,6 +30,7 @@ bool Patch::Restore(uint64_t address)
 	if (oldValue == nullptr)
 		return false;
 
+	patches.erase(address);
 	delete restoreValue;
 	delete oldValue;
 
@@ -81,7 +82,8 @@ std::vector<uint8_t>* Patch::WriteMemory(uint64_t address, std::vector<uint8_t> 
 
 	if (oldProtection != -1)
 	{
-		if (VirtualProtect(reinterpret_cast<void*>(address), value.size(), oldProtection, nullptr) == FALSE)
+		DWORD temp = 0;
+		if (VirtualProtect(reinterpret_cast<void*>(address), value.size(), oldProtection, &temp) == FALSE)
 		{
 			LogLastError("Failed to restore page protection");
 		}

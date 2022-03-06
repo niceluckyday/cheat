@@ -11,7 +11,7 @@ template<class ...TParams>
 class AbstractEventHandler
 {
 public:
-    virtual bool call(TParams... params) = 0;
+    virtual void call(TParams... params) = 0;
 protected:
     AbstractEventHandler() {}
 };
@@ -32,26 +32,39 @@ public:
         m_handlers.clear();
     }
 
-    bool operator()(TParams... params)
+    virtual void operator()(TParams... params)
     {
-        bool continued = true;
         for (TEventHandler* oneHandler : m_handlers)
-            continued = continued && oneHandler->call(params...);
-        return continued;
+            oneHandler->call(params...);
     }
 
     void operator+=(TEventHandler& eventHandler)
     {
         m_handlers.push_back(&eventHandler);
     }
-private:
+protected:
     std::list<TEventHandler*> m_handlers;
+};
+
+template<class ...TParams>
+class TCancelableEvent : public TEvent<TParams..., bool&>
+{
+    using TEventHandler = AbstractEventHandler<TParams..., bool&>;
+    using TBase = TEvent<TParams..., bool&>;
+public:
+    bool operator()(TParams... params)
+    {
+        bool canceled = false;
+        for (TEventHandler* oneHandler : TBase::m_handlers)
+            oneHandler->call(params..., canceled);
+        return !canceled;
+    }
 };
 
 template<class TObject, class ...TParams>
 class MethodEventHandler : public AbstractEventHandler<TParams...>
 {
-    using TMethod = bool(TObject::*)(TParams...);
+    using TMethod = void(TObject::*)(TParams...);
 public:
     MethodEventHandler(TObject& object, TMethod method) :
         AbstractEventHandler<TParams...>(),
@@ -60,9 +73,9 @@ public:
     {
         assert(m_method != nullptr);
     }
-    virtual bool call(TParams... params) override final
+    virtual void call(TParams... params) override final
     {
-        return (m_object.*m_method)(params...);
+        (m_object.*m_method)(params...);
     }
 private:
     TObject& m_object;
@@ -72,7 +85,7 @@ private:
 template<class ...TParams>
 class FreeMethodEventHandler : public AbstractEventHandler<TParams...> 
 {
-    using TMethod = bool(*)(TParams...);
+    using TMethod = void(*)(TParams...);
 public:
     FreeMethodEventHandler(TMethod method) :
         AbstractEventHandler<TParams...>(),
@@ -80,9 +93,9 @@ public:
     {
         assert(m_method != nullptr);
     }
-    virtual bool call(TParams... params) override final
+    virtual void call(TParams... params) override final
     {
-        return (*m_method)(params...);
+        (*m_method)(params...);
     }
 private:
     TMethod m_method;
@@ -95,7 +108,7 @@ AbstractEventHandler<TParams...>& createMethodEventHandler(TObject& object, void
 }
 
 template<class ...TParams>
-AbstractEventHandler<TParams...>& createFreeMethodEventHandler(bool(*method)(TParams...))
+AbstractEventHandler<TParams...>& createFreeMethodEventHandler(void(*method)(TParams...))
 {
     return *new FreeMethodEventHandler<TParams...>(method);
 }

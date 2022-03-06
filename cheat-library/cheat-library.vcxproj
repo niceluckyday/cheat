@@ -269,6 +269,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClInclude Include="vendor\magic_enum\include\magic_enum.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\user\cheat\world-cheat.cpp" />
     <ClCompile Include="src\user\common\Patch.cpp" />
     <ClCompile Include="src\user\cheat\cheat.cpp" />
     <ClCompile Include="src\user\gui\main-window.cpp" />

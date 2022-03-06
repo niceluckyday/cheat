@@ -8,7 +8,7 @@
 
 void WorldModule::Draw()
 {
-
+    ConfigWidget(Config::cfgDumbEnemiesEnabled, "Enemies don't respond to player.");
 }
 
 std::string WorldModule::GetName()

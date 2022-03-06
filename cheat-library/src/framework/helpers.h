@@ -66,11 +66,11 @@ std::vector<std::pair<KeyT, ValT>> getUniDictPairs(UniDict<KeyT, ValT>* dictiona
 
 #undef DictCheckNull
 
-    size_t next = 0;
+    int32_t next = 0;
     const int HASH_FLAG = 0x80000000;
     while (next < dictionary->touchedSlots)
     {
-        int cur = next++;
+        int32_t cur = next++;
         if ((dictionary->linkSlots->vector[cur].HashCode & HASH_FLAG) != 0)
         {
             pairs.push_back(

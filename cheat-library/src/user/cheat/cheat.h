@@ -3,6 +3,7 @@
 void InitCheats();
 
 void InitMapTPHooks();
-void InitPlayerCheatHooks();
+void InitPlayerCheats();
 void InitDebugHooks();
 void InitProtectionBypass();
+void InitWorldCheats();

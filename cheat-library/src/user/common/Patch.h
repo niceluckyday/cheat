@@ -8,6 +8,10 @@
 
 #include "util.h"
 
+#define OPatch(offset, value) Patch::Install(il2cppi_get_base_address() + offset, value)
+#define OUnpatch(offset) Patch::Restore(il2cppi_get_base_address() + offset)
+#define TogglePatch(field, targetField, offset, patchBytes) if (field == &targetField) { if (targetField.GetValue()) OPatch(offset, patchBytes); else OUnpatch(offset); return; }
+
 class Patch
 {
 public:

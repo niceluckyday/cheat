@@ -32,7 +32,7 @@ void StatusModule::Draw()
         DrawLine(Config::cfgMoveSpeedhackEnable);
 
         DrawLine(Config::cfgUnlockWaypointsEnable);
-        DrawLine(Config::cfgDummyEnemiesEnabled);
+        DrawLine(Config::cfgDumbEnemiesEnabled);
 #undef DrawLine
 
         ImGui::EndTable();

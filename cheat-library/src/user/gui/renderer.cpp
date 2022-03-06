@@ -20,8 +20,8 @@ static HMODULE hModule;
 static WNDPROC OriginalWndProcHandler;
 static ID3D11RenderTargetView* mainRenderTargetView;
 
-static bool OnRender(ID3D11DeviceContext* pContext);
-static bool OnInitialize(HWND window, ID3D11Device* pDevice, ID3D11DeviceContext* pContext, IDXGISwapChain* pChain);
+static void OnRender(ID3D11DeviceContext* pContext);
+static void OnInitialize(HWND window, ID3D11Device* pDevice, ID3D11DeviceContext* pContext, IDXGISwapChain* pChain);
 
 void InitRenderer(HMODULE hMod)
 {
@@ -39,7 +39,7 @@ void InitRenderer(HMODULE hMod)
 static void SetupImGuiStyle();
 static LRESULT CALLBACK hWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-static bool OnInitialize(HWND window, ID3D11Device* pDevice, ID3D11DeviceContext* pContext, IDXGISwapChain* pChain)
+static void OnInitialize(HWND window, ID3D11Device* pDevice, ID3D11DeviceContext* pContext, IDXGISwapChain* pChain)
 {
 
 	LPBYTE pFontData = nullptr;
@@ -71,11 +71,9 @@ static bool OnInitialize(HWND window, ID3D11Device* pDevice, ID3D11DeviceContext
 	pBackBuffer->Release();
 
 	io.SetPlatformImeDataFn = nullptr; // F**king bug take 4 hours of my live
-
-	return true;
 }
 
-static bool OnRender(ID3D11DeviceContext* pContext) {
+static void OnRender(ID3D11DeviceContext* pContext) {
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 
@@ -90,8 +88,6 @@ static bool OnRender(ID3D11DeviceContext* pContext) {
 
 	pContext->OMSetRenderTargets(1, &mainRenderTargetView, nullptr);
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-	return true;
 }
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -110,6 +106,8 @@ static LRESULT CALLBACK hWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	bool canceled = false;
 	if (uMsg == WM_KEYUP)
 		canceled = !GlobalEvents::KeyUpEvent(wParam);
+	else if (uMsg == 0x202)
+		canceled = !GlobalEvents::KeyUpEvent(VK_LBUTTON);
 
 	if (NeedInput())
 		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);

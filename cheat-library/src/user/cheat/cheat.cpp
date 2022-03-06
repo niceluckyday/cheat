@@ -4,7 +4,8 @@
 #include <common/Config.h>
 #include <common/GlobalEvents.h>
 
-static bool OnKeyUp(short key);
+static void OnKeyUp(short key, bool& cancelled);
+static void InitToggleFields();
 
 void InitCheats() {
 
@@ -12,25 +13,35 @@ void InitCheats() {
 	InitDebugHooks(); // Hooks for debbug information
 	
 	InitMapTPHooks(); // Map teleport hooks
-	InitPlayerCheatHooks(); // Cheats for player
+	InitPlayerCheats(); // Cheats for player
+
+    InitWorldCheats();
 
     GlobalEvents::KeyUpEvent += FREE_METHOD_HANDLER(OnKeyUp);
+
+    InitToggleFields();
 }
 
-static bool OnKeyUp(short key) 
+static void InitToggleFields() {
+    for (auto& field : Config::GetToggleFields())
+    {
+        if (field->GetValue())
+            ToggleConfigField::OnChangedEvent(field);   
+    }
+}
+
+static void OnKeyUp(short key, bool& cancelled) 
 {
     if (Config::cfgCheatWindowShowed.GetValue())
-        return true;
+        return;
 
     for (auto& field : Config::GetToggleFields())
     {
-        if (field.GetHotkey()->IsPressed(key))
+        if (field->GetHotkey()->IsPressed(key))
         {
-            bool* value = field.GetValuePtr();
+            bool* value = field->GetValuePtr();
             *value = !*value;
-            field.Check();
+            field->Check();
         }
     }
-
-    return true;
 }

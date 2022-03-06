@@ -11,7 +11,7 @@
 #include <common/Config.h>
 #include <common/Logger.h>
 
-static struct WaypointInfo {
+struct WaypointInfo {
     uint32_t groupId;
     uint32_t id;
     app::Vector3 position;

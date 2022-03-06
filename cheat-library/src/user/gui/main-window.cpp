@@ -34,7 +34,7 @@ static std::vector<IGUIModule*> modules = {
 
 static StatusModule statusModule{};
 
-static bool OnKeyUp(short key);
+static void OnKeyUp(short key, bool& cancelled);
 
 void InitializeWindow() 
 {
@@ -113,26 +113,27 @@ bool NeedInput()
     return Config::cfgCheatWindowShowed.GetValue();
 }
 
-static bool OnKeyUp(short key)
+static void OnKeyUp(short key, bool& cancelled)
 {
-    if (Config::cfgMenuShowKey.GetValue().IsPressed(key))
-    {
-
-        bool* windowShowed = Config::cfgCheatWindowShowed.GetValuePtr();
-        *windowShowed = !*windowShowed;
-
-        if (*windowShowed) {
-            prevMouseActive = app::Cursor_get_visible(nullptr, nullptr);
-            if (!prevMouseActive) {
-                app::Cursor_set_visible(nullptr, true, nullptr);
-                app::Cursor_set_lockState(nullptr, app::CursorLockMode__Enum::None, nullptr);
-            }
-        }
-        else if (!prevMouseActive) {
-            app::Cursor_set_visible(nullptr, false, nullptr);
-            app::Cursor_set_lockState(nullptr, app::CursorLockMode__Enum::Locked, nullptr);
-        }
+    if (Config::cfgCheatWindowShowed.GetValue() && isBlockInteraction) {
+        cancelled = true;
     }
 
-    return true;
+    if (!Config::cfgMenuShowKey.GetValue().IsPressed(key))
+        return;
+
+    bool* windowShowed = Config::cfgCheatWindowShowed.GetValuePtr();
+    *windowShowed = !*windowShowed;
+
+    if (*windowShowed) {
+        prevMouseActive = app::Cursor_get_visible(nullptr, nullptr);
+        if (!prevMouseActive) {
+            app::Cursor_set_visible(nullptr, true, nullptr);
+            app::Cursor_set_lockState(nullptr, app::CursorLockMode__Enum::None, nullptr);
+        }
+    }
+    else if (!prevMouseActive) {
+        app::Cursor_set_visible(nullptr, false, nullptr);
+        app::Cursor_set_lockState(nullptr, app::CursorLockMode__Enum::Locked, nullptr);
+    }
 }

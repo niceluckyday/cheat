@@ -10,7 +10,7 @@ static bool changed = false;
 
 static std::string filename;
 
-#define LoadToggleValue(field) LoadFieldValue(field); toggleFields.push_back(field)
+#define LoadToggleValue(field) LoadFieldValue(field); toggleFields.push_back(&field)
 
 void Config::Init(const std::string configFile)
 {
@@ -28,7 +28,7 @@ void Config::Init(const std::string configFile)
 	LoadToggleValue(cfgMoveSpeedhackEnable);
 
 	LoadToggleValue(cfgUnlockWaypointsEnable);
-	LoadToggleValue(cfgDummyEnemiesEnabled);
+	LoadToggleValue(cfgDumbEnemiesEnabled);
 
 	LoadToggleValue(cfgMapTPEnable);
 	LoadFieldValue(cfgTeleportHeight);
@@ -41,7 +41,7 @@ void Config::Init(const std::string configFile)
 	LoadFieldValue(cfgMoveStatusWindow);
 }
 
-std::vector<ToggleConfigField> Config::GetToggleFields()
+std::vector<ToggleConfigField*> Config::GetToggleFields()
 {
 	return toggleFields;
 }
