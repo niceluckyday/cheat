@@ -13,7 +13,7 @@ Simple cheat for genshin with protection bypass.
 ### Demo
 <details>
   <summary>Map tp demo</summary>
-  <img src="demo/map-teleport-demo.gif"/>
+  <img src="demo/map-teleport-demo-new.gif"/>
 </details>
 
 <details>
@@ -23,7 +23,7 @@ Simple cheat for genshin with protection bypass.
 
 <details>
   <summary>Tp to chest demo</summary>
-  <img src="demo/chest-teleport-demo"/>
+  <img src="demo/chest-teleport-demo.git"/>
 </details>
 
 ## Planned
