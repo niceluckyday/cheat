@@ -21,7 +21,7 @@ static void DrawEntities(const EntityFilter& filter)
     
     for (const auto& entity : entities) 
     {
-        ImGui::Text("Dist %.03fm", il2cppi_to_string(GetRelativePosition(entity)).c_str(), GetDistToAvatar(entity));
+        ImGui::Text("Dist %.03fm", GetDistToAvatar(entity));
         ImGui::SameLine();
         auto label = string_format("Teleport ## %p", entity);
         if (ImGui::Button(label.c_str()))
