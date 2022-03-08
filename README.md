@@ -16,6 +16,15 @@ Simple cheat for genshin with protection bypass.
   <img src="demo/map-teleport-demo.gif"/>
 </details>
 
+<details>
+  <summary>Tp to oculi demo</summary>
+  <img src="demo/oculi-teleport-demo.gif"/>
+</details>
+
+<details>
+  <summary>Tp to chest demo</summary>
+  <img src="demo/chest-teleport-demo"/>
+</details>
 
 ## Planned
 - [ ] Standart cheat features (i.e. No CD, Flying and so on)
