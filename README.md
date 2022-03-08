@@ -23,7 +23,7 @@ Simple cheat for genshin with protection bypass.
 
 <details>
   <summary>Tp to chest demo</summary>
-  <img src="demo/chest-teleport-demo.git"/>
+  <img src="demo/chest-teleport-demo.gif"/>
 </details>
 
 ## Planned
