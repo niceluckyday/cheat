@@ -1,5 +1,5 @@
 #pragma once
 
 void InitializeWindow();
-void DrawWindow();
+void Draw();
 bool NeedInput();

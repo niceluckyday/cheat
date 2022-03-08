@@ -1,6 +1,7 @@
 #pragma once
 
 #include <common/Config.h>
+#include "imgui.h"
 
 bool ConfigWidget(const char* label, ConfigField<bool>& field, const char* desc = nullptr);
 bool ConfigWidget(const char* label, ConfigField<int>& field, int step = 1, int start = 0, int end = 0, const char* desc = nullptr);
@@ -16,3 +17,6 @@ bool ConfigWidget(ConfigField<std::string>& field, const char* desc = nullptr);
 
 void HelpMarker(const char* desc);
 bool InputHotkey(const char* label, Hotkey* hotkey, bool clearable);
+
+void BeginGroupPanel(const char* name, const ImVec2& size);
+void EndGroupPanel();

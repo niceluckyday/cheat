@@ -22,6 +22,7 @@ void Config::Init(const std::string configFile)
 
 	LoadToggleValue(cfgGodModEnable);
 	LoadToggleValue(cfgInfiniteStaminaEnable);
+	LoadFieldValue(cfgISMovePacketMode);
 	LoadToggleValue(cfgInstantBowEnable);
 	LoadToggleValue(cfgNoCDEnable);
 	LoadToggleValue(cfgNoGravityEnable);
@@ -33,12 +34,22 @@ void Config::Init(const std::string configFile)
 	LoadToggleValue(cfgMapTPEnable);
 	LoadFieldValue(cfgTeleportHeight);
 	LoadFieldValue(cfgTeleportKey);
-	LoadFieldValue(cfgUseOfflineTeleport);
+
+	LoadFieldValue(cfgShowOculiInfo);
+	LoadFieldValue(cfgTeleportToOculi);
+
+	LoadFieldValue(cfgShowChestInfo);
+	LoadFieldValue(cfgTeleportToChest);
 
 	LoadFieldValue(cfgDisableMhyprot);
 	LoadFieldValue(cfgConsoleLogEnabled);
 	LoadFieldValue(cfgFileLogEnabled);
+
 	LoadFieldValue(cfgMoveStatusWindow);
+	LoadFieldValue(cfgShowStatusWindow);
+
+	LoadFieldValue(cfgMoveInfoWindow);
+	LoadFieldValue(cfgShowInfoWindow);
 }
 
 std::vector<ToggleConfigField*> Config::GetToggleFields()

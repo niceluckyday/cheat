@@ -4,8 +4,9 @@
 class IGUIModule
 {
 public:
-	virtual ~IGUIModule() = default;
 	virtual void Draw() = 0;
-
 	virtual std::string GetName() = 0;
+
+	virtual void DrawInfo() { };
+	virtual bool HasInfoToDraw() { return false; }
 };

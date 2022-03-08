@@ -3218,7 +3218,7 @@ namespace app {
         struct DelegateBridge* CFJMPGGFPFO;
     };
 
-    struct GameLogin__Class {
+    struct NetworkManager_1__Class {
         Il2CppClass_0 _0;
         Il2CppRuntimeInterfaceOffsetPair* interfaceOffsets;
         struct GameLogin__StaticFields* static_fields;
@@ -3227,63 +3227,63 @@ namespace app {
         struct GameLogin__VTable vtable;
     };
 
-    struct __declspec(align(8)) GameLogin__Fields {
-        struct MMLHJDIKHGO* SocketInfo;
-        bool FHAFGBAEEOH;
-        struct ConfigChannel* configChannel;
-        void* _KLFJDIDIFDO_k__BackingField;
-        void* CHJMOFIOEEN;
-        void* MLOFGBOKJHB;
-        bool _PMMICLMAANC_k__BackingField;
-        bool HGPFHBDKCPL;
-        bool PIGHNIAKIMF;
-        struct IPAddress* ip_backing;
-        struct IPAddress* ip;
-        struct String* someString;
-        uint16_t MIJHJILHMCD;
-        bool PKGHNCCBAGD;
-        bool CEOEBONMNKB;
-        struct DateTime datetime_1;
-        struct DateTime datetime_2;
-        int32_t EDHEJDIHOEC;
-        uint32_t AIOJOKHHMDH;
-        void* JLFPPAAJBJH;
-        void* LAMGEEIPKJN;
-        void* KELHMKAPLCF;
-        bool NKKGJMMCINF;
-        uint32_t IOIAKODGJAL;
+    struct __declspec(align(8)) NetworkManager_1__Fields {
+        struct MMLHJDIKHGO* _client;
+        bool useJobThread;
+        struct ConfigChannel* channelConfig;
+        void* _DispatchSeverData_k__BackingField;
+        void* serverPatterns;
+        void* currentServerConfig;
+        bool _isGlobalDispatch_k__BackingField;
+        bool ServerStop;
+        bool HasServerList;
+        struct IPAddress* _lastIPAddress_k__BackingField;
+        struct IPAddress* lastDispatchIP;
+        struct String* lastIP;
+        uint16_t lastPort;
+        bool isConnect;
+        bool isValidToSend;
+        struct DateTime _nextPingTime;
+        struct DateTime _nextCheckConnectTime;
+        int32_t _watch;
+        uint32_t _clientSequenceId;
+        void* trafficMonitor;
+        void* reason2Reconnect;
+        void* reason2Callback;
+        bool hasDisconnectCB;
+        uint32_t resultData;
         uint32_t GOGAODGGJJB;
-        void* IACEIKHNJAN;
-        struct DateTime datetime_3;
-        void* OKGJIGGJNOH;
+        void* _packetQueue;
+        struct DateTime _nextPrintTime;
+        void* _regionBlackList;
         float FNOLDKFPBLL;
         float PJHHBBICHPD;
-        void* coroutine;
-        void* coroutines;
-        bool NLMICBAEFBO;
-        int32_t HBDAKIADBDH;
-        bool DPMDLKFJNGJ;
-        uint32_t FGKMCOPPLAK;
-        int32_t MDIMAAHFFHF;
+        void* _pingAllRegionAddressCoroutine;
+        void* _allAddressPingCoroutines;
+        bool isPingAllRegionAddressDone;
+        int32_t _runningPingCount;
+        bool isReconnect;
+        uint32_t timeoutCount;
+        int32_t _reconnectCorotine;
         void* coroutine_1;
-        void* GANBFGNLLDD;
-        void* DFFDCKODHEN;
+        void* _packetCount;
+        void* _specialPacketDeserializedCallback;
     };
 
-    struct GameLogin {
-        struct GameLogin__Class* klass;
+    struct NetworkManager_1 {
+        struct NetworkManager_1__Class* klass;
         MonitorData* monitor;
-        struct GameLogin__Fields fields;
+        struct NetworkManager_1__Fields fields;
     };
 
-    struct __declspec(align(8)) MAKEGCIBGMD__Fields {
-        int32_t OHALFFMCMLN;
-        uint8_t someFlag_CEOMEKMKCDG;
+    struct __declspec(align(8)) MessageBase_1__Fields {
+        int32_t count;
+        uint8_t _flag;
         int32_t JABMLLBAOLE;
     };
 
     struct GKOJAICIOPA__Fields {
-        struct MAKEGCIBGMD__Fields _;
+        struct MessageBase_1__Fields _;
         struct String* string_1;
         struct String* string_2;
         struct String* string_3;
@@ -3837,7 +3837,7 @@ namespace app {
     };
     
     // Entity type
-    enum class HCMIDDEBJOB__Enum : int32_t {
+    enum class EntityType__Enum_1 : int32_t {
         None = 0x00000000,
         Avatar = 0x00000001,
         Monster = 0x00000002,
@@ -3951,8 +3951,8 @@ namespace app {
     };
 
 
-    struct POOHKMNLLPH {
-        uint32_t HFEHLAGCDLL;
+    struct SimpleSafeUInt32 {
+        uint32_t value;
     };
 
     struct Quaternion {
@@ -3968,98 +3968,99 @@ namespace app {
     };
 
     // Entity fields
-    struct __declspec(align(8)) EAPPPCHHMHO__Fields { 
-        void* KAFGNHFOKAN;
-        void* FCMGBOAAEIK;
-        void* FALFDFGJKMD;
-        uint32_t _OFDFBLANKHB_k__BackingField;
-        uint32_t _KELHFGKECAA_k__BackingField;
-        uint32_t _IEGCLJLKFIO_k__BackingField;
-        uint32_t _AHEDIECACCB_k__BackingField;
-        uint32_t _MPNDKJFHLKA_k__BackingField;
-        struct POOHKMNLLPH CMBLPBPDEML;
-        bool HGDOIPCGPNE;
-        bool PCODMKONKNL;
-        bool GMAPNHFHLPN;
-        bool OGLCACDHNGE;
-        struct String* someNameMaybe;
-        int32_t AAALJEGCKMK;
-        bool MACIMOINEPG;
-        void* AHEOMCGCNFL;
-        void* EHPGPAPFBNH;
-        bool DKMDCMLFNID;
-        void* DELMLMELHMM;
-        void* AFDEDJHDJOA;
-        void* OEFFBDBONDE;
-        void* JPFHEAJDHDH;
-        void* IHJEABANKEL;
+    // EAPPPCHHMHO
+    struct __declspec(align(8)) BaseEntity__Fields { 
+        void* _undefined;
+        struct ConfigEntity* jsonConfig;
+        struct EntityExcelConfig* excelConfig;
+        uint32_t _runtimeID_k__BackingField;
+        uint32_t _preRuntimeID_k__BackingField;
+        uint32_t _entityRefCountKey_k__BackingField;
+        uint32_t _configID_k__BackingField;
+        uint32_t _questID_k__BackingField;
+        struct SimpleSafeUInt32 campID;
+        bool _isDestroied;
+        bool _isToBeRemoved;
+        bool _isInCutscene;
+        bool _isDontDestroyGameObject;
+        struct String* _alias;
+        int32_t order;
+        bool isForceClientSynced;
+        void* _logicComponentManager;
+        void* _visualComponentManager;
+        bool _isInited;
+        void* _onLevelTimeScaleChange;
+        void* _syncAnimatorSpeed;
+        void* _onTimeScaleChangedByAbility;
+        void* _abilityProxy;
+        void* _tokenMgr;
         void* OCJHHJAGHFA;
-        bool _IOMNEFAJIMN_k__BackingField;
-        bool PMKOILGNAEB;
-        bool _BOHHHLBGOOK_k__BackingField;
-        bool EGOILNCEGCH;
-        bool IDMKCNIMIHP;
-        void* FPKMIJEKFDK;
-        void* OIHIGIINDDM;
-        void* BJOBIJHDELD;
-        bool KGNDFLGHIHH;
-        bool _KFILDPFLBAA_k__BackingField;
-        bool _CJJOACNHJPP_k__BackingField;
-        bool _PANCOAKPNCC_k__BackingField;
-        bool _FDIMAHFLCBI_k__BackingField;
-        bool _LJFJNAODCBD_k__BackingField;
-        bool GCEPNPNMJFC;
-        bool _HDEHBDGAAED_k__BackingField;
-        bool NBPEACJFIJJ;
-        void* MLBDCFDEOEJ;
+        bool _createDuringReconnectingSceneInitFinish_k__BackingField;
+        bool _isCleared;
+        bool _checkRemoveifCached_k__BackingField;
+        bool _hasAddedInitialComponents;
+        bool _isEntityReady;
+        void* onComponentInitPostCallback;
+        void* onEntityReadyPreCallback;
+        void* onEntityReadyBeforePostCallback;
+        bool _IsTickable;
+        bool _forceTickVisualComMgrIfDisable_k__BackingField;
+        bool _logicHasAnyTickComponent_k__BackingField;
+        bool _visualHasAnyTickComponent_k__BackingField;
+        bool _logicHasAnyLateTickComponent_k__BackingField;
+        bool _visualHasAnyLateTickComponent_k__BackingField;
+        bool isLightInitializationEntity;
+        bool _canBeDestroied_k__BackingField;
+        bool _isDestroying;
+        void* onDestroyCallback;
         void* JIELFFNPLGG;
-        bool ABLCMKDIKNJ;
-        void* NEKEGJKPBLD;
-        bool EOEIBHHEOHI;
-        void* EOBJFAHPHCP;
-        bool LBLOEKBLKBH;
-        bool IMPOFOMPBKG;
-        void* FODFGDJJDMD;
-        bool GLHNDEFAPFD;
-        bool HPMJGNMPAMA;
-        bool EBFMLDGBEEA;
-        bool JLCKIFOLKNE;
-        bool FJFPGOGBONM;
-        bool MBOMAGEFKFP;
-        bool _BPHGOFKOGNP_k__BackingField;
-        float PFOBODDJKDI;
-        float LHAOCCLMGGK;
-        bool HCLGPKANBCD;
-        void* KOGMGFOHDHD;
-        void* BMOFHJMPCDF;
+        bool _isAlive;
+        void* onSetAliveFalseCallback;
+        bool _isActive;
+        void* preAnimatorInitUpdateCallback;
+        bool _needSetActiveOnEntityReady;
+        bool _setActiveOnEntityReady;
+        void* onSetActiveCallback;
+        bool _withGameObjWhenSetActive;
+        bool _isLightActive;
+        bool _playDefault;
+        bool _deepIfInactive;
+        bool _forceSkipAnimatorUpdate;
+        bool _hasActiveInited;
+        bool _duringSetComponentsEnabledOnSetActive_k__BackingField;
+        float _lastTimeScale;
+        float _timeScale;
+        bool ignoreLevelTimeScale;
+        void* _timeScaleStack;
+        void* _lcAblityState;
         uint32_t IIBOKLHBLAF;
-        HCMIDDEBJOB__Enum entityType;
-        bool LAABALPDEEL;
-        uint32_t BMBBGPALLHC;
-        bool DAJBIIINNMO;
-        void* AIDGGPJNOPB;
-        float _GPOIEPDMMEH_k__BackingField;
-        void* DEEPNMBIOLA;
-        void* NHIJKBNMONO;
-        bool IFDKDCMIHLB;
-        void* AONAJNDKDGL;
-        struct Vector3 vec1;
-        struct Vector3 vec2;
-        void* event1;
-        void* func1Bool;
-        void* actionTickBoolBool;
-        void* renderable;
-        void* requestsNoPauseTasks;
-        bool DIMBGKFMLNK;
+        EntityType__Enum_1 entityType;
+        bool _isAuthority;
+        uint32_t authorityPeerId;
+        bool isAuthorityUseHost;
+        void* _componentTags;
+        float _lastTickTime_k__BackingField;
+        void* _componentTagsCache;
+        void* _componentsForEntityTickManager;
+        bool isAnimalBudget;
+        void* _notifyListOnComponentInit;
+        struct Vector3 _sharedPosition;
+        struct Vector3 _sharedForward;
+        void* _eventDispatcher;
+        void* onShouldNoPause;
+        void* onAnimatorTickStateChange;
+        void* _extraRenderers;
+        void* _noPauseTaskRequests;
+        bool _bDisableAnimatorInterleave;
         bool ENMFKFOIMLP;
-        TickState__Enum tickState;
-        void* tickStruct;
-        bool NJMJAGJMKKH;
-        bool isIgnoreTickInterval;
-        float _LBJILMHMDIM_k__BackingField;
-        int32_t greaterToDisableInterval;
-        bool* func2Single;
-        bool* func3Bool;
+        TickState__Enum _currentAnimatorTickState;
+        void* _tickBalanceProxy;
+        bool isKinematicRigidbody;
+        bool _bIgnoreIntervalTick_k__BackingField;
+        float __fullTickSqrMag_k__BackingField;
+        int32_t _greaterToDisableInterval_k__BackingField;
+        void* func2Single;
+        void* func3Bool;
         uint64_t CHPHOJIBOBL;
         void* IFCMDDNFPKL;
         void* animatorController;
@@ -4079,44 +4080,44 @@ namespace app {
         struct GameObject* someGameObject1;
         void* FKMNKMILOEK;
         void* _ICLHHNIKIIO_k__BackingField;
-        struct GameObject* someGameObject2;
-        struct GameObject* someGameObject3;
-        struct GameObject* someGameObject4;
-        bool OLEACCCEKNK;
+        struct GameObject* _rootGameObject_k__BackingField;
+        struct GameObject* _offsetDummyObject;
+        struct GameObject* _animatorObject;
+        bool _isForceDisableGameObjectPool;
         void* MALEILBCECN;
         void* NNDDCBAPBCB;
         struct GameObject* someGameObject5;
         bool _AFHHBGDDOGB_k__BackingField;
-        struct Transform* transform1;
-        struct Transform* transform2;
+        struct Transform* _transform_k__BackingField;
+        struct Transform* _gameObjectParent_k__BackingField;
         bool HMKAKKHFOMH;
         void* EMIJCJFJHLK;
-        CollisionDetectionMode__Enum colDetectMode1;
-        CollisionDetectionMode__Enum colDetectMode2;
+        CollisionDetectionMode__Enum _defaultCollisionDetectionMode;
+        CollisionDetectionMode__Enum _curCollisionDetectionMode;
         void* LODFBKEGONO;
         bool ILGBGCBHGCA;
-        void* JJBIFPJDHOK;
-        float HEOBCPACKML;
-        float BOACNDNNBOG;
-        bool LCHHFCMGIIC;
-        bool _GFOFLHNLLMK_k__BackingField;
-        struct Vector3 vec3;
-        struct Quaternion quat1;
-        float _MGAEFMKEOMM_k__BackingField;
-        uint64_t _KNDNPANHJJK_k__BackingField;
-        bool IJFNHGFPBAJ;
-        bool BALAFFIODAM;
-        bool CNEGBMEJADD;
+        void* finishLoadCallback;
+        float cachedEntityDist;
+        float localEntityDist;
+        bool localEntityWithGO;
+        bool _isLoaded_k__BackingField;
+        struct Vector3 _initPos_k__BackingField;
+        struct Quaternion _initRotation_k__BackingField;
+        float _initUniformScale_k__BackingField;
+        uint64_t _prefabPathHash_k__BackingField;
+        bool _forceDontUseUpdateRigidbody;
+        bool _useDummyPrefab;
+        bool _createDummyGameObject;
         struct AsyncJob ONNLKDBFCDG;
         void* DCEMFGFGLEH;
         void* KECCLKECCCB;
-        bool IAAMCOLIFEE;
-        bool CFNGMNKDONM;
-        bool _LPLLNPBLNNH_k__BackingField;
-        float CGKELINEFLP;
+        bool _isGameObjectFromPool;
+        bool _isEntityAsyncLoad;
+        bool _hasGameObject_k__BackingField;
+        float _curMass;
         void* LFOIGFEEMFE;
         bool BDDIELCFCNN;
-        struct Vector3 vec4;
+        struct Vector3 _lastPosInParent;
         void* GJEELNNBMLB;
         int32_t DPEPKABLNLM;
         int32_t MMKELIPLBLI;
@@ -4134,16 +4135,16 @@ namespace app {
     };
 
     // Entity
-    struct EAPPPCHHMHO { 
+    struct BaseEntity { 
         void* klass;
         MonitorData* monitor;
-        struct EAPPPCHHMHO__Fields fields;
+        struct BaseEntity__Fields fields;
     };
 
     struct EntityActor__Fields {
         struct BaseActor__Fields _;
         void* _lcActor;
-        struct EAPPPCHHMHO* _entity;
+        struct BaseEntity* _entity;
         bool _isDaily;
         void* SensibleInfoEvent;
         void* _curDitherCallBack;
@@ -4703,7 +4704,7 @@ namespace app {
 
     struct BAEABLAJDLM {
         struct String* IFMMCPNGPDI;
-        struct POOHKMNLLPH GNBMICNFLBF;
+        struct SimpleSafeUInt32 GNBMICNFLBF;
         HOOPGAGKHLD__Enum markType;
         struct String* HDPJJBGHFCH;
         bool BLBOCGLEGAG;
@@ -4820,7 +4821,7 @@ namespace app {
         bool hideUnderMist;
         void* mapMarkPoint;
         struct Vector3 positionOffset;
-        struct LBBCJFOEBGD groupId;
+        struct LBBCJFOEBGD sceneId;
         bool hideOnMapAndRadar;
         float radius;
         bool tracking;
@@ -4836,18 +4837,18 @@ namespace app {
         struct GeneralMarkData__Fields fields;
     };
     
-    enum class MEPEDAIKBDI__Enum : int32_t {
-        CNCIBKGKPAE = 0x00000000,
-        KNLCPGJPNHG = 0x00000001,
-        DDMFOJFDOFA = 0x00000002,
-        HJIIOHEHEAC = 0x00000003,
-        LBPLNNDMPJP = 0x00000004,
-        OIMGBMJMJAD = 0x00000005,
-        DEBLHIMMBMF = 0x00000006,
-        KMFPLEFOLII = 0x00000007,
-        DOEPFHNHCIP = 0x00000008,
-        HFEIAKABJHA = 0x00000009,
-        HLAPIHKLGMG = 0x0000000a,
+    enum class EnterType__Enum : int32_t {
+        EnterNone = 0x00000000,
+        EnterSelf = 0x00000001,
+        EnterGoto = 0x00000002,
+        EnterJump = 0x00000003,
+        EnterOther = 0x00000004,
+        EnterBack = 0x00000005,
+        EnterDungeon = 0x00000006,
+        EnterDungeonReplay = 0x00000007,
+        EnterGotoByPortal = 0x00000008,
+        EnterSelfHome = 0x00000009,
+        EnterOtherHome = 0x0000000a,
         FCBBIIAOAGG = 0x0000000b,
     };
 
@@ -4932,13 +4933,13 @@ namespace app {
     };
 
     struct OCMDGBELFPA__Fields {
-        struct MAKEGCIBGMD__Fields _;
+        struct MessageBase_1__Fields _;
         float x;
         float y;
         float z;
     };
 
-    struct OCMDGBELFPA {
+    struct Vector_1 {
         void* klass;
         MonitorData* monitor;
         struct OCMDGBELFPA__Fields fields;
@@ -4956,14 +4957,14 @@ namespace app {
     };
 
     struct LDFJBNJCCCE__Fields {
-        struct MAKEGCIBGMD__Fields _;
+        struct MessageBase_1__Fields _;
         uint32_t LEMDEHPDNJC;
-        struct OCMDGBELFPA* AEFLOMAEIMF;
+        struct Vector_1* AEFLOMAEIMF;
         uint64_t needs_LAGFOEBAAAC;
-        MEPEDAIKBDI__Enum someEnum_DDJMPHHFPJL;
+        EnterType__Enum someEnum_DDJMPHHFPJL;
         uint32_t DCDMCEEGPHO;
         uint32_t needs_MMDFDFBHDOI;
-        struct OCMDGBELFPA* HFBINEPLJLC;
+        struct Vector_1* HFBINEPLJLC;
         uint32_t OHDIEPEGDEC;
         uint32_t needs_KAHJJKIAKBP;
         uint32_t someIndex_MCFKIKNDEHA;
@@ -4995,16 +4996,16 @@ namespace app {
     };
 
     struct __declspec(align(8)) FJIDMGGJMEF__Fields {
-        struct Dictionary_2_System_UInt32_NHDFENBMHPA_* someStorage_MEFCOFONCGD;
-        struct NHDFENBMHPA* NJJCDHFDNFP;
-        struct NHDFENBMHPA* IEBOODEGAEK;
-        struct FACLNBELICD* POGEINGAINN;
-        void* PBHEKKLOFEP;
-        void* CCILHBOCGNE;
-        void* CHLDEFNHFHI;
-        struct ILuaActor* JOOGBCDMCMC;
-        struct Vector3 DALIBLIIIFN;
-        MEPEDAIKBDI__Enum FGOCFFIACFN;
+        struct Dictionary_2_System_UInt32_NHDFENBMHPA_* _loadingTasks;
+        struct NHDFENBMHPA* _curLoadingTask;
+        struct NHDFENBMHPA* _lastLoadingTask;
+        struct FACLNBELICD* _bornTask;
+        void* _bornCoroutine;
+        void* _transPreCallback;
+        void* _transFinishCallback;
+        struct ILuaActor* _curActor;
+        struct Vector3 _cacheJumpPos;
+        EnterType__Enum _cacheEnterType;
         uint32_t NACBCCNAGJC;
         bool DEKNCKOFFOD;
         bool mustBeTrue;
@@ -5012,7 +5013,8 @@ namespace app {
         void* needs_IFHMCNOOPIF;
     };
 
-    struct FJIDMGGJMEF {
+    // FJIDMGGJMEF
+    struct LoadingManager {
         struct FJIDMGGJMEF__Class* klass;
         MonitorData* monitor;
         struct FJIDMGGJMEF__Fields fields;
@@ -5803,7 +5805,7 @@ namespace app {
         HomeBalloonShootEndNotify = 0x00000305,
     };
 
-    enum class HNHPKDOJFPI__Enum : int32_t {
+    enum class ScenePointType__Enum : int32_t {
         NORMAL = 0x00000000,
         TOWER = 0x00000001,
         PORTAL = 0x00000002,
@@ -5820,24 +5822,25 @@ namespace app {
         uint16_t HFEHLAGCDLL;
     };
 
-    struct __declspec(align(8)) CEHHMPEGDKF__Fields {
-        HNHPKDOJFPI__Enum JAAAEGMMPIF;
-        struct POOHKMNLLPH MFKJEHNIJEE;
-        struct LAFKDOLNGNA JJECIIGEMKM;
-        struct Vector3 vector1;
-        struct Vector3 vector2;
-        struct Vector3 tpPosition;
-        struct Vector3 vector4;
-        bool EPJPENHIJOL;
-        struct String* someString;
-        bool GDMGFMPJLGN;
+    struct __declspec(align(8)) ConfigScenePoint__Fields {
+        ScenePointType__Enum _type;
+        struct SimpleSafeUInt32 gadgetIdRawNum;
+        struct LAFKDOLNGNA areaIdRawNum;
+        struct Vector3 _pos;
+        struct Vector3 _rot;
+        struct Vector3 _tranPos;
+        struct Vector3 _tranRot;
+        bool _unlocked;
+        struct String* _alias;
+        bool _groupLimit;
         bool LKANGLOCKGI;
     };
 
-    struct CEHHMPEGDKF {
+    // CEHHMPEGDKF
+    struct ConfigScenePoint {
         void* klass;
         MonitorData* monitor;
-        struct CEHHMPEGDKF__Fields fields;
+        struct ConfigScenePoint__Fields fields;
     };
 
     struct Nullable_1_UnityEngine_Vector3_ {
@@ -5845,7 +5848,7 @@ namespace app {
         bool has_value;
     };
 
-    enum class ODNNFKEKALL__Enum : int32_t {
+    enum class ElementType__Enum : int32_t {
         None = 0x00000000,
         Fire = 0x00000001,
         Water = 0x00000002,
@@ -5874,23 +5877,23 @@ namespace app {
         AREA_TERRAIN_OUTDOOR = 0x00000002,
     };
 
-    struct CPJFKGCPOOM {
+    struct SimpleSafeFloat {
         uint32_t HFEHLAGCDLL;
     };
 
     struct __declspec(align(8)) BKNNJMLFFMG__Fields {
-        struct POOHKMNLLPH CLHKDEAFLGP;
-        struct POOHKMNLLPH AGHEDFKHLCC;
+        struct SimpleSafeUInt32 CLHKDEAFLGP;
+        struct SimpleSafeUInt32 AGHEDFKHLCC;
         BOLKMOALBNA__Enum level;
-        struct POOHKMNLLPH JOEAFJNGFMH;
-        struct POOHKMNLLPH CBIJIEBKDFP;
+        struct SimpleSafeUInt32 JOEAFJNGFMH;
+        struct SimpleSafeUInt32 CBIJIEBKDFP;
         bool HLCFEAIOGBI;
         uint32_t NGHJKDEJKGA;
-        struct POOHKMNLLPH KHBJPADPMAC;
-        ODNNFKEKALL__Enum effectType;
+        struct SimpleSafeUInt32 KHBJPADPMAC;
+        ElementType__Enum effectType;
         CCJPPAHINEE__Enum areaTerrain;
         bool HHKMHKOCPKM;
-        struct CPJFKGCPOOM MGOHOBFBFGO;
+        struct SimpleSafeFloat MGOHOBFBFGO;
     };
 
     struct BKNNJMLFFMG {
@@ -5899,19 +5902,19 @@ namespace app {
         struct BKNNJMLFFMG__Fields fields;
     };
 
-    struct EAPPPCHHMHO__Array {
+    struct BaseEntity__Array {
         void* klass;
         MonitorData* monitor;
         Il2CppArrayBounds* bounds;
         il2cpp_array_size_t max_length;
-        struct EAPPPCHHMHO* vector[32];
+        struct BaseEntity* vector[32];
     };
 
-    struct __declspec(align(8)) Dictionary_2_System_UInt32_EAPPPCHHMHO___Fields {
+    struct __declspec(align(8)) Dictionary_2_System_UInt32_BaseEntity___Fields {
         struct Int32__Array* table;
         struct Link__Array* linkSlots;
         struct UInt32__Array* keySlots;
-        struct EAPPPCHHMHO__Array* valueSlots;
+        struct BaseEntity__Array* valueSlots;
         int32_t touchedSlots;
         int32_t emptySlot;
         int32_t count;
@@ -5921,17 +5924,17 @@ namespace app {
         int32_t generation;
     };
 
-    struct Dictionary_2_System_UInt32_EAPPPCHHMHO_ {
+    struct Dictionary_2_System_UInt32_BaseEntity_ {
         void* klass;
         MonitorData* monitor;
-        struct Dictionary_2_System_UInt32_EAPPPCHHMHO___Fields fields;
+        struct Dictionary_2_System_UInt32_BaseEntity___Fields fields;
     };
 
-    struct __declspec(align(8)) Dictionary_2_System_String_EAPPPCHHMHO___Fields {
+    struct __declspec(align(8)) Dictionary_2_System_String_BaseEntity___Fields {
         struct Int32__Array* table;
         struct Link__Array* linkSlots;
         struct String__Array* keySlots;
-        struct EAPPPCHHMHO__Array* valueSlots;
+        struct BaseEntity__Array* valueSlots;
         int32_t touchedSlots;
         int32_t emptySlot;
         int32_t count;
@@ -5941,21 +5944,23 @@ namespace app {
         int32_t generation;
     };
 
-    struct Dictionary_2_System_String_EAPPPCHHMHO_ {
+    struct Dictionary_2_System_String_BaseEntity_ {
         void* klass;
         MonitorData* monitor;
-        struct Dictionary_2_System_String_EAPPPCHHMHO___Fields fields;
+        struct Dictionary_2_System_String_BaseEntity___Fields fields;
     };
+    
 
-    struct __declspec(align(8)) MBHLOBDPKEC__Fields {
-        struct Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG_* waypoints;
-        struct Vector3 ODGKNIMEEMD;
-        struct String* string1;
-        struct String* string2;
-        uint32_t JIHHMOAJDPP;
-        uint32_t _GONLPHELGLM_k__BackingField;
-        uint32_t _NONFHJKPJFM_k__BackingField;
-        uint32_t _PGKHJFCMHDC_k__BackingField;
+    // MBHLOBDPKEC__Fields
+    struct __declspec(align(8)) MapModule__Fields {
+        struct Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_MapModule_ScenePointData_* _scenePointDics;
+        struct Vector3 _bigworldPos;
+        struct String* _curLimitRegion;
+        struct String* _activityLimitRegion;
+        uint32_t _checkScenePointTimer;
+        uint32_t _curDungeonID_k__BackingField;
+        uint32_t _dungeonEndTime_k__BackingField;
+        uint32_t _dungeonMonsterDieCount_k__BackingField;
         uint32_t _JLIJNMLFAFC_k__BackingField;
         uint32_t _HNAJCAOJILO_k__BackingField;
         uint32_t _HNCKAOOIAHL_k__BackingField;
@@ -5977,12 +5982,12 @@ namespace app {
         void* CCDJCLGJCKK;
         void* OMBMEBKGHPI;
         struct BKNNJMLFFMG* areaInfo;
-        struct EAPPPCHHMHO* someEntity;
-        struct Dictionary_2_System_UInt32_EAPPPCHHMHO_* someEntities;
+        struct BaseEntity* someEntity;
+        struct Dictionary_2_System_UInt32_BaseEntity_* someEntities;
         void* MLFBHJNHHJJ;
         void* BJMIKECNLIC;
         uint32_t JCIGCKMINJN;
-        struct Dictionary_2_System_String_EAPPPCHHMHO_* someEntities2;
+        struct Dictionary_2_System_String_BaseEntity_* someEntities2;
         bool KGPMJHCIGMB;
         void* CKANHDIMMDM;
         bool AKMCKGIJAMK;
@@ -5998,28 +6003,24 @@ namespace app {
         void* APLPJKGDKGO;
     };
 
+    // MBHLOBDPKEC
     struct MBHLOBDPKEC {
         void* klass; // struct MBHLOBDPKEC__Class* klass;
         MonitorData* monitor;
-        struct MBHLOBDPKEC__Fields fields;
+        struct MapModule__Fields fields;
     };
 
-    struct MBHLOBDPKEC_BHKOIJIKDFG {
+    // MBHLOBDPKEC_BHKOIJIKDFG
+    struct MapModule_ScenePointData {
         bool isUnlocked;
-        struct CEHHMPEGDKF* waypointLocation;
-        bool isForbidden;
+        struct ConfigScenePoint* config;
+        bool isGroupLimit;
         bool ONLCMFPOCAA;
-        uint32_t NIKIMHKCJAJ;
-        uint32_t NGGDHDLKCDH;
+        uint32_t entityId;
+        uint32_t level;
     };
 
     struct EAFLDMPLBHM {
-        void* klass;
-        MonitorData* monitor;
-        char fields;
-    };
-
-    struct AOFGMGFKONM {
         void* klass;
         MonitorData* monitor;
         char fields;
@@ -6031,7 +6032,7 @@ namespace app {
         Confined = 0x00000002,
     };
 
-    struct Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Array {
+    struct Dictionary_2_System_UInt32_MapModule_ScenePointData___Array {
         struct Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Array__Class* klass;
         MonitorData* monitor;
         Il2CppArrayBounds* bounds;
@@ -6039,19 +6040,19 @@ namespace app {
         struct Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG_* vector[32];
     };
 
-    struct MBHLOBDPKEC_BHKOIJIKDFG__Array {
+    struct MapModule_ScenePointData__Array {
         struct MBHLOBDPKEC_BHKOIJIKDFG__Array__Class* klass;
         MonitorData* monitor;
         Il2CppArrayBounds* bounds;
         il2cpp_array_size_t max_length;
-        struct MBHLOBDPKEC_BHKOIJIKDFG vector[32];
+        struct MapModule_ScenePointData vector[32];
     };
 
-    struct __declspec(align(8)) Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Fields {
+    struct __declspec(align(8)) Dictionary_2_System_UInt32_MapModule_ScenePointData___Fields {
         struct Int32__Array* table;
         struct Link__Array* linkSlots;
         struct UInt32__Array* keySlots;
-        struct MBHLOBDPKEC_BHKOIJIKDFG__Array* valueSlots;
+        struct MapModule_ScenePointData__Array* valueSlots;
         int32_t touchedSlots;
         int32_t emptySlot;
         int32_t count;
@@ -6061,11 +6062,11 @@ namespace app {
         int32_t generation;
     };
 
-    struct __declspec(align(8)) Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Fields {
+    struct __declspec(align(8)) Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_MapModule_ScenePointData___Fields {
         struct Int32__Array* table;
         struct Link__Array* linkSlots;
         struct UInt32__Array* keySlots;
-        struct Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Array* valueSlots;
+        struct Dictionary_2_System_UInt32_MapModule_ScenePointData___Array* valueSlots;
         int32_t touchedSlots;
         int32_t emptySlot;
         int32_t count;
@@ -6075,16 +6076,16 @@ namespace app {
         int32_t generation;
     };
 
-    struct Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG_ {
+    struct Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_MapModule_ScenePointData_ {
         void* klass;
         MonitorData* monitor;
-        struct Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Fields fields;
+        struct Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_MapModule_ScenePointData___Fields fields;
     };
 
     struct Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG_ {
         void* klass;
         MonitorData* monitor;
-        struct Dictionary_2_System_UInt32_MBHLOBDPKEC_BHKOIJIKDFG___Fields fields;
+        struct Dictionary_2_System_UInt32_MapModule_ScenePointData___Fields fields;
     };
 
     struct Notify {
@@ -6192,6 +6193,1254 @@ namespace app {
         PROP_PLAYER_HOME_COIN = 0x0000273a,
         PROP_PLAYER_WAIT_SUB_HOME_COIN = 0x0000273b,
         PROP_IS_AUTO_UNLOCK_SPECIFIC_EQUIP = 0x0000273c,
+    };
+
+    struct __declspec(align(8)) BaseComponentPlugin__Fields {
+        struct BaseComponent* owner;
+        bool isInited;
+        bool hasTick;
+        bool hasLateTick;
+        struct Int32__Array* _selfOnEventIDsCache;
+        bool _isSelfOnEventIDsCached;
+        struct Int32__Array* _selfOnEventResolvedIDsCache;
+        bool _isSelfOnEventResolvedIDsCached;
+        struct Int32__Array* _selfListenEventIDsCache;
+        bool _isSelfListenEventIDsCached;
+        bool _enabled;
+        bool _hasEnabledInited;
+    };
+
+    struct BKFGGJFIIKC__Fields {
+        struct BaseComponentPlugin__Fields _;
+        struct List_1_AJKACNNKJGG_* NGJOIGIBJNF;
+        float AFKPOKMADHA;
+    };
+
+    struct BKFGGJFIIKC {
+        void* klass;
+        MonitorData* monitor;
+        struct BKFGGJFIIKC__Fields fields;
+    };
+
+    struct __declspec(align(8)) List_1_AJKACNNKJGG___Fields {
+        struct AJKACNNKJGG__Array* _items;
+        int32_t _size;
+        int32_t _version;
+    };
+
+    struct List_1_AJKACNNKJGG_ {
+        void* klass;
+        MonitorData* monitor;
+        struct List_1_AJKACNNKJGG___Fields fields;
+    };
+
+    struct AJKACNNKJGG__Array {
+        void* klass;
+        MonitorData* monitor;
+        Il2CppArrayBounds* bounds;
+        il2cpp_array_size_t max_length;
+        struct AJKACNNKJGG* vector[32];
+    };
+
+    enum class GBCFKNINCEI__Enum : int32_t {
+        HAKNGINBAOC = 0x00000000,
+        NGEKCHOHNOP = 0x00000001,
+        ILNKLKMFPEK = 0x00000002,
+        FBMKDOBDCAH = 0x00000003,
+        DIFAKMKJBLO = 0x00000004,
+        ICHJIGAMFOE = 0x00000005,
+        BADAJKFEECO = 0x00000006,
+        PDNFEHPDLFJ = 0x00000007,
+        IONAKFGOPKC = 0x00000008,
+        LLMMGINHILB = 0x00000009,
+        PONJALOOAAJ = 0x0000000a,
+        BLBGDJOBDCA = 0x0000000b,
+        NNHMAMFCPKO = 0x0000000c,
+        LKFOOCDOEBK = 0x0000000d,
+        HNPDJAIAKIM = 0x0000000e,
+        CNEKEMFNBLD = 0x0000000f,
+        LJEAKMDCMFF = 0x00000010,
+    };
+
+    enum class ForwardType__Enum : int32_t {
+        MDJKFPAJIPO = 0x00000000,
+        JKBJKLLKPFH = 0x00000001,
+        LJICCBAPEDP = 0x00000002,
+        GPDNLDFDIOA = 0x00000003,
+        ABBONIGAGNB = 0x00000004,
+        CDNJACJJEPN = 0x00000005,
+        GPHBLIHPMIL = 0x00000006,
+        MAGABDNFBBM = 0x00000007,
+        BMPFCOOBMIL = 0x00000008,
+    };
+
+    struct __declspec(align(8)) NHHMPCAAKGF__Fields {
+        bool GNKMNOEMHEH;
+        struct Byte__Array* BEEHBAABKNH;
+    };
+
+    struct NHHMPCAAKGF {
+        void* klass;
+        MonitorData* monitor;
+        struct NHHMPCAAKGF__Fields fields;
+    };
+
+    struct HPAJEKCBMID__Fields {
+        struct MessageBase_1__Fields _;
+        GBCFKNINCEI__Enum FNCGEGNMAAD;
+        ForwardType__Enum PPBIOJBJAHO;
+        struct NHHMPCAAKGF* GEOJBAGNEDC;
+    };
+
+    struct HPAJEKCBMID {
+        struct HPAJEKCBMID__Class* klass;
+        MonitorData* monitor;
+        struct HPAJEKCBMID__Fields fields;
+    };
+
+    struct __declspec(align(8)) AJKACNNKJGG__Fields {
+        struct HPAJEKCBMID* PANOALIPEFB;
+        struct MAKEGCIBGMD* IHFPAPEDDBM;
+    };
+
+    struct AJKACNNKJGG {
+        void* klass;
+        MonitorData* monitor;
+        struct AJKACNNKJGG__Fields fields;
+    };
+
+    enum class EventID__Enum : int32_t {
+        None = 0x00000000,
+        EvtAbilityAudio = 0x00000001,
+        EvtAbilityStart = 0x00000002,
+        EvtApplyModifier = 0x00000003,
+        EvtAttachment = 0x00000004,
+        EvtAttackLanded = 0x00000005,
+        EvtAudio = 0x00000006,
+        EvtAvatarBecomeThreat = 0x00000007,
+        EvtAvatarAppear = 0x00000008,
+        EvtAvatarChanged = 0x00000009,
+        EvtAvatarDieEnd = 0x0000000a,
+        EvtAvatarEnterFocus = 0x0000000b,
+        EvtAvatarEquipChanged = 0x0000000c,
+        EvtAvatarExitFocus = 0x0000000d,
+        EvtAvatarInBattle = 0x0000000e,
+        EvtBeingHealed = 0x0000000f,
+        EvtBeingHit = 0x00000010,
+        EvtBeingHitEnd = 0x00000011,
+        EvtBeingHitResult = 0x00000012,
+        EvtBillboard = 0x00000013,
+        EvtBuffAdd = 0x00000014,
+        EvtBuffRemove = 0x00000015,
+        EvtCameraFrameTransition = 0x00000016,
+        EvtCameraMove = 0x00000017,
+        EvtCameraMoveClear = 0x00000018,
+        EvtCameraSceneLook = 0x00000019,
+        EvtCameraFieldLook = 0x0000001a,
+        EvtPlayerDie = 0x0000001b,
+        EvtChangeAvatar = 0x0000001c,
+        EvtChangeProp = 0x0000001d,
+        EvtCombatEnd = 0x0000001e,
+        EvtCrash = 0x0000001f,
+        EvtCreateGadgetToEquipPart = 0x00000020,
+        EvtCure = 0x00000021,
+        EvtBleeding = 0x00000022,
+        EvtCutsceneNotify = 0x00000023,
+        EvtDoSkillSucc = 0x00000024,
+        EvtForceUseSkillSucc = 0x00000025,
+        EvtEntityEffectChange = 0x00000026,
+        EvtElementReaction = 0x00000027,
+        EvtEntityEnterSurface = 0x00000028,
+        EvtEntityExitSurface = 0x00000029,
+        EvtEntityResetSurface = 0x0000002a,
+        EvtEquipAttached = 0x0000002b,
+        EvtEquipDestroy = 0x0000002c,
+        EvtEquipDetached = 0x0000002d,
+        EvtFallOnGround = 0x0000002e,
+        EvtFieldEnter = 0x0000002f,
+        EvtFieldExit = 0x00000030,
+        EvtFightPropChangeReason = 0x00000031,
+        EvtFlag = 0x00000032,
+        EvtForceQuitStoryCamera = 0x00000033,
+        EvtGadgetState = 0x00000034,
+        EvtGadgetEnableInteract = 0x00000035,
+        EvtHeadControl = 0x00000036,
+        EvtHeal = 0x00000037,
+        EvtHittingOther = 0x00000038,
+        EvtHittingScene = 0x00000039,
+        EvtHPChange = 0x0000003a,
+        EvtInteraction = 0x0000003b,
+        EvtInterFree = 0x0000003c,
+        EvtInterruptIntee = 0x0000003d,
+        EvtKill = 0x0000003e,
+        EvtMonsterTryDropEquip = 0x0000003f,
+        EvtOpenChest = 0x00000040,
+        EvtPickupGadget = 0x00000041,
+        EvtPickupGadgetCallBack = 0x00000042,
+        EvtRemoveModifier = 0x00000043,
+        EvtRevive = 0x00000044,
+        EvtRutimeIDRetarget = 0x00000045,
+        EvtDoTileAction = 0x00000046,
+        EvtSceneAudioPostMIDIEvent = 0x00000047,
+        EvtSetCameraLockTime = 0x00000048,
+        EvtShoppingFinish = 0x00000049,
+        EvtSkillStart = 0x0000004a,
+        EvtShareCDSkillStart = 0x0000004b,
+        EvtCameraLock = 0x0000004c,
+        EvtTeamChanged = 0x0000004d,
+        EvtReserveTeamChanged = 0x0000004e,
+        EvtThrowGadget = 0x0000004f,
+        EvtTransmitAvatar = 0x00000050,
+        EvtTurnDirection = 0x00000051,
+        EvtUIBackBlur = 0x00000052,
+        EvtWorktopOption = 0x00000053,
+        EvtLoopStart = 0x00000054,
+        EvtInterFinish = 0x00000055,
+        EvtInterDialogFinish = 0x00000056,
+        EvtAttachAnimatorParam = 0x00000057,
+        EvtEntityDestroy = 0x00000058,
+        EvtEntityTimeScaleChange = 0x00000059,
+        EvtEntityGhostChange = 0x0000005a,
+        EvtEntityActiveChange = 0x0000005b,
+        EvtEntityAliveChange = 0x0000005c,
+        EvtPlayStageChange = 0x0000005d,
+        EvtPlayUidChange = 0x0000005e,
+        EvtGlobalValueChange = 0x0000005f,
+        EvtGlobalValueCreated = 0x00000060,
+        EvtGlobalValueClear = 0x00000061,
+        EvtServerGlobalValueChange = 0x00000062,
+        EvtAppearFromServer = 0x00000063,
+        EvtAbilityRefreshed = 0x00000064,
+        EvtAISoundBroadcast = 0x00000065,
+        EvtAISoundAttraction = 0x00000066,
+        EvtAIDeadth = 0x00000067,
+        EvtBoundInCity = 0x00000068,
+        EvtEntityActive = 0x00000069,
+        EvtEntityCreated = 0x0000006a,
+        EvtEntityReady = 0x0000006b,
+        EvtEntityRemoved = 0x0000006c,
+        EvtEntityResetPos = 0x0000006d,
+        EvtEntityReconnect = 0x0000006e,
+        EvtEntitySynced = 0x0000006f,
+        EvtInputChange = 0x00000070,
+        EvtMsgBoard = 0x00000071,
+        EvtMultiplayer = 0x00000072,
+        EvtPlatformChangeRoute = 0x00000073,
+        EvtPlatformStartRoute = 0x00000074,
+        EvtPlatformStopRoute = 0x00000075,
+        EvtRoomVisiable = 0x00000076,
+        EvtSceneCollider = 0x00000077,
+        EvtSceneRouteChange = 0x00000078,
+        EvtShowReminder = 0x00000079,
+        EvtInterruptReminder = 0x0000007a,
+        EvtTemplateReminder = 0x0000007b,
+        EvtStageCreated = 0x0000007c,
+        EvtStageDestroying = 0x0000007d,
+        EvtStageProgress = 0x0000007e,
+        EvtStageReady = 0x0000007f,
+        EvtWillCreateStage = 0x00000080,
+        EvtQuestState = 0x00000081,
+        EvtWeatherChange = 0x00000082,
+        EvtThunder = 0x00000083,
+        EvtSkyThunder = 0x00000084,
+        EvtWindSeedNotify = 0x00000085,
+        EvtWindSeedMixinInfo = 0x00000086,
+        EvtTransportAvatar = 0x00000087,
+        EvtMonsterAppear = 0x00000088,
+        EvtShieldAdded = 0x00000089,
+        EvtWatcherSysAction = 0x0000008a,
+        EvtAreaLevelChange = 0x0000008b,
+        EvtAnimatorStateChanged = 0x0000008c,
+        EvtAnimatorTransitionFinish = 0x0000008d,
+        EvtStateIDChanged = 0x0000008e,
+        EvtEntityReadyPost = 0x0000008f,
+        EvtGainCrystalSeed = 0x00000090,
+        EvtMovingWaterStop = 0x00000091,
+        EvtMovingWaterChangeState = 0x00000092,
+        EvtAnimatorStateChangedBeforeClear = 0x00000093,
+        EvtSkillDepotIdChanged = 0x00000094,
+        EvtEntityAnimeLoadFinishPost = 0x00000095,
+        EvtEntityAnimeReadyPost = 0x00000096,
+        EvtAvatarDownRayTrigger = 0x00000097,
+        EvtGadgetChainLevelChange = 0x00000098,
+        EvtGadgetChainInteracted = 0x00000099,
+        EvtVehicleInteract = 0x0000009a,
+        EvtZoneInteract = 0x0000009b,
+        EvtChangeFly = 0x0000009c,
+        EvtElectricCoreMoveEnterP1 = 0x0000009d,
+        EvtElectricCoreMoveInterrupt = 0x0000009e,
+        EvtAvatarEnterViewBias = 0x0000009f,
+        EvtAvatarExitViewBias = 0x000000a0,
+        EvtWidgetActiveStateChange = 0x000000a1,
+        EvtMultiplayersCountChanged = 0x000000a2,
+        EvtWidgetExCDChange = 0x000000a3,
+        EvtPlayerLevelUpdate = 0x000000a4,
+        EvtNormalSceneTransPointUnlock = 0x000000a5,
+        EvtFireworkStartCountDown = 0x000000a6,
+        EvtTriggerUGCGadgetMove = 0x000000a7,
+        EvtSkillReady = 0x000000a8,
+        EvtCount = 0x000000a9,
+    };
+
+    enum class EventRemoteState__Enum {
+        Local = 0x00000000,
+        IsForwarded = 0x00000001,
+    };
+
+    struct __declspec(align(8)) BaseEvent__Fields {
+        EventID__Enum eventID;
+        uint32_t targetID;
+        bool canBeHandledImmediately;
+        bool canBeHandledByLogic;
+        bool canBeHandledByVisual;
+        bool canBeHandledByLogicResolved;
+        bool canBeHandledByDispatcher;
+        bool canBeHandledOnlyByListeners;
+        bool canBeHandledIfDie;
+        bool warnIfEntityMiss;
+        EventRemoteState__Enum remoteState;
+        ForwardType__Enum forwardType;
+        uint32_t fromPeerID;
+    };
+
+
+    struct AttackLanded__Fields {
+        struct BaseEvent__Fields _;
+        uint32_t _attackerID;
+        uint32_t _attackeeID;
+        struct AttackResult* _attackResult;
+    };
+
+    struct AttackLanded {
+        void* klass;
+        MonitorData* monitor;
+        struct AttackLanded__Fields fields;
+    };
+
+    enum class ElementReactionType__Enum : int32_t {
+        None = 0x00000000,
+        Explode = 0x00000001,
+        Stream = 0x00000002,
+        Burning = 0x00000003,
+        Burned = 0x00000004,
+        Wet = 0x00000005,
+        Overgrow = 0x00000006,
+        Melt = 0x00000007,
+        Freeze = 0x00000008,
+        AntiFire = 0x00000009,
+        Rock = 0x0000000a,
+        SlowDown = 0x0000000b,
+        Shock = 0x0000000c,
+        Wind = 0x0000000d,
+        Electric = 0x0000000e,
+        Fire = 0x0000000f,
+        Superconductor = 0x00000010,
+        SwirlFire = 0x00000011,
+        SwirlWater = 0x00000012,
+        SwirlElectric = 0x00000013,
+        SwirlIce = 0x00000014,
+        SwirlFireAccu = 0x00000015,
+        SwirlWaterAccu = 0x00000016,
+        SwirlElectricAccu = 0x00000017,
+        SwirlIceAccu = 0x00000018,
+        StickRock = 0x00000019,
+        StickWater = 0x0000001a,
+        CrystallizeFire = 0x0000001b,
+        CrystallizeWater = 0x0000001c,
+        CrystallizeElectric = 0x0000001d,
+        CrystallizeIce = 0x0000001e,
+        FrozenBroken = 0x0000001f,
+        StickGrass = 0x00000020,
+        Overdose = 0x00000021,
+    };
+
+    enum class AttackResult_EndureBreakLevel__Enum : uint32_t {
+        None = 0x00000000,
+        OnlyShake = 0x00000001,
+        Break = 0x00000002,
+    };
+
+    enum class AttackResult_AttackSpecific__Enum : int32_t {
+        None = 0x00000000,
+        Attack = 0x00000001,
+        MassiveAttack = 0x00000002,
+        Proto = 0x00000003,
+        AttackeeInvalid = 0x00000004,
+    };
+
+    struct AttackResult_HitCollsion {
+        uint32_t hitIndex;
+        struct Collider* hitCollider;
+        struct Vector3 hitDir;
+        struct Vector3 hitPoint;
+        float attackeeHitForceAngle;
+        float attackeeHitEntityAngle;
+    };
+
+    enum class TargetType__Enum : int32_t {
+        None = 0x00000000,
+        Alliance = 0x00000001,
+        Enemy = 0x00000002,
+        Self = 0x00000003,
+        SelfCamp = 0x00000004,
+        All = 0x00000005,
+        AllExceptSelf = 0x00000006,
+    };
+
+    struct Nullable_1_MoleMole_Config_TargetType_ {
+        TargetType__Enum value;
+        bool has_value;
+    };
+
+    enum class HitBoxType__Enum : int32_t {
+        Normal = 0x00000000,
+        Head = 0x00000001,
+    };
+
+
+    struct AbilityIdentifier {
+        void* instancedAbility;
+        void* instancedModifier;
+        int32_t localId;
+        uint32_t instancedAbilityID;
+        uint32_t abilityCasterID;
+        bool abilityIsValid;
+        uint32_t instancedModifierID;
+        uint32_t modifierOwnerID;
+        bool isModifierValid;
+    };
+
+    struct Nullable_1_MoleMole_AbilityIdentifier_ {
+        struct AbilityIdentifier value;
+        bool has_value;
+    };
+
+    enum class StrikeType__Enum : int32_t {
+        Default = 0x00000000,
+        Slash = 0x00000001,
+        Blunt = 0x00000002,
+        Pierce = 0x00000003,
+        Spear = 0x00000004,
+        None = 0x00000005,
+    };
+
+    enum class AttackType__Enum : int32_t {
+        None = 0x00000000,
+        Melee = 0x00000001,
+        Range = 0x00000002,
+        Default = 0x00000003,
+    };
+
+    struct __declspec(align(8)) ConfigAttackProperty__Fields {
+        void* _damagePercentage;
+        void* _damagePercentageRatio;
+        ElementType__Enum _elementType;
+        struct SimpleSafeFloat elementRankRawNum;
+        void* _elementDurability;
+        bool _overrideByWeapon;
+        bool _ignoreAttackerProperty;
+        StrikeType__Enum _strikeType;
+        struct SimpleSafeFloat enBreakRawNum;
+        struct SimpleSafeFloat enHeadBreakRawNum;
+        AttackType__Enum _attackType;
+        void* _damageExtra;
+        void* _bonusCritical;
+        void* _bonusCriticalHurt;
+        bool _ignoreLevelDiff;
+        bool _trueDamage;
+        bool MNLLIPMAHJM;
+    };
+
+    struct ConfigAttackProperty {
+        void* klass;
+        MonitorData* monitor;
+        struct ConfigAttackProperty__Fields fields;
+    };
+
+    enum class HitLevel__Enum : int32_t {
+        Mute = 0x00000000,
+        Shake = 0x00000001,
+        Light = 0x00000002,
+        Heavy = 0x00000003,
+        Air = 0x00000004,
+    };
+
+    enum class RetreatType__Enum : int32_t {
+        ByAttacker = 0x00000000,
+        ByHitDirection = 0x00000001,
+        ByTangent = 0x00000002,
+        ByOriginOwner = 0x00000003,
+        ByHitDirectionInverse = 0x00000004,
+        ByAttackerForward = 0x00000005,
+    };
+    struct __declspec(align(8)) ConfigHitPattern__Fields {
+        struct String* _onHitEffectName;
+        HitLevel__Enum _hitLevel;
+        struct EJABEMMALJF* _hitImpulseX;
+        struct EJABEMMALJF* _hitImpulseY;
+        struct String* _hitImpulseType;
+        struct NLDKMJMPBKE* _overrideHitImpulse;
+        RetreatType__Enum _retreatType;
+        struct SimpleSafeFloat hitHaltTimeRawNum;
+        struct SimpleSafeFloat hitHaltTimeScaleRawNum;
+        bool _canBeDefenceHalt;
+        bool _muteHitText;
+        bool _recurring;
+        bool LKMCCNGPNBA;
+    };
+
+    struct AttackResult_AttackHitEffectResult {
+        HitLevel__Enum hitEffLevel;
+        HitLevel__Enum originHitEffLevel;
+        float retreatStrength;
+        float airStrength;
+        float hitHaltTime;
+        float hitHaltTimeScale;
+    };
+
+
+    struct ConfigHitPattern {
+        void* klass;
+        MonitorData* monitor;
+        struct ConfigHitPattern__Fields fields;
+    };
+
+    struct SafeFloat {
+        int64_t _data1;
+        int64_t _data2;
+    };
+
+    struct SafeFloat__Boxed {
+        struct SafeFloat__Class* klass;
+        MonitorData* monitor;
+        struct SafeFloat fields;
+    };
+
+    struct __declspec(align(8)) CombatProperty__Fields {
+        struct SafeFloat maxHP;
+        struct SafeFloat HP;
+        struct SafeFloat elemEnergy;
+        struct SafeFloat maxElemEnergy;
+        struct SafeFloat attackBase;
+        struct SafeFloat attackPermanent;
+        struct SafeFloat defenseBase;
+        struct SafeFloat defensePermanent;
+        struct SafeFloat addHurtBase;
+        struct SafeFloat subHurtBase;
+        struct SafeFloat criticalHurtBase;
+        struct SafeFloat criticalBase;
+        struct SafeFloat antiCriticalBase;
+        struct SafeFloat physicalSubHurtBase;
+        struct SafeFloat fireSubHurtBase;
+        struct SafeFloat grassSubHurtBase;
+        struct SafeFloat waterSubHurtBase;
+        struct SafeFloat elecSubHurtBase;
+        struct SafeFloat windSubHurtBase;
+        struct SafeFloat iceSubHurtBase;
+        struct SafeFloat rockSubHurtBase;
+        struct SafeFloat physicalMuteHurtBase;
+        struct SafeFloat fireMuteHurtBase;
+        struct SafeFloat grassMuteHurtBase;
+        struct SafeFloat waterMuteHurtBase;
+        struct SafeFloat elecMuteHurtBase;
+        struct SafeFloat windMuteHurtBase;
+        struct SafeFloat iceMuteHurtBase;
+        struct SafeFloat rockMuetHurtBase;
+        struct SafeFloat physicalAddHurtBase;
+        struct SafeFloat fireAddHurtBase;
+        struct SafeFloat grassAddHurtBase;
+        struct SafeFloat waterAddHurtBase;
+        struct SafeFloat elecAddHurtBase;
+        struct SafeFloat windAddHurtBase;
+        struct SafeFloat iceAddHurtBase;
+        struct SafeFloat rockAddHurtBase;
+        struct SafeFloat hitHeadDmgRatioBase;
+        struct SafeFloat defenseIgnoreRatioBase;
+        struct SafeFloat defenseIgnoreDeltaBase;
+        struct SafeFloat elementMasteryBase;
+        struct SafeFloat elemReactSwirlFireDeltaBase;
+        struct SafeFloat elemReactSwirlIceDeltaBase;
+        struct SafeFloat elemReactSwirlWaterDeltaBase;
+        struct SafeFloat elemReactSwirlElectricDeltaBase;
+        struct SafeFloat elemReactSConductDeltaBase;
+        struct SafeFloat elemReactSteamDeltaBase;
+        struct SafeFloat elemReactMeltDeltaBase;
+        struct SafeFloat elemReactElectricDeltaBase;
+        struct SafeFloat elemReactBurnDeltaBase;
+        struct SafeFloat elemReactFreezeDeltaBase;
+        struct SafeFloat elemReactExplodeDeltaBase;
+        struct SafeFloat effectHit;
+        struct SafeFloat effectResist;
+        struct SafeFloat freezeResist;
+        struct SafeFloat torporResist;
+        struct SafeFloat dizzyResist;
+        struct SafeFloat freezeShorten;
+        struct SafeFloat torporShorten;
+        struct SafeFloat dizzyShorten;
+        struct SafeFloat healAddBase;
+        struct SafeFloat healedAddBase;
+        struct SafeFloat chargeEfficiencyBase;
+        struct SafeFloat skillCDMinusRatioBase;
+        struct SafeFloat shieldCostMinusRatioBase;
+        struct SafeFloat level;
+        struct SafeFloat exp;
+        ElementType__Enum elemType;
+        struct SafeFloat weight;
+        struct SafeFloat endure;
+        struct SafeFloat endureShake;
+        struct SafeFloat gaugeLength;
+        struct SafeFloat waneSpeed;
+        struct SafeFloat recoverTime;
+        struct SafeFloat endurance;
+        void* denyLockOn;
+        void* isInvincible;
+        void* islockHP;
+        void* isGhostToAllied;
+        void* isGhostToEnemy;
+        void* canTriggerBullet;
+        void* denyElementStick;
+        void* CAANFECBIIK;
+        void* _ability;
+        bool useAbilityProperty;
+    };
+
+    struct CombatProperty {
+        struct OIAODCALEJK__Class* klass;
+        MonitorData* monitor;
+        struct CombatProperty__Fields fields;
+    };
+
+    struct __declspec(align(8)) AttackResult__Fields {
+        struct CombatProperty* attackerCombatProperty;
+        struct CombatProperty* defenseCombatProperty;
+        bool MIDEAHDIOOF;
+        float damage;
+        float damageShield;
+        bool critical;
+        uint32_t criticalRand;
+        bool isResistText;
+        bool muteElementHurt;
+        struct String* onHitEffectName;
+        uint32_t attackTimeStamp;
+        struct Nullable_1_MoleMole_Config_TargetType_ targetType;
+        AttackResult_AttackSpecific__Enum attackType;
+        struct AttackResult_HitCollsion hitCollision;
+        HitBoxType__Enum hitPosType;
+        struct String* animEventId;
+        struct String* attackTag;
+        struct String* attenuationTag;
+        struct String* attenuationGroup;
+        uint32_t attenuationCount;
+        float elementdurabilityAttenuation;
+        struct Nullable_1_MoleMole_AbilityIdentifier_ abilityIdentifier;
+        bool useGadgetDamageAction;
+        uint32_t gadgetDamageActionIdx;
+        bool canHitHead;
+        float elementReductionRate;
+        float elementAmplifyRate;
+        ElementReactionType__Enum elementAmplifyType;
+        ElementReactionType__Enum elementAddhurtType;
+        ElementReactionType__Enum elementReactionType;
+        struct ConfigAttackProperty* _attackerAttackProperty;
+        void* modifiedAttackProperty;
+        float JGEEFLPDGJG;
+        ElementType__Enum _origElementType;
+        float _origElementDurability;
+        float endureDelta;
+        AttackResult_EndureBreakLevel__Enum endureBreak;
+        struct Vector3 resolvedDir;
+        struct ConfigHitPattern* attackerHitPattern;
+        struct AttackResult_AttackHitEffectResult hitEffResult;
+        bool attackerForceCameraShake;
+        void* attackerCameraShake;
+        float bulletFlyTime;
+        void* bulletWane;
+        int32_t rejectState;
+        struct JNHGGGCKJNA HBAKJGJFCNN;
+        struct JNHGGGCKJNA HFGHKDNEBNO;
+        struct JNHGGGCKJNA IDELOGMLAID;
+        struct JNHGGGCKJNA JMNHMNCPLLN;
+        struct JNHGGGCKJNA MFPKMMCPBIA;
+        struct Vector3 hitRetreatDir;
+    };
+
+    struct AttackResult {
+        void* klass;
+        MonitorData* monitor;
+        struct AttackResult__Fields fields;
+    };
+
+    struct AbilityIdentifier_1__Fields {
+        struct MessageBase_1__Fields _;
+        uint32_t instancedAbilityId_;
+        uint32_t abilityCasterId_;
+        int32_t localId_;
+        uint32_t instancedModifierId_;
+        uint32_t modifierOwnerId_;
+        bool isServerbuffModifier_;
+    };
+
+    struct AbilityIdentifier_1 {
+        void* klass;
+        MonitorData* monitor;
+        struct AbilityIdentifier_1__Fields fields;
+    };
+
+    struct AttackHitEffectResult__Fields {
+        struct MessageBase_1__Fields _;
+        uint32_t hitEffLevel_;
+        float retreatStrength_;
+        float airStrength_;
+        float hitHaltTime_;
+        float hitHaltTimeScale_;
+        uint32_t originalHitEffLevel_;
+    };
+
+    struct AttackHitEffectResult {
+        void* klass;
+        MonitorData* monitor;
+        struct AttackHitEffectResult__Fields fields;
+    };
+
+    struct AttackResult_1__Fields {
+        struct MessageBase_1__Fields _;
+        uint32_t attackerId_;
+        uint32_t defenseId_;
+        struct String* animEventId_;
+        struct AbilityIdentifier_1* abilityIdentifier_;
+        float damage_;
+        bool isCrit_;
+        void* hitCollision_;
+        uint32_t hitPosType_;
+        uint32_t endureBreak_;
+        struct Vector_1* resolvedDir_;
+        int32_t hitRetreatAngleCompat_;
+        struct AttackHitEffectResult* hitEffResult_;
+        uint32_t elementType_;
+        bool useGadgetDamageAction_;
+        uint32_t gadgetDamageActionIdx_;
+        bool isResistText_;
+        uint32_t criticalRand_;
+        float elementAmplifyRate_;
+        float damageShield_;
+        bool muteElementHurt_;
+        uint32_t amplifyReactionType_;
+        uint32_t addhurtReactionType_;
+        uint32_t bulletFlyTimeMs_;
+        uint32_t attackCount_;
+        uint32_t hashedAnimEventId_;
+        uint32_t attackTimestampMs_;
+        float endureDelta_;
+        uint32_t targetType_;
+        float elementDurabilityAttenuation_;
+        uint32_t HGENJBMMFDH;
+    };
+
+    struct AttackResult_1 {
+        void* klass;
+        MonitorData* monitor;
+        struct AttackResult_1__Fields fields;
+    };
+
+    enum class MotionState__Enum : int32_t {
+        MotionNone = 0x00000000,
+        MotionReset = 0x00000001,
+        MotionStandby = 0x00000002,
+        MotionStandbyMove = 0x00000003,
+        MotionWalk = 0x00000004,
+        MotionRun = 0x00000005,
+        MotionDash = 0x00000006,
+        MotionClimb = 0x00000007,
+        MotionClimbJump = 0x00000008,
+        MotionStandbyToClimb = 0x00000009,
+        MotionFight = 0x0000000a,
+        MotionJump = 0x0000000b,
+        MotionDrop = 0x0000000c,
+        MotionFly = 0x0000000d,
+        MotionSwimMove = 0x0000000e,
+        MotionSwimIdle = 0x0000000f,
+        MotionSwimDash = 0x00000010,
+        MotionSwimJump = 0x00000011,
+        MotionSlip = 0x00000012,
+        MotionGoUpstairs = 0x00000013,
+        MotionFallOnGround = 0x00000014,
+        MotionJumpUpWallForStandby = 0x00000015,
+        MotionJumpOffWall = 0x00000016,
+        MotionPoweredFly = 0x00000017,
+        MotionLadderIdle = 0x00000018,
+        MotionLadderMove = 0x00000019,
+        MotionLadderSlip = 0x0000001a,
+        MotionStandbyToLadder = 0x0000001b,
+        MotionLadderToStandby = 0x0000001c,
+        MotionDangerStandby = 0x0000001d,
+        MotionDangerStandbyMove = 0x0000001e,
+        MotionDangerWalk = 0x0000001f,
+        MotionDangerRun = 0x00000020,
+        MotionDangerDash = 0x00000021,
+        MotionCrouchIdle = 0x00000022,
+        MotionCrouchMove = 0x00000023,
+        MotionCrouchRoll = 0x00000024,
+        MotionNotify = 0x00000025,
+        MotionLandSpeed = 0x00000026,
+        MotionMoveFailAck = 0x00000027,
+        MotionWaterfall = 0x00000028,
+        MotionDashBeforeShake = 0x00000029,
+        MotionSitIdle = 0x0000002a,
+        MotionForceSetPos = 0x0000002b,
+        MotionQuestForceDrag = 0x0000002c,
+        MotionFollowRoute = 0x0000002d,
+        MotionNum = 0x0000002e,
+        BIFLKDNOHOB = 0x0000002f,
+        CMGCMJJMGNB = 0x00000030,
+        KFLKDNEMLKI = 0x00000031,
+        AHAMMGEHGOL = 0x00000032,
+        MACAJHAMOOM = 0x00000033,
+        CNBDLLBBLJI = 0x00000034,
+        ANAENMHBFLB = 0x00000035,
+        FBMKKPBOGGA = 0x00000036,
+    };
+
+    struct MotionInfo__Fields {
+        struct MessageBase_1__Fields _;
+        struct Vector_1* pos_;
+        struct Vector_1* rot_;
+        struct Vector_1* speed_;
+        MotionState__Enum motionState;
+        struct AGMFJIDELKK_OCMDGBELFPA_* params_;
+        struct Vector_1* refPos_;
+        uint32_t refId_;
+        uint32_t sceneTime_;
+        uint32_t intervalVelocity_;
+    };
+
+    struct MotionInfo {
+        void* klass;
+        MonitorData* monitor;
+        struct MotionInfo__Fields fields;
+    };
+
+    struct Singleton_1_EntityManager_ {
+        struct Singleton_1_AOFGMGFKONM___Class* klass;
+        MonitorData* monitor;
+    };
+
+    enum class EntityManager_EOMGOAGJEGM__Enum : int32_t {
+        None = 0x00000000,
+        MainAvatarInTeam = 0x00000001,
+        MainAvatarNotInTeam = 0x00000002,
+    };
+
+    struct Matrix4x4 {
+        float m00;
+        float m10;
+        float m20;
+        float m30;
+        float m01;
+        float m11;
+        float m21;
+        float m31;
+        float m02;
+        float m12;
+        float m22;
+        float m32;
+        float m03;
+        float m13;
+        float m23;
+        float m33;
+    };
+
+    struct __declspec(align(8)) List_1_MoleMole_BaseEntity___Fields {
+        struct BaseEntity__Array* _items;
+        int32_t _size;
+        int32_t _version;
+    };
+
+    struct List_1_MoleMole_BaseEntity_ {
+        struct List_1_MoleMole_BaseEntity___Class* klass;
+        MonitorData* monitor;
+        struct List_1_MoleMole_BaseEntity___Fields fields;
+    };
+
+    // AOFGMGFKONM__Fields
+    struct __declspec(align(8)) EntityManager__Fields {
+        bool useTickFunctionTick;
+        struct GLLDHKEGKOO* _normalEntityTickContext;
+        struct GLLDHKEGKOO* _lightInitEntityTickContext;
+        struct GLLDHKEGKOO* _syncInitEntityTickContext;
+        int32_t _unityThreadDoubleBufferIdx;
+        struct Queue_1_EAPPPCHHMHO___Array* _toDeleteEntitiesQueuesTripleBuffer;
+        struct AOFGMGFKONM_HOPBKHGBMON__Array* _entityTickGroupDoubleBuffer;
+        struct List_1_MoleMole_BaseEntity_* _entitiesLastFrame;
+        struct Stack_1_AOFGMGFKONM_KOAMGFFCMLC___Array* _entityNotReadyReasonsDoubleBuffer;
+        struct Dictionary_2_System_UInt32_AOFGMGFKONM_OFNENEANNFJ_* _entityAnimatorDefaultParamMap;
+        struct Dictionary_2_System_UInt32_Dictionary_2_System_Int32_List_1_KOAAPBFPDID_* _configID2cmdDic;
+        struct GODOBAAPHOE* _queryGroup;
+        struct List_1_MoleMole_BaseEntity_* _entities;
+        struct List_1_MoleMole_BaseEntity_* _entitiesToBeAdded;
+        struct List_1_MoleMole_BaseEntity_* _entitiesToBeSafeReady;
+        struct List_1_MoleMole_BaseEntity_* _entitiesToBeRemove;
+        struct List_1_MoleMole_BaseComponent_* _preTickComponents;
+        struct Queue_1_System_Int32_* _preTickComponentsEmptySlots;
+        struct Dictionary_2_System_UInt32_Dictionary_2_System_UInt32_System_Int32_* _preTickComponentDic;
+        struct List_1_System_Int32_* _toBeRemovePreTickComponents;
+        struct Dictionary_2_System_UInt32_BaseEntity_* _entityMap;
+        struct Dictionary_2_System_UInt32_CBIKBDBKLEG_* _undefined1;
+        struct AIMIKCDKCPB* _massiveEntities;
+        struct Dictionary_2_UnityEngine_GameObject_System_UInt32_* _gameObjectDic;
+        struct IList_1_BNJFBADMGGB_* _autoPickableComponents;
+        struct IList_1_PIOPEKNIECA_* _autoAttractComponents;
+        float _localEntitiesCheckTime;
+        struct List_1_MoleMole_BaseEntity_* _cachedEntityNoLRUSet;
+        float _cachedEntitiesCheckTime;
+        struct Dictionary_2_System_String_IList_1_EAPPPCHHMHO_* _tagEntities;
+        int32_t _entityCreationSFTimer_k__BackingField;
+        int32_t _initComponnetCommonFramingTimer;
+        int32_t _initLightComponentCommonFramingTimer;
+        bool isEntityReadyOnly;
+        struct JACGCOFGADI* BDIAJHFMGKO;
+        struct Action* onPostDestroy;
+        bool isDestroying;
+        int32_t _preIndex;
+        struct Queue_1_Dictionary_2_System_UInt32_System_Int32_* _preTickDicPool;
+        uint32_t _curTeamEntityID;
+        uint32_t _globalTeamEntityID;
+        uint32_t _curPlayTeamEntityID;
+        struct List_1_System_UInt32_* _remoteTeamsEntitiesList;
+        struct Dictionary_2_System_UInt32_System_UInt32_* _avatarIdMap;
+        struct Dictionary_2_System_UInt32_BaseEntity_* _avatarEntityMap;
+        struct List_1_MoleMole_BaseEntity_* _avatarEntities;
+        uint32_t _curAvatarEntityID;
+        struct List_1_MoleMole_BaseEntity_* _noCachedAvatarEntitys;
+        struct List_1_MoleMole_BaseEntity_* _undefined2;
+        uint64_t heroGuid;
+        EntityManager_EOMGOAGJEGM__Enum heroAvatarState;
+        struct BaseEntity* _paimonEntity;
+        struct DNPCBHKHGMO* _mainCamera;
+        bool _bUseOverrideCamera_k__BackingField;
+        struct Vector3 _overrideCameraPos_k__BackingField;
+        struct Matrix4x4 _overrideCameraMVPMatix_k__BackingField;
+        struct DNPCBHKHGMO* _subCamera;
+        struct ELIMODDNHMA* _levelEntity;
+        struct List_1_MoleMole_BaseEntity_* _entityListTemp;
+        struct List_1_MoleMole_BaseEntity_* _combatEntitiesTemp;
+        struct Dictionary_2_System_UInt32_System_Boolean_* _selectPickableShowDic;
+        int32_t _SFWatchFlushRemoveEntityHandle;
+        bool _nextForceFlushRemoveAllEntity;
+        int32_t lastPrintFrameCount;
+        bool _waitRemoveEntity;
+        struct List_1_System_UInt32_* _hideEntityList;
+        struct List_1_FAFJDONNAGM_* _curNpcBanConfigList;
+        struct AEOGIGLDIMO* _abilityProxyMgr;
+        struct HHGGFAAOGGB* _proxyBeforeTask;
+        struct Dictionary_2_EAPPPCHHMHO_GKKJOKKKJGJ_* _entityReuseCaches;
+        struct Dictionary_2_LNMILKNAFBC_NBJIGPLNOGM_* CFHDOLLAAJC;
+        struct Queue_1_EAPPPCHHMHO_* _destroyReuseQueue;
+        struct HashSet_1_System_UInt32_* _configIDBlackList;
+        struct IGroup__Array* _taskGroups;
+        struct List_1_UnityEngine_Vector3_* _sharedAvatarPositions;
+        struct List_1_UnityEngine_Vector3_* INCJLCCDLCA;
+        struct Vector3 EHPHEMBDNKO;
+    };
+
+    struct EntityManager {
+        void* klass;
+        MonitorData* monitor;
+        struct EntityManager__Fields fields;
+    };
+
+    struct __declspec(align(8)) ConfigEntityPoint__Fields {
+        struct String* _elementAbsorb;
+        struct String* _elementPendant;
+        struct String* _elementDrop;
+        struct String* _bulletAim;
+        struct String__Array* _hitPoints;
+        struct String__Array* _selectedPoints;
+    };
+
+    struct ConfigEntityPoint {
+        struct BHDHJEAKDNC__Class* klass;
+        MonitorData* monitor;
+        struct ConfigEntityPoint__Fields fields;
+    };
+
+    struct __declspec(align(8)) ConfigEntity__Fields {
+        struct ConfigEntityCommon* _common;
+        struct OOMADMNGOPK* OHMKDFJLIHG;
+        struct ConfigEntityPoint* _specialPoint;
+        struct EIIKFFGJJJD* MKBAMPIDIBD;
+        struct PFGAIOGIPMH* LNEIGFEAPGM;
+        struct FEDNDOCFHNO* EEGGELPHFEM;
+        struct DMLJIOKAOKK* DDILINPBMOC;
+        struct ConfigEntityTags* _entityTags;
+    };
+
+    struct __declspec(align(8)) ConfigEntityTags__Fields {
+        struct String__Array* KNOAKPHDIIK;
+    };
+
+    // BDFOCEBDAIA
+    struct ConfigEntityTags {
+        struct BDFOCEBDAIA__Class* klass;
+        MonitorData* monitor;
+        struct ConfigEntityTags__Fields fields;
+    };
+
+    // HCOMIOBNLBC
+    struct ConfigEntity {
+        struct ConfigEntity__Class* klass;
+        MonitorData* monitor;
+        struct ConfigEntity__Fields fields;
+    };
+
+    struct ConfigEffectAttachShape {
+        struct IPKPCAHLJMG__Class* klass;
+        MonitorData* monitor;
+    };
+
+    struct __declspec(align(8)) ConfigHeadControl__Fields {
+        bool _useHeadControl;
+        struct SimpleSafeFloat maxYawDegreeRawNum;
+        struct SimpleSafeFloat maxPitchDegreeRawNum;
+        struct SimpleSafeFloat speedRawNum;
+        struct SimpleSafeFloat weightSpeedRawNum;
+        bool _useWhiteAnimStates;
+        struct String__Array* _animStates;
+        struct String__Array* _dontAnimStates;
+    };
+
+    // OOMADMNGOPK
+    struct ConfigHeadControl {
+        struct OOMADMNGOPK__Class* klass;
+        MonitorData* monitor;
+        struct ConfigHeadControl__Fields fields;
+    };
+
+    struct __declspec(align(8)) ConfigEntityCommon__Fields {
+        struct ConfigEffectAttachShape* IJCEFOJNOHH;
+        struct SimpleSafeFloat massRawNum;
+        struct SimpleSafeFloat heightRawNum;
+        struct SimpleSafeFloat modelHeightRawNum;
+        struct SimpleSafeFloat viewSizeRawNum;
+        struct SimpleSafeFloat shadowViewSizeRatioRawNum;
+        struct SimpleSafeFloat overrideCullBoundsRadiusRawNum;
+        bool _affectedByWorld;
+        bool _checkInSurface;
+        struct SimpleSafeFloat scaleRawNum;
+        struct SimpleSafeFloat disableTickDistanceRawNum;
+        struct SimpleSafeFloat forcePauseTickDistanceRawNum;
+        bool _shouldPauseAnimatorBeforeReady;
+        bool _canTriggerElementReactionText;
+        bool _useGrassDisplacement;
+        bool _muteElementStickUI;
+        bool _hasAfterImage;
+        bool _useDynamicBoneMultiParams;
+        bool _enableCrashDamage;
+        bool _clearAnimatorOnSetLightDeactive;
+        bool _clearAIOnSetLightDeactive;
+        bool _useFinalIK;
+        struct SimpleSafeFloat AAFDECOKPNE;
+        struct SimpleSafeFloat GIDINJKEKGG;
+    };
+
+    // EMPFLEMHKJB
+    struct ConfigEntityCommon {
+        struct EMPFLEMHKJB__Class* klass;
+        MonitorData* monitor;
+        struct ConfigEntityCommon__Fields fields;
+    };
+
+    struct __declspec(align(8)) EntityExcelConfig__Fields {
+        struct SimpleSafeUInt32 idRawNum;
+        uint32_t _nameTextMapHash;
+        uint8_t _prefabPathHashPre;
+        uint32_t _prefabPathHashSuffix;
+        uint8_t _prefabPathRemoteHashPre;
+        uint32_t _prefabPathRemoteHashSuffix;
+        uint8_t _controllerPathHashPre;
+        uint32_t _controllerPathHashSuffix;
+        uint8_t _controllerPathRemoteHashPre;
+        uint32_t _controllerPathRemoteHashSuffix;
+        struct SimpleSafeUInt32 campIDRawNum;
+        struct String* _LODPatternName;
+    };
+
+    // HEAOOGNDHBD
+    struct EntityExcelConfig {
+        struct HEAOOGNDHBD__Class* klass;
+        MonitorData* monitor;
+        struct EntityExcelConfig__Fields fields;
+    };
+
+    enum class RemoveActorType__Enum : int32_t {
+        NONE = 0x00000000,
+        REMOVE = 0x00000001,
+        REMOVE_WITH_DISAPPEAR = 0x00000002,
+    };
+
+    enum class ActorType__Enum : int32_t {
+        INVALID = 0x00000000,
+        BASE_ENTITY = 0x00000001,
+        NPC_ACTOR = 0x00000002,
+        QUEST_ACTOR = 0x00000003,
+        GLOBAL_ACTOR = 0x00000004,
+        GADGET_ACTOR = 0x00000005,
+        SUB_GLOBAL_ACTOR = 0x00000006,
+        CUTSCENE_ACTOR = 0x00000007,
+        INTERACTION_ACTOR = 0x00000008,
+        NPCGLOBAL_ACTOR = 0x00000009,
+    };
+
+    // NJABADIGNBD
+    struct __declspec(align(8)) NJABADIGNBD__Fields {
+        int32_t _index_k__BackingField;
+        uint32_t _entityId;
+        ActorType__Enum _actorType_k__BackingField;
+        struct String* _alias_k__BackingField;
+        struct String* _metaPath_k__BackingField;
+        uint32_t _configId_k__BackingField;
+        struct Vector3 _initPos_k__BackingField;
+        struct Vector3 _initEuler_k__BackingField;
+        uint32_t _sceneId_k__BackingField;
+        uint32_t _roomId_k__BackingField;
+        uint32_t _questId_k__BackingField;
+        uint32_t _level_k__BackingField;
+        uint32_t _dropId_k__BackingField;
+        float _scale_k__BackingField;
+    };
+
+    struct LocalEntityInfoData {
+        struct NJABADIGNBD__Class* klass;
+        MonitorData* monitor;
+        struct NJABADIGNBD__Fields fields;
+    };
+
+    enum class GlobalVars_WorldType__Enum : int32_t {
+        Invalid = -1,
+        Login = 0x00000000,
+        Home = 0x00000001,
+        Level = 0x00000002,
+        DevLevel = 0x00000003,
+        BundleDownload = 0x00000004,
+        LevelTestScene = 0x00000005,
+        TestCutscene = 0x00000006,
+        ScenicScanLevel = 0x00000007,
+        TalkPreview = 0x00000008,
+        ProfileEffects = 0x00000009,
+        RagdollScene = 0x0000000a,
+        MoveTestScene = 0x0000000b,
+        PSPrepare = 0x0000000c,
+    };
+
+    // JJIFGBCGIBJ
+    struct __declspec(align(8)) JJIFGBCGIBJ__Fields {
+        struct String* _scenePath_k__BackingField;
+        GlobalVars_WorldType__Enum _worldType_k__BackingField;
+    };
+
+    struct GameWorld {
+        struct JJIFGBCGIBJ__Class* klass;
+        MonitorData* monitor;
+        struct JJIFGBCGIBJ__Fields fields;
+    };
+
+    struct GameManager__Fields {
+        struct MonoBehaviour__Fields _;
+        bool isDevLevel;
+        bool workOffline;
+        bool isOnlineMode;
+        bool isUnloadResource;
+        struct GameWorld* _curGameWorld;
+        bool _shouldForceFinishObjectPoolWarmUp;
+        int32_t _lastFixedUpdateFrameCount;
+        bool _isToGoBackHome;
+        bool _isToGoBundleDownload;
+        uint64_t FPIDOPPIIEN;
+        struct Coroutine* _setAndroidResolution;
+        struct SchedulerMgr* _schedulerMgr;
+        struct SchedulerGlobalMgr* _schedulerGlobalMgr;
+    };
+
+    struct GameManager__VTable {
+        VirtualInvokeData Equals;
+        VirtualInvokeData Finalize;
+        VirtualInvokeData GetHashCode;
+        VirtualInvokeData ToString;
+    };
+
+    struct GameManager__StaticFields {
+        struct GameManager* Instance;
+        struct DelegateBridge* FBPNECEFLOE;
+        struct DelegateBridge* HEDKJIHFKIF;
+        struct DelegateBridge* FIDKHJLHNGM;
+        struct DelegateBridge* NDAGNLKOLPE;
+        struct DelegateBridge* MMMJIKCBKBA;
+        struct DelegateBridge* FEMDJHNNGIP;
+        struct DelegateBridge* OFCBOBAPGNI;
+        struct DelegateBridge* MMIEBKHECHP;
+        struct DelegateBridge* NOGFLJJGCPM;
+        struct DelegateBridge* NAOBMCHCDNK;
+        struct DelegateBridge* ODFCDGOGKMK;
+        struct DelegateBridge* GOBHFHPLHNI;
+        struct DelegateBridge* CJMEPFLKHGC;
+        struct DelegateBridge* CCAIGGJLPCM;
+        struct DelegateBridge* DAENEDABADP;
+        struct DelegateBridge* FIJHOHDFHNM;
+        struct DelegateBridge* KNODOOBIECN;
+        struct DelegateBridge* IDNHIBHNLKN;
+        struct DelegateBridge* FKPGHAOKNNA;
+        struct DelegateBridge* OGIDMFALLCE;
+        struct DelegateBridge* HPMHMPBPIPH;
+        struct DelegateBridge* LKOKGFECHOC;
+        struct DelegateBridge* NEOMKFJBFMF;
+        struct DelegateBridge* PGNHHEOADGH;
+        struct DelegateBridge* PLCBHLBLAKM;
+        struct DelegateBridge* PODJJOCIKKE;
+        struct DelegateBridge* PJJFOIOBMNK;
+        struct DelegateBridge* BNGJOLFLBAO;
+        struct DelegateBridge* IBDCPHHFDOC;
+        struct DelegateBridge* GJFEALCDECN;
+        struct DelegateBridge* ADIEKJEJCFB;
+        struct DelegateBridge* NGKDGPHBKFF;
+        struct DelegateBridge* LAKJBLFGBKJ;
+        struct DelegateBridge* BCLEOEILLNC;
+        struct DelegateBridge* DAJMEAKBGAN;
+        struct DelegateBridge* BMOCIKJNBPF;
+        struct DelegateBridge* OLLLGOPIFOL;
+        struct DelegateBridge* FLPBGLJOHAM;
+        struct DelegateBridge* KLNKCCHCHNK;
+        struct DelegateBridge* FNPDOKCLJOO;
+        struct DelegateBridge* HHLEOPBAMLA;
+        struct DelegateBridge* JJCJBMMEANF;
+        struct DelegateBridge* OEEOBIOMLLN;
+        struct DelegateBridge* LELCNKFCKFJ;
+        struct DelegateBridge* INGDHADKJIA;
+        struct DelegateBridge* OGEJPOJNOJE;
+        struct DelegateBridge* KFFODBNIPKJ;
+        struct DelegateBridge* CBPFFHKDBBG;
+    };
+
+    struct GameManager__Class {
+        Il2CppClass_0 _0;
+        Il2CppRuntimeInterfaceOffsetPair* interfaceOffsets;
+        struct GameManager__StaticFields* static_fields;
+        const Il2CppRGCTXData* rgctx_data;
+        Il2CppClass_1 _1;
+        struct GameManager__VTable vtable;
+    };
+
+
+    struct GameManager {
+        struct GameManager__Class* klass;
+        MonitorData* monitor;
+        struct GameManager__Fields fields;
+    };
+
+    struct Singleton_1__Class {
+        Il2CppClass_0 _0;
+        Il2CppRuntimeInterfaceOffsetPair* interfaceOffsets;
+        void* static_fields;
+        const Il2CppRGCTXData* rgctx_data;
+        Il2CppClass_1 _1;
     };
 
 #if !defined(_GHIDRA_) && !defined(_IDA_)

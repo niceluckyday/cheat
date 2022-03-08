@@ -127,7 +127,11 @@ public:
 
 	// Player cheats
 	ToggleField(GodModEnable,          "God mode", "Player", false);
+	
+	//   Infinite stamina
 	ToggleField(InfiniteStaminaEnable, "Infinite stamina", "Player", false);
+	ToggleField(ISMovePacketMode,      "Move packet replacement", "Player", false);
+
 	ToggleField(InstantBowEnable,      "Instant bow", "Player", false);
 	ToggleField(NoCDEnable,            "No ability CD", "Player", false);
 	ToggleField(NoGravityEnable,       "No gravity", "Player", false);
@@ -137,23 +141,38 @@ public:
 	ToggleField(UnlockWaypointsEnable, "Unlock waypoints", "World", false);
 	ToggleField(DumbEnemiesEnabled,    "Dumb enemies", "World", false);
 
+	// Teleport to nearest oculi
+	Field(Hotkey, TeleportToOculi,     "TP to oculi key",          "Teleport", Hotkey());
+	Field(bool, ShowOculiInfo,      "Show nearest oculi info",  "Teleport", true);
+	
+	// Teleport to nearest chest
+	Field(Hotkey, TeleportToChest,     "TP to chest key",          "Teleport", Hotkey());
+	Field(bool, ShowChestInfo,         "Show nearest chest info",  "Teleport", true);
+	Field(bool, ShowOnlyUnlockedChest, "Show only unlocked chest", "Teleport", true);
+
 	// Teleportation
-	ToggleField(  MapTPEnable,         "Map teleport",         "Teleport", true);
-	Field(float,  TeleportHeight,      "Teleport height",      "Teleport", 500.0f);
-	Field(Hotkey, TeleportKey,         "Teleport key",         "Teleport", Hotkey('T', 0));
-	Field(bool,   UseOfflineTeleport,  "Use offline teleport", "Teleport", false);
+	ToggleField(  MapTPEnable,         "Map teleport",             "Teleport", true);
+	Field(bool,   CalcHeight,          "Auto detect ground height","Teleport", true);
+	Field(float,  TeleportHeight,      "Teleport height",          "Teleport", 500.0f);
+	Field(Hotkey, TeleportKey,         "Teleport key",             "Teleport", Hotkey('T', 0));
 
 	// Logging										       
 	Field(bool, ConsoleLogEnabled,     "Console logging", "Logging", true);
 	Field(bool, FileLogEnabled,        "File logging",    "Logging", false);
 
 	// General							
-	Field(bool,   DisableMhyprot,      "Disable protection",    "DLLUtil", true);
-	Field(Hotkey, MenuShowKey,         "Show cheat menu key",   "DLLUtil", Hotkey(VK_F1, 0));
-	Field(bool,   MoveStatusWindow,    "Move 'Active features'","DLLUtil", false);
+	Field(bool,   DisableMhyprot,      "Disable protection",    "General", true);
+	Field(Hotkey, MenuShowKey,         "Show cheat menu key",   "General", Hotkey(VK_F1, 0));
+	
+	Field(bool,   MoveStatusWindow,    "Move status window",    "General", false);
+	Field(bool,   ShowStatusWindow,    "Show status window",    "General", true);
+
+	Field(bool,   MoveInfoWindow,      "Move info window",      "General", false);
+	Field(bool,   ShowInfoWindow,      "Show info window",      "General", true);
 
 	// Not save configs
 	NoSaveField(bool, CheatWindowShowed, "", "", false);
+	NoSaveField(bool, OriginalInputBlock, "", "", true);
 
 	static void Init(const std::string configFile);
 

@@ -10,6 +10,8 @@
 #include <common/Logger.h>
 #include <common/GlobalEvents.h>
 
+#include "gui-util.h"
+
 #include "modules/IGUIModule.h"
 #include "modules/SettingsModule.h"
 #include "modules/TeleportModule.h"
@@ -21,16 +23,8 @@
 
 static bool prevMouseActive = false;
 static bool isShowMain = false;
-static bool isBlockInteraction = true;
 
-static std::vector<IGUIModule*> modules = {
-        new PlayerModule(),
-        new WorldModule(),
-        new TeleportModule(),
-        new SettingsModule(),
-        new HotkeysModule(),
-        new DebugModule()
-};
+static std::vector<IGUIModule*> modules = {};
 
 static StatusModule statusModule{};
 
@@ -38,10 +32,17 @@ static void OnKeyUp(short key, bool& cancelled);
 
 void InitializeWindow() 
 {
+    modules.push_back(new PlayerModule());
+    modules.push_back(new WorldModule());
+    modules.push_back(new TeleportModule());
+    modules.push_back(new SettingsModule());
+    modules.push_back(new HotkeysModule());
+    modules.push_back(new DebugModule());
+
     GlobalEvents::KeyUpEvent += FREE_METHOD_HANDLER(OnKeyUp);
 }
 
-void DrawWindow() 
+void DrawStatusWindow() 
 {
     // Drawing status window
     ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground |
@@ -56,10 +57,11 @@ void DrawWindow()
     statusModule.Draw();
 
     ImGui::End();
+}
 
+void DrawCheatWindow() 
+{
     static IGUIModule* current = modules[0];
-    if (!Config::cfgCheatWindowShowed.GetValue())
-        return;
 
     ImGui::SetNextWindowSize(ImVec2(600, 300), ImGuiCond_FirstUseEver);
 
@@ -72,7 +74,7 @@ void DrawWindow()
 
     ImGui::BeginGroup();
 
-    ImGui::Checkbox("Block key/mouse", &isBlockInteraction);
+    ImGui::Checkbox("Block key/mouse", Config::cfgOriginalInputBlock.GetValuePtr());
 
     if (ImGui::BeginListBox("##listbox 2", ImVec2(175, -FLT_MIN)))
     {
@@ -108,6 +110,69 @@ void DrawWindow()
     ImGui::End();
 }
 
+void DrawInfoWindow()
+{
+    // Drawing status window
+    ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration |
+        ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus |
+        ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse;
+
+    bool showAny = false;
+    for (const auto& mod : modules) 
+    {
+        if (mod->HasInfoToDraw())
+        {
+            showAny = true;
+            break;
+        }
+    }
+
+    if (!showAny && !Config::cfgMoveInfoWindow.GetValue())
+        return;
+
+    if (!Config::cfgMoveInfoWindow.GetValue()) 
+    {
+        flags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
+    }
+
+
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.04f, 0.05f, 0.05f, 0.90f));
+    ImGui::Begin("Info window", 0, flags);
+    ImGui::PopStyleColor();
+
+    if (showAny)
+    {
+        for (const auto& mod : modules)
+        {
+            if (mod->HasInfoToDraw())
+            {
+                BeginGroupPanel(mod->GetName().c_str(), ImVec2(-1, 0));
+
+                mod->DrawInfo();
+
+                EndGroupPanel();
+            }
+        }
+    }
+    else
+        ImGui::Text("Nothing here");
+
+    ImGui::End();
+    
+}
+
+void Draw() 
+{
+    if (Config::cfgCheatWindowShowed.GetValue())
+        DrawCheatWindow();
+
+    if (Config::cfgShowStatusWindow.GetValue())
+        DrawStatusWindow();
+
+    if (Config::cfgShowInfoWindow.GetValue())
+        DrawInfoWindow();
+}
+
 bool NeedInput() 
 {
     return Config::cfgCheatWindowShowed.GetValue();
@@ -115,10 +180,6 @@ bool NeedInput()
 
 static void OnKeyUp(short key, bool& cancelled)
 {
-    if (Config::cfgCheatWindowShowed.GetValue() && isBlockInteraction) {
-        cancelled = true;
-    }
-
     if (!Config::cfgMenuShowKey.GetValue().IsPressed(key))
         return;
 

@@ -21,7 +21,7 @@ DO_APP_FUNC(0x067D5030, void*, Object_obj_address, (Object* __this, MethodInfo* 
 DO_APP_FUNC(0x052CC900, Byte__Array*, LuaManager_LoadCustomLuaFile, (LuaManager* __this, String** filePath, bool* recycleBytes, MethodInfo* method));
 
 // ELIHHCKMPNE_ALEDHGAIDHN
-DO_APP_FUNC(0x0175BD10, void, GameLogin_CheckGameIntegrity, (GameLogin* __this, String* someString, uint32_t someInt, MethodInfo* method));
+DO_APP_FUNC(0x0175BD10, void, GameLogin_CheckGameIntegrity, (NetworkManager_1* __this, String* someString, uint32_t someInt, MethodInfo* method));
 
 DO_APP_FUNC(0x06C66FF0, String*, DateTime_ToLongDateString, (DateTime__Boxed* __this, MethodInfo* method));
 DO_APP_FUNC(0x06C67070, String*, DateTime_ToLongTimeString, (DateTime__Boxed* __this, MethodInfo* method));
@@ -30,7 +30,7 @@ DO_APP_FUNC(0x06C671C0, String*, DateTime_ToShortDateString, (DateTime__Boxed* _
 DO_APP_FUNC(0x06C67200, String*, DateTime_ToShortTimeString, (DateTime__Boxed* __this, MethodInfo* method));
 DO_APP_FUNC(0x06C67500, String*, DateTime_ToString, (DateTime__Boxed* __this, MethodInfo* method));
 
-DO_APP_FUNC(0x037B8580, void, GameLogin_SendInfo_2, (GameLogin* __this, GKOJAICIOPA* info, MethodInfo* method));
+DO_APP_FUNC(0x037B8580, void, GameLogin_SendInfo_2, (NetworkManager_1* __this, GKOJAICIOPA* info, MethodInfo* method));
 DO_APP_FUNC_METHODINFO(0x0B25C800, GameLogin_SendInfo_2__MethodInfo);
 
 DO_APP_FUNC(0x03747530, void, GKOJAICIOPA_JINHMKCMECH, (GKOJAICIOPA* __this, String* JOJAAEDKLKK, MethodInfo* method));
@@ -61,31 +61,26 @@ DO_APP_FUNC(0x01403060, float, Miscs_CalcCurrentWaterHeight, (void* __this, Vect
 DO_APP_FUNC(0x01402C90, float, Miscs_CalcCurrentGroundWaterHeight, (void* __this, float x, float z, MethodInfo* method));
 
 DO_APP_FUNC(0x069A58A0, Vector3, WorldShiftManager_GetRelativePosition, (void* __this, Vector3 pos, MethodInfo* method));
+DO_APP_FUNC(0x069A55E0, Vector3, WorldShiftManager_GetAbsolutePosition, (void* __this, Vector3 pos, MethodInfo* method));
 
 // Teleport maybe
 // DO_APP_FUNC(0x02B916D0, void, MJONCIENKGD_BLPCHLFNNCO, (MJONCIENKGD* __this, Vector3 OKHBIDCKLCD, float PGDBGIMJIFD, CMHGHBNDBMG_ECPNDLCPDIE__Enum CGKIEHJAOFM, MEPEDAIKBDI__Enum FFFNAKEFEOA, uint32_t AJILLILMGOK, uint32_t BDFOCMLADLB, MethodInfo* method));
 
 // Teleport event starting
-DO_APP_FUNC(0x0165CF20, void, TeleportStart_FJIDMGGJMEF_LFNOBNMJELN, (FJIDMGGJMEF* __this, LDFJBNJCCCE* KJGLIPHELMG, MethodInfo* method));
+DO_APP_FUNC(0x0165CF20, void, TeleportStart_FJIDMGGJMEF_LFNOBNMJELN, (LoadingManager* __this, LDFJBNJCCCE* KJGLIPHELMG, MethodInfo* method));
+DO_APP_FUNC(0x01658880, void, LoadingManager_PerformPlayerTransmit, (LoadingManager* __this, Vector3 targetPos, EnterType__Enum enterType, uint32_t token, CMHGHBNDBMG_ECPNDLCPDIE__Enum transType, uint32_t BDFOCMLADLB, MethodInfo* method));
+DO_APP_FUNC(0x01656B10, void, LoadingManager_RequestSceneTransToPoint, (LoadingManager* __this, uint32_t sceneId, uint32_t pointId, void* finishCallBackInForceDrag, MethodInfo* method));
 
-DO_APP_FUNC(0x01658880, void, DoTeleport_ECJDHNFLNAI, (FJIDMGGJMEF* __this, Vector3 position, MEPEDAIKBDI__Enum someEnum, uint32_t AJILLILMGOK, CMHGHBNDBMG_ECPNDLCPDIE__Enum teleportType, uint32_t BDFOCMLADLB, MethodInfo* method));
-
-DO_APP_FUNC(0x01656B10, void, SendTeleportToWaypoint_FJIDMGGJMEF_CBBKNIJAKDE, (FJIDMGGJMEF* __this, uint32_t waypointType, uint32_t waypointId, void* EDGMMFENFOB, MethodInfo* method));
-DO_APP_FUNC(0x01466540, MBHLOBDPKEC_BHKOIJIKDFG, GetWaypointInformation_MBHLOBDPKEC_BFKKBELGMLF, (MBHLOBDPKEC* __this, uint32_t waypointType, uint32_t waypointId, MethodInfo* method));
+DO_APP_FUNC(0x01466540, MapModule_ScenePointData, GetWaypointInformation_MBHLOBDPKEC_BFKKBELGMLF, (MBHLOBDPKEC* __this, uint32_t waypointType, uint32_t waypointId, MethodInfo* method));
 DO_APP_FUNC(0x014D3D80, void, TransportToMapMark_EAFLDMPLBHM_KBCBGBIDJMG, (EAFLDMPLBHM* __this, MonoMapMark* mark, MethodInfo* method));
 
-DO_APP_FUNC(0x01E9F520, EAPPPCHHMHO*, GetAvatar_Entity, (AOFGMGFKONM* __this, MethodInfo* method));
-DO_APP_FUNC(0x0152E720, void, Entity_SetPosition, (EAPPPCHHMHO* __this, Vector3 position, bool someBool, MethodInfo* method));
+DO_APP_FUNC(0x01E9F520, BaseEntity*, EntityManager_GetCurrentAvatar, (EntityManager* __this, MethodInfo* method));
+DO_APP_FUNC(0x0152E720, void, Entity_SetPosition, (BaseEntity* __this, Vector3 position, bool someBool, MethodInfo* method));
 DO_APP_FUNC(0x0749EB80, float, Vector3_Distance, (void* __this, Vector3 a, Vector3 b, MethodInfo* method));
 
 DO_APP_FUNC(0x04E86BD0, MonoMapMark*, MonoInLevelMapPage_AddMark, (MonoInLevelMapPage* __this, BAEABLAJDLM PHDBMGDLIDJ, MethodInfo* method));
 
 DO_APP_FUNC(0x014CC1F0, void, CreateCustomMapMark, (void* __this, Vector2 position, NOIPNNCFAAH__Enum iconType, MethodInfo* method));
-
-DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));
-DO_APP_FUNC_METHODINFO(0x0B20F1E8, Singleton_1_MBHLOBDPKEC__get_Instance__MethodInfo);
-DO_APP_FUNC_METHODINFO(0x0B1C5540, Singleton_1_FJIDMGGJMEF__get_Instance__MethodInfo);
-DO_APP_FUNC_METHODINFO(0x0B18EF88, Singleton_1_AOFGMGFKONM__get_Instance__MethodInfo);
 
 DO_APP_FUNC(0x074BA270, void, Cursor_set_visible, (void* __this, bool value, MethodInfo* method));
 DO_APP_FUNC(0x074BA220, void, Cursor_set_lockState, (void* __this, CursorLockMode__Enum value, MethodInfo* method));
@@ -108,23 +103,42 @@ DO_APP_FUNC(0x0141C060, int32_t, Miscs_GetBulletHitLayerMask, (void* __this, Met
 DO_APP_FUNC(0x0141F860, int32_t, Miscs_GetDynamicBarrierLayerMask, (void* __this, MethodInfo* method));
 DO_APP_FUNC(0x014021F0, float, Miscs_CalcCurrentGroundHeight_1, (void* __this, float x, float z, float rayStartHeight, float rayDetectLength, int32_t layer, MethodInfo* method));
 DO_APP_FUNC(0x014026D0, Vector3, Miscs_CalcCurrentGroundNorm, (void* __this, Vector3 pos, MethodInfo* method));
-DO_APP_FUNC(0x01554680, void, EAPPPCHHMHO__ctor, (EAPPPCHHMHO* __this, MethodInfo* method));
-DO_APP_FUNC(0x01554340, void, EAPPPCHHMHO_ReturnToObjectPool, (EAPPPCHHMHO* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x01554680, void, BaseEntity__ctor, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x01554340, void, BaseEntity_ReturnToObjectPool, (BaseEntity* __this, MethodInfo* method));
 
 DO_APP_FUNC(0x083FEF80, bool, Physics_Raycast_3, (void* __this, Vector3 origin, Vector3 direction, float maxDistance, MethodInfo* method));
 DO_APP_FUNC(0x0168AD40, void, BaseActor_SpawnMonster, (BaseActor* __this, uint32_t configID, uint32_t level, Vector3 bornPos, Vector3 bornEuler, float scale, uint32_t sceneID, String* alias, uint32_t questId, uint32_t roomId, MethodInfo* method));
 DO_APP_FUNC(0x074A1600, Vector3, Vector3_get_down, (void* __this, MethodInfo* method));
-//DO_APP_FUNC(0x0168AA30, void, BaseActor_SpawnLocalMonster, (BaseActor* __this, uint32_t configID, uint32_t level, Vector3 bornPos, float yaw, uint32_t dropID, float scale, String* alias, bool isElite, List_1_System_UInt32_* affixList, MethodInfo* method));
-//DO_APP_FUNC(0x0168A200, void, BaseActor_SpawnItem, (BaseActor* __this, uint32_t configID, Vector3 bornPos, Vector3 bornEuler, uint32_t sceneID, String* alias, int32_t bornType, uint32_t questId, uint32_t roomId, MethodInfo* method));
-//DO_APP_FUNC(0x0168A7B0, void, BaseActor_SpawnLocalItem, (BaseActor* __this, uint32_t configID, Vector3 bornPos, float yaw, String* alias, MethodInfo* method));
-//DO_APP_FUNC(0x01689EB0, void, BaseActor_SpawnGadget, (BaseActor* __this, uint32_t configID, Vector3 bornPos, Vector3 bornEuler, uint32_t sceneID, String* alias, uint32_t questId, uint32_t roomId, MethodInfo* method));
-//DO_APP_FUNC(0x01689B40, void, BaseActor_SpawnChest, (BaseActor* __this, uint32_t configID, Vector3 bornPos, Vector3 bornEuler, uint32_t sceneID, String* alias, uint32_t chestDropId, bool isShowCutscene, uint32_t questId, uint32_t roomId, MethodInfo* method));
 
 DO_APP_FUNC(0x02662A40, Notify, Notify_CreateNotify, (void* __this, AJAPIFPNFKP__Enum type, MethodInfo* method));
 
-DO_APP_FUNC(0x01407160, bool, Miscs_CheckTargetAttackable, (void* __this, EAPPPCHHMHO* attackerEntity, /* CBIKBDBKLEG */ EAPPPCHHMHO* targetEntity, MethodInfo* method));
+DO_APP_FUNC(0x01407160, bool, Miscs_CheckTargetAttackable, (void* __this, BaseEntity* attackerEntity, /* CBIKBDBKLEG */ BaseEntity* targetEntity, MethodInfo* method));
 
 DO_APP_FUNC(0x07B4A950, void, AvatarPropDictionary_SetItem, (Dictionary_2_JNHGGGCKJNA_JKNLDEEBGLL_* __this, JNHGGGCKJNA key, JKNLDEEBGLL value, MethodInfo* method));
 DO_APP_FUNC(0x047E6420, double, AvatarProp_DecodePropValue, (void* __this, JKNLDEEBGLL EODGKCKCMDM, MethodInfo* method));
 DO_APP_FUNC(0x02707260, PropType__Enum, AvatarProp_DecodePropType, (void* __this, JNHGGGCKJNA EODGKCKCMDM, MethodInfo* method));
+
 DO_APP_FUNC_METHODINFO(0x0B1E2F18, AvatarPropDictionary_SetItem__MethodInfo);
+
+DO_APP_FUNC(0x0349DB90, void, SendAttackEventToServer, (BKFGGJFIIKC* __this, AttackLanded* attackInfo, MethodInfo* method));
+DO_APP_FUNC(0x0349EF50, void, NetworkManager_1_RequestSceneEntityMoveReq, (BKFGGJFIIKC* __this, uint32_t entityId, MotionInfo* syncInfo, bool isReliable, uint32_t HAOCOEMOMBG, MethodInfo* method));
+DO_APP_FUNC(0x02AB8E70, float, SafeFloat_GetValue, (SafeFloat__Boxed* __this, MethodInfo* method));
+DO_APP_FUNC(0x02ABA450, void, SafeFloat_SetValue, (SafeFloat__Boxed* __this, float value, MethodInfo* method));
+DO_APP_FUNC(0x047D6B60, AttackResult_1*, AttackResult_FillProtoAttackResult, (AttackResult* __this, uint32_t attackerID, uint32_t defenseId, AttackResult_1* protoAttackResult, MethodInfo* method));
+DO_APP_FUNC(0x026B7290, void, VCBaseCombat_DoAttackLanded, (void* __this, AttackLanded* JGIKHCGLMOD, MethodInfo* method));
+DO_APP_FUNC(0x047D1540, AttackResult*, AttackResult_CreateAttackResult_2, (void* __this, AttackResult_1* FAMCJNOEOFB, MethodInfo* method));
+
+DO_APP_FUNC(0x0749AF60, Vector3, Transform_get_position, (Transform* __this, MethodInfo* method));
+DO_APP_FUNC(0x0749BAA0, void, Transform_set_position, (Transform* __this, Vector3 value, MethodInfo* method));
+
+DO_APP_FUNC(0x04A171C0, String*, EntityExcelConfig_GetName, (EntityExcelConfig* __this, MethodInfo* method));
+DO_APP_FUNC(0x0154C5A0, String*, BaseEntity_ToStringRelease, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x03629D00, Vector3, LocalEntityInfoData_GetTargetPos, (LocalEntityInfoData* __this, MethodInfo* method));
+DO_APP_FUNC(0x0165B8B0, bool, LoadingManager_IsFarTeleport, (LoadingManager* __this, uint32_t sceneId, Vector3 position, MethodInfo* method));
+DO_APP_FUNC(0x0306D160, void, GameManager_Update, (GameManager* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));
+DO_APP_FUNC_METHODINFO(0x0B20F1E8, Singleton_1_MBHLOBDPKEC__get_Instance__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B1C5540, Singleton_1_LoadingManager__get_Instance__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B18EF88, Singleton_1_EntityManager__get_Instance__MethodInfo);

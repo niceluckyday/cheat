@@ -80,7 +80,7 @@ static void OnRender(ID3D11DeviceContext* pContext) {
 	ImGui::NewFrame();
 	ImGui::PushFont(pFont);
 
-	DrawWindow();
+	Draw();
 
 	ImGui::PopFont();
 	ImGui::EndFrame();
@@ -106,13 +106,11 @@ static LRESULT CALLBACK hWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	bool canceled = false;
 	if (uMsg == WM_KEYUP)
 		canceled = !GlobalEvents::KeyUpEvent(wParam);
-	else if (uMsg == 0x202)
-		canceled = !GlobalEvents::KeyUpEvent(VK_LBUTTON);
 
-	if (NeedInput())
+	if (NeedInput()) 
 		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
-
-	if (canceled)
+	
+	if (NeedInput() && Config::cfgOriginalInputBlock.GetValue() || canceled)
 		return true;
 
 	return CallWindowProc(OriginalWndProcHandler, hWnd, uMsg, wParam, lParam);
@@ -129,7 +127,7 @@ static void SetupImGuiStyle()
 	colors[ImGuiCol_WindowBg] = ImVec4(0.04f, 0.05f, 0.05f, 1.00f);
 	colors[ImGuiCol_ChildBg] = ImVec4(0.05f, 0.06f, 0.07f, 1.00f);
 	colors[ImGuiCol_PopupBg] = ImVec4(0.06f, 0.06f, 0.06f, 0.94f);
-	colors[ImGuiCol_Border] = ImVec4(0.04f, 0.06f, 0.07f, 1.00f);
+	colors[ImGuiCol_Border] = ImVec4(0.11f, 0.16f, 0.19f, 1.00f);
 	colors[ImGuiCol_FrameBg] = ImVec4(0.08f, 0.11f, 0.12f, 1.00f);
 	colors[ImGuiCol_FrameBgHovered] = ImVec4(0.06f, 0.10f, 0.14f, 1.00f);
 	colors[ImGuiCol_FrameBgActive] = ImVec4(0.06f, 0.08f, 0.09f, 1.00f);

@@ -23,10 +23,12 @@ namespace app {
 
 // TypeInfo pointers
 #define DO_TYPEDEF(a, n) n ## __Class** n ## __TypeInfo
+#define DO_SINGLETONEDEF(a, n) Singleton_1__Class** n ## __TypeInfo
 namespace app {
 #include "il2cpp-types-ptr.h"
 }
 #undef DO_TYPEDEF
+#undef DO_SINGLETONEDEF
 
 // IL2CPP application initializer
 void init_il2cpp()
@@ -49,9 +51,11 @@ void init_il2cpp()
  	#undef DO_APP_FUNC_METHODINFO
 
 	// Define TypeInfo variables
-	#define DO_TYPEDEF(a, n) n ## __TypeInfo = (n ## __Class**) (baseAddress + a);
+	#define DO_SINGLETONEDEF(a, n) n ## __TypeInfo = (Singleton_1__Class**) (baseAddress + a)
+	#define DO_TYPEDEF(a, n) n ## __TypeInfo = (n ## __Class**) (baseAddress + a)
 	#include "il2cpp-types-ptr.h"
 	#undef DO_TYPEDEF
+	#undef DO_SINGLETONEDEF
 
 	uintptr_t unityPlayerAddress = il2cppi_get_unity_address();
 	// Define UnityPlayer functions

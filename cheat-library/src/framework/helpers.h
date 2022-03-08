@@ -13,7 +13,17 @@
 
 #include "il2cpp-metadata-version.h"
 
-#define GetSingleton(tpname) reinterpret_cast<app:: ## tpname ## *>(app::Singleton_GetInstance(nullptr, *app::Singleton_1_ ## tpname ## __get_Instance__MethodInfo))
+#define IsSingletonLoaded(className) (*app::Singleton_1_## className ##___TypeInfo != nullptr)
+#define DoInitializeClass(className, expr) (il2cpp_runtime_class_init(reinterpret_cast<Il2CppClass*>(*app::## className ##__TypeInfo)), expr)
+#define GetSingleton(tpname) DoInitializeClass(Singleton_1_## tpname ##_,\
+    reinterpret_cast<app:: ## tpname ## *>(app::Singleton_GetInstance(nullptr, *app::Singleton_1_ ## tpname ## __get_Instance__MethodInfo)))
+#define GetStaticFields(tpname) DoInitializeClass(tpname, (*app::## tpname ##__TypeInfo)->static_fields)
+
+#define COMMA ,
+#define GetUniCollection(field, collection) reinterpret_cast<collection*>(field)
+#define GetUniList(field, type) GetUniCollection(field, UniList<type>)
+#define GetUniDict(field, keyType, valueType) GetUniCollection(field, UniDict<keyType COMMA valueType>)
+#define GetUniArray(field, type) GetUniCollection(field, UniArray<type>)
 
 template<typename ... Args>
 std::string string_format(const std::string& format, Args ... args)
@@ -26,6 +36,7 @@ std::string string_format(const std::string& format, Args ... args)
     return std::string(buf.get(), buf.get() + size - 1); // We don't want the '\0' inside
 }
 
+
 template<typename ElementT>
 struct UniArray {
     void* klass;
@@ -33,7 +44,54 @@ struct UniArray {
     Il2CppArrayBounds* bounds;
     il2cpp_array_size_t max_length;
     ElementT vector[32];
+
+    typedef ElementT* iterator;
+    typedef const ElementT* const_iterator;
+
+    int length() const { return (bounds == nullptr) ? max_length : bounds->length; }
+
+    iterator begin() { return &vector[0]; }
+    const_iterator begin() const { return &vector[0]; }
+    iterator end() { return &vector[length()]; }
+    const_iterator end() const { return &vector[length()]; }
+    ElementT* operator[](int i) { return &vector[i]; }
+
+    std::vector<ElementT> vec()
+    {
+        auto result = std::vector<ElementT>(length());
+        for (auto i = begin(); i < end(); i++)
+            result.push_back(*i);
+        return result;
+    }
 };
+
+template <typename T>
+struct UniList
+{
+    void* klass;
+    void* monitor;
+    UniArray<T>* store;
+    int32_t size;
+    int32_t version;
+
+    typedef T* iterator;
+    typedef const T* const_iterator;
+
+    iterator begin() { return (*store)[0]; }
+    const_iterator begin() const { return (*store)[0]; }
+    iterator end() { return (*store)[size]; }
+    const_iterator end() const { return (*store)[size]; }
+
+    std::vector<T> vec()
+    {
+        auto result = std::vector<T>(size);
+        for (auto i = begin(); i < end(); i++)
+            result.push_back(*i);
+        return result;
+    }
+};
+
+
 
 template<typename KeyT, typename ValT>
 struct __declspec(align(8)) UniDict {
@@ -50,39 +108,37 @@ struct __declspec(align(8)) UniDict {
     void* hcp;
     void* serialization_info;
     int32_t generation;
-};
 
-
-template<typename KeyT, typename ValT>
-std::vector<std::pair<KeyT, ValT>> getUniDictPairs(UniDict<KeyT, ValT>* dictionary) {
-    auto pairs = std::vector<std::pair<KeyT, ValT>>();
+    std::vector<std::pair<KeyT, ValT>> pairs() 
+    {
+        auto pairs = std::vector<std::pair<KeyT, ValT>>();
 
 #define DictCheckNull(field, msg) if (field == nullptr) { LOG_WARNING("Failed to get dict pairs: %s", msg); return pairs; }
 
-    DictCheckNull(dictionary, "Dict pointer is null");
-    DictCheckNull(dictionary->linkSlots, "LinkSlots pointer is null.");
-    DictCheckNull(dictionary->keySlots, "Key slots is null.");
-    DictCheckNull(dictionary->valueSlots, "ValueSlots pointer is null.");
+        DictCheckNull(linkSlots, "LinkSlots pointer is null.");
+        DictCheckNull(keySlots, "Key slots is null.");
+        DictCheckNull(valueSlots, "ValueSlots pointer is null.");
 
 #undef DictCheckNull
 
-    int32_t next = 0;
-    const int HASH_FLAG = 0x80000000;
-    while (next < dictionary->touchedSlots)
-    {
-        int32_t cur = next++;
-        if ((dictionary->linkSlots->vector[cur].HashCode & HASH_FLAG) != 0)
+        int32_t next = 0;
+        const int HASH_FLAG = 0x80000000;
+        while (next < touchedSlots)
         {
-            pairs.push_back(
-                std::make_pair(
-                    dictionary->keySlots->vector[cur],
-                    dictionary->valueSlots->vector[cur]
-                )
-            );
+            int32_t cur = next++;
+            if ((linkSlots->vector[cur].HashCode & HASH_FLAG) != 0)
+            {
+                pairs.push_back(
+                    std::make_pair(
+                        keySlots->vector[cur],
+                        valueSlots->vector[cur]
+                    )
+                );
+            }
         }
+        return pairs;
     }
-    return pairs;
-}
+};
 
 // Helper function to get the module base address
 uintptr_t il2cppi_get_base_address();
