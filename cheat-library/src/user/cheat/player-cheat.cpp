@@ -81,9 +81,6 @@ static void NetworkManager_1_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __
         return;
     }
 
-    if (syncInfo->fields.motionState == app::MotionState__Enum::MotionFallOnGround)
-        return;
-
     // LOG_DEBUG("Movement packet: %s", magic_enum::enum_name(syncInfo->fields.motionState).data());
     if (Config::cfgInfiniteStaminaEnable.GetValue() && Config::cfgISMovePacketMode.GetValue())
     {
