@@ -6262,16 +6262,17 @@ namespace app {
         LJEAKMDCMFF = 0x00000010,
     };
 
+    // PEHBOMIKLHF__Enum
     enum class ForwardType__Enum : int32_t {
-        MDJKFPAJIPO = 0x00000000,
-        JKBJKLLKPFH = 0x00000001,
-        LJICCBAPEDP = 0x00000002,
-        GPDNLDFDIOA = 0x00000003,
-        ABBONIGAGNB = 0x00000004,
-        CDNJACJJEPN = 0x00000005,
-        GPHBLIHPMIL = 0x00000006,
-        MAGABDNFBBM = 0x00000007,
-        BMPFCOOBMIL = 0x00000008,
+        ForwardLocal = 0x00000000,
+        ForwardToAll = 0x00000001,
+        ForwardToAllExceptCur = 0x00000002,
+        ForwardToHost = 0x00000003,
+        ForwardToAllGuest = 0x00000004,
+        ForwardToPeer = 0x00000005,
+        ForwardToPeers = 0x00000006,
+        ForwardOnlyServer = 0x00000007,
+        ForwardToAllExistExceptCur = 0x00000008,
     };
 
     struct __declspec(align(8)) NHHMPCAAKGF__Fields {
@@ -6309,6 +6310,7 @@ namespace app {
         struct AJKACNNKJGG__Fields fields;
     };
 
+    // CMAGCELPFOP
     enum class EventID__Enum : int32_t {
         None = 0x00000000,
         EvtAbilityAudio = 0x00000001,
@@ -6482,11 +6484,13 @@ namespace app {
         EvtCount = 0x000000a9,
     };
 
+    // GDNBHGDOMHL__Enum
     enum class EventRemoteState__Enum {
         Local = 0x00000000,
         IsForwarded = 0x00000001,
     };
 
+    // NLHGPLIGNNJ
     struct __declspec(align(8)) BaseEvent__Fields {
         EventID__Enum eventID;
         uint32_t targetID;
@@ -6502,7 +6506,6 @@ namespace app {
         ForwardType__Enum forwardType;
         uint32_t fromPeerID;
     };
-
 
     struct AttackLanded__Fields {
         struct BaseEvent__Fields _;
@@ -6810,6 +6813,7 @@ namespace app {
         struct CombatProperty__Fields fields;
     };
 
+    // JKIICEAEJPO
     struct __declspec(align(8)) AttackResult__Fields {
         struct CombatProperty* attackerCombatProperty;
         struct CombatProperty* defenseCombatProperty;
@@ -6863,7 +6867,8 @@ namespace app {
         struct JNHGGGCKJNA MFPKMMCPBIA;
         struct Vector3 hitRetreatDir;
     };
-
+    
+    // JKIICEAEJPO
     struct AttackResult {
         void* klass;
         MonitorData* monitor;
@@ -7443,6 +7448,503 @@ namespace app {
         Il2CppClass_1 _1;
     };
 
+    // PNEPINGJIGK__Enum
+    enum class FacingMoveType__Enum : int32_t {
+        ForwardOnly = 0x00000000,
+        ForwardBackward = 0x00000001,
+        FourDirection = 0x00000002,
+        LeftRight = 0x00000003,
+        AirBlend = 0x00000004,
+    };
+
+    // HFEHGGJADHF__Enum
+    enum class WaterResult__Enum : int32_t {
+        SAFE = 0x00000000,
+        ALMOST_IN_OR_OUT_WATER = 0x00000001,
+        BOUND_EXCEEDED = 0x00000002,
+    };
+
+    // JEILBENMJFJ__Enum
+    enum class MonsterSizeType__Enum : int32_t {
+        NormalHumanoidType = 0x00000000,
+        StoopType = 0x00000001,
+        StrongHumanoidType = 0x00000002,
+        SlimeType = 0x00000003,
+        OtherType = 0x00000063,
+    };
+
+    enum class PositionModifyState__Enum : int32_t {
+        All = 0x00000000,
+        Walk = 0x00000001,
+        Run = 0x00000002,
+        None = 0x00000003,
+    };
+
+    struct RaycastHit {
+        struct Vector3 m_Point;
+        struct Vector3 m_Normal;
+        int32_t m_FaceID;
+        int32_t m_InternalFaceID;
+        float m_Distance;
+        struct Vector2 m_UV;
+        int32_t m_InstanceID;
+        int32_t m_ColliderTag;
+        int32_t m_SurfaceType;
+        int32_t m_Layer;
+        struct Collider* m_Collider;
+    };
+
+    struct Nullable_1_Boolean_ {
+        bool value;
+        bool has_value;
+    };
+
+    struct __declspec(align(8)) BaseComponent__Fields {
+        uint32_t componentRuntimeID;
+        uint32_t entityRuntimeID;
+        bool preTick;
+        int32_t order;
+        struct ComponentManager* _componentManager;
+        struct BaseEntity* _entity;
+        bool _isToBeRemoved;
+        bool _enabled;
+        bool hasTick;
+        bool hasLateTick;
+        bool _selfHasTick;
+        bool _selfHasLateTick;
+        bool _managerTick;
+        bool _managerLateTick;
+        struct List_1_System_Int32_* onEventIDs;
+        struct List_1_System_Int32_* listenEventIDs;
+        struct Int32__Array* _selfOnEventIDsCache;
+        bool _isSelfOnEventIDsCached;
+        struct Int32__Array* _selfListenEventIDsCache;
+        bool _isSelfListenEventIDsCached;
+        struct Action* preInitCallback;
+        struct Action* initCallback;
+        bool _canTickIfDisable;
+        bool canTickIfDie;
+        bool canHandleEventIfDie;
+        bool _hasEnabledInited;
+        int32_t _tickIntervalRatio;
+        int32_t _lastTickInterval;
+        struct Action_1_Single_* _tickMethodForEntityTickManager;
+        struct Nullable_1_Boolean_ _isTickableForEntityTickManager;
+        struct Action_1_Single_* _lateTickMethodForEntityTickManager;
+        struct Nullable_1_Boolean_ _isLateTickableForEntityTickManager;
+        bool needRetarget;
+        bool isInited;
+        bool isPreInited;
+        bool hasCallEntityReady;
+        bool _isDestroied;
+        struct Dictionary_2_System_Type_MoleMole_BaseComponentPlugin_* _pluginMap;
+        struct List_1_MoleMole_BaseComponentPlugin_* _pluginList;
+        struct List_1_MoleMole_BaseComponentPlugin_* _tickPlugins;
+        struct List_1_MoleMole_BaseComponentPlugin_* _lateTickPlugins;
+        struct Dictionary_2_System_Type_System_Int32_* _disableNoTickPlugins;
+        struct Dictionary_2_System_Type_System_Int32_* _disableNoLateTickPlugins;
+        struct Dictionary_2_System_Int32_MoleMole_BaseComponentPlugin_* _onEventPluginMap;
+        struct Dictionary_2_System_Int32_List_1_MoleMole_BaseComponentPlugin_* _onEventPluginsMap;
+        struct Dictionary_2_System_Int32_MoleMole_BaseComponentPlugin_* _listenEventPluginMap;
+        struct Dictionary_2_System_Int32_List_1_MoleMole_BaseComponentPlugin_* _listenEventPluginsMap;
+        bool _bIgnoreIntervalTick_k__BackingField;
+        int32_t _greaterToDisableInterval_k__BackingField;
+    };
+
+    // FJBDIDKHCPN__Fields
+    struct VCBase__Fields {
+        struct BaseComponent__Fields _;
+    };
+
+    // FJBDIDKHCPN
+    struct VCBase {
+        struct FJBDIDKHCPN__Class* klass;
+        MonitorData* monitor;
+        struct VCBase__Fields fields;
+    };
+
+    // ECBDOKJDPGH__Fields
+    struct VCBaseMove__Fields {
+        struct VCBase__Fields _;
+        struct EOOCBMLHHIF* _moveData;
+        struct CMNPNEKDAIC* _configMove_k__BackingField;
+        struct DFOFDDIAOID* referenceSystem;
+        uint32_t referenceSystemId;
+        uint32_t FOKGDKKILEH;
+        struct Vector3 curLocalPositionRS;
+        struct Vector3 lastLocalPositionRS;
+        bool curRS;
+        bool lastRS;
+        struct Collider* referenceCol;
+        bool referenceSystemNewAttached;
+        struct Transform* _transform;
+        struct EFEBGPHLEBK* controlData;
+        struct Action* onFallOnGround;
+        float dropGravityAcceleration;
+        float _gravityScale;
+        struct MCJJMMHFGPF__Array* ILFNNBCPBBM;
+        bool _needFaceToAnimParam_k__BackingField;
+        struct BOGIMDEGABM* _moveCollider;
+        bool _moveColliderEnable;
+        struct LAGCKJPGJIE* _velocityDetect;
+        bool _IsInAirflowAcc_k__BackingField;
+        struct Dictionary_2_System_Int32_System_Boolean_* _animatorParamCache;
+        bool AOIMJFGIDJA;
+        struct OEGJKMILHEO* _velocityForceMove;
+        struct Vector3 _currentVelocityForce;
+        int32_t _lastGetVelocityForceFrame;
+        bool _keepInAirVelocityForce;
+        struct PEFIHPNNKMH* syncPlugin;
+    };
+
+    struct VCBaseMove {
+        struct VCBaseMove__Class* klass;
+        MonitorData* monitor;
+        struct VCBaseMove__Fields fields;
+    };
+
+    struct VCNonHumanoidMoveBase__Fields {
+        struct VCBaseMove__Fields _;
+        float maxMoveUphillSlope;
+        float maxSlipSpeed;
+        float yawSpeedRatio;
+        uint32_t _moveLodValue;
+        uint32_t _closeToGroundFrequency;
+        uint32_t _currentCloseToGroundCount;
+        struct Vector3 _lastDetectGroundPos;
+        float avatarHeight;
+        float avatarRadius;
+        float _airDistance;
+        struct Rigidbody* _rigidbody;
+        bool canSteerInCurrentState;
+        struct Animator* _animator;
+        struct RuntimeAnimatorController* _cacheRuntimeAnimatorCtrl;
+        float _currTilt;
+        float _lastTimeTilt;
+        struct EFEBGPHLEBK* _controlData;
+        struct AnimatorController* _animatorController;
+        bool _isInEmptyAnimatorControllerMode;
+        struct Vector3 _lastPostion;
+        float _currentGroundHeight;
+        float _currentWaterHeight;
+        bool _isInAir;
+        bool _groundHit;
+        bool _waterHit;
+        struct RaycastHit _groundHitResult;
+        struct Vector3 _extraCloseToGroundVelocity;
+        struct Vector3 _cachedPosition;
+        struct Vector3 _startPosition;
+        struct Quaternion _cachedRotation;
+        bool _setRotation;
+        bool exactMove;
+        struct Vector3 exactMoveTarget;
+        struct Action_2_EAPPPCHHMHO_Boolean_* _onInAirStateChanged;
+        bool hasExtraGravityChange;
+        float extraGravityChangeVal;
+        struct Vector3 _dampVelocity;
+        struct NAPAIPLOOAL* _lcAblityState;
+    };
+
+    
+    struct VCAnimatorMove__Fields {
+        struct VCNonHumanoidMoveBase__Fields _;
+        struct FACKJKDBOPM* _cache;
+        struct EIFKEDPIPCM* _data;
+        struct Vector3 _lastHeadPosition;
+        int32_t headIndex;
+        int32_t cacheBonePosCount;
+        struct VCAnimatorMove_FKMNEHFHOBL__Array* cachedPosArray;
+        float stepTest;
+        float changeLerp;
+        bool _isInSlip;
+        WaterResult__Enum _isInWater;
+        struct Vector3 _teleportToPoint;
+        struct Vector3 _teleportToFwd;
+        bool _applyGravityInAir_k__BackingField;
+        bool _isInAirMove;
+        bool forceSetAirMove;
+        bool remoteForceUseAnimatorVel;
+        bool _enableAirTilt_k__BackingField;
+        struct Vector3 _targetPointForTilt_k__BackingField;
+        bool _airMoveFollowAnimationBySkill;
+        bool _airMoveFollowAnimationByMove;
+        bool _airMoveFollowAnimationByAnimation;
+        bool _disableAnimatorTranslation;
+        struct DKBOGPNAHKJ* _smoothSpeed;
+        bool _moveOnGround;
+        bool _moveOnWater;
+        float _moveOnWaterDepth;
+        float _targetYCoordinate;
+        bool _hasTargetY;
+        bool _targetWater;
+        float _modelHeight;
+        float _predictWaterHeight;
+        float _predictGroundHeight;
+        bool _predictWaterHit;
+        bool _predictGroundHit;
+        FacingMoveType__Enum _facingMoveType;
+        MonsterSizeType__Enum _monsterSizeType;
+        PositionModifyState__Enum _defaultPositionModifyState;
+        struct Dictionary_2_System_UInt32_PCNJDLLFAGL_* _positionModifyStateMap;
+        int32_t _returnDirectlyCount;
+        bool _groundFollowAnimRotation;
+        float _groundRotationScale;
+        bool _handleAnimatorStateImmediately;
+        struct Transform* _bip001;
+        struct Quaternion _lastBipRotation;
+        bool _setMoveOnWaterBeforePrepare;
+        bool _preSetMoveOnWaterVal;
+        float _pushColRadiusRatio;
+        bool _destroyRockWhenInit;
+        struct HKJJLCENDJM* _scenePropPlugin;
+        struct BoneFollowMove* _boneChains;
+        float _boneChainLerpRatio;
+        int32_t _lastAnimHash;
+        struct MonsterBoneChainAnimationData* _boneChainData;
+        bool _boneChainMoveByAnimation;
+        bool _enableBoneFollowMove;
+        float _chainLengthRandomRangeUp;
+        float _chainLengthRandomRangeLow;
+        float _chainLengthRandomInterval;
+        float _currentChainLengthRandomValue;
+        float _lastChainLengthRandomTime;
+        float extendDistLerpRatio;
+        bool _enableVelocityDetect_k__BackingField;
+        struct Vector2 _currentGeneralSteerAirPose;
+        float flySmoothSpeed;
+        int32_t dropHash;
+        bool _currentIsIce;
+        int64_t _currentIceId;
+        float _groundRayTempExtraLength;
+        bool _groundInfoRefreshed_k__BackingField;
+        bool _isUsingAnimatorDeltaMode;
+        bool canSyncMove;
+        bool _firstTick;
+        struct Vector3 _positionAfterInit;
+        bool _syncFirstEnter;
+        bool _syncFirstEnterNeedMove;
+        bool _lastCanSyncMove;
+        float _cannotSyncMoveTime;
+        struct Vector3 _syncAirMoveVelocity;
+        struct Vector3 _syncVelocity;
+        struct GJPJPKFOHNG* _vcSyncAnimator;
+        MotionState__Enum _lastNonStandbyMotion;
+
+    };
+
+    struct VCAnimatorMove {
+        struct VCAnimatorMove__Class* klass;
+        MonitorData* monitor;
+        struct VCAnimatorMove__Fields fields;
+    };
+
+    // EELCBMGPNGP__Enum
+    enum class DieStateFlag__Enum : int32_t {
+        None = 0x00000000,
+        FrozenToDeath = 0x00000001,
+        BurningToAshes = 0x00000002,
+        DieFall = 0x00000003,
+        DieDrawn = 0x00000004,
+        DieAbyss = 0x00000005,
+        Broken = 0x00000006,
+        PetrifiedToDeath = 0x00000007,
+    };
+
+    struct LCBase__Fields {
+        struct BaseComponent__Fields _;
+        struct Dictionary_2_System_Int32_MoleMole_BaseComponentPlugin_* _onEventResolvedPluginMap;
+        struct Dictionary_2_System_Int32_List_1_MoleMole_BaseComponentPlugin_* _onEventResolvedPluginsMap;
+        struct List_1_System_Int32_* onEventResolvedIDs;
+        struct Int32__Array* _selfOnEventResolvedIDsCache;
+        bool _isSelfOnEventResolvedIDsCached;
+    };
+
+    // DAGIDCFOCEA_AAEOBBJMCJM
+    struct LCBaseCombat_AttackTarget {
+        uint32_t runtimeID;
+        struct String* lockedPoint;
+    };
+
+    // DAGIDCFOCEA__Fields
+    struct LCBaseCombat__Fields {
+        struct LCBase__Fields _;
+        struct OIAODCALEJK* _combatProperty_k__BackingField;
+        struct NKOKPMBFHHP* configCombat;
+        struct Action_1_DAGIDCFOCEA_* onHPChanged;
+        bool needCallHpChanged;
+        struct LDIPNDDMEIB* _massiveOpBatch;
+        DieStateFlag__Enum dieStateFlag;
+        TargetType__Enum targetType;
+        bool _addToCombatEntities;
+        struct BJJHKLABCAB* _vcCombat;
+        struct Dictionary_2_System_UInt32_DAGIDCFOCEA_PODMHHHIOPN_* _attackeeEntityIds;
+        uint32_t _lastTriggerAttackeeEntityId;
+        int32_t _attackTagTriggeredFrameCount;
+        struct HashSet_1_System_String_* _attackTagTriggeredThisFrame;
+        struct LCBaseCombat_AttackTarget _attackTarget;
+        bool _isSafeDestroied;
+        float _recoverEndureTime;
+        struct ELJAMNKBAIH* _attackAttenuation;
+        struct GMHECGHONEK* _combatLock_k__BackingField;
+        struct OIMPBEBEGAK* GODIKJNJBKO;
+    };
+
+    // DAGIDCFOCEA
+    struct LCBaseCombat {
+        struct DAGIDCFOCEA__Class* klass;
+        MonitorData* monitor;
+        struct LCBaseCombat__Fields fields;
+    };
+    
+    // LDHCNBCCEKM_EHNNABNDBJN__Enum
+    enum class EvtFallOnGround_GroundType__Enum : int32_t {
+        Land = 0x00000000,
+        Water = 0x00000001,
+        LandUnderWater = 0x00000002,
+    };
+    
+    // LDHCNBCCEKM__Fields
+    struct EvtFallOnGround__Fields {
+        struct BaseEvent__Fields _;
+        EvtFallOnGround_GroundType__Enum groundType;
+        struct Vector3 velocity;
+        float waterDepth;
+    };
+
+    struct EvtFallOnGround {
+        struct LDHCNBCCEKM__Class* klass;
+        MonitorData* monitor;
+        struct EvtFallOnGround__Fields fields;
+    };
+
+    struct CPJFKGCPOOM {
+        uint32_t HFEHLAGCDLL;
+    };
+
+    struct MPCODFPNKEE {
+        struct CPJFKGCPOOM KEAIBAEFDCH;
+        struct CPJFKGCPOOM KHIAHKLJNNP;
+    };
+
+    enum class GMCMALOBOOP__Enum : int32_t {
+        BODY_NONE = 0x00000000,
+        BODY_BOY = 0x00000001,
+        BODY_GIRL = 0x00000002,
+        BODY_LADY = 0x00000003,
+        BODY_MALE = 0x00000004,
+        BODY_LOLI = 0x00000005,
+    };
+
+    struct JCPMAJCIDDL_PoseParameter {
+        float length;
+        float startRotate;
+        float endRotate;
+        float closeToGround;
+        float enableMove;
+        float enableLeftFootIK;
+        float enableRightFootIK;
+        float animatorPose;
+        float distUp;
+        float distForward;
+        bool enable50Blend;
+    };
+
+    struct VCHumanoidMove__Fields {
+        struct VCBaseMove__Fields _;
+        GMCMALOBOOP__Enum moveModelType;
+        float minClimbSlope;
+        float maxClimbSlope;
+        float maxMoveSlope;
+        float minSlipSlope;
+        float upstairTanConst;
+        float slipDropThreshold;
+        float maxSlipSpeed;
+        float slipAcceleration;
+        float slipRapidDecelerationSlope;
+        float slipRapidDecelerationRatio;
+        float slipHaltSlope;
+        float waterfallExtraDownAngle;
+        float dropCliffAngleThreshold;
+        float dropLandLightMaxSpeed;
+        float dropLandMiddleMaxSpeed;
+        float yawSpeedRatio;
+        float swimYawSpeedRatio;
+        float swimDashYawSpeedRatio;
+        float startSwimHeightRatio;
+        float stopSwimHeightRatio;
+        float SwimHeightRatio;
+        float airToSwimHeightRatio;
+        float swimEnableSprintHeightRatio;
+        float climbCloseToGroundDist;
+        float hipOffsetFromIK;
+        float _avatarHeight_k__BackingField;
+        float avatarModelHeight;
+        float avatarModelClimbHeight;
+        float avatarWaitToheadHeight;
+        float _avatarShoesHeight_k__BackingField;
+        float _avatarRadius_k__BackingField;
+        float _avatarHeadExtraHeight_k__BackingField;
+        float moveSphereCastRadius;
+        struct JCPMAJCIDDL_PoseParameter climbToStandbyHard;
+        struct JCPMAJCIDDL_PoseParameter climbToStandbyMiddle;
+        struct JCPMAJCIDDL_PoseParameter climbToStandbyLight;
+        struct JCPMAJCIDDL_PoseParameter jumpUpstairs;
+        struct JCPMAJCIDDL_PoseParameter climbtoStandbyGentle;
+        struct AnimationCurve* jumpUpstairsHighCurve;
+        struct AnimationCurve* jumpUpstairsLowCurve;
+        struct AnimationCurve* jumpUpstairsHighZCurve;
+        struct AnimationCurve* jumpUpstairsLowZCurve;
+        struct JFHOGIFCCNM* _airRigidbody_k__BackingField;
+        struct Rigidbody* dummyRigidbody;
+        struct MonoAnimationIKEventHelper* animatorMoveHelper;
+        struct FOEKFBJLHHB* heightmap;
+        float closeToLadderDist;
+        struct String* animatorTriggerOnLanded;
+        struct Animator* animator;
+        struct AnimatorController* animatorController;
+        float sprintCheckInterval;
+        float muteSprintInterval;
+        struct VCHumanoidMove_StandbyIKParams__Array* standbyIKParams;
+        struct Rigidbody* _rigidbody;
+        struct Vector3 _center;
+        int32_t _rotationFrame;
+        bool applyGravityExternal;
+        struct OGHHFELJONI* _moveConfig;
+        struct RuntimeAnimatorController* _cacheRuntimeAnimatorCtrl;
+        struct CFCCPJCPEHL* _humanoidMoveFSM;
+        struct HFFOPAHEFLH* _effectPlugin;
+        struct GLEHOGBMEAP* vcLevel;
+        struct HKJJLCENDJM* _scenePropPlugin;
+        struct ADKPKOIPBOL* vcPerform;
+        float orthogonalVelocityRatio;
+        struct VCHumanoidMoveData* _humanoidMoveData;
+        struct KJJBBHDHGKL* _motionInfo;
+        struct MPCODFPNKEE rocketJumpSetting;
+        float runStopVelocityRatio;
+        struct Transform* moveHeadTrans;
+        struct Transform* climbHeadTrans;
+        struct Transform* footTrans;
+        struct Transform* waistTrans;
+        struct Transform* kneeTrans;
+        struct HNCBHGMDCOL* avatarData;
+        bool isJamedOverMonster;
+        float overrideMoveSpeedRatio;
+        int32_t _lastAnimatorStateShortNameHash;
+        bool _needFaceToAnimParamEver;
+        struct NAPAIPLOOAL* lcAblityState;
+        struct VCAvatarEquipController* _equipController;
+        struct Collider__Array* tempCollider;
+        int32_t _lastCheckDynamicBarrierFrame;
+        struct HashSet_1_System_UInt32_* _ignoreCollisionEntities;
+        struct HashSet_1_System_UInt32_* _nearbyDynamicBarriers;
+        struct Vector3 _lastCheckDynamicBarrierPostion;
+    };
+
+    struct VCHumanoidMove {
+        struct VCHumanoidMove__Class* klass;
+        MonitorData* monitor;
+        struct VCHumanoidMove__Fields fields;
+    };
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }
 #endif

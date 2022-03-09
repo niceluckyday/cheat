@@ -55,15 +55,22 @@ void SetRelativePosition(app::BaseEntity* entity, app::Vector3 position)
     app::Transform_set_position(entity->fields._transform_k__BackingField, position, nullptr);
 }
 
+app::BaseEntity* GetAvatarEntity()
+{
+    if (!IsSingletonLoaded(EntityManager))
+        return nullptr;
+
+    auto entityManager = GetSingleton(EntityManager);
+    auto avatarEntity = app::EntityManager_GetCurrentAvatar(entityManager, nullptr);
+    return avatarEntity;
+}
+
 app::Vector3 GetAvatarRelativePosition()
 {
     if (!IsSingletonLoaded(EntityManager))
         return app::Vector3();
 
-    auto entityManager = GetSingleton(EntityManager);
-
-    auto avatarEntity = app::EntityManager_GetCurrentAvatar(entityManager, nullptr);
-    return GetRelativePosition(avatarEntity);
+    return GetRelativePosition(GetAvatarEntity());
 }
 
 void SetAvatarRelativePosition(app::Vector3 position)
@@ -71,9 +78,7 @@ void SetAvatarRelativePosition(app::Vector3 position)
     if (!IsSingletonLoaded(EntityManager))
         return;
 
-    auto entityManager = GetSingleton(EntityManager);
-    auto avatarEntity = app::EntityManager_GetCurrentAvatar(entityManager, nullptr);
-    SetRelativePosition(avatarEntity, position);
+    SetRelativePosition(GetAvatarEntity(), position);
 }
 
 float GetDistToAvatar(app::BaseEntity* entity)

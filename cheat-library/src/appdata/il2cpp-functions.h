@@ -138,6 +138,22 @@ DO_APP_FUNC(0x03629D00, Vector3, LocalEntityInfoData_GetTargetPos, (LocalEntityI
 DO_APP_FUNC(0x0165B8B0, bool, LoadingManager_IsFarTeleport, (LoadingManager* __this, uint32_t sceneId, Vector3 position, MethodInfo* method));
 DO_APP_FUNC(0x0306D160, void, GameManager_Update, (GameManager* __this, MethodInfo* method));
 
+DO_APP_FUNC(0x04D632C0, void, VCAnimatorMove_EnableCrashDamage, (VCAnimatorMove* __this, bool enable, MethodInfo* method));
+DO_APP_FUNC(0x04564740, VCBaseMove*, BaseEntity_GetMoveComponent, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC_METHODINFO(0x0B25D518, BaseEntity_GetBaseMoveComponent__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B25DCF0, BaseEntity_GetHumanoidMoveComponent__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B25E0B8, BaseEntity_GetAnimatorMoveComponent__MethodInfo);
+
+DO_APP_FUNC(0x040EE200, void, VCBaseMove_HLODFCLMIFJ, (VCBaseMove* __this, bool enable, MethodInfo* method));
+DO_APP_FUNC(0x040EB0E0, void, VCBaseMove_BMOMHINEADB, (VCBaseMove* __this, bool enable, MethodInfo* method));
+
+
+DO_APP_FUNC(0x02ADE320, void, LCBaseCombat_FireBeingHitEvent, (LCBaseCombat* __this, uint32_t attackeeRuntimeID, AttackResult * attackResult, MethodInfo * method));
+//DO_APP_FUNC(0x02ADE560, void, LCBaseCombat_FireBeingHitEvent_1, (LCBaseCombat* __this, PIGHJNDOIBE * evtBeingHitInfo, MethodInfo * method));
+//DO_APP_FUNC(0x02ADE9D0, void, LCBaseCombat_FireBeingHitEvent_2, (LCBaseCombat* __this, IAEJBOCALMN * evt, MethodInfo * method));
+DO_APP_FUNC(0x04597790, void, EvtFallOnGround_Init, (EvtFallOnGround* __this, uint32_t targetID, EvtFallOnGround_GroundType__Enum type, Vector3 velocity, float waterDepth, MethodInfo* method));
+DO_APP_FUNC(0x04D22280, void, VCHumanoidMove_NotifyLandVelocity, (VCHumanoidMove* __this, Vector3 velocity, float reachMaxDownVelocityTime, MethodInfo* method));
+
 DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));
 DO_APP_FUNC_METHODINFO(0x0B20F1E8, Singleton_1_MBHLOBDPKEC__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B1C5540, Singleton_1_LoadingManager__get_Instance__MethodInfo);

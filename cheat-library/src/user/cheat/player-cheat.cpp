@@ -20,6 +20,29 @@ static bool Miscs_CheckTargetAttackable_Hook(void* __this, app::BaseEntity* atta
     return callOrigin(Miscs_CheckTargetAttackable_Hook, __this, attacker, target, method);
 }
 
+// Blocking fall damage if godmode enabled.
+void VCHumanoidMove_NotifyLandVelocity_Hook(app::VCHumanoidMove* __this, app::Vector3 velocity, float reachMaxDownVelocityTime, MethodInfo* method) 
+{
+    if (Config::cfgGodModEnable.GetValue() && -velocity.y > 13) 
+    {
+        float randAdd = (float)(std::rand() % 1000) / 1000;
+        velocity.y = -8 - randAdd;
+        reachMaxDownVelocityTime = 0;
+    }
+    // LOG_DEBUG("%s, %f", il2cppi_to_string(velocity).c_str(), reachMaxDownVelocityTime);
+    callOrigin(VCHumanoidMove_NotifyLandVelocity_Hook, __this, velocity, reachMaxDownVelocityTime, method);
+}
+
+// Analog for GodMode (Thanks to Taiga74164)
+//void LCBaseCombat_FireBeingHitEvent_Hook(app::LCBaseCombat* __this, uint32_t attackeeRuntimeID, app::AttackResult* attackResult, MethodInfo* method) 
+//{
+//    auto avatarEntity = GetAvatarEntity();
+//    if (avatarEntity != nullptr && Config::cfgGodModEnable.GetValue() && avatarEntity->fields._runtimeID_k__BackingField == attackeeRuntimeID)
+//        return;
+//
+//    return callOrigin(LCBaseCombat_FireBeingHitEvent_Hook, __this, attackeeRuntimeID, attackResult, method);
+//}
+
 // Infinite stamina offline mode. Blocks changes for stamina property. 
 // Note. Changes received from the server (not sure about this for current time), 
 //       that means that server know our stamina, and changes it in client can be detected.
@@ -44,9 +67,12 @@ static void NetworkManager_1_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __
 {
     static bool afterDash = false;
 
-    if (!IsSingletonLoaded(EntityManager))
+    if (!IsSingletonLoaded(EntityManager)) 
+    {
+        callOrigin(NetworkManager_1_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
         return;
-
+    }
+        
     auto entityManager = GetSingleton(EntityManager);
     auto avatarEntity = app::EntityManager_GetCurrentAvatar(entityManager, nullptr);
     if (entityId != avatarEntity->fields._runtimeID_k__BackingField)
@@ -54,6 +80,9 @@ static void NetworkManager_1_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __
         callOrigin(NetworkManager_1_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
         return;
     }
+
+    if (syncInfo->fields.motionState == app::MotionState__Enum::MotionFallOnGround)
+        return;
 
     // LOG_DEBUG("Movement packet: %s", magic_enum::enum_name(syncInfo->fields.motionState).data());
     if (Config::cfgInfiniteStaminaEnable.GetValue() && Config::cfgISMovePacketMode.GetValue())
@@ -89,6 +118,9 @@ static void NetworkManager_1_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __
 
 void InitPlayerCheats() 
 {
+    //HookManager::install(app::LCBaseCombat_FireBeingHitEvent, LCBaseCombat_FireBeingHitEvent_Hook);
+    HookManager::install(app::VCHumanoidMove_NotifyLandVelocity, VCHumanoidMove_NotifyLandVelocity_Hook);
+    
     HookManager::install(app::NetworkManager_1_RequestSceneEntityMoveReq, NetworkManager_1_RequestSceneEntityMoveReq_Hook);
     LOG_TRACE("Hooked NetworkManager_1_RequestSceneEntityMoveReq. Origin at 0x%p", HookManager::getOrigin(NetworkManager_1_RequestSceneEntityMoveReq_Hook));
 
@@ -100,4 +132,6 @@ void InitPlayerCheats()
     LOG_TRACE("Hooked AvatarPropDictionary_SetItem. Origin at 0x%p", HookManager::getOrigin(AvatarPropDictionary_SetItem_Hook));
 
     LOG_DEBUG("Hooks installed");
+
+    // ToggleConfigField::OnChangedEvent += FREE_METHOD_HANDLER(OnToggleFieldChange);
 }

@@ -30,6 +30,7 @@ bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& siz
 app::Vector3 GetRelativePosition(app::BaseEntity* entity);
 void SetRelativePosition(app::BaseEntity* entity, app::Vector3 position);
 app::Vector3 GetAvatarRelativePosition();
+app::BaseEntity* GetAvatarEntity();
 void SetAvatarRelativePosition(app::Vector3 position);
 float GetDistToAvatar(app::BaseEntity* entity);
 
