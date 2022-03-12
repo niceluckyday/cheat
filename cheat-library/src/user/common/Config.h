@@ -164,7 +164,7 @@ public:
 	Field(bool, FileLogEnabled,        "File logging",    "Logging", false);
 
 	Field(bool, PacketCapturing,       "Packet capturing",      "Network", false);
-	Field(bool, PacketManipulation,    "Packet manipulation",   "Network", true);
+	Field(bool, PacketManipulation,    "Packet manipulation",   "Network", false);
 
 	// General							
 	Field(bool,   DisableMhyprot,      "Disable protection",    "General", true);
