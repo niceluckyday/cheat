@@ -42,7 +42,7 @@ void Run(HMODULE* phModule)
         
     LOG_DEBUG("Config path is %s", configPath.c_str());
     LOG_DEBUG("UserAssembly.dll at 0x%p", il2cppi_get_base_address());
-    LOG_DEBUG("UnityPlayer.dll  at 0x%p", il2cppi_get_base_address());
+    LOG_DEBUG("UnityPlayer.dll  at 0x%p", il2cppi_get_unity_address());
 
     InitCheats();
     InitRenderer(*phModule);
