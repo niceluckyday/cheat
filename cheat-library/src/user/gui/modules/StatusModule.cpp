@@ -17,22 +17,20 @@ void StatusModule::Draw()
 
         int row = 0;
 
-#define DrawLine(field) if (field ##.GetValue()) { \
-            ImGui::TableNextRow(); ImGui::TableSetColumnIndex(0); \
-            ImGui::TextUnformatted(field ##.GetFriendlyName().c_str()); \
-            ImU32 row_bg_color = ImGui::GetColorU32(ImVec4(0.2f + row * 0.05f, 0.1f, 0.1f, 0.85f)); \
-            ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, row_bg_color); \
-            row++; }
+#define DrawLine(field) 
 
-        DrawLine(Config::cfgGodModEnable);
-        DrawLine(Config::cfgInfiniteStaminaEnable);
-        DrawLine(Config::cfgInstantBowEnable);
-        DrawLine(Config::cfgNoCDEnable);
-        DrawLine(Config::cfgNoGravityEnable);
-        DrawLine(Config::cfgMoveSpeedhackEnable);
-
-        DrawLine(Config::cfgUnlockWaypointsEnable);
-        DrawLine(Config::cfgDumbEnemiesEnabled);
+        for (auto& field : Config::GetToggleFields()) 
+        {
+            if (field->GetValue()) 
+            {
+                    ImGui::TableNextRow(); 
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::TextUnformatted(field->GetFriendlyName().c_str());
+                    ImU32 row_bg_color = ImGui::GetColorU32(ImVec4(0.2f + row * 0.1f, 0.1f + row * 0.05f, 0.1f + row * 0.03f, 0.85f));
+                    ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, row_bg_color);
+                    row++;
+            }
+        }
 #undef DrawLine
 
         ImGui::EndTable();

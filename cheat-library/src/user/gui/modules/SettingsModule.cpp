@@ -6,7 +6,7 @@
 #include <helpers.h>
 #include <il2cpp-appdata.h>
 #include <common/Config.h>
-#include <common/Logger.h>
+#include <gcclib/Logger.h>
 #include <gui/gui-util.h>
 
 void SettingsModule::Draw()
@@ -41,7 +41,6 @@ void SettingsModule::Draw()
     }
     EndGroupPanel();
 
-
     BeginGroupPanel("Status window", ImVec2(-1, 0));
     {
         ConfigWidget(Config::cfgShowStatusWindow);
@@ -53,6 +52,16 @@ void SettingsModule::Draw()
     {
         ConfigWidget(Config::cfgShowInfoWindow);
         ConfigWidget(Config::cfgMoveInfoWindow, "Give able to move 'Info' window.");
+    }
+    EndGroupPanel();
+
+
+    BeginGroupPanel("Network packet", ImVec2(-1, 0));
+    {
+        ImGui::Text("Dev: for working needs server for named pipe 'genshin_packet_pipe'.\nCheck 'packet-handler' project like example.");
+        ConfigWidget(Config::cfgPacketCapturing, "Enabling capturing packets info and send it to pipe, if exists.");
+        ConfigWidget(Config::cfgPacketManipulation, "Enabling manipulation packet feature, that allows to replace, block incoming/outcoming packets." \
+            "\nThis feature often needs, to read-write pipe operation, so can decrease network bandwidth.");
     }
     EndGroupPanel();
 }

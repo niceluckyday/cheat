@@ -6091,7 +6091,7 @@ namespace app {
     struct Notify {
         AJAPIFPNFKP__Enum type;
         struct Object* body;
-        struct JDBPGPCCJJP* udpPacket;
+        struct Packet* udpPacket;
     };
 
     struct __declspec(align(8)) Dictionary_2_JNHGGGCKJNA_JKNLDEEBGLL___Fields {
@@ -6907,6 +6907,7 @@ namespace app {
         struct AttackHitEffectResult__Fields fields;
     };
 
+    //FNNBKNJJGNM__Fields
     struct AttackResult_1__Fields {
         struct MessageBase_1__Fields _;
         uint32_t attackerId_;
@@ -7945,6 +7946,526 @@ namespace app {
         MonitorData* monitor;
         struct VCHumanoidMove__Fields fields;
     };
+
+    enum class InteractionType__Enum : int32_t {
+        NONE = 0x00000000,
+        DIALOG = 0x00000001,
+        DIALOG_NEXT = 0x00000002,
+        DIALOG_FINISH = 0x00000003,
+        DIALOG_SELECT = 0x00000004,
+        BODY_LANG = 0x00000005,
+        STEER_TO = 0x00000006,
+        LOOK_AT = 0x00000007,
+        LOOK_AT_EYECTRL = 0x00000008,
+        CAMERA_MOVE = 0x00000009,
+        SOUND = 0x0000000a,
+        CUTSCENE = 0x0000000b,
+        SHOP_EXCHANGE = 0x0000000c,
+        GADGET_TOUCH = 0x0000000d,
+        EMO_SYNC = 0x0000000e,
+        UI_TRIGGER = 0x0000000f,
+        EMOTION = 0x00000010,
+        VISIBLE = 0x00000011,
+        LUA_ACTION = 0x00000012,
+        BLACK_SCREEN = 0x00000013,
+        GODDESS = 0x00000014,
+        SHOW_MESSAGE = 0x00000015,
+        CAMERA_FOCUS = 0x00000016,
+        DIALOG_CLEAR = 0x00000017,
+        AUDIO_PLAY = 0x00000018,
+        VIDEO_PLAY = 0x00000019,
+        CAMERA_DOF = 0x0000001a,
+        MOVE_TO = 0x0000001b,
+        REQUEST_MSG = 0x0000001c,
+        CAMERA_SHAKE = 0x0000001d,
+        EMOJI_BUBBLE = 0x0000001e,
+        TIME_PROTECT = 0x0000001f,
+        SIMPLE_BLACK_SCREEN = 0x00000020,
+        SIMPLE_UI_SHOW = 0x00000021,
+        OPEN_BLOSSOM_MARK = 0x00000022,
+        SPEECH_BUBBLE = 0x00000023,
+        EMOTION_TEMPLATE = 0x00000024,
+        SIT_OR_STAND = 0x00000025,
+        PLAY_EFFECT = 0x00000026,
+        TELEPORT_TO = 0x00000027,
+        FIRST_SIGHT = 0x00000028,
+        SET_ANIMATOR = 0x00000029,
+        PLAY_POST_EFFECT = 0x0000002a,
+        PLAY_FRAME_FACE_ANIMATION = 0x0000002b,
+        HIDE_WIDGET_PET = 0x0000002c,
+        LOCAL_GADGET_OP = 0x0000002d,
+        PLAY_UI_EFFECT = 0x0000002e,
+        SET_PLAYER_NPC_ENERGY_TYPE = 0x0000002f,
+        CHANGE_NPC_MAT = 0x00000030,
+        Other = 0x00000031,
+    };
+
+    struct __declspec(align(8)) BaseInterAction__Fields {
+        InteractionType__Enum _type;
+        uint32_t _mainQuestId;
+        struct ConfigBaseInterAction* _cfg;
+        struct InterActionGrp* _interGrp;
+        bool _isFromExternal;
+        struct OAMGPEEJGJL* _inter;
+        struct LCBaseIntee* _intee;
+        bool _isStarted;
+        bool _isFinished;
+    };
+    
+    //PONANPEDGNL__Fields
+    struct DialogNextAction__Fields {
+        struct BaseInterAction__Fields _;
+        bool _insert;
+        uint32_t _nextTalkID;
+    };
+
+    //PONANPEDGNL
+    struct DialogNextAction {
+        struct PONANPEDGNL__Class* klass;
+        MonitorData* monitor;
+        struct DialogNextAction__Fields fields;
+    };
+
+    enum class OLIGMHIBFPC__Enum : int32_t {
+        None = 0x00000000,
+        Debug = 0x00000001,
+        Quest = 0x00000002,
+        QuestCustom = 0x00000003,
+        Talk = 0x00000004,
+        Home = 0x00000005,
+        TalkPreperform = 0x00000006,
+        Daily = 0x00000007,
+        ForceCache = 0x00000008,
+        AnimeGroup = 0x00000009,
+    };
+
+    struct KAMMJKAFCMA {
+        OLIGMHIBFPC__Enum LKBCPMNLDGM;
+        uint32_t JNAIAKGGLDL;
+    };
+
+    struct MoleMole_EntityHandle_AvatarEntity_ {
+        uint32_t runtimeID;
+        struct AvatarEntity* _entityRef;
+    };
+
+    enum class RigidbodyConstraints__Enum : int32_t {
+        None = 0x00000000,
+        FreezePositionX = 0x00000002,
+        FreezePositionY = 0x00000004,
+        FreezePositionZ = 0x00000008,
+        FreezeRotationX = 0x00000010,
+        FreezeRotationY = 0x00000020,
+        FreezeRotationZ = 0x00000040,
+        FreezePosition = 0x0000000e,
+        FreezeRotation = 0x00000070,
+        FreezeAll = 0x0000007e,
+    };
+
+    // KNINMIIGGLK__Fields
+    struct CharacterEntity__Fields {
+        struct BaseEntity__Fields _;
+        struct Vector3 _originLocalPosRoot;
+        struct Vector3 _originLocalEulerRoot;
+        struct Vector3 _originLocalScaleRoot;
+        RigidbodyConstraints__Enum HIEIEAJOLFK;
+        int32_t GPOIKBAPLOK;
+        struct Transform* _bipTrans;
+    };
+
+    // KNINMIIGGLK
+    struct CharacterEntity {
+        struct KNINMIIGGLK__Class* klass;
+        MonitorData* monitor;
+        struct CharacterEntity__Fields fields;
+    };
+
+    // CAJECMIFAOJ__Fields
+    struct AvatarEntity__Fields {
+        struct CharacterEntity__Fields _;
+        uint64_t guid;
+        bool isSupporting;
+        struct LIBBCAIJOGO_System_Boolean_* _activeStack;
+        struct List_1_System_UInt32_* _childrenRuntimeIds;
+        struct List_1_System_UInt32_* _descendantsRuntimeIds;
+        bool _attackModeAuto;
+    };
+
+    // CAJECMIFAOJ
+    struct AvatarEntity {
+        struct CAJECMIFAOJ__Class* klass;
+        MonitorData* monitor;
+        struct AvatarEntity__Fields fields;
+    };
+
+    struct InteractionAvatarEntityProxy {
+        struct CFHMEBOKAKH__Class* klass;
+        MonitorData* monitor;
+    };
+
+    enum class AnimatorCullingMode__Enum : int32_t {
+        AlwaysAnimate = 0x00000000,
+        CullUpdateTransforms = 0x00000001,
+        CullCompletely = 0x00000002,
+    };
+
+    struct LCBaseIntee__Fields {
+        struct LCBase__Fields _;
+        struct String* _triggerShapeIn;
+        float _triggerShapeInHeight;
+        struct String* _triggerShapeOut;
+        float _triggerShapeOutHeight;
+        struct Vector3 _triggerShapeInOffset;
+        struct Vector3 _triggerShapeOutOffset;
+        struct String* _triggerShapeFreeInteraction;
+        float _triggerShapeFreeInteractionHeight;
+        struct Vector3 _triggerShapeFreeInteractionOffset;
+        struct Action_2_MoleMole_ILuaActor_MoleMole_ILuaActorCollisionInfo_* OnPushCollider;
+        struct InteeShareTaskData* _interShareTaskData;
+        struct LCBaseInter* _inter;
+        struct LCBaseInter* _preInter;
+        struct LCExtraInterAction* _extraAction;
+        struct VCBaseHeadController* _headCtrl;
+        bool _disableHeadCtrl_k__BackingField;
+        bool _isTalking;
+        uint32_t curTalkId;
+        uint32_t _curPriority;
+        RemoveActorType__Enum _removeType;
+        bool _isInterDisable;
+        bool _isLuaInterDisable;
+        struct Action_1_MoleMole_LCBaseIntee_* OnFieldEnterHandler;
+        struct Action_1_MoleMole_LCBaseIntee_* OnFieldBtnHandler;
+        struct Action_1_MoleMole_LCBaseIntee_* OnFieldExitHandler;
+        bool useTrigger;
+        bool useInteractionTrigger;
+        bool usePushCollider;
+        bool useHeadControlTrigger;
+        float _triggerRadius;
+        float _interactionTriggerRadius;
+        float _headCtrlTriggerRadius;
+        uint32_t curPerformTalkId;
+        bool _triggerEnter;
+        bool _interactionTriggerEnter;
+        bool _prePerformTriggerEnter;
+        bool _headCtrlTriggerEnter;
+        bool _isLookAtOnly;
+        struct GameObject* _colliderObj;
+        struct VCSpeechBubblePlugin* _speechBubble;
+        AnimatorCullingMode__Enum _originalMode;
+    };
+
+    struct LCBaseIntee {
+        struct LCBaseIntee__Class* klass;
+        MonitorData* monitor;
+        struct LCBaseIntee__Fields fields;
+    };
+
+    enum class TalkBeginWay__Enum : int32_t {
+        TALK_BEGIN_NONE = 0x00000000,
+        TALK_BEGIN_AUTO = 0x00000001,
+        TALK_BEGIN_MANUAL = 0x00000002,
+    };
+
+    // GECLMNOMDKD__Enum
+    enum class PlayMode__Enum_1 : int32_t {
+        PLAY_MODE_ALL = 0x00000000,
+        PLAY_MODE_SINGLE = 0x00000001,
+        PLAY_MODE_MULTIPLE = 0x00000002,
+        PLAY_MODE_HOST = 0x00000003,
+        PLAY_MODE_GUEST = 0x00000004,
+    };
+
+    // KPBHGKOJDML__Enum
+    enum class LogicType__Enum : int32_t {
+        LOGIC_NONE = 0x00000000,
+        LOGIC_AND = 0x00000001,
+        LOGIC_OR = 0x00000002,
+        LOGIC_NOT = 0x00000003,
+        LOGIC_A_AND_ETCOR = 0x00000004,
+        LOGIC_A_AND_B_AND_ETCOR = 0x00000005,
+        LOGIC_A_OR_ETCAND = 0x00000006,
+        LOGIC_A_OR_B_OR_ETCAND = 0x00000007,
+        LOGIC_A_AND_B_OR_ETCAND = 0x00000008,
+    };
+
+    enum class TalkHeroType__Enum : int32_t {
+        TALK_HERO_LOCAL = 0x00000000,
+        TALK_HERO_MAIN = 0x00000001,
+    };
+
+    enum class TalkLoadType__Enum : int32_t {
+        TALK_NORMAL_QUEST = 0x00000000,
+        TALK_BLOSSOM = 0x00000001,
+        TALK_ACTIVITY = 0x00000002,
+        TALK_COOP = 0x00000003,
+        TALK_GADGET = 0x00000004,
+    };
+
+    enum class TalkMarkType__Enum : int32_t {
+        TALK_MARK_NONE = 0x00000000,
+        TALK_MARK_COMMON = 0x00000001,
+        TALK_MARK_HIDE = 0x00000002,
+    };
+
+    // GOPFNFNPLGP__Fields
+    struct __declspec(align(8)) ConfigTalkScheme__Fields {
+        uint32_t _id;
+        TalkBeginWay__Enum _beginWay;
+        PlayMode__Enum_1 _activeMode;
+        LogicType__Enum _beginCondComb;
+        struct TalkCondEx__Array* _beginCond;
+        uint32_t _priority;
+        struct UInt32__Array* _nextTalks;
+        struct UInt32__Array* _nextRandomTalks;
+        int32_t _showRandomTalkCount;
+        uint32_t _initDialog;
+        uint32_t _decoratorID;
+        struct UInt32__Array* _npcId;
+        struct String* _performCfg;
+        TalkHeroType__Enum _heroTalk;
+        TalkLoadType__Enum _loadType;
+        uint32_t _questId;
+        struct UInt32__Array* _extraLoadMarkId;
+        uint64_t _assetIndex;
+        bool _dontBlockDaily;
+        struct UInt32__Array* _participantId;
+        struct String* _prePerformCfg;
+        bool _stayFreeStyle;
+        bool _enableCameraDisplacement;
+        bool _lockGameTime;
+        TalkMarkType__Enum _talkMarkType;
+        bool _questIdleTalk;
+        bool _lowPriority;
+        struct AIJNLBLCLCI__Array* _finishExec;
+        struct Int32__Array* _prePerformFreeStyleList;
+        struct Int32__Array* _freeStyleList;
+        struct UInt32__Array* LFMNEFDCDND;
+        bool setToBeRemove;
+        struct List_1_System_UInt32_* _nextValidTalkList;
+        struct List_1_System_UInt32_* _nextAfterRandomTalkList;
+    };
+
+    // GOPFNFNPLGP
+    struct ConfigTalkScheme {
+        struct GOPFNFNPLGP__Class* klass;
+        MonitorData* monitor;
+        struct ConfigTalkScheme__Fields fields;
+    };
+
+    struct __declspec(align(8)) List_1_MoleMole_BaseInterAction___Fields {
+        struct BaseInterAction__Array* _items;
+        int32_t _size;
+        int32_t _version;
+    };
+
+    struct List_1_MoleMole_BaseInterAction_ {
+        struct List_1_MoleMole_BaseInterAction___Class* klass;
+        MonitorData* monitor;
+        struct List_1_MoleMole_BaseInterAction___Fields fields;
+    };
+
+    // ELIBDKPELPD__Fields
+    struct __declspec(align(8)) InterActionGrp__Fields {
+        uint64_t groupId;
+        uint64_t nextGroupId;
+        bool isKeyList;
+        struct List_1_MoleMole_BaseInterAction_* _interActionList;
+        bool _isStarted;
+    };
+
+    // ELIBDKPELPD
+    struct InterActionGrp {
+        struct ELIBDKPELPD__Class* klass;
+        MonitorData* monitor;
+        struct InterActionGrp__Fields fields;
+    };
+
+    struct __declspec(align(8)) LinkedListNode_1_InterActionGrp___Fields {
+        struct InterActionGrp* item;
+        struct LinkedList_1_InterActionGrp_* container;
+        struct LinkedListNode_1_InterActionGrp_* forward;
+        struct LinkedListNode_1_InterActionGrp_* back;
+    };
+
+    struct LinkedListNode_1_InterActionGrp_ {
+        struct LinkedListNode_1_ELIBDKPELPD___Class* klass;
+        MonitorData* monitor;
+        struct LinkedListNode_1_InterActionGrp___Fields fields;
+    };
+
+    struct __declspec(align(8)) LinkedList_1_InterActionGrp___Fields {
+        uint32_t count;
+        uint32_t version;
+        struct Object* syncRoot;
+        struct LinkedListNode_1_InterActionGrp_* first;
+        struct SerializationInfo* si;
+    };
+
+    struct LinkedList_1_InterActionGrp_ {
+        struct LinkedList_1_ELIBDKPELPD___Class* klass;
+        MonitorData* monitor;
+        struct LinkedList_1_InterActionGrp___Fields fields;
+    };
+
+    struct __declspec(align(8)) InteractionManager__Fields {
+        bool _checkInteruptCoopOnFinish;
+        struct InteractionAvatarEntityProxy* _localAvatarProxy;
+        struct MoleMole_EntityHandle_AvatarEntity_ _simpleTalkActionAvatarHandle;
+        struct Action_1_DKOJFNPLGIA_* _interactionInteeCB;
+        bool _isManulAttackMode;
+        struct Dictionary_2_System_UInt32_MoleMole_Config_ConfigInterActor_* _returnDailyNpcConfigDic;
+        struct HashSet_1_System_UInt32_* _participantDic;
+        struct Dictionary_2_System_UInt32_System_UInt32_* _avatarDialogIntees;
+        struct Dictionary_2_System_String_System_String_* _tmpAlias2Real;
+        struct Dictionary_2_System_String_MoleMole_LCBaseIntee_* _alias2intee;
+        bool _canShowAvatarEffectWhenTalkStart;
+        struct KAMMJKAFCMA _curLoadFreeStyleReason;
+        struct Dictionary_2_System_UInt32_System_Int32__2* _curLoadFreeStyleDic;
+        bool _isLoadingFreeStyle;
+        uint32_t _curLoadFreeStyleQuestId;
+        struct ILuaActor* _currInterActor;
+        struct Action_2_MoleMole_ILuaActor_Int32_* StartInterEvent;
+        struct Action_2_MoleMole_ILuaActor_Int32_* FinishInterEvent;
+        struct LCBaseIntee* _mainIntee;
+        int32_t _keyInterCnt;
+        bool _hasKeyPre;
+        bool _havEndFade;
+        float _endFadeInTime;
+        float _endFadeOutTime;
+        bool _inEndFade;
+        bool _inStartFade;
+        bool _talkLoading;
+        bool _voiceLoading;
+        bool _isLockGameTime;
+        bool _isInteeReadyChecking;
+        bool _isDelayClear;
+        struct String* _interEntityBanConfig;
+        bool _isFromPerformConfig;
+        struct LinkedList_1_InterActionGrp_* _keyInterList;
+        struct Dictionary_2_System_UInt64_LinkedListNode_1_ELIBDKPELPD_* _idInterDic;
+        struct LinkedListNode_1_InterActionGrp_* _currInterGrp;
+        struct List_1_ELIBDKPELPD_* _freeInterList;
+        struct Dictionary_2_System_UInt32_List_1_ELIBDKPELPD_* _priorityBtnDic;
+        uint32_t _triggeringEntityID;
+        bool _edtTalkWaiting;
+        struct List_1_System_UInt32_* _evtInterFinishList;
+        struct Action* _keyListFinishHandler;
+        struct Action* _keyListPreFinishHandler;
+        struct Action* _levelLoadFinishHandler;
+        struct InteractionManager_NpcInteractionRequestCache* _npcInteractionRequest;
+        struct GBPAPDPGOGC__Array* _keyInterSystems;
+        struct GBPAPDPGOGC__Array* _keyUsingSystems;
+        struct GBPAPDPGOGC__Array* _freeInterSystems;
+        struct GBPAPDPGOGC__Array* _freeUsingSystems;
+        struct FBLKAMGAEBK_GBPAPDPGOGC_* _systemListPool;
+        struct List_1_MoleMole_LCBaseIntee_* _candidateInteeAddList;
+        struct List_1_GOPFNFNPLGP_* _candidateTalkCfgList;
+        struct List_1_MoleMole_LCBaseIntee_* _candidateInteeRemoveList;
+        struct HashSet_1_System_UInt32_* _currCandidateIdSet;
+        struct Dictionary_2_MoleMole_LCBaseIntee_FBLKAMGAEBK_PCAHMKPNKKE_* _curRunningPreTalkDic;
+        struct FBLKAMGAEBK_MoleMole_InteractionManager_PreTalkPerformContext_* _curRunningPreTalkList;
+        struct EEEOCECMOIP_MoleMole_InteractionManager_PreTalkPerformContext_* _talkPerformContextPool;
+        struct List_1_System_UInt32_* _autoBanNpcRuntimeIdList;
+        struct DAIJGKCPFFG* _autoTalkVoiceResponder;
+        struct Dictionary_2_System_String_List_1_System_Int32_* _effectHandlerDic;
+        struct Dictionary_2_System_String_KeyValuePair_2_System_UInt32_UnityEngine_GameObject_* _uiEffectDic;
+    };
+
+    struct InteractionManager {
+        struct InteractionManager__Class* klass;
+        MonitorData* monitor;
+        struct InteractionManager__Fields fields;
+    };
+
+    struct BaseInterAction {
+        struct BaseInterAction__Class* klass;
+        MonitorData* monitor;
+        struct BaseInterAction__Fields fields;
+    };
+
+    struct __declspec(align(8)) ConfigBaseInterAction__Fields 
+    {
+        InteractionType__Enum _type;
+        float _delayTime;
+        float _duration;
+        struct String__Array* _aliasList;
+        bool _checkNextImmediately;
+    };
+
+    struct ConfigBaseInterAction {
+        struct ConfigBaseInterAction__Class* klass;
+        MonitorData* monitor;
+        struct ConfigBaseInterAction__Fields fields;
+    };
+
+    struct __declspec(align(8)) MessageInfo__Fields {
+        struct Dictionary_2_System_UInt16_System_String_* _cmdNameDict;
+        struct Dictionary_2_System_String_System_UInt16_* _cmdIdDict;
+        struct Dictionary_2_System_UInt16_System_UInt32_* _cmdChannelIdDict;
+        struct Dictionary_2_System_UInt16_MoleMole_MessageInfo_AGLNJLPBPMO_* _cmdAllocFunc;
+        struct HashSet_1_System_UInt16_* _cmdIsReliableSet;
+        struct HashSet_1_System_UInt16_* _cmdIsAllowedSet;
+    };
+
+    struct MessageInfo {
+        struct MessageInfo__Class* klass;
+        MonitorData* monitor;
+        struct MessageInfo__Fields fields;
+    };
+
+    struct KcpPacket_1 {
+        void* data;
+        uint32_t dataLen;
+    };
+
+    enum class PacketStatus__Enum : int32_t {
+        PACKET_CORRECT = 0x00000001,
+        PACKET_NOT_COMPLETE = 0x00000002,
+        PACKET_NOT_CORRECT = 0x00000003,
+        PACKET_BUFF_IS_NULL = 0x00000004,
+        PACKET_BUFF_LEN_SHORT = 0x00000005,
+        PACKET_HEAD_MAGIC_ERROR = 0x00000006,
+        PACKET_TAIL_MAGIC_ERROR = 0x00000007,
+    };
+
+    struct __declspec(align(8)) JDBPGPCCJJP__Fields {
+        struct JPIOKGLLCPH* Head;
+        struct MessageBase_1* Body;
+        bool _selfAllocBody;
+        uint32_t ODEHIAOBAKE;
+        uint32_t _packetSize;
+        struct LockFreeQueue* _allocStack;
+        int32_t lastStack;
+        uint16_t _CmdId_k__BackingField;
+    };
+
+    struct Packet {
+        struct JDBPGPCCJJP__Class* klass;
+        MonitorData* monitor;
+        struct JDBPGPCCJJP__Fields fields;
+    };
+
+    enum class KcpEventType__Enum : int32_t {
+        EventNotSet = -1,
+        EventConnect = 0x00000000,
+        EventConnectFailed = 0x00000001,
+        EventDisconnect = 0x00000002,
+        EventRecvMsg = 0x00000003,
+        EventCount = 0x00000004,
+    };
+
+
+    struct KcpEvent {
+        KcpEventType__Enum type;
+        uint32_t token;
+        uint32_t data;
+        struct KcpPacket_1* packet;
+    };
+
+    struct ClientKcpEvent {
+        struct KcpEvent _evt;
+    };
+
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }
 #endif

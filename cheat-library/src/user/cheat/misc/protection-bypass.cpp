@@ -6,7 +6,7 @@
 #include <common/HookManager.h>
 #include <common/Config.h>
 #include <common/close-handle.h>
-#include <common/Logger.h>
+#include <gcclib/Logger.h>
 
 static std::map<int32_t, std::string> correctSignatures;
 

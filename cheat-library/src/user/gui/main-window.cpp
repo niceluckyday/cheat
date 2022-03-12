@@ -7,7 +7,7 @@
 #include <imgui.h>
 
 #include <common/Config.h>
-#include <common/Logger.h>
+#include <gcclib/Logger.h>
 #include <common/GlobalEvents.h>
 
 #include "gui-util.h"

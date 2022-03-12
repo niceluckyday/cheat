@@ -5,7 +5,7 @@
 
 #include <detours.h>
 
-#include <common/Logger.h>
+#include <gcclib/Logger.h>
 
 #define callOrigin(function, ...) \
 	HookManager::getOrigin(function)(__VA_ARGS__)

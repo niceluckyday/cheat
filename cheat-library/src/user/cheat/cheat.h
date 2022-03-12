@@ -10,3 +10,4 @@ void InitPlayerCheats();
 void InitDebugHooks();
 void InitProtectionBypass();
 void InitWorldCheats();
+void InitPacketHooks();

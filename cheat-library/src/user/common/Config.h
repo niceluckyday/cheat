@@ -2,12 +2,11 @@
 #include <string>
 #include <vector>
 
-#include <simple-ini.hpp>
+#include <gcclib/simple-ini.hpp>
+#include <gcclib/Logger.h>
 
 #include <common/Hotkey.h>
 #include <common/Event.h>
-#include <common/Logger.h>
-
 template<class FieldType>
 class ConfigField {
 public:
@@ -109,6 +108,7 @@ private:
 
 #define NoSaveField(type, field, uname, section, def) inline static ConfigField<type> cfg## field = { uname, section, #field, def, nullptr }
 #define Field(type, field, uname, section, def) inline static ConfigField<type> cfg## field = { uname, section, #field, def, Config::OnChangeValue }
+
 #define ToggleField(field, uname, section, defBool) inline static ToggleConfigField cfg## field = { uname, section, #field, defBool, Config::OnChangeValue, Config::OnChangeValue }
 
 class Config {
@@ -141,6 +141,9 @@ public:
 	ToggleField(UnlockWaypointsEnable, "Unlock waypoints", "World", false);
 	ToggleField(DumbEnemiesEnabled,    "Dumb enemies", "World", false);
 
+	ToggleField(TalkSkipEnabled,	   "Talk skip", "Dialog", false);
+	ToggleField(AutoTalkEnabled,	   "Auto talk", "Dialog", false);
+
 	// Teleport to nearest oculi
 	Field(Hotkey, TeleportToOculi,     "TP to oculi key",          "Teleport", Hotkey());
 	Field(bool, ShowOculiInfo,      "Show nearest oculi info",  "Teleport", true);
@@ -159,6 +162,9 @@ public:
 	// Logging										       
 	Field(bool, ConsoleLogEnabled,     "Console logging", "Logging", true);
 	Field(bool, FileLogEnabled,        "File logging",    "Logging", false);
+
+	Field(bool, PacketCapturing,       "Packet capturing",      "Network", false);
+	Field(bool, PacketManipulation,    "Packet manipulation",   "Network", true);
 
 	// General							
 	Field(bool,   DisableMhyprot,      "Disable protection",    "General", true);

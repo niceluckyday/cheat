@@ -9,7 +9,7 @@
 #include <il2cpp-appdata.h>
 #include <common/HookManager.h>
 #include <common/Config.h>
-#include <common/Logger.h>
+#include <gcclib/Logger.h>
 #include <common/Patch.h>
 
 // Godmode (return false when target is avatar, that mean avatar entity isn't attackable)
@@ -112,6 +112,7 @@ static void NetworkManager_1_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __
 
     callOrigin(NetworkManager_1_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
 }
+
 
 void InitPlayerCheats() 
 {

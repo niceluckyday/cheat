@@ -9,7 +9,7 @@
 
 #include <helpers.h>
 #include <common/HookManager.h>
-#include <common/Logger.h>
+#include <gcclib/Logger.h>
 #include <common/Config.h>
 
 

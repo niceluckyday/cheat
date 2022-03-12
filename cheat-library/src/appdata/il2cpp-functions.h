@@ -113,18 +113,16 @@ DO_APP_FUNC(0x074A1600, Vector3, Vector3_get_down, (void* __this, MethodInfo* me
 
 DO_APP_FUNC(0x02662A40, Notify, Notify_CreateNotify, (void* __this, AJAPIFPNFKP__Enum type, MethodInfo* method));
 
-DO_APP_FUNC(0x01407160, bool, Miscs_CheckTargetAttackable, (void* __this, BaseEntity* attackerEntity, /* CBIKBDBKLEG */ BaseEntity* targetEntity, MethodInfo* method));
-
 DO_APP_FUNC(0x07B4A950, void, AvatarPropDictionary_SetItem, (Dictionary_2_JNHGGGCKJNA_JKNLDEEBGLL_* __this, JNHGGGCKJNA key, JKNLDEEBGLL value, MethodInfo* method));
 DO_APP_FUNC(0x047E6420, double, AvatarProp_DecodePropValue, (void* __this, JKNLDEEBGLL EODGKCKCMDM, MethodInfo* method));
 DO_APP_FUNC(0x02707260, PropType__Enum, AvatarProp_DecodePropType, (void* __this, JNHGGGCKJNA EODGKCKCMDM, MethodInfo* method));
 
 DO_APP_FUNC_METHODINFO(0x0B1E2F18, AvatarPropDictionary_SetItem__MethodInfo);
 
-DO_APP_FUNC(0x0349DB90, void, SendAttackEventToServer, (BKFGGJFIIKC* __this, AttackLanded* attackInfo, MethodInfo* method));
-DO_APP_FUNC(0x0349EF50, void, NetworkManager_1_RequestSceneEntityMoveReq, (BKFGGJFIIKC* __this, uint32_t entityId, MotionInfo* syncInfo, bool isReliable, uint32_t HAOCOEMOMBG, MethodInfo* method));
 DO_APP_FUNC(0x02AB8E70, float, SafeFloat_GetValue, (SafeFloat__Boxed* __this, MethodInfo* method));
 DO_APP_FUNC(0x02ABA450, void, SafeFloat_SetValue, (SafeFloat__Boxed* __this, float value, MethodInfo* method));
+
+DO_APP_FUNC(0x0349DB90, void, SendAttackEventToServer, (BKFGGJFIIKC* __this, AttackLanded* attackInfo, MethodInfo* method));
 DO_APP_FUNC(0x047D6B60, AttackResult_1*, AttackResult_FillProtoAttackResult, (AttackResult* __this, uint32_t attackerID, uint32_t defenseId, AttackResult_1* protoAttackResult, MethodInfo* method));
 DO_APP_FUNC(0x026B7290, void, VCBaseCombat_DoAttackLanded, (void* __this, AttackLanded* JGIKHCGLMOD, MethodInfo* method));
 DO_APP_FUNC(0x047D1540, AttackResult*, AttackResult_CreateAttackResult_2, (void* __this, AttackResult_1* FAMCJNOEOFB, MethodInfo* method));
@@ -134,27 +132,46 @@ DO_APP_FUNC(0x0749BAA0, void, Transform_set_position, (Transform* __this, Vector
 
 DO_APP_FUNC(0x04A171C0, String*, EntityExcelConfig_GetName, (EntityExcelConfig* __this, MethodInfo* method));
 DO_APP_FUNC(0x0154C5A0, String*, BaseEntity_ToStringRelease, (BaseEntity* __this, MethodInfo* method));
+
 DO_APP_FUNC(0x03629D00, Vector3, LocalEntityInfoData_GetTargetPos, (LocalEntityInfoData* __this, MethodInfo* method));
-DO_APP_FUNC(0x0165B8B0, bool, LoadingManager_IsFarTeleport, (LoadingManager* __this, uint32_t sceneId, Vector3 position, MethodInfo* method));
+DO_APP_FUNC(0x0165B8B0, bool, LoadingManager_IsFarTeleport, (LoadingManager* __this, uint32_t sceneId, Vector3 position, MethodInfo* method))
+;
 DO_APP_FUNC(0x0306D160, void, GameManager_Update, (GameManager* __this, MethodInfo* method));
 
-DO_APP_FUNC(0x04D632C0, void, VCAnimatorMove_EnableCrashDamage, (VCAnimatorMove* __this, bool enable, MethodInfo* method));
 DO_APP_FUNC(0x04564740, VCBaseMove*, BaseEntity_GetMoveComponent, (BaseEntity* __this, MethodInfo* method));
 DO_APP_FUNC_METHODINFO(0x0B25D518, BaseEntity_GetBaseMoveComponent__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B25DCF0, BaseEntity_GetHumanoidMoveComponent__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B25E0B8, BaseEntity_GetAnimatorMoveComponent__MethodInfo);
 
-DO_APP_FUNC(0x040EE200, void, VCBaseMove_HLODFCLMIFJ, (VCBaseMove* __this, bool enable, MethodInfo* method));
-DO_APP_FUNC(0x040EB0E0, void, VCBaseMove_BMOMHINEADB, (VCBaseMove* __this, bool enable, MethodInfo* method));
-
-
-DO_APP_FUNC(0x02ADE320, void, LCBaseCombat_FireBeingHitEvent, (LCBaseCombat* __this, uint32_t attackeeRuntimeID, AttackResult * attackResult, MethodInfo * method));
-//DO_APP_FUNC(0x02ADE560, void, LCBaseCombat_FireBeingHitEvent_1, (LCBaseCombat* __this, PIGHJNDOIBE * evtBeingHitInfo, MethodInfo * method));
-//DO_APP_FUNC(0x02ADE9D0, void, LCBaseCombat_FireBeingHitEvent_2, (LCBaseCombat* __this, IAEJBOCALMN * evt, MethodInfo * method));
 DO_APP_FUNC(0x04597790, void, EvtFallOnGround_Init, (EvtFallOnGround* __this, uint32_t targetID, EvtFallOnGround_GroundType__Enum type, Vector3 velocity, float waterDepth, MethodInfo* method));
 DO_APP_FUNC(0x04D22280, void, VCHumanoidMove_NotifyLandVelocity, (VCHumanoidMove* __this, Vector3 velocity, float reachMaxDownVelocityTime, MethodInfo* method));
+DO_APP_FUNC(0x0349EF50, void, NetworkManager_1_RequestSceneEntityMoveReq, (BKFGGJFIIKC* __this, uint32_t entityId, MotionInfo* syncInfo, bool isReliable, uint32_t HAOCOEMOMBG, MethodInfo* method));
+
+DO_APP_FUNC(0x01407160, bool, Miscs_CheckTargetAttackable, (void* __this, BaseEntity* attackerEntity, /* CBIKBDBKLEG */ BaseEntity* targetEntity, MethodInfo* method));
+DO_APP_FUNC(0x02ADE320, void, LCBaseCombat_FireBeingHitEvent, (LCBaseCombat* __this, uint32_t attackeeRuntimeID, AttackResult* attackResult, MethodInfo* method));
+
+DO_APP_FUNC(0x017A3D90, void, InteractionManager_SelectTalk, (InteractionManager* __this, LCBaseIntee* intee, ConfigTalkScheme* talkConfig, bool insert, uint32_t questMainId, MethodInfo* method));
+DO_APP_FUNC(0x017A5390, void, InteractionManager_StartTalk, (InteractionManager* __this, LCBaseIntee* intee, ConfigTalkScheme* talkConfig, uint32_t initDialog, bool isChoose, bool insert, uint32_t questMainId, bool async, bool isCoop, MethodInfo* method));
+DO_APP_FUNC(0x01795FA0, void, InteractionManager_FinishCurrTalk, (InteractionManager* __this, uint32_t talkID, MethodInfo* method));
+DO_APP_FUNC(0x017A2810, void, InteractionManager_RequestTalkFinish, (InteractionManager* __this, LCBaseIntee* intee, uint32_t talkId, MethodInfo* method));
+
+DO_APP_FUNC(0x03E58110, int32_t, KcpNative_kcp_client_send_packet, (void* __this, void* kcp_client, KcpPacket_1* packet, MethodInfo* method));
+DO_APP_FUNC(0x03ABDEB0, bool, KcpClient_TryDequeueEvent, (void* __this, ClientKcpEvent* evt, MethodInfo* method));
+
+DO_APP_FUNC(0x022C2220, PacketStatus__Enum, Packet_deserialize, (Packet* __this, Byte__Array** buf, int32_t bufLen, void* callback, MethodInfo* method));
+DO_APP_FUNC(0x022C0E40, void, Packet_XorEncrypt, (void* __this, Byte__Array** bytes, int32_t length, MethodInfo* method));
+
+DO_APP_FUNC(0x01758610, bool, InterActionGrp_get_IsFinished, (InterActionGrp* __this, MethodInfo* method));
+DO_APP_FUNC(0x01757810, void, InterActionGrp_ForceFinish, (InterActionGrp* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x02B9E6A0, bool, TalkDialogContext_get_canClick, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x02B9BB50, bool, TalkDialogContext_get_canAutoClick, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x02F60300, void, InLevelCutScenePageContext_OnFreeClick, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x02F64030, void, InLevelCutScenePageContext_UpdateView, (void* __this, MethodInfo* method));
 
 DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));
 DO_APP_FUNC_METHODINFO(0x0B20F1E8, Singleton_1_MBHLOBDPKEC__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B1C5540, Singleton_1_LoadingManager__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B18EF88, Singleton_1_EntityManager__get_Instance__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B29B0F0, Singleton_1_InteractionManager__get_Instance__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B23BCF0, Singleton_1_MessageInfo__get_Instance__MethodInfo);

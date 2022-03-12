@@ -3,14 +3,15 @@
 #include <sstream>
 #include <filesystem>
 
+#include <gcclib/simple-ini.hpp>
+#include <gcclib/Globals.h>
+
 #include "injector.h"
-#include "simple-ini.hpp"
 #include "util.h"
 
 const std::string GlobalGenshinProcName = "GenshinImpact.exe";
 const std::string ChinaGenshinProcName = "YuanShen.exe";
 
-const char* INIFileName = "cfg.ini";
 
 static CSimpleIni ini;
 
@@ -18,6 +19,8 @@ HANDLE OpenGenshinProcess();
 
 int main(int argc, char* argv[])
 {
+    Logger::SetLevel(Logger::Level::Debug, Logger::LoggerType::ConsoleLogger);
+
     auto path = std::filesystem::path(argv[0]).parent_path();
     std::filesystem::current_path(path);
     
@@ -27,7 +30,7 @@ int main(int argc, char* argv[])
     Sleep(1000); // Wait for unloading all dlls.
 
     ini.SetUnicode();
-    ini.LoadFile(INIFileName);
+    ini.LoadFile(Globals::configFileName.c_str());
 
     HANDLE hProcess = OpenGenshinProcess();
     if (hProcess == NULL)
@@ -37,7 +40,7 @@ int main(int argc, char* argv[])
     }
 
     std::filesystem::current_path(path);
-    ini.SaveFile(INIFileName);
+    ini.SaveFile(Globals::configFileName.c_str());
 
     std::string filename = (argc == 2 ? argv[1] : "CLibrary.dll");
     std::filesystem::path currentDllPath = std::filesystem::current_path() / filename;
@@ -59,7 +62,7 @@ HANDLE OpenGenshinProcess() {
     std::string* filePath = exePathNotExist ? nullptr : new std::string(savedPath);
     if (exePathNotExist) {
         std::cout << "Genshin path not found. Please point to it manually. ^)" << std::endl;
-        filePath = GetFilePathByUser();
+        filePath = SelectFile("Executable\0*.exe\0");
         if (filePath == nullptr) {
             std::cout << "Failed to get genshin path from user. Exiting..." << std::endl;
             return NULL;
@@ -69,15 +72,14 @@ HANDLE OpenGenshinProcess() {
     BOOL result = CreateProcessA(filePath->c_str(),
         nullptr, 0, 0, FALSE, CREATE_SUSPENDED, nullptr, nullptr, &startInfo, &processInformation);
     if (result == FALSE) {
-        std::cout << "Failed to create game process." << std::endl;
-        std::cout << "Error: " << GetLastErrorAsString() << std::endl;
-        std::cout << "If you have problem with GenshinImpact.exe path. You can change it manually in " << INIFileName << "." << std::endl;
+        LogLastError("Failed to create game process.");
+        LOG_ERROR("If you have problem with GenshinImpact.exe path. You can change it manually in %s.", Globals::configFileName.c_str());
         return NULL;
     }
 
     if (exePathNotExist) {
         ini.SetValue("Inject", "genshinPath", (*filePath).c_str());
-        std::cout << "New GenshinImpact.exe path saved to " << INIFileName << "." << std::endl;
+        LOG_INFO("New GenshinImpact.exe path saved to %s.", Globals::configFileName.c_str());
     }
 
     delete filePath;

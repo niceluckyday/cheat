@@ -3,12 +3,11 @@
 #include <Windows.h>
 #include <string>
 #include <vector>
+#include <gcclib/util.h>
 
 #include <il2cpp-appdata.h>
 
-#include "Logger.h"
-
-#define LogLastError(msg) LOG_ERROR("%s. Error: %s", msg, GetLastErrorAsString().c_str())
+#include <gcclib/Logger.h>
 
 template<class type>
 struct EntityFilterField
@@ -23,7 +22,6 @@ struct EntityFilter
 	EntityFilterField<std::vector<std::string>> nameFilter;
 };
 
-std::string GetLastErrorAsString();
 bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& size);
 
 // Position utils
