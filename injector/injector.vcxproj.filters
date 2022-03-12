@@ -35,8 +35,5 @@
     <ClInclude Include="src\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\simple-ini.hpp">
-      <Filter>Header Files\include</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

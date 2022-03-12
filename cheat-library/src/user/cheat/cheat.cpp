@@ -11,10 +11,10 @@ void InitCheats() {
 
 	InitProtectionBypass(); // Removes protection
 	InitDebugHooks(); // Hooks for debbug information
-	
+    InitPacketHooks();
+
 	InitMapTPHooks(); // Map teleport hooks
 	InitPlayerCheats(); // Cheats for player
-
     InitWorldCheats();
 
     GlobalEvents::KeyUpEvent += FREE_METHOD_HANDLER(OnKeyUp);

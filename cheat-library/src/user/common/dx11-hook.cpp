@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include <common/HookManager.h>
-#include <common/Logger.h>
+#include <gcclib/Logger.h>
 
 #pragma comment(lib, "D3dcompiler.lib")
 #pragma comment(lib, "d3d11.lib")

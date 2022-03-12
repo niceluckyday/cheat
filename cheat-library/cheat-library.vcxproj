@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -26,19 +18,6 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -57,12 +36,6 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -70,26 +43,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <TargetName>CLibrary</TargetName>
-    <OutDir>$(ProjectDir)bin\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)bin\$(PlatformShortName)\$(Configuration)\obj\</IntDir>
-    <CustomBuildBeforeTargets>
-    </CustomBuildBeforeTargets>
-    <CustomBuildAfterTargets>BuildCompile</CustomBuildAfterTargets>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <TargetName>CLibrary</TargetName>
-    <OutDir>$(ProjectDir)bin\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)bin\$(PlatformShortName)\$(Configuration)\obj\</IntDir>
-    <CustomBuildBeforeTargets>Run</CustomBuildBeforeTargets>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(ProjectDir)bin\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)bin\$(PlatformShortName)\$(Configuration)\obj\</IntDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\$(Configuration)\obj\$(ProjectName)\</IntDir>
     <TargetName>CLibrary</TargetName>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
@@ -97,68 +54,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(ProjectDir)bin\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)bin\$(PlatformShortName)\$(Configuration)\obj\</IntDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\$(Configuration)\obj\$(ProjectName)\</IntDir>
     <TargetName>CLibrary</TargetName>
     <CustomBuildBeforeTargets>Run</CustomBuildBeforeTargets>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_X86_;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;_DEBUG;CHEATLIBRARY_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui;$(ProjectDir)vendor/magic_enum/include</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalLibraryDirectories>$(ProjectDir)vendor/libraries/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>detours-$(PlatformShortName).lib;ntdll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <PostBuildEvent>
-      <Command>copy "$(OutDir)$(TargetName)$(TargetExt)" /Y "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)\CLibrary.dll" </Command>
-    </PostBuildEvent>
-    <CustomBuildStep>
-      <Command>cd $(ProjectDir)batch
-inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)\injector.exe" "$(OutDir)$(TargetFileName)" "GenshinImpact.exe"</Command>
-      <Outputs>
-      </Outputs>
-    </CustomBuildStep>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_X86_;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;NDEBUG;CHEATLIBRARY_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui;$(ProjectDir)vendor/magic_enum/include</AdditionalIncludeDirectories>
-      <Optimization>MaxSpeed</Optimization>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalLibraryDirectories>$(ProjectDir)vendor/libraries/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>detours-$(PlatformShortName).lib;ntdll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <PostBuildEvent>
-      <Command>copy "$(OutDir)$(TargetName)$(TargetExt)" /Y "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)\CLibrary.dll" </Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
@@ -167,7 +67,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui;$(ProjectDir)vendor/magic_enum/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui;$(ProjectDir)vendor/magic_enum/include;$(SolutionDir)gcclib/include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <BufferSecurityCheck>
       </BufferSecurityCheck>
@@ -180,13 +80,12 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalLibraryDirectories>$(ProjectDir)vendor/libraries/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>detours-$(PlatformShortName).lib;ntdll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)vendor/libraries/;$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>detours-$(PlatformShortName).lib;gcclib.lib;ntdll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
-copy "$(OutDir)$(TargetName)$(TargetExt)" /Y "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)\CLibrary.dll"
-exit 0</Command>
+      </Command>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>cd $(ProjectDir)batch
@@ -206,7 +105,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui;$(ProjectDir)vendor/magic_enum/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)res/;$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)src/user;$(ProjectDir)vendor/include;$(ProjectDir)vendor/imgui;$(ProjectDir)vendor/magic_enum/include;$(SolutionDir)gcclib/include</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
@@ -216,14 +115,17 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalLibraryDirectories>$(ProjectDir)vendor/libraries/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>detours-$(PlatformShortName).lib;ntdll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)vendor/libraries/;$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>detours-$(PlatformShortName).lib;gcclib.lib;ntdll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(OutDir)$(TargetName)$(TargetExt)" /Y "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)\CLibrary.dll" </Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\user\common\Config.h" />
+    <ClInclude Include="src\user\common\Event.h" />
     <ClInclude Include="src\user\common\GlobalEvents.h" />
     <ClInclude Include="src\user\common\Patch.h" />
     <ClInclude Include="src\user\gui\main-window.h" />
@@ -240,7 +142,6 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClInclude Include="src\user\gui\gui-util.h" />
     <ClInclude Include="src\user\common\close-handle.h" />
     <ClInclude Include="src\user\common\dx11-hook.h" />
-    <ClInclude Include="src\user\common\Event.h" />
     <ClInclude Include="src\user\common\HookManager.h" />
     <ClInclude Include="src\appdata\il2cpp-unityplayer-functions.h" />
     <ClInclude Include="src\appdata\il2cpp-api-functions-ptr.h" />
@@ -256,8 +157,287 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClInclude Include="src\user\main.h" />
     <ClInclude Include="src\user\gui\modules\TeleportModule.h" />
     <ClInclude Include="src\user\common\Hotkey.h" />
-    <ClInclude Include="src\user\common\Logger.h" />
     <ClInclude Include="src\user\common\util.h" />
+    <ClInclude Include="vendor\google\protobuf\any.h" />
+    <ClInclude Include="vendor\google\protobuf\any.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\any_test.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\api.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\arena.h" />
+    <ClInclude Include="vendor\google\protobuf\arenastring.h" />
+    <ClInclude Include="vendor\google\protobuf\arenaz_sampler.h" />
+    <ClInclude Include="vendor\google\protobuf\arena_impl.h" />
+    <ClInclude Include="vendor\google\protobuf\arena_test_util.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\annotation_test_util.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\code_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\command_line_interface.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_enum.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_enum_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_extension.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_file.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_helpers.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_map_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_message.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_message_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_message_layout_helper.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_names.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_options.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_padding_optimizer.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_parse_function_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_primitive_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_service.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_string_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_test_bad_identifiers.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_test_large_enum_value.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\cpp\cpp_unittest.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_doc_comment.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_enum.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_enum_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_field_base.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_helpers.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_map_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_message.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_message_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_names.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_options.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_primitive_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_reflection_class.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_repeated_enum_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_repeated_message_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_repeated_primitive_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_source_generator_base.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\csharp\csharp_wrapper_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\importer.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_context.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_doc_comment.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_enum.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_enum_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_enum_field_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_enum_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_extension.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_extension_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_file.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_generator_factory.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_helpers.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_kotlin_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_map_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_map_field_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_message.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_message_builder.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_message_builder_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_message_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_message_field_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_message_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_names.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_name_resolver.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_options.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_primitive_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_primitive_field_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_service.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_shared_code_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_string_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\java\java_string_field_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\js\js_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\js\well_known_types_embed.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\mock_code_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_enum.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_enum_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_extension.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_file.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_helpers.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_map_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_message.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_message_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_nsobject_methods.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_oneof.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\objectivec\objectivec_primitive_field.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\package_info.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\parser.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\php\php_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\plugin.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\plugin.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\python\python_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\python\python_helpers.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\python\python_pyi_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\ruby\ruby_generator.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\scc.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\subprocess.h" />
+    <ClInclude Include="vendor\google\protobuf\compiler\zip_writer.h" />
+    <ClInclude Include="vendor\google\protobuf\descriptor.h" />
+    <ClInclude Include="vendor\google\protobuf\descriptor.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\descriptor_database.h" />
+    <ClInclude Include="vendor\google\protobuf\duration.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\dynamic_message.h" />
+    <ClInclude Include="vendor\google\protobuf\empty.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\explicitly_constructed.h" />
+    <ClInclude Include="vendor\google\protobuf\extension_set.h" />
+    <ClInclude Include="vendor\google\protobuf\extension_set_inl.h" />
+    <ClInclude Include="vendor\google\protobuf\field_access_listener.h" />
+    <ClInclude Include="vendor\google\protobuf\field_mask.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\generated_enum_reflection.h" />
+    <ClInclude Include="vendor\google\protobuf\generated_enum_util.h" />
+    <ClInclude Include="vendor\google\protobuf\generated_message_bases.h" />
+    <ClInclude Include="vendor\google\protobuf\generated_message_reflection.h" />
+    <ClInclude Include="vendor\google\protobuf\generated_message_tctable_decl.h" />
+    <ClInclude Include="vendor\google\protobuf\generated_message_tctable_impl.h" />
+    <ClInclude Include="vendor\google\protobuf\generated_message_util.h" />
+    <ClInclude Include="vendor\google\protobuf\has_bits.h" />
+    <ClInclude Include="vendor\google\protobuf\implicit_weak_message.h" />
+    <ClInclude Include="vendor\google\protobuf\inlined_string_field.h" />
+    <ClInclude Include="vendor\google\protobuf\io\coded_stream.h" />
+    <ClInclude Include="vendor\google\protobuf\io\gzip_stream.h" />
+    <ClInclude Include="vendor\google\protobuf\io\io_win32.h" />
+    <ClInclude Include="vendor\google\protobuf\io\package_info.h" />
+    <ClInclude Include="vendor\google\protobuf\io\printer.h" />
+    <ClInclude Include="vendor\google\protobuf\io\strtod.h" />
+    <ClInclude Include="vendor\google\protobuf\io\tokenizer.h" />
+    <ClInclude Include="vendor\google\protobuf\io\zero_copy_stream.h" />
+    <ClInclude Include="vendor\google\protobuf\io\zero_copy_stream_impl.h" />
+    <ClInclude Include="vendor\google\protobuf\io\zero_copy_stream_impl_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\map.h" />
+    <ClInclude Include="vendor\google\protobuf\map_entry.h" />
+    <ClInclude Include="vendor\google\protobuf\map_entry_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\map_field.h" />
+    <ClInclude Include="vendor\google\protobuf\map_field_inl.h" />
+    <ClInclude Include="vendor\google\protobuf\map_field_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\map_lite_test_util.h" />
+    <ClInclude Include="vendor\google\protobuf\map_lite_unittest.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\map_proto2_unittest.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\map_test_util.h" />
+    <ClInclude Include="vendor\google\protobuf\map_test_util_impl.h" />
+    <ClInclude Include="vendor\google\protobuf\map_type_handler.h" />
+    <ClInclude Include="vendor\google\protobuf\map_unittest.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\message.h" />
+    <ClInclude Include="vendor\google\protobuf\message_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\metadata.h" />
+    <ClInclude Include="vendor\google\protobuf\metadata_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\package_info.h" />
+    <ClInclude Include="vendor\google\protobuf\parse_context.h" />
+    <ClInclude Include="vendor\google\protobuf\port.h" />
+    <ClInclude Include="vendor\google\protobuf\reflection.h" />
+    <ClInclude Include="vendor\google\protobuf\reflection_internal.h" />
+    <ClInclude Include="vendor\google\protobuf\reflection_ops.h" />
+    <ClInclude Include="vendor\google\protobuf\reflection_tester.h" />
+    <ClInclude Include="vendor\google\protobuf\repeated_field.h" />
+    <ClInclude Include="vendor\google\protobuf\repeated_ptr_field.h" />
+    <ClInclude Include="vendor\google\protobuf\service.h" />
+    <ClInclude Include="vendor\google\protobuf\source_context.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\string_member_robber.h" />
+    <ClInclude Include="vendor\google\protobuf\struct.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\bytestream.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\callback.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\casts.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\common.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\hash.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\int128.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\logging.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\macros.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\map_util.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\mathutil.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\mutex.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\once.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\platform_macros.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\port.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\status.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\statusor.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\status_macros.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\stl_util.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\stringpiece.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\stringprintf.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\strutil.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\substitute.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\template_util.h" />
+    <ClInclude Include="vendor\google\protobuf\stubs\time.h" />
+    <ClInclude Include="vendor\google\protobuf\testing\file.h" />
+    <ClInclude Include="vendor\google\protobuf\testing\googletest.h" />
+    <ClInclude Include="vendor\google\protobuf\test_util.h" />
+    <ClInclude Include="vendor\google\protobuf\test_util2.h" />
+    <ClInclude Include="vendor\google\protobuf\test_util_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\text_format.h" />
+    <ClInclude Include="vendor\google\protobuf\timestamp.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\type.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_arena.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_custom_options.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_drop_unknown_fields.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_embed_optimize_for.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_empty.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_import.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_import_lite.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_import_public.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_import_public_lite.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_lazy_dependencies.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_lazy_dependencies_custom_option.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_lazy_dependencies_enum.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_lite.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_lite_imports_nonlite.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_mset.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_mset_wire_format.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_no_field_presence.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_no_generic_services.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_optimize_for.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_preserve_unknown_enum.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_preserve_unknown_enum2.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_proto3.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_proto3_arena.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_proto3_arena_lite.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_proto3_lite.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_proto3_optional.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unittest_well_known_types.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\unknown_field_set.h" />
+    <ClInclude Include="vendor\google\protobuf\util\delimited_message_util.h" />
+    <ClInclude Include="vendor\google\protobuf\util\field_comparator.h" />
+    <ClInclude Include="vendor\google\protobuf\util\field_mask_util.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\constants.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\datapiece.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\default_value_objectwriter.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\error_listener.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\expecting_objectwriter.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\field_mask_utility.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\json_escaping.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\json_objectwriter.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\json_stream_parser.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\location_tracker.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\mock_error_listener.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\object_location_tracker.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\object_source.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\object_writer.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\protostream_objectsource.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\protostream_objectwriter.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\proto_writer.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\structured_objectwriter.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\testdata\anys.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\testdata\books.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\testdata\default_value.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\testdata\default_value_test.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\testdata\field_mask.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\testdata\maps.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\testdata\oneofs.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\testdata\proto3.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\testdata\struct.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\testdata\timestamp_duration.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\testdata\wrappers.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\type_info.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\type_info_test_helper.h" />
+    <ClInclude Include="vendor\google\protobuf\util\internal\utility.h" />
+    <ClInclude Include="vendor\google\protobuf\util\json_format.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\json_format_proto3.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\json_util.h" />
+    <ClInclude Include="vendor\google\protobuf\util\message_differencer.h" />
+    <ClInclude Include="vendor\google\protobuf\util\message_differencer_unittest.pb.h" />
+    <ClInclude Include="vendor\google\protobuf\util\package_info.h" />
+    <ClInclude Include="vendor\google\protobuf\util\time_util.h" />
+    <ClInclude Include="vendor\google\protobuf\util\type_resolver.h" />
+    <ClInclude Include="vendor\google\protobuf\util\type_resolver_util.h" />
+    <ClInclude Include="vendor\google\protobuf\wire_format.h" />
+    <ClInclude Include="vendor\google\protobuf\wire_format_lite.h" />
+    <ClInclude Include="vendor\google\protobuf\wrappers.pb.h" />
     <ClInclude Include="vendor\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="vendor\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="vendor\imgui\imgui.h" />
@@ -265,10 +445,45 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClInclude Include="vendor\imgui\misc\cpp\imgui_stdlib.h" />
     <ClInclude Include="vendor\include\detours.h" />
     <ClInclude Include="vendor\include\detver.h" />
-    <ClInclude Include="vendor\include\simple-ini.hpp" />
+    <ClInclude Include="vendor\include\google\protobuf\testing\file.h" />
+    <ClInclude Include="vendor\include\google\protobuf\testing\googletest.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\constants.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\datapiece.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\default_value_objectwriter.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\error_listener.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\expecting_objectwriter.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\field_mask_utility.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\json_escaping.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\json_objectwriter.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\json_stream_parser.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\location_tracker.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\mock_error_listener.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\object_location_tracker.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\object_source.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\object_writer.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\protostream_objectsource.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\protostream_objectwriter.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\proto_writer.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\structured_objectwriter.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\testdata\anys.pb.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\testdata\books.pb.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\testdata\default_value.pb.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\testdata\default_value_test.pb.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\testdata\field_mask.pb.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\testdata\maps.pb.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\testdata\oneofs.pb.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\testdata\proto3.pb.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\testdata\struct.pb.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\testdata\timestamp_duration.pb.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\testdata\wrappers.pb.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\type_info.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\type_info_test_helper.h" />
+    <ClInclude Include="vendor\include\google\protobuf\util\internal\utility.h" />
     <ClInclude Include="vendor\magic_enum\include\magic_enum.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\user\common\Config.cpp" />
+    <ClCompile Include="src\user\cheat\misc\packet-hook.cpp" />
     <ClCompile Include="src\user\cheat\world-cheat.cpp" />
     <ClCompile Include="src\user\common\Patch.cpp" />
     <ClCompile Include="src\user\cheat\cheat.cpp" />
@@ -283,68 +498,45 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClCompile Include="src\user\gui\modules\WorldModule.cpp" />
     <ClCompile Include="src\user\gui\renderer.cpp" />
     <ClCompile Include="src\user\gui\gui-util.cpp" />
-    <ClCompile Include="src\user\common\Config.cpp" />
     <ClCompile Include="src\user\common\dx11-hook.cpp" />
     <ClCompile Include="src\user\gui\modules\TeleportModule.cpp" />
     <ClCompile Include="src\user\common\Hotkey.cpp" />
-    <ClCompile Include="src\user\common\Logger.cpp" />
     <ClCompile Include="src\user\common\util.cpp" />
     <ClCompile Include="vendor\imgui\backends\imgui_impl_dx11.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="vendor\imgui\backends\imgui_impl_win32.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="vendor\imgui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="vendor\imgui\imgui_demo.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="vendor\imgui\imgui_draw.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="vendor\imgui\imgui_tables.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="vendor\imgui\imgui_widgets.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="vendor\imgui\misc\cpp\imgui_stdlib.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClInclude Include="src\user\common\Config.h">
-      <FileType>CppHeader</FileType>
-    </ClInclude>
     <ClCompile Include="src\user\cheat\misc\debug-hooks.cpp" />
     <ClCompile Include="src\user\cheat\misc\protection-bypass.cpp" />
     <ClCompile Include="src\framework\dllmain.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -352,8 +544,6 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClCompile Include="src\framework\il2cpp-init.cpp" />
     <ClCompile Include="src\framework\pch-il2cpp.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\user\main.cpp" />
@@ -361,12 +551,26 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="vendor\google\protobuf\compiler\cpp\cpp_unittest.inc" />
+    <None Include="vendor\google\protobuf\map_test.inc" />
+    <None Include="vendor\google\protobuf\map_test_util.inc" />
+    <None Include="vendor\google\protobuf\message_unittest.inc" />
+    <None Include="vendor\google\protobuf\port_def.inc" />
+    <None Include="vendor\google\protobuf\port_undef.inc" />
+    <None Include="vendor\google\protobuf\proto3_lite_unittest.inc" />
+    <None Include="vendor\google\protobuf\test_util.inc" />
+    <None Include="vendor\google\protobuf\wire_format_unittest.inc" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\Resource.rc" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="res\Ruda-Bold.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\gcclib\gcclib.vcxproj">
+      <Project>{adb35022-823b-4dc0-b495-3efefbd3a82f}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,14 +9,13 @@
 #include <iostream>
 #include <vector>
 
-#include <common/Logger.h>
+#include <gcclib/Logger.h>
 
 #include "il2cpp-metadata-version.h"
 
 #define IsSingletonLoaded(className) (*app::Singleton_1_## className ##___TypeInfo != nullptr)
 #define DoInitializeClass(className, expr) (il2cpp_runtime_class_init(reinterpret_cast<Il2CppClass*>(*app::## className ##__TypeInfo)), expr)
-#define GetSingleton(tpname) DoInitializeClass(Singleton_1_## tpname ##_,\
-    reinterpret_cast<app:: ## tpname ## *>(app::Singleton_GetInstance(nullptr, *app::Singleton_1_ ## tpname ## __get_Instance__MethodInfo)))
+#define GetSingleton(tpname) reinterpret_cast<app:: ## tpname ## *>(app::Singleton_GetInstance(nullptr, *app::Singleton_1_ ## tpname ## __get_Instance__MethodInfo))
 #define GetStaticFields(tpname) DoInitializeClass(tpname, (*app::## tpname ##__TypeInfo)->static_fields)
 
 #define COMMA ,
@@ -24,18 +23,31 @@
 #define GetUniList(field, type) GetUniCollection(field, UniList<type>)
 #define GetUniDict(field, keyType, valueType) GetUniCollection(field, UniDict<keyType COMMA valueType>)
 #define GetUniArray(field, type) GetUniCollection(field, UniArray<type>)
+#define GetUniLinkList(field, type) GetUniCollection(field, UniLinkList<type>)
 
-template<typename ... Args>
-std::string string_format(const std::string& format, Args ... args)
+template<class ElementT>
+struct UniLinkList;
+
+template<class ElementT>
+struct UniLinkListNode
 {
-    int size_s = std::snprintf(nullptr, 0, format.c_str(), args ...) + 1; // Extra space for '\0'
-    if (size_s <= 0) { throw std::runtime_error("Error during formatting."); }
-    auto size = static_cast<size_t>(size_s);
-    auto buf = std::make_unique<char[]>(size);
-    std::snprintf(buf.get(), size, format.c_str(), args ...);
-    return std::string(buf.get(), buf.get() + size - 1); // We don't want the '\0' inside
-}
+    ElementT item;
+    UniLinkList<ElementT>* container;
+    UniLinkListNode<ElementT>* forward;
+    UniLinkListNode<ElementT>* back;
+};
 
+template<class ElementT>
+struct UniLinkList 
+{
+    void* klass;
+    MonitorData* monitor;
+    uint32_t count;
+    uint32_t version;
+    app::Object* syncRoot;
+    UniLinkListNode<ElementT>* first;
+    struct SerializationInfo* si;
+};
 
 template<typename ElementT>
 struct UniArray {
@@ -162,6 +174,8 @@ std::string il2cppi_to_string(app::Vector vec);
 std::string il2cppi_to_string(app::Vector2 vec);
 
 std::string il2cppi_to_string(app::Vector3 vec);
+
+std::string to_hex_string(app::Byte__Array* barray, int length);
 #endif
 
 // Helper function to check if a metadata usage pointer is initialized
@@ -172,11 +186,4 @@ template<typename T> bool il2cppi_is_initialized(T* metadataItem) {
     // Metadata >=27 (Unity 2020.2)
     return !((uintptr_t) *metadataItem & 1);
 #endif
-}
-
-// Helper function to convert a pointer to hex
-template<typename T> std::string to_hex_string(T i) {
-    std::stringstream stream;
-    stream << "0x" << std::setfill('0') << std::setw(sizeof(T) * 2) << std::hex << i;
-    return stream.str();
 }

@@ -9,7 +9,7 @@
 #include <il2cpp-appdata.h>
 #include <common/HookManager.h>
 #include <common/Config.h>
-#include <common/Logger.h>
+#include <gcclib/Logger.h>
 #include <common/GlobalEvents.h>
 #include <common/util.h>
 

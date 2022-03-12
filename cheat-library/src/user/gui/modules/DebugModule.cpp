@@ -8,7 +8,7 @@
 #include <il2cpp-appdata.h>
 #include <gui/gui-util.h>
 #include <common/Config.h>
-#include <common/Logger.h>
+#include <gcclib/Logger.h>
 #include <common/HookManager.h>
 #include <common/util.h>
 #include <cheat/cheat.h>
@@ -310,6 +310,116 @@ static void DrawEntitiesData()
     }
 }
 
+#define DRAW_UINT(owner, fieldName) ImGui::Text("%s: %u", #fieldName, owner##->fields.##fieldName );
+#define DRAW_FLOAT(owner, fieldName) ImGui::Text("%s: %f", #fieldName, owner##->fields.##fieldName );
+#define DRAW_BOOL(owner, fieldName) ImGui::Text("%s: %s", #fieldName, owner##->fields.##fieldName ? "true" : "false");
+
+static void DrawBaseInteraction(app::BaseInterAction* inter)
+{
+    ImGui::Text("_type: %s", magic_enum::enum_name(inter->fields._type).data());
+    DRAW_UINT(inter, _mainQuestId);
+    DRAW_BOOL(inter, _isFromExternal);
+    DRAW_BOOL(inter, _isStarted);
+    DRAW_BOOL(inter, _isFinished);
+    auto cfg = inter->fields._cfg;
+    if (cfg == nullptr)
+        return;
+
+    ImGui::Text("Config: ");
+    ImGui::Text("_type: %s", magic_enum::enum_name(cfg->fields._type).data());
+    DRAW_FLOAT(cfg, _delayTime);
+    DRAW_FLOAT(cfg, _duration);
+    DRAW_FLOAT(cfg, _checkNextImmediately);
+}
+
+static void DrawInteractionManagerInfo() 
+{
+    if (!IsSingletonLoaded(InteractionManager))
+    {
+        ImGui::Text("Manager not loaded.");
+        return;
+    }
+    auto interactionManager = GetSingleton(InteractionManager);
+
+    DRAW_UINT(interactionManager, _keyInterCnt);
+    DRAW_FLOAT(interactionManager, _endFadeInTime);
+    DRAW_FLOAT(interactionManager, _endFadeOutTime);
+    DRAW_BOOL(interactionManager, _hasKeyPre);
+    DRAW_BOOL(interactionManager, _havEndFade);
+    DRAW_BOOL(interactionManager, _inEndFade);
+    DRAW_BOOL(interactionManager, _inStartFade);
+    DRAW_BOOL(interactionManager, _talkLoading);
+    DRAW_BOOL(interactionManager, _voiceLoading);
+    DRAW_BOOL(interactionManager, _isLockGameTime);
+    DRAW_BOOL(interactionManager, _isInteeReadyChecking);
+    DRAW_BOOL(interactionManager, _isDelayClear);
+    DRAW_BOOL(interactionManager, _isFromPerformConfig);
+    DRAW_BOOL(interactionManager, _edtTalkWaiting);
+    DRAW_BOOL(interactionManager, _isManulAttackMode);
+    DRAW_BOOL(interactionManager, _canShowAvatarEffectWhenTalkStart);
+
+
+    auto keyList = GetUniLinkList(interactionManager->fields._keyInterList, app::InterActionGrp*);
+    if (keyList != nullptr && ImGui::TreeNode("KeyList")) 
+    {
+        auto reminder = keyList->count;
+        auto current = keyList->first;
+        while (reminder > 0 && current != nullptr) 
+        {
+            auto item = current->item;
+            if (ImGui::TreeNode(item, "Key item: gid %d", item->fields.groupId)) 
+            {
+                DRAW_UINT(item, groupId);
+                DRAW_UINT(item, nextGroupId);
+                DRAW_BOOL(item, isKeyList);
+                DRAW_BOOL(item, _isStarted);
+
+                if (item->fields._interActionList != nullptr && ImGui::TreeNode("Interactions"))
+                {
+                    auto interactions = GetUniList(item->fields._interActionList, app::BaseInterAction*);
+                    for (auto& interaction : *interactions) 
+                    {
+                        if (interaction == nullptr)
+                            continue;
+
+                        if (ImGui::TreeNode(interaction, "Base interaction"))
+                        {
+                            DrawBaseInteraction(interaction);
+                            ImGui::TreePop();
+                        }
+                    }
+                    ImGui::TreePop();
+                }
+                ImGui::TreePop();
+            }
+            current = current->forward;
+            reminder--;
+        }
+        ImGui::TreePop();
+
+    }
+
+#undef DRAW_UINT
+#undef DRAW_FLOAT
+#undef DRAW_BOOL
+}
+
+void DrawMessageInfoNames() 
+{
+    auto messageInfo = GetSingleton(MessageInfo);
+    auto nameDict = GetUniDict(messageInfo->fields._cmdIdDict, app::String *, uint16_t);
+    for (const auto& [name, id] : nameDict->pairs())
+    {
+        ImGui::Text("%u : %s", id, il2cppi_to_string(name).c_str());
+    }
+
+    //auto allocDict = GetUniDict(messageInfo->fields._cmdAllocFunc, uint16_t, app::Object*);
+    //for (const auto& [id, obj] : allocDict->pairs())
+    //{
+    //    ImGui::Text("%u", id);
+    //}
+}
+
 void DrawPositionInfo() 
 {
     auto avatarPos = app::ActorUtils_GetAvatarPos(nullptr, nullptr);
@@ -344,7 +454,7 @@ void DrawPositionInfo()
 
         auto vector3 = app::Vector3_get_down(nullptr, nullptr);
         ImGui::Text("Direction: %s", il2cppi_to_string(vector3).c_str());
-
+    
         bool raycastResult = app::Physics_Raycast_3(nullptr, pos, vector3, length, nullptr);
         ImGui::Text("Raycast result: %s", raycastResult ? "true" : "false");
 
@@ -375,6 +485,12 @@ void DrawPositionInfo()
 
 void DebugModule::Draw()
 {
+    if (ImGui::CollapsingHeader("Message info", ImGuiTreeNodeFlags_None))
+        DrawMessageInfoNames();
+
+    if (ImGui::CollapsingHeader("Interaction manager", ImGuiTreeNodeFlags_None))
+        DrawInteractionManagerInfo();
+
     if (ImGui::CollapsingHeader("Entity manager", ImGuiTreeNodeFlags_None)) 
         DrawEntitiesData();
     

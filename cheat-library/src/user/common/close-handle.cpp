@@ -11,7 +11,7 @@
 #include <wchar.h>
 #include <stdlib.h>
 
-#include <common/Logger.h>
+#include <gcclib/Logger.h>
 
 #pragma comment(lib,"ntdll.lib")
 

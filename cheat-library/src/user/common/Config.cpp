@@ -3,8 +3,8 @@
 
 #include <sstream>
 
-#include <helpers.h>
-#include <common/Logger.h>
+#include <gcclib/Logger.h>
+#include <gcclib/util.h>
 
 static bool changed = false;
 
@@ -31,6 +31,9 @@ void Config::Init(const std::string configFile)
 	LoadToggleValue(cfgUnlockWaypointsEnable);
 	LoadToggleValue(cfgDumbEnemiesEnabled);
 
+	LoadToggleValue(cfgTalkSkipEnabled);
+	LoadToggleValue(cfgAutoTalkEnabled);
+
 	LoadToggleValue(cfgMapTPEnable);
 	LoadFieldValue(cfgTeleportHeight);
 	LoadFieldValue(cfgTeleportKey);
@@ -40,6 +43,9 @@ void Config::Init(const std::string configFile)
 
 	LoadFieldValue(cfgShowChestInfo);
 	LoadFieldValue(cfgTeleportToChest);
+
+	LoadFieldValue(cfgPacketCapturing);
+	LoadFieldValue(cfgPacketManipulation);
 
 	LoadFieldValue(cfgDisableMhyprot);
 	LoadFieldValue(cfgConsoleLogEnabled);

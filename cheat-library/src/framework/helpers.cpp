@@ -4,9 +4,13 @@
 #include "pch-il2cpp.h"
 
 #define WIN32_LEAN_AND_MEAN
+
 #include <windows.h>
 #include <string>
 #include <codecvt>
+
+#include <gcclib/util.h>
+
 #include "helpers.h"
 
 
@@ -57,4 +61,14 @@ std::string il2cppi_to_string(app::String* str) {
         return std::string("<nullptr>");
     return il2cppi_to_string(reinterpret_cast<Il2CppString*>(str));
 }
+
+std::string to_hex_string(app::Byte__Array* barray, int length) {
+    if (barray == nullptr)
+        return std::string();
+
+    std::stringstream stream;
+    auto uarray = GetUniArray(barray, uint8_t);
+    return to_hex_string(uarray->begin(), length);
+}
+
 #endif
