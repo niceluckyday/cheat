@@ -4646,11 +4646,11 @@ namespace app {
     struct MonoUIProxy__Fields {
         struct MonoSpriteProxy__Fields _;
         void* _animator;
-        float CELCKHHILAD;
+        float _fadeInDuration;
         float _fadeOutDuration;
-        void* FJJLANKDOJC;
-        void* MGANPGHOHLE;
-        void* IPBKEBJNFHG;
+        void* _coroutine;
+        void* _proxySet;
+        void* _delegatedInstanceSet;
     };
 
     struct MonoMapCursor__Fields {
@@ -8466,6 +8466,258 @@ namespace app {
         struct KcpEvent _evt;
     };
 
+    // EJGKINLFJKF__Enum
+    enum class UIType__Enum : int32_t {
+        Page = 0x00000000,
+        SpecialDialog = 0x00000001,
+        SuspendBar = 0x00000002,
+        Dialog = 0x00000003,
+        Root = 0x00000004,
+    };
+
+    // JBMBEBFMJAO__Enum
+    enum class ContextQueueType__Enum : int32_t {
+        NONE = 0x00000000,
+        MAIN_PAGE_LEFT = 0x00000001,
+        MAIN_PAGE_TOP = 0x00000002,
+        MAIN_PAGE_LEFT_QUEST = 0x00000003,
+        MAIN_PAGE_MIDDLE_QUEST = 0x00000004,
+        MAIN_TOP_HIGH_PRIORITY = 0x00000005,
+    };
+    
+    // IFIGONNBKLP__Enum
+    enum class CanvasType__Enum : int32_t {
+        Invalid = 0x00000000,
+        InLevelCanvas = 0x00000001,
+        RootCanvas = 0x00000002,
+    };
+
+    // PJGDFNLLFMO__Enum
+    enum class ContextLoadState__Enum : int32_t {
+        UnLoaded = 0x00000000,
+        Cached = 0x00000001,
+        Loading = 0x00000002,
+        Loaded = 0x00000003,
+        UnLoading = 0x00000004,
+    };
+
+    // IHKGPINHAJG__Enum
+    enum class ContextViewState__Enum : int32_t {
+        Active = 0x00000000,
+        Inactive = 0x00000001,
+        Hiding = 0x00000002,
+    };
+
+    // IHIAPPJGFMD
+    struct UIMetaInfo {
+        bool OKMCBOMPIML;
+        bool BHHCEBPMJBP;
+    };
+
+    enum class InputMode__Enum : int32_t {
+        None = 0x00000000,
+        Normal = 0x00000001,
+        TabMenu = 0x00000002,
+        WheelMenu = 0x00000003,
+        Disable = 0x00000004,
+        Block = 0x00000005,
+        SimpleMenu = 0x00000006,
+        ScrollerMenu = 0x00000007,
+    };
+
+    enum class PCCursorMode__Enum : int32_t {
+        Locked = -1,
+        DontCare = 0x00000000,
+        Normal = 0x000003e8,
+    };
+
+    struct __declspec(align(8)) BaseContext__Fields {
+        struct GENDCKPDMFD* config;
+        UIType__Enum uiType;
+        ContextQueueType__Enum queueType;
+        CanvasType__Enum canvasType;
+        ContextLoadState__Enum _loadState;
+        ContextViewState__Enum _viewState;
+        int32_t layerOrder;
+        struct Queue_1_MoleMole_Notify_* _notifyQueue;
+        struct Queue_1_MoleMole_Notify_* _eternalNotifyQueue;
+        struct GameObject* _view_k__BackingField;
+        struct MonoUIProxy* _monoProxy;
+        struct UIMetaInfo _metaInfo_k__BackingField;
+        struct List_1_UnityEngine_Events_UnityEventBase_* _bindedEvents;
+        struct List_1_MoleMole_MonoEventTrigger_* _eventTriggers;
+        struct List_1_UnityEngine_Coroutine_* _bindedCoroutines;
+        struct Coroutine* _fadeOutCoroutine;
+        struct Action_1_MoleMole_BaseContext_* onLoadFinish;
+        struct Action* closeCallback;
+        struct Action* releaseCallback;
+        struct Action* fadeOutCallback;
+        bool _setViewAsLast;
+        bool _setViewAsFirst;
+        struct List_1_MoleMole_BaseContextComponent_* _baseComponentList;
+        struct List_1_MoleMole_BaseContextComponent_* _tickComponentList;
+        struct Dictionary_2_System_Int32_List_1_MoleMole_BaseContextComponent_* _baseComponentNotifyRegister;
+        struct Dictionary_2_System_Int32_List_1_MoleMole_BaseContextComponent_* _baseComponentPacketRegister;
+        struct Dictionary_2_System_Int32_List_1_MoleMole_BaseContextComponent_* _baseComponentActionEventRegister;
+        uint32_t _pageHandler;
+        bool _isIndependentLoaded;
+        bool _UIResolutionChanged_k__BackingField;
+        bool _landFromBack_k__BackingField;
+        bool _layoutVersionChanged_k__BackingField;
+        struct HashSet_1_System_UInt16_* handlePacketSet;
+        struct EMEIKAKFNKA* _jsonConfig;
+        int32_t _stateID;
+        struct DKLNPFFOFMA__Array* _inputEvents;
+        bool _useCustomInputEvent;
+        struct List_1_DKLNPFFOFMA_* _customeInputEvent;
+        bool _enableJoypadVirtualCursor;
+        struct Nullable_1_Boolean_ _forceEnableJoypadVirtualCursor;
+        bool _handledInputEvents;
+        InputMode__Enum _inputMode;
+        uint32_t _keySettingID;
+        struct List_1_LAHHHHNMONI_* _joypadControllerCache;
+        bool _needResolveJoypadController;
+        bool _needResolveKeyMouseController;
+        struct Dictionary_2_System_String_LAHHHHNMONI_* _name2JoypadController;
+        PCCursorMode__Enum _pcCursorMode;
+        bool _updateJoypadUIModule;
+        bool _contextClosed;
+        struct List_1_MoleMole_BaseContext_JoypadUIModulesList_* _joypadUIModules;
+        struct List_1_MoleMole_MonoJoypadUIModule_* _modulesToBeAdd;
+        struct List_1_MoleMole_MonoJoypadUIModule_* _modulesToBeRemove;
+        struct List_1_MoleMole_MonoJoypadUIModule_* _joypadUIModuleCache;
+        struct List_1_MoleMole_MonoJoypadNavRegionBase_* _navRegionCache;
+        bool _changeClimateLen;
+        bool _showClimateLenEff;
+        bool _immedialteClimateLenEff;
+        struct Dictionary_2_MoleMole_MonoControllerIcon_Stack_1_System_Boolean_* _controllerIconWithState;
+        struct List_1_MoleMole_MonoControllerIcon_* controllerIcons;
+        struct KDGEJACIAHK* _spriteLoadProxy;
+    };
+
+    // IMNNHKGBACI__Fields
+    struct BaseDialogContext__Fields {
+        struct BaseContext__Fields _;
+        bool attachToPage;
+        bool _autoCloseDialogOnBackEvent;
+        struct BLDKFDKIPLL* _pageContext_k__BackingField;
+    };
+
+    // MKACNKDDOPB__Fields
+    struct MKACNKDDOPB__Fields {
+        struct BaseDialogContext__Fields _;
+        bool _inCoopSelect;
+        bool _inCoopTemperamentSelect;
+        bool _coopSelectShow;
+        int32_t _selectCoopIndex;
+        struct List_1_MoleMole_MonoUIContainer_* _confidenceItemArray;
+        struct CKDLOLMAOIK* _currDialogAction;
+        struct NPNBHKMGLOM* _currDialogSelectAction;
+        struct MonoTalkDialog* _dialogMono;
+        struct JFGGHEFFDEL* _currDialog;
+        float _protectTime;
+        bool _autoClick;
+        struct String* CountDownProgressPrefab;
+        uint32_t _handle;
+        struct GameObject* _countDownGo;
+        struct MonoTalkCountDownProgress* _countDownScript;
+        struct List_1_FGBMPOMILIC_* _selectParamList;
+        struct Action* _updateGrpSelectBottom;
+        struct List_1_System_UInt32_* _selectDialogIdList;
+        bool NBGOEEPGJEE;
+        struct Action* _onFreeClick;
+        float _interactableTime;
+        float _autoTalkInteractableTime;
+        struct Coroutine* _showClickTipCoroutine;
+        bool _differentRole;
+        struct Coroutine* _showSelectOptionsCoroutine;
+        bool _inSelect;
+        struct Coroutine* WaitDialogSelectCoroutine;
+    };
+
+    // MKACNKDDOPB
+    struct TalkDialogContext {
+        struct MKACNKDDOPB__Class* klass;
+        MonitorData* monitor;
+        struct MKACNKDDOPB__Fields fields;
+    };
+
+
+    struct MonoTalkDialog__Fields {
+        struct MonoUIProxy__Fields _;
+        struct MonoGrpSelect* _selectGrp;
+        struct MonoPrefabPlugin* _prefabPlugin;
+        struct GameObject* _keyGameObject;
+        struct MonoControlElement* monoControl;
+        struct Animator* _clickAnimator;
+        struct GameObject* _clickTip;
+        struct Transform* _countDownTrans;
+        struct GameObject* _conversationRoot;
+        struct GameObject* _talkRoot;
+        float _protectTime;
+        float _clickTipAniTime;
+        float _optionsDisplayDelay;
+        float _waitDialogSelectTime;
+        float _waitCoopSelectTime;
+        struct MonoElementSwitch* _elementSwitch;
+        bool _clickAniTimeAdd;
+        struct MonoGrpConversation* _conversationGrp;
+        struct MonoCoopPanel* _coopPanel;
+    };
+
+    struct MonoTalkDialog {
+        struct MonoTalkDialog__Class* klass;
+        MonitorData* monitor;
+        struct MonoTalkDialog__Fields fields;
+    };
+
+    //BLDKFDKIPLL__Fields
+    struct BasePageContext__Fields {
+        struct BaseContext__Fields _;
+        struct List_1_IMNNHKGBACI_* dialogContextList;
+        struct List_1_KFFFGJNHFBL_* subPageContextList;
+        bool _forceLodOff;
+        bool _autoClosePageOnBackEvent;
+        bool _disableMainCamera;
+        bool _pauseLevelTime;
+        bool _asyncLoadRes;
+        struct Coroutine* _cameraCoroutine;
+        bool _joyFocusOnParentPage;
+    };
+
+    struct LOCHENIGEOO__Fields {
+        struct BasePageContext__Fields _;
+        struct MonoInLevelCutScenePage* _pageMono;
+        struct TalkDialogContext* _talkDialog;
+        struct Image* _backImg;
+        struct GameObject* _loadingAnim;
+        struct Animator* _textAnimator;
+        bool _needFreeClick;
+        bool _isChangingColor;
+        struct Coroutine* _wait2ShowLoadingDialog;
+        bool _talking;
+        uint32_t _inteeID;
+        struct EKAPLGFLIPO* FODDCACCEDI;
+        float _durationToHide;
+        struct Vector2 _lastMousePos;
+        float _lastMouseMoveTime;
+        bool _firstUpdate;
+        bool _needHideMouse;
+    };
+
+    struct InLevelCutScenePageContext {
+        struct LOCHENIGEOO__Class* klass;
+        MonitorData* monitor;
+        struct LOCHENIGEOO__Fields fields;
+    };
+
+    struct Int32__Class {
+        Il2CppClass_0 _0;
+        Il2CppRuntimeInterfaceOffsetPair* interfaceOffsets;
+        struct Int32__StaticFields* static_fields;
+        const Il2CppRGCTXData* rgctx_data;
+        Il2CppClass_1 _1;
+    };
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }
 #endif

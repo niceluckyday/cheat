@@ -164,10 +164,21 @@ DO_APP_FUNC(0x022C0E40, void, Packet_XorEncrypt, (void* __this, Byte__Array** by
 DO_APP_FUNC(0x01758610, bool, InterActionGrp_get_IsFinished, (InterActionGrp* __this, MethodInfo* method));
 DO_APP_FUNC(0x01757810, void, InterActionGrp_ForceFinish, (InterActionGrp* __this, MethodInfo* method));
 
-DO_APP_FUNC(0x02B9E6A0, bool, TalkDialogContext_get_canClick, (void* __this, MethodInfo* method));
-DO_APP_FUNC(0x02B9BB50, bool, TalkDialogContext_get_canAutoClick, (void* __this, MethodInfo* method));
-DO_APP_FUNC(0x02F60300, void, InLevelCutScenePageContext_OnFreeClick, (void* __this, MethodInfo* method));
-DO_APP_FUNC(0x02F64030, void, InLevelCutScenePageContext_UpdateView, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x02B9E6A0, bool, TalkDialogContext_get_canClick, (TalkDialogContext* __this, MethodInfo* method));
+DO_APP_FUNC(0x02B9BB50, bool, TalkDialogContext_get_canAutoClick, (TalkDialogContext* __this, MethodInfo* method));
+DO_APP_FUNC(0x02BA24C0, void, TalkDialogContext_OnDialogSelectItem, (TalkDialogContext* __this, Notify *notify, MethodInfo* method));
+DO_APP_FUNC(0x02F60300, void, InLevelCutScenePageContext_OnFreeClick, (InLevelCutScenePageContext* __this, MethodInfo* method));
+DO_APP_FUNC(0x02F64030, void, InLevelCutScenePageContext_UpdateView, (InLevelCutScenePageContext* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x060FFD90, void, Lua_xlua_pushasciistring, (void* __this, void* L, String* str, MethodInfo* method));
+DO_APP_FUNC(0x01CBBD70, void, LuaShellManager_DoString, (void* __this, Byte__Array* byteArray, MethodInfo* method));
+DO_APP_FUNC(0x060F5D10, void*, LuaEnv_DoString, (void* __this, Byte__Array* chunk, String* chunkName, void* env, MethodInfo* method));
+DO_APP_FUNC(0x01CBB760, void, LuaShellManager_ReportLuaShellResult, (void* __this, String* type, String* value, MethodInfo* method));
+
+DO_APP_FUNC(0x07497470, float, Time_get_time, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x04B8BA70, float, MonoTalkDialog_get_clickTipAniTime, (void* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x02662BD0, Notify, Notify_CreateNotify_1, (void* __this, AJAPIFPNFKP__Enum type, Object* body, MethodInfo* method));
 
 DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));
 DO_APP_FUNC_METHODINFO(0x0B20F1E8, Singleton_1_MBHLOBDPKEC__get_Instance__MethodInfo);

@@ -103,8 +103,6 @@ struct UniList
     }
 };
 
-
-
 template<typename KeyT, typename ValT>
 struct __declspec(align(8)) UniDict {
     void* klass;

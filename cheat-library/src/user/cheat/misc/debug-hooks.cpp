@@ -80,15 +80,50 @@ static app::AttackResult* AttackResult_CreateAttackResult_2_Hook(void* __this, a
     callOrigin(AttackResult_CreateAttackResult_2_Hook, __this, attackProto, method);
 }
 
+void Lua_xlua_pushasciistring_Hook(void* __this, void* L, app::String* str, MethodInfo* method) 
+{
+    LOG_DEBUG("Pushed string: %s", il2cppi_to_string(str).c_str());
+    callOrigin(Lua_xlua_pushasciistring_Hook, __this, L, str, method);
+}
+
+static int checkCount = 0;
+void* LuaEnv_DoString_Hook(void* __this, app::Byte__Array* chunk, app::String* chunkName, void* env, MethodInfo* method)
+{
+    if (checkCount > 0)
+    {
+        LOG_DEBUG("After size %d; name: %s", chunk->bounds == nullptr ? chunk->max_length : chunk->bounds->length, il2cppi_to_string(chunkName).c_str());
+        checkCount--;
+    }
+    return callOrigin(LuaEnv_DoString_Hook, __this, chunk, chunkName, env, method);
+}
+
+
+void LuaShellManager_DoString_Hook(void* __this, app::Byte__Array* byteArray, MethodInfo* method)
+{
+    LOG_DEBUG("Size %d", byteArray->bounds == nullptr ? byteArray->max_length : byteArray->bounds->length);
+    checkCount = 10;
+    callOrigin(LuaShellManager_DoString_Hook, __this, byteArray, method);
+}
+
+void LuaShellManager_ReportLuaShellResult_Hook(void* __this, app::String* type, app::String* value, MethodInfo* method)
+{
+    std::cout << "Type: " << il2cppi_to_string(type) << std::endl;
+    std::cout << "Value: " << il2cppi_to_string(value) << std::endl;
+    callOrigin(LuaShellManager_ReportLuaShellResult_Hook, __this, type, value, method);
+}
 
 void InitDebugHooks() 
 {
-    //HookManager::install(app::AttackResult_CreateAttackResult_2, AttackResult_CreateAttackResult_2_Hook);
-    //HookManager::install(app::SendAttackEventToServer, SendAttackEventToServer_Hook);
-    //HookManager::install(app::VCBaseCombat_DoAttackLanded, VCBaseCombat_DoAttackLanded_Hook);
+    // HookManager::install(app::AttackResult_CreateAttackResult_2, AttackResult_CreateAttackResult_2_Hook);
+    // HookManager::install(app::SendAttackEventToServer, SendAttackEventToServer_Hook);
+    // HookManager::install(app::VCBaseCombat_DoAttackLanded, VCBaseCombat_DoAttackLanded_Hook);
 
-    //HookManager::install(app::BaseActor_SpawnMonster, BaseActor_SpawnMonster_Hook);
-
+    // HookManager::install(app::BaseActor_SpawnMonster, BaseActor_SpawnMonster_Hook);
+    // HookManager::install(app::LuaShellManager_ReportLuaShellResult, LuaShellManager_ReportLuaShellResult_Hook);
+    // HookManager::install(app::LuaShellManager_DoString, LuaShellManager_DoString_Hook);
+    // HookManager::install(app::LuaEnv_DoString, LuaEnv_DoString_Hook);
+    // HookManager::install(app::Lua_xlua_pushasciistring, Lua_xlua_pushasciistring_Hook);
+    
     HookManager::install(app::GameLogin_SendInfo_2, SendInfo_Hook);
     LOG_DEBUG("Hooked GameLogin::SendGameInfo. Origin at 0x%p", HookManager::getOrigin(SendInfo_Hook));
 }

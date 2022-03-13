@@ -12,10 +12,10 @@ void WorldModule::Draw()
 
     BeginGroupPanel("Dialog", ImVec2(-1.0f, 0.0f));
     {
-        ImGui::Text("For current time, only skips talk dialog, but don't skip choose dialog.");
+        //ImGui::Text("For current time, only skips talk dialog, but don't skip choose dialog.");
         ConfigWidget(Config::cfgAutoTalkEnabled, "Automatic continue dialog. Don't skip talk momentaly.");
-        ConfigWidget(Config::cfgTalkSkipEnabled, "Fast skip dialog.");
-        ImGui::TextColored(ImVec4(1.0, 0.0, 0.0, 1.0), "Fast talk skip is unstable. Can produce dialog suspend, especialy in quest dialogs.");
+        // ConfigWidget(Config::cfgTalkSkipEnabled, "Fast skip dialog.");
+        // ImGui::TextColored(ImVec4(1.0, 0.0, 0.0, 1.0), "Fast talk skip is unstable. Can produce dialog suspend, especialy in quest dialogs.");
     }
     EndGroupPanel();
 }
