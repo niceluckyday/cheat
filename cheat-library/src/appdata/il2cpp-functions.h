@@ -72,13 +72,13 @@ DO_APP_FUNC(0x01658880, void, LoadingManager_PerformPlayerTransmit, (LoadingMana
 DO_APP_FUNC(0x01656B10, void, LoadingManager_RequestSceneTransToPoint, (LoadingManager* __this, uint32_t sceneId, uint32_t pointId, void* finishCallBackInForceDrag, MethodInfo* method));
 
 DO_APP_FUNC(0x01466540, MapModule_ScenePointData, GetWaypointInformation_MBHLOBDPKEC_BFKKBELGMLF, (MBHLOBDPKEC* __this, uint32_t waypointType, uint32_t waypointId, MethodInfo* method));
-DO_APP_FUNC(0x014D3D80, void, TransportToMapMark_EAFLDMPLBHM_KBCBGBIDJMG, (EAFLDMPLBHM* __this, MonoMapMark* mark, MethodInfo* method));
+DO_APP_FUNC(0x014D3D80, void, TransportToMapMark_EAFLDMPLBHM_KBCBGBIDJMG, (InLevelMapPageContext* __this, MonoMapMark* mark, MethodInfo* method));
 
 DO_APP_FUNC(0x01E9F520, BaseEntity*, EntityManager_GetCurrentAvatar, (EntityManager* __this, MethodInfo* method));
 DO_APP_FUNC(0x0152E720, void, Entity_SetPosition, (BaseEntity* __this, Vector3 position, bool someBool, MethodInfo* method));
 DO_APP_FUNC(0x0749EB80, float, Vector3_Distance, (void* __this, Vector3 a, Vector3 b, MethodInfo* method));
 
-DO_APP_FUNC(0x04E86BD0, MonoMapMark*, MonoInLevelMapPage_AddMark, (MonoInLevelMapPage* __this, BAEABLAJDLM PHDBMGDLIDJ, MethodInfo* method));
+DO_APP_FUNC(0x04E86BD0, MonoMapMark*, MonoInLevelMapPage_AddMark, (MonoInLevelMapPage* __this, ConfigMarkIcon PHDBMGDLIDJ, MethodInfo* method));
 
 DO_APP_FUNC(0x014CC1F0, void, CreateCustomMapMark, (void* __this, Vector2 position, NOIPNNCFAAH__Enum iconType, MethodInfo* method));
 
@@ -180,9 +180,16 @@ DO_APP_FUNC(0x04B8BA70, float, MonoTalkDialog_get_clickTipAniTime, (void* __this
 
 DO_APP_FUNC(0x02662BD0, Notify, Notify_CreateNotify_1, (void* __this, AJAPIFPNFKP__Enum type, Object* body, MethodInfo* method));
 
+DO_APP_FUNC(0x014E0420, void, InLevelMapPageContext_OnMapClicked, (InLevelMapPageContext* __this, Vector2 screenPos, MethodInfo* method));
+DO_APP_FUNC(0x0849DB30, bool, RectTransformUtility_ScreenPointToLocalPointInRectangle, (void* __this, void* rect, Vector2 screenPoint, void* cam, Vector2* localPoint, MethodInfo* method));
+DO_APP_FUNC(0x04E887E0, Transform*, MonoInLevelMapPage_get_mapBackground, (MonoInLevelMapPage* __this, MethodInfo* method));
+DO_APP_FUNC(0x04E88810, Rect, MonoInLevelMapPage_get_mapRect, (MonoInLevelMapPage* __this, MethodInfo* method));
+DO_APP_FUNC(0x014CF980, void, InLevelMapPageContext_OnMarkClicked, (InLevelMapPageContext* __this, MonoMapMark* mark, MethodInfo* method));
+
 DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));
 DO_APP_FUNC_METHODINFO(0x0B20F1E8, Singleton_1_MBHLOBDPKEC__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B1C5540, Singleton_1_LoadingManager__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B18EF88, Singleton_1_EntityManager__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B29B0F0, Singleton_1_InteractionManager__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B23BCF0, Singleton_1_MessageInfo__get_Instance__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B18C3C0, Singleton_1_UIManager_1__get_Instance__MethodInfo);

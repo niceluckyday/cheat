@@ -4702,7 +4702,7 @@ namespace app {
         struct MonoInLevelMapPage__Fields fields;
     };
 
-    struct BAEABLAJDLM {
+    struct ConfigMarkIcon {
         struct String* IFMMCPNGPDI;
         struct SimpleSafeUInt32 GNBMICNFLBF;
         HOOPGAGKHLD__Enum markType;
@@ -4736,7 +4736,6 @@ namespace app {
         HOOPGAGKHLD__Enum _markType;
         NOIPNNCFAAH__Enum _iconType;
         KAKICLDAAKA__Enum _markOrder;
-
         uint32_t _identifier;
         GIPGFLCALHO__Enum realRadarVisibility;
         GIPGFLCALHO__Enum realMapVisibility;
@@ -4759,40 +4758,40 @@ namespace app {
         void* _asyncPrefabs;
         struct GameObject* AGOICOMOLFD;
         void* _materials;
-        void* BBGJAKJNIFN;
-        struct Vector2 _positionMaybe;
-        struct BAEABLAJDLM config;
-        uint32_t PAHKJGIDOFP;
-        struct GameObject* PPLBGGBFEDP;
-        uint32_t JLMCPHJEDOE;
-        struct GameObject* FOHLNFJEGGN;
+        void* _rectTrans;
+        struct Vector2 _levelMapPos;
+        struct ConfigMarkIcon config;
+        uint32_t _dungeonIconLabelHandle;
+        struct GameObject* _dungeonIconLabel;
+        uint32_t _dungeonIconTipsHandle;
+        struct GameObject* _dungeonIconTips;
         struct GeneralMarkData* generalMapData;
         int32_t floor;
-        bool PHBDPFKGMJA;
-        struct String* KBBPOJKHFCG;
-        void* KLEIFHEDNAP;
+        bool _up;
+        struct String* _currEffectName;
+        struct ParticleSystem* _currEffect;
         float markAreaRadius;
-        struct ColorStyle_MarkPointAreaColor CCHMNIOKNEN;
+        struct ColorStyle_MarkPointAreaColor _markPointAreaColor;
         void* layerParent;
-        bool GLNAPGHPHHE;
-        int32_t OFFLEFNEBHD;
-        struct Nullable_1_UInt32_ NGHFGHJJEFB;
-        uint32_t ELFOCLAIHGH;
-        struct GameObject* LHELGOIGDLI;
-        struct GameObject* IDOAGLDDIJD;
+        bool _inLayer;
+        int32_t _layer;
+        struct Nullable_1_UInt32_ _appearAudio;
+        uint32_t _configEffectHandle;
+        struct GameObject* _configEffectIns;
+        struct GameObject* _completeIcon;
         struct Transform* _dungeonIconLabelRoot;
-        struct GameObject* FLGNIPJPPKE;
-        void* GNNMILFDNAG;
-        void* NDOMDHLLCPA;
-        struct Transform* PPDPKABOKPI;
-        struct Transform* CDILPKHOLFI;
-        struct Transform* BDJCMBBHLKA;
+        struct GameObject* _bossGrp;
+        struct Image* _bossIcon;
+        struct Image* _bossIconNoBG;
+        struct Transform* _bossIconRoot;
+        struct Transform* _bossIconRootNoBG;
+        struct Transform* _bossEffect;
         struct String* imgPath;
-        struct GameObject* KDENPODJAPM;
-        void* HGNMFLBMCJG;
-        struct Transform* OMHLDLNFGPE;
-        struct Transform* FHECAEHDDHI;
-        struct Transform* LDOIHNDJLNG;
+        struct GameObject* _characterGrp;
+        void* _characterIcon;
+        struct Transform* _characterIconRoot;
+        struct Transform* _characterIconRewardTrans;
+        struct Transform* _characterIconTalkTrans;
     };
 
     struct MonoMapMark {
@@ -6020,10 +6019,78 @@ namespace app {
         uint32_t level;
     };
 
-    struct EAFLDMPLBHM {
-        void* klass;
-        MonitorData* monitor;
-        char fields;
+    enum class MHANBAIKDCD__Enum : int32_t {
+        BigWorld = 0x00000000,
+        HomeWorld = 0x00000001,
+        Islands = 0x00000002,
+        Abyssalisle = 0x00000003,
+        MichiaeMatsuri = 0x00000004,
+    };
+
+    enum class BJAPMFFMMCK__Enum : int32_t 
+    {
+        Noe = 0x00000000,
+        Monster = 0x00000001,
+        Quest = 0x00000002,
+    };
+
+    struct Rect {
+        float m_XMin;
+        float m_YMin;
+        float m_Width;
+        float m_Height;
+    };
+
+    enum class EAFLDMPLBHM_IBEOPIEDJDK__Enum : int32_t {
+        Normal = 0x00000000,
+        AddCustomMark = 0x00000001,
+        EditCustomMark = 0x00000002,
+        Dungeon = 0x00000003,
+        Boss = 0x00000004,
+        Routine = 0x00000005,
+        MapTagSwitch = 0x00000006,
+        TemplateMapTips = 0x00000007,
+    };
+
+    enum class EAFLDMPLBHM_BHFDPHAPALK__Enum : int32_t {
+        LOCKED = 0x00000000,
+        TOBEEXPLORE = 0x00000001,
+        UNLOCKED = 0x00000002,
+    };
+
+    enum class EAFLDMPLBHM_HJGDLNPCEGD__Enum : int32_t {
+        NotReady = 0x00000000,
+        SelectTitle = 0x00000001,
+        SelectReward = 0x00000002,
+        DailyReward = 0x00000003,
+    };
+
+    struct OFOEBDBECGO {
+        uint32_t KJADNNPICNF;
+        uint32_t IBGIJLNJKPB;
+        uint32_t MGNDNPJGGCI;
+        uint32_t HJCIJANLAGC;
+    };
+
+    struct EAFLDMPLBHM_CBIPECMOKEK {
+        uint32_t JNAIAKGGLDL;
+        bool AKHGFICNCOJ;
+        uint32_t KMNBAGLDEJA;
+        uint32_t AJMJNHAKMLD;
+        uint32_t AFDGCILKPFM;
+        struct OFOEBDBECGO BDAGACDLCFN;
+    };
+
+    struct EAFLDMPLBHM_ICAOJBLGIAO {
+        int32_t OHALFFMCMLN;
+        struct EAFLDMPLBHM_CBIPECMOKEK HPOGLLPBNGA;
+        struct EAFLDMPLBHM_CBIPECMOKEK BNNNIJCBDJD;
+        struct EAFLDMPLBHM_CBIPECMOKEK MDBEHCFNNDC;
+        struct EAFLDMPLBHM_CBIPECMOKEK KDJFNBPIOAM;
+    };
+
+    struct JBCMLPBCANL {
+        struct MLKPBABGEMJ* BIMFBCOJBGO;
     };
 
     enum class CursorLockMode__Enum : int32_t {
@@ -8595,6 +8662,125 @@ namespace app {
         struct KDGEJACIAHK* _spriteLoadProxy;
     };
 
+    //BLDKFDKIPLL__Fields
+    struct BasePageContext__Fields {
+        struct BaseContext__Fields _;
+        struct List_1_IMNNHKGBACI_* dialogContextList;
+        struct List_1_KFFFGJNHFBL_* subPageContextList;
+        bool _forceLodOff;
+        bool _autoClosePageOnBackEvent;
+        bool _disableMainCamera;
+        bool _pauseLevelTime;
+        bool _asyncLoadRes;
+        struct Coroutine* _cameraCoroutine;
+        bool _joyFocusOnParentPage;
+    };
+
+    struct EAFLDMPLBHM__Fields
+    {
+        struct BasePageContext__Fields _;
+        struct GameObject* _mapGameObject;
+        struct MonoLevelMapUI* _mapScript;
+        struct MonoInLevelMapPage* _pageMono;
+        struct KEPFBCOBFLP* _rewardPreviewComponent;
+        uint32_t _mapFogHandle;
+        struct Action* _loadingCallback;
+        struct Dictionary_2_System_UInt32_MoleMole_MonoMapMark_* _transPointMarks;
+        struct Dictionary_2_System_Int32_Dictionary_2_System_UInt32_MoleMole_MonoMapMark_* _markType2markDic;
+        struct Rect _mapViewRect;
+        struct MonoMapMark* _localAvatarMark;
+        struct Rect _markContainerViewport;
+        struct KOMADDJAPGE* _infoTextDialog;
+        int32_t _markLayer;
+        uint32_t _markId;
+        struct GeneralMarkData* _trackingMark;
+        HOOPGAGKHLD__Enum _markType;
+        bool _needTrack;
+        struct List_1_MoleMole_MonoMapMark_* _nearMarks;
+        struct MonoMapMark* _hintMark;
+        struct List_1_EAFLDMPLBHM_NLCLBJEHBMN_* _rewardTipsDataList;
+        struct Vector3 _customMarkWorldPos;
+        struct csh_String* _customMarkTitle;
+        NOIPNNCFAAH__Enum _customMarktype;
+        bool _isCreatCustomMark;
+        bool _isCenterCameraNoReason;
+        bool FBKBFCDAEDI;
+        uint32_t _customMarkTrackMonsterID;
+        uint32_t _customMarkTrackQuestID;
+        BJAPMFFMMCK__Enum _customMarkTrackReasonType;
+        bool _isAdventureHandbookOpened;
+        float _slideValue;
+        struct HOHOGPGIKKN* _resinComp;
+        struct BPCFKJMPBBC* _zoomAudioComp;
+        struct Dictionary_2_MoleMole_MonoMapMark_UnityEngine_GameObject_* trackingIndictor;
+        bool _HEAOOGEKNJK_k__BackingField;
+        float currAnimTime;
+        struct Vector2 startPos;
+        float resetPeriod;
+        float BPLBOIGMCCO;
+        struct Vector2 MBGMMKGDHFN;
+        float undef;
+        bool FOOHKNKEEPD;
+        struct Vector2 _currRectPos;
+        struct Vector2 _currRectSize;
+        struct Dictionary_2_System_UInt32_UnityEngine_GameObject_* _companionIndicators;
+        struct GameObject* _playerIndicator;
+        struct Vector2 _newPos;
+        struct Dictionary_2_System_UInt32_UnityEngine_GameObject_* _questAreaMarkDic;
+        struct GameObject* _lockBlueObj;
+        bool _canTrans;
+        uint32_t _unlockAreaID;
+        struct GameObject* _lockRedObj;
+        bool _showDisableLimitRegion;
+        struct PointerEventData* _cursorPointer;
+        struct List_1_UnityEngine_EventSystems_RaycastResult_* _raycastResults;
+        struct GameObject* _currOverGameObject;
+        bool _anyMarkUnderCursor;
+        int32_t _selectedRewardTipsIndex;
+        bool _resinOpened;
+        MHANBAIKDCD__Enum _currTag;
+        uint32_t _currShownID;
+        uint32_t _currSelectedID;
+        struct PKCJCICHFJC* _currSelectedConfig;
+        struct List_1_PKCJCICHFJC_* _mapTagConfig;
+        uint32_t _sceneToLoad;
+        int32_t _currSelectIndex;
+        struct MonoMapMark* _selectedDungeonMark;
+        uint32_t BOSS_DUNGEON_ENTRY_ID;
+        EAFLDMPLBHM_IBEOPIEDJDK__Enum _markTipsContentType;
+        struct List_1_EBCLABJBIDD_* _reward;
+        struct List_1_GAIJHKCIOOP_* _rewardPreviewList;
+        struct JCCCCPCLMGF* _selectedDungeonEntry;
+        EAFLDMPLBHM_BHFDPHAPALK__Enum _selectDungeonEntryState;
+        struct Coroutine* _updateDungeonCooldownTipsCoroutine;
+        struct EAFLDMPLBHM_ICAOJBLGIAO _dungeonEntryInfoList;
+        uint32_t _dungeonEntryPointID;
+        EAFLDMPLBHM_HJGDLNPCEGD__Enum _dungeonTabSelectState;
+        struct MonoDungeonTabTip* _selectedTitle;
+        int32_t _selectedTitleIndex;
+        struct MonoItemSlot* _selectedReward;
+        int32_t _selectedRewardIndex;
+        int32_t _rewardPerRow;
+        struct JBCMLPBCANL _itemTipsHelper;
+        struct Coroutine* _updateFarmFieldCoroutine;
+        struct GameObject* _newMaxLevelGO;
+        struct KEPFBCOBFLP* _moonfinTrialRewardPreviewComponent;
+        struct Coroutine* _updateReviveCooldownCoroutine;
+        int32_t _selectedMapTagIndex;
+        int32_t _selectedPanelTagIndex;
+        struct MonoMapMark* _selectedCustomMark;
+        int32_t _customMarkCount;
+        struct NOIPNNCFAAH__Enum__Array* _customMarkIcons;
+        struct Vector2 _currMapPos;
+    };
+
+    // EAFLDMPLBHM 
+    struct InLevelMapPageContext {
+        void* klass;
+        MonitorData* monitor;
+        EAFLDMPLBHM__Fields fields;
+    };
+
     // IMNNHKGBACI__Fields
     struct BaseDialogContext__Fields {
         struct BaseContext__Fields _;
@@ -8671,20 +8857,6 @@ namespace app {
         struct MonoTalkDialog__Fields fields;
     };
 
-    //BLDKFDKIPLL__Fields
-    struct BasePageContext__Fields {
-        struct BaseContext__Fields _;
-        struct List_1_IMNNHKGBACI_* dialogContextList;
-        struct List_1_KFFFGJNHFBL_* subPageContextList;
-        bool _forceLodOff;
-        bool _autoClosePageOnBackEvent;
-        bool _disableMainCamera;
-        bool _pauseLevelTime;
-        bool _asyncLoadRes;
-        struct Coroutine* _cameraCoroutine;
-        bool _joyFocusOnParentPage;
-    };
-
     struct LOCHENIGEOO__Fields {
         struct BasePageContext__Fields _;
         struct MonoInLevelCutScenePage* _pageMono;
@@ -8717,6 +8889,22 @@ namespace app {
         struct Int32__StaticFields* static_fields;
         const Il2CppRGCTXData* rgctx_data;
         Il2CppClass_1 _1;
+    };
+
+    struct __declspec(align(8)) FHEJEJANBLD__Fields {
+        struct LinkedList_1_MoleMole_BaseContext_* _inputContextList;
+        struct HashSet_1_MoleMole_BaseContext_* _inputContextSet;
+        PCCursorMode__Enum _currCursorMode;
+        struct UIPlatformConfig* platformConfig;
+        uint32_t _curProfileHandle;
+        struct Canvas* _sceneCanvas;
+        struct Camera* _uiCamera;
+    };
+
+    struct UIManager_1 {
+        struct FHEJEJANBLD__Class* klass;
+        MonitorData* monitor;
+        struct FHEJEJANBLD__Fields fields;
     };
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }

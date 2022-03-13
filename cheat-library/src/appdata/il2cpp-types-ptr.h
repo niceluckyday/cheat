@@ -12,3 +12,4 @@ DO_SINGLETONEDEF(0x0B1C9380, Singleton_1_MBHLOBDPKEC_);
 DO_SINGLETONEDEF(0x0B177D10, Singleton_1_EntityManager_);
 DO_SINGLETONEDEF(0x0B1A3FE8, Singleton_1_LoadingManager_);
 DO_SINGLETONEDEF(0x0B2138F8, Singleton_1_InteractionManager_);
+DO_SINGLETONEDEF(0x0B30B9A8, Singleton_1_UIManager_1_);
