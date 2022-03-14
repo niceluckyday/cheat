@@ -41,8 +41,10 @@ DO_APP_FUNC(0x01407160, bool, Miscs_CheckTargetAttackable, (void* __this, BaseEn
 // DO_APP_FUNC(0x02ADE320, void, LCBaseCombat_FireBeingHitEvent, (LCBaseCombat* __this, uint32_t attackeeRuntimeID, AttackResult* attackResult, MethodInfo* method));
 
 
-// Other player cheats
+// Cooldown cheats
 DO_APP_FUNC(0x01F10360, bool, HumanoidMoveFSM_CheckSprintCooldown, (/* HumanoidMoveFSM */void* __this, MethodInfo* method));
+DO_APP_FUNC(0x0145AB40, bool, LCAvatarCombat_IsEnergyMax, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x01458C60, bool, LCAvatarCombat_IsSkillInCD_1, (void* __this, void* skillInfo, MethodInfo* method));
 
 
 // World cheats

@@ -125,6 +125,23 @@ bool HumanoidMoveFSM_CheckSprintCooldown_Hook(void* __this, MethodInfo* method)
     return callOrigin(HumanoidMoveFSM_CheckSprintCooldown_Hook, __this, method);
 }
 
+bool LCAvatarCombat_IsEnergyMax_Hook(void* __this, MethodInfo* method)
+{
+    if (Config::cfgNoSkillCDEnable)
+        return true;
+
+    return callOrigin(LCAvatarCombat_IsEnergyMax_Hook, __this, method);
+}
+
+bool LCAvatarCombat_IsSkillInCD_1_Hook(void* __this, void* skillInfo, MethodInfo* method)
+{
+    if (Config::cfgNoSkillCDEnable)
+        return false;
+
+    return callOrigin(LCAvatarCombat_IsSkillInCD_1_Hook, __this, skillInfo, method);
+}
+
+
 void InitPlayerCheats() 
 {
     // God mode
@@ -138,6 +155,8 @@ void InitPlayerCheats()
 
     // No cooldown
     HookManager::install(app::HumanoidMoveFSM_CheckSprintCooldown, HumanoidMoveFSM_CheckSprintCooldown_Hook);
+    HookManager::install(app::LCAvatarCombat_IsEnergyMax, LCAvatarCombat_IsEnergyMax_Hook);
+    HookManager::install(app::LCAvatarCombat_IsSkillInCD_1, LCAvatarCombat_IsSkillInCD_1_Hook);
 
     LOG_DEBUG("Initialized");
 }
