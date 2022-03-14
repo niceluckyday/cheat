@@ -141,6 +141,17 @@ bool LCAvatarCombat_IsSkillInCD_1_Hook(void* __this, void* skillInfo, MethodInfo
     return callOrigin(LCAvatarCombat_IsSkillInCD_1_Hook, __this, skillInfo, method);
 }
 
+// This function raise when abilities, whose has charge, is charging, like a bow.
+// value - increase value
+// min and max - bounds of charge.
+// So, to charge make full charge instantly, just replace value to maxValue.
+void ActorAbilityPlugin_AddDynamicFloatWithRange_Hook(void* __this, app::String* key, float value, float minValue, float maxValue, 
+    bool forceDoAtRemote, MethodInfo* method)
+{
+    if (Config::cfgInstantBowEnable)
+        value = maxValue;
+    callOrigin(ActorAbilityPlugin_AddDynamicFloatWithRange_Hook, __this, key, value, minValue, maxValue, forceDoAtRemote, method);
+}
 
 void InitPlayerCheats() 
 {
@@ -157,6 +168,7 @@ void InitPlayerCheats()
     HookManager::install(app::HumanoidMoveFSM_CheckSprintCooldown, HumanoidMoveFSM_CheckSprintCooldown_Hook);
     HookManager::install(app::LCAvatarCombat_IsEnergyMax, LCAvatarCombat_IsEnergyMax_Hook);
     HookManager::install(app::LCAvatarCombat_IsSkillInCD_1, LCAvatarCombat_IsSkillInCD_1_Hook);
-
+    HookManager::install(app::ActorAbilityPlugin_AddDynamicFloatWithRange, ActorAbilityPlugin_AddDynamicFloatWithRange_Hook);
+    
     LOG_DEBUG("Initialized");
 }
