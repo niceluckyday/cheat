@@ -13,11 +13,13 @@
 #include <common/Patch.h>
 #include <common/GlobalEvents.h>
 
-static void OnToggleFieldChange(ToggleConfigField* field)
+// Raised when monster trying to do skill. Attack also is skill.
+// We just block if dumb mob enabled, so mob will not attack player.
+static void VCMonsterAIController_TryDoSkill_Hook(void* __this, uint32_t skillID, MethodInfo* method) 
 {
-    // Patch for dumb enemies
-    // Inverse condition with player visibility for monsters
-    TogglePatch(field, Config::cfgDumbEnemiesEnabled, 0x4692062, { 0x75 });
+    if (Config::cfgDumbEnemiesEnabled.GetValue())
+        return;
+    callOrigin(VCMonsterAIController_TryDoSkill_Hook, __this, skillID, method);
 }
 
 // Raised when dialog view updating
@@ -47,8 +49,11 @@ void InLevelCutScenePageContext_UpdateView_Hook(app::InLevelCutScenePageContext*
 
 void InitWorldCheats()
 {
+    // Dialog skip
     HookManager::install(app::InLevelCutScenePageContext_UpdateView, InLevelCutScenePageContext_UpdateView_Hook);
-    ToggleConfigField::OnChangedEvent += FREE_METHOD_HANDLER(OnToggleFieldChange);
+
+    // Dumb enemies
+    HookManager::install(app::VCMonsterAIController_TryDoSkill, VCMonsterAIController_TryDoSkill_Hook);
 
     LOG_DEBUG("Initialized");
 }

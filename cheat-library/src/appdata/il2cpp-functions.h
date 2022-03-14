@@ -41,6 +41,10 @@ DO_APP_FUNC(0x01407160, bool, Miscs_CheckTargetAttackable, (void* __this, BaseEn
 // DO_APP_FUNC(0x02ADE320, void, LCBaseCombat_FireBeingHitEvent, (LCBaseCombat* __this, uint32_t attackeeRuntimeID, AttackResult* attackResult, MethodInfo* method));
 
 
+// World cheats
+DO_APP_FUNC(0x04691F40, void, VCMonsterAIController_TryDoSkill, (/* VCMonsterAIController */ void* __this, uint32_t skillID, MethodInfo* method));
+
+
 // Dialog skipping
 DO_APP_FUNC(0x02B9E6A0, bool, TalkDialogContext_get_canClick, (TalkDialogContext* __this, MethodInfo* method)); // delete
 DO_APP_FUNC(0x02B9BB50, bool, TalkDialogContext_get_canAutoClick, (TalkDialogContext* __this, MethodInfo* method));
