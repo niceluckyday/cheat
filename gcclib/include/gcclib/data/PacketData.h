@@ -2,7 +2,8 @@
 #include <gcclib/PipeTransfer.h>
 #include <vector>
 
-enum class PacketType {
+enum class PacketType 
+{
 	Receive,
 	Send
 };

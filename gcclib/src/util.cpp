@@ -11,13 +11,16 @@
 #include <sstream>
 #include <string>
 #include <iomanip>
+#include <codecvt>
+#include <filesystem>
 
 
 std::string GetLastErrorAsString()
 {
     //Get the error message ID, if any.
     DWORD errorMessageID = ::GetLastError();
-    if (errorMessageID == 0) {
+    if (errorMessageID == 0) 
+    {
         return std::string(); //No error message has been recorded
     }
 
@@ -37,61 +40,66 @@ std::string GetLastErrorAsString()
     return message;
 }
 
-std::string to_hex_string(uint8_t* barray, int length) {
+std::string to_hex_string(uint8_t* barray, int length) 
+{
     if (barray == nullptr || length == 0)
         return std::string();
 
     std::stringstream stream;
     for (size_t i = 0; i < length; i++)
-    {
         stream << std::setfill('0') << std::setw(2) << std::hex << (int)barray[i];
-    }
+
     return stream.str();
 }
 
-std::string* GetOpenDirectory()
+std::string SelectDirectory(const char* title)
 {
-    CoInitialize(nullptr);
-	std::string* ret = nullptr;
+    auto currPath = std::filesystem::current_path();
+
+    if (!SUCCEEDED(CoInitialize(nullptr)))
+        return {};
+
 	IFileDialog* pfd;
-	if (SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd))))
+	if (!SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd))))
+        return {};
+
+    const size_t titleSize = strlen(title) + 1;
+    wchar_t* wcTitle = new wchar_t[titleSize];
+    mbstowcs(wcTitle, title, titleSize);
+
+	DWORD dwOptions;
+    IShellItem* psi;
+    if (!SUCCEEDED(pfd->GetOptions(&dwOptions)) || 
+        !SUCCEEDED(pfd->SetOptions(dwOptions | FOS_PICKFOLDERS)) ||
+        !SUCCEEDED(pfd->SetTitle(wcTitle)) ||
+        !SUCCEEDED(pfd->Show(NULL)) ||
+        !SUCCEEDED(pfd->GetResult(&psi)))
+    {
+        pfd->Release();
+        return {};
+    }
+
+	WCHAR* folderName;
+	if (!SUCCEEDED(psi->GetDisplayName(SIGDN_DESKTOPABSOLUTEPARSING, &folderName)))
 	{
-		DWORD dwOptions;
-		if (SUCCEEDED(pfd->GetOptions(&dwOptions)))
-		{
-			pfd->SetOptions(dwOptions | FOS_PICKFOLDERS);
-		}
-		if (SUCCEEDED(pfd->Show(NULL)))
-		{
-			IShellItem* psi;
-			if (SUCCEEDED(pfd->GetResult(&psi)))
-			{
-				WCHAR* tmp;
-				if (SUCCEEDED(psi->GetDisplayName(SIGDN_DESKTOPABSOLUTEPARSING, &tmp)))
-				{
-					char buf[256] = {};
-                    char* c = buf;
-                    size_t size = 0;
-					while (*tmp && c - buf < 255)
-					{
-						*c = (char)*tmp;
-						++c;
-						++tmp;
-                        ++size;
-					}
-                    ret = new std::string(size, '\0');
-                    memcpy_s(ret->data(), size, buf, size);
-				}
-				psi->Release();
-			}
-		}
-		pfd->Release();
+        pfd->Release();
+        psi->Release();
+        return {};
 	}
-	return ret;
+
+    pfd->Release();
+	psi->Release();
+
+    std::filesystem::current_path(currPath);
+
+    std::u16string u16(reinterpret_cast<const char16_t*>(folderName));
+    return std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}.to_bytes(u16);
 }
 
-std::string* SelectFile(const char* filter) 
+std::string SelectFile(const char* filter, const char* title) 
 {
+    auto currPath = std::filesystem::current_path();
+
     // common dialog box structure, setting all fields to 0 is important
     OPENFILENAME ofn = { 0 };
     TCHAR szFile[260] = { 0 };
@@ -102,16 +110,33 @@ std::string* SelectFile(const char* filter)
     ofn.lpstrFile = szFile;
     ofn.nMaxFile = sizeof(szFile);
     ofn.lpstrFilter = filter;
+    ofn.lpstrTitle = title;
     ofn.nFilterIndex = 1;
     ofn.lpstrFileTitle = NULL;
     ofn.nMaxFileTitle = 0;
     ofn.lpstrInitialDir = NULL;
     ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
+    std::string result = {};
     if (GetOpenFileName(&ofn) == TRUE)
-    {
-        return new std::string(szFile);
-    }
+        result = std::string(szFile);
 
-    return nullptr;
+    std::filesystem::current_path(currPath);
+    return result;
+}
+
+std::string GetOrSelectPath(CSimpleIni& ini, const char* section, const char* name, const char* friendName, const char* filter)
+{
+    
+    auto savedPath = ini.GetValue(section, name);
+    if (savedPath != nullptr)
+        return std::string(savedPath);
+
+    LOG_DEBUG("%s path not found. Please point to it manually.", friendName);
+
+    auto titleStr = string_format("Select %s", friendName);
+    auto selectedPath = filter == nullptr ? SelectDirectory(titleStr.c_str()) : SelectFile(filter, titleStr.c_str());
+
+    ini.SetValue(section, name, (selectedPath).c_str());
+    return selectedPath;
 }

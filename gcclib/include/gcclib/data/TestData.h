@@ -22,7 +22,8 @@ public:
         return ss.str();
     }
 
-    friend std::ostream& operator<<(std::ostream& Str, TestData const& v) {
+    friend std::ostream& operator<<(std::ostream& Str, TestData const& v) 
+    {
         return Str << std::string(v);
     }
 

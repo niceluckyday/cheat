@@ -14,7 +14,6 @@
 #include <gcclib/data/PacketModifyData.h>
 #include <gcclib/Globals.h>
 #include <gcclib/Logger.h>
-#include <gcclib/simple-ini.hpp>
 
 #include <google/protobuf/compiler/importer.h>
 #include <google/protobuf/dynamic_message.h>
@@ -34,7 +33,8 @@ static google::protobuf::compiler::DiskSourceTree* diskTree;
 
 static std::map<uint16_t, std::string> packetNameMap;
 
-class ErrorCollector : public google::protobuf::compiler::MultiFileErrorCollector {
+class ErrorCollector : public google::protobuf::compiler::MultiFileErrorCollector 
+{
 	// Inherited via MultiFileErrorCollector
 	virtual void AddError(const std::string& filename, int line, int column, const std::string& message) override
 	{
@@ -92,63 +92,41 @@ static std::string GetJSON(const std::string& name, std::vector<byte> data)
 	return jsonMessage;
 }
 
-std::string* GetPath(const char* name, const char* section, const char* friendName, const char* filter) 
-{
-	auto currPath = std::filesystem::current_path();
-	auto savedPath = ini.GetValue(section, name);
-	bool path = savedPath == nullptr;
-
-	std::string* targetPath = path ? nullptr : new std::string(savedPath);
-	if (path) 
-	{
-		LOG_DEBUG("%s path not found. Please point to it manually.", friendName);
-		targetPath = filter == nullptr ? GetOpenDirectory() : SelectFile(filter);
-		if (targetPath == nullptr) 
-		{
-			LOG_ERROR("Failed to get %s path by user.", friendName);
-			return nullptr;
-		}
-		std::filesystem::current_path(currPath);
-		ini.SetValue(section, name, targetPath->c_str());
-		ini.SaveFile(Globals::configFileName.c_str());
-	}
-	return targetPath;
-}
-
 int main(int argc, char* argv[])
 {
 	auto path = std::filesystem::path(argv[0]).parent_path();
 	std::filesystem::current_path(path);
 
+	Logger::SetLevel(Logger::Level::Debug, Logger::LoggerType::ConsoleLogger);
+
 	ini.LoadFile(Globals::configFileName.c_str());
 
-	Logger::SetLevel(Logger::Level::Debug, Logger::LoggerType::ConsoleLogger);
-	auto protoDir = GetPath("ProtoDirPath", "Network", "Proto directory", nullptr);
-	if (protoDir == nullptr)
+	auto protoDir = GetOrSelectPath(ini, "Network", "ProtoDirPath", "proto directory", nullptr);
+	if (protoDir.empty())
 		return 1;
 
-	InitializeImporter(*protoDir);
-
-	auto packetIdsPath = GetPath("PacketIDsJson", "Network", "Packet IDs json file", "Json file\0*.json\0");
-	if (packetIdsPath == nullptr)
+	auto packetIdsPath = GetOrSelectPath(ini, "Network", "PacketIDsJson", "Packet IDs json file", "Json file\0*.json\0");
+	if (packetIdsPath.empty())
 		return 1;
 
-	if (!ParsePacketIDFile(*packetIdsPath))
+	InitializeImporter(protoDir);
+
+	if (!ParsePacketIDFile(packetIdsPath))
 	{
 		LOG_ERROR("Failed to parse packet ids file.");
 		return 1;
 	}
 
-	auto pipe = PipeTransfer(Globals::packetPipeName);
+	ini.SaveFile(Globals::configFileName.c_str());
 
-	LOG_DEBUG("Opening pipe.");
+	auto pipe = PipeTransfer(Globals::packetPipeName);
 	if (!pipe.Create())
 	{
 		LogLastError("Failed to create pipe.");
 		return 1;
 	}
 
-	LOG_DEBUG("Waiting for connection.");
+	LOG_DEBUG("Waiting for connection...");
 	if (!pipe.WaitForConnection()) 
 	{
 		LogLastError("Wait for connection failed.");
@@ -167,7 +145,9 @@ int main(int argc, char* argv[])
 		{
 			auto protoName = packetNameMap[packetData.messageId];
 			// std::cout << "Head: " << GetJSON("PacketHead", packetData.headData) << std::endl;
-			std::cout << "Message: " << GetJSON(protoName, packetData.messageData) << std::endl;
+			auto type = packetData.type == PacketType::Receive ? "Receive" : "Send";
+			std::cout << type << " | Message name: " << protoName << std::endl;
+			std::cout << type << " | Message: " << GetJSON(protoName, packetData.messageData) << std::endl;
 		}
 
 		if (packetData.waitForModifyData) 
@@ -178,7 +158,4 @@ int main(int argc, char* argv[])
 			pipe.WriteObject(data);
 		}
 	}
-
-	delete protoDir;
-	delete packetIdsPath;
 }

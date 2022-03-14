@@ -186,14 +186,17 @@ static void OnKeyUp(short key, bool& cancelled)
     bool* windowShowed = Config::cfgCheatWindowShowed.GetValuePtr();
     *windowShowed = !*windowShowed;
 
-    if (*windowShowed) {
+    if (*windowShowed) 
+    {
         prevMouseActive = app::Cursor_get_visible(nullptr, nullptr);
-        if (!prevMouseActive) {
+        if (!prevMouseActive) 
+        {
             app::Cursor_set_visible(nullptr, true, nullptr);
             app::Cursor_set_lockState(nullptr, app::CursorLockMode__Enum::None, nullptr);
         }
     }
-    else if (!prevMouseActive) {
+    else if (!prevMouseActive) 
+    {
         app::Cursor_set_visible(nullptr, false, nullptr);
         app::Cursor_set_lockState(nullptr, app::CursorLockMode__Enum::Locked, nullptr);
     }

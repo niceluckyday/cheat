@@ -26,12 +26,14 @@ void HelpMarker(const char* desc)
 
 static int HotkeyCallback(ImGuiInputTextCallbackData* data);
 
-struct HotkeyUD {
+struct HotkeyUD 
+{
     Hotkey* hotkey;
     bool* changed;
 };
 
-bool InputHotkey(const char* label, Hotkey* hotkey, bool clearable) {
+bool InputHotkey(const char* label, Hotkey* hotkey, bool clearable) 
+{
     char hotkeyBuffer[50];
 
     auto hotkeyString = std::string(*hotkey);
@@ -62,7 +64,8 @@ bool InputHotkey(const char* label, Hotkey* hotkey, bool clearable) {
     return changed;
 }
 
-static int HotkeyCallback(ImGuiInputTextCallbackData* data) {
+static int HotkeyCallback(ImGuiInputTextCallbackData* data) 
+{
     data->SelectionStart = 0;
     data->SelectionEnd = 0;
     data->CursorPos = 0;
@@ -94,7 +97,8 @@ static int HotkeyCallback(ImGuiInputTextCallbackData* data) {
 
 #define ShowDesc(msg) if (desc != nullptr) { ImGui::SameLine(); HelpMarker(msg); }
 
-struct ActiveInfo {
+struct ActiveInfo 
+{
     void* valuePtr;
     bool changed;
 };
@@ -102,7 +106,8 @@ struct ActiveInfo {
 static ActiveInfo prev;
 static ActiveInfo current;
 
-static bool IsValueChanged(void* valuePtr, bool result) {
+static bool IsValueChanged(void* valuePtr, bool result) 
+{
     if (ImGui::IsItemActivated()) {
         prev = current;
         current = { valuePtr, result };
@@ -217,6 +222,8 @@ bool ConfigWidget(ConfigField<std::string>& field, const char* desc)
 }
 
 #undef ShowDesc
+
+// https://github.com/ocornut/imgui/issues/1496#issuecomment-655048353
 
 static ImVector<ImRect> s_GroupPanelLabelStack;
 

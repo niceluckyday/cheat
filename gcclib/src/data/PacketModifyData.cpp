@@ -12,8 +12,5 @@ void PacketModifyData::Read(PipeTransfer* transfer)
 {
 	type = transfer->Read<PacketModifyType>();
 	if (type == PacketModifyType::Modified) 
-	{
 		modifiedData = transfer->ReadVector();
-	}
-		
 }

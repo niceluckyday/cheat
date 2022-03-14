@@ -4,8 +4,10 @@
 
 #include <iostream>
 #include <sstream>
+#include <filesystem>
 
-int FindProcessId(const std::string& processName) {
+int FindProcessId(const std::string& processName) 
+{
     int pid = -1;
 
     HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
@@ -30,7 +32,8 @@ int FindProcessId(const std::string& processName) {
     return pid;
 }
 
-void WaitForCloseProcess(const std::string& processName) {
+void WaitForCloseProcess(const std::string& processName) 
+{
     int pid = FindProcessId(processName);
     if (pid == -1)
         return;

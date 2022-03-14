@@ -38,14 +38,16 @@ public:
 	void WriteObject(PipeSerializedObject& object);
 
 	template<class T>
-	T Read() {
+	T Read() 
+	{
 		T val = {};
 		ReadBytes(&val, sizeof(T));
 		return val;
 	}
 
 	template<class T>
-	void Write(T val) {
+	void Write(T val) 
+	{
 		WriteBytes(&val, sizeof(T));
 	}
 

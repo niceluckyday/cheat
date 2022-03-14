@@ -45,7 +45,6 @@ static HRESULT __stdcall Present(IDXGISwapChain* pChain, const UINT SyncInterval
 	return callOrigin(Present, pChain, SyncInterval, Flags);
 }
 
-
 static IDXGISwapChainPresent findDirect11Present()
 {
 	const HWND hWnd = GetForegroundWindow();

@@ -70,10 +70,11 @@ static void OnInitialize(HWND window, ID3D11Device* pDevice, ID3D11DeviceContext
 	pDevice->CreateRenderTargetView(pBackBuffer, nullptr, &mainRenderTargetView);
 	pBackBuffer->Release();
 
-	io.SetPlatformImeDataFn = nullptr; // F**king bug take 4 hours of my live
+	io.SetPlatformImeDataFn = nullptr; // F**king bug take 4 hours of my life
 }
 
-static void OnRender(ID3D11DeviceContext* pContext) {
+static void OnRender(ID3D11DeviceContext* pContext) 
+{
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 

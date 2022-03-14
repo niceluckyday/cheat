@@ -13,11 +13,12 @@
 #include <common/GlobalEvents.h>
 #include <common/util.h>
 
-struct WaypointInfo {
-    uint32_t sceneId;
-    uint32_t waypointId;
-    app::Vector3 position;
-app::MapModule_ScenePointData* data;
+struct WaypointInfo 
+{
+    uint32_t sceneId = 0;
+    uint32_t waypointId = 0;
+    app::Vector3 position = {};
+    app::MapModule_ScenePointData* data = nullptr;
 };
 
 struct TeleportTaskInfo 
@@ -25,9 +26,9 @@ struct TeleportTaskInfo
     bool waitingThread = false;
     bool needHeightCalculation = false;
     int currentStage = 0;
-    app::Vector3 targetPosition;
-    uint32_t sceneId;
-    uint32_t waypointId;
+    app::Vector3 targetPosition = {};
+    uint32_t sceneId = 0;
+    uint32_t waypointId = 0;
 };
 
 TeleportTaskInfo taskInfo;
@@ -44,9 +45,10 @@ static std::vector<WaypointInfo> getUnlockedWaypoints()
 
     auto result = std::vector<WaypointInfo>();
 
-    auto waypointGroups = GetUniDict(singleton->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
+    auto waypointGroups = ToUniDict(singleton->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
     for (const auto& [sceneId, waypoints] : waypointGroups->pairs())
     {
+        // TODO: get current scene id, for teleport in not only big world loca
         if (sceneId != 3)
             continue;
 
@@ -197,9 +199,9 @@ static app::Vector3 LocalEntityInfoData_GetTargetPos_Hook(app::LocalEntityInfoDa
 }
 
 // Checking is teleport is far (>60m), if it isn't we clear stage.
-static bool LoadingManager_IsFarTeleport_Hook(app::LoadingManager* __this, uint32_t sceneId, app::Vector3 position, MethodInfo* method)
+static bool LoadingManager_NeedTransByServer_Hook(app::LoadingManager* __this, uint32_t sceneId, app::Vector3 position, MethodInfo* method)
 {
-    auto result = callOrigin(LoadingManager_IsFarTeleport_Hook, __this, sceneId, position, method);
+    auto result = callOrigin(LoadingManager_NeedTransByServer_Hook, __this, sceneId, position, method);
     if (!result && taskInfo.currentStage == 2)
     {
         LOG_DEBUG("Stage 1. Distance <60m. Performing fast tp.");
@@ -210,7 +212,7 @@ static bool LoadingManager_IsFarTeleport_Hook(app::LoadingManager* __this, uint3
 
 // After server responsed, it will give us the waypoint target location to load. 
 // Change it to teleport location.
-static void DoTeleport_Hook(app::LoadingManager* __this, app::Vector3 position, app::EnterType__Enum someEnum,
+static void LoadingManager_PerformPlayerTransmit_Hook(app::LoadingManager* __this, app::Vector3 position, app::EnterType__Enum someEnum,
     uint32_t someUint1, app::CMHGHBNDBMG_ECPNDLCPDIE__Enum teleportType, uint32_t someUint2, MethodInfo* method)
 {
     if (taskInfo.currentStage == 2)
@@ -220,7 +222,7 @@ static void DoTeleport_Hook(app::LoadingManager* __this, app::Vector3 position, 
         taskInfo.currentStage--;
     }
 
-    callOrigin(DoTeleport_Hook, __this, position, someEnum, someUint1, teleportType, someUint2, method);
+    callOrigin(LoadingManager_PerformPlayerTransmit_Hook, __this, position, someEnum, someUint1, teleportType, someUint2, method);
 }
 
 // Last event in teleportation, it is avatar teleport, we just change avatar position from
@@ -285,31 +287,22 @@ void InitMapTPHooks()
 {
     // Game thread
     HookManager::install(app::GameManager_Update, GameManager_Update_Hook);
-    LOG_TRACE("Hooked GameManager_Update. Origin at 0x%p", HookManager::getOrigin(GameManager_Update_Hook));
 
     // Map touch
     HookManager::install(app::InLevelMapPageContext_OnMarkClicked, InLevelMapPageContext_OnMarkClicked_Hook);
-    LOG_TRACE("Hooked InLevelMapPageContext_OnMarkClicked. Origin at 0x%p", HookManager::getOrigin(InLevelMapPageContext_OnMarkClicked_Hook));
-
     HookManager::install(app::InLevelMapPageContext_OnMapClicked, InLevelMapPageContext_OnMapClicked_Hook);
-    LOG_TRACE("Hooked InLevelMapPageContext_OnMapClicked. Origin at 0x%p", HookManager::getOrigin(InLevelMapPageContext_OnMapClicked_Hook));
 
     // Stage 1
     HookManager::install(app::LocalEntityInfoData_GetTargetPos, LocalEntityInfoData_GetTargetPos_Hook);
-    LOG_TRACE("Hooked LocalEntityInfoData_GetTargetPos. Origin at 0x%p", HookManager::getOrigin(LocalEntityInfoData_GetTargetPos_Hook));
-
-    HookManager::install(app::LoadingManager_IsFarTeleport, LoadingManager_IsFarTeleport_Hook);
-    LOG_TRACE("Hooked LoadingManager_IsFarTeleport. Origin at 0x%p", HookManager::getOrigin(LoadingManager_IsFarTeleport_Hook));
+    HookManager::install(app::LoadingManager_NeedTransByServer, LoadingManager_NeedTransByServer_Hook);
 
     // Stage 2
-    HookManager::install(app::LoadingManager_PerformPlayerTransmit, DoTeleport_Hook);
-    LOG_TRACE("Hooked DoTeleport_ECJDHNFLNAI. Origin at 0x%p", HookManager::getOrigin(DoTeleport_Hook));
+    HookManager::install(app::LoadingManager_PerformPlayerTransmit, LoadingManager_PerformPlayerTransmit_Hook);
 
     // Stage 3
     HookManager::install(app::Entity_SetPosition, Entity_SetPosition_Hook);
-    LOG_TRACE("Hooked Entity_SetPosition. Origin at 0x%p", HookManager::getOrigin(Entity_SetPosition_Hook));
 
     GlobalEvents::KeyUpEvent += FREE_METHOD_HANDLER(OnKeyUp);
     
-    LOG_DEBUG("Hooks installed");
+    LOG_DEBUG("Initialized");
 }

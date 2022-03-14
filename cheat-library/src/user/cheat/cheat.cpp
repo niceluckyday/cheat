@@ -7,8 +7,8 @@
 static void OnKeyUp(short key, bool& cancelled);
 static void InitToggleFields();
 
-void InitCheats() {
-
+void InitCheats() 
+{
 	InitProtectionBypass(); // Removes protection
 	InitDebugHooks(); // Hooks for debbug information
     InitPacketHooks();
@@ -22,7 +22,8 @@ void InitCheats() {
     InitToggleFields();
 }
 
-static void InitToggleFields() {
+static void InitToggleFields() 
+{
     for (auto& field : Config::GetToggleFields())
     {
         if (field->GetValue())

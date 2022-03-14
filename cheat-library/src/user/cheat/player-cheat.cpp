@@ -17,11 +17,14 @@ static bool Miscs_CheckTargetAttackable_Hook(void* __this, app::BaseEntity* atta
 {
     if (Config::cfgGodModEnable.GetValue() && target->fields.entityType == app::EntityType__Enum_1::Avatar)
         return false;
+
     return callOrigin(Miscs_CheckTargetAttackable_Hook, __this, attacker, target, method);
 }
 
-// Blocking fall damage if godmode enabled.
-void VCHumanoidMove_NotifyLandVelocity_Hook(app::VCHumanoidMove* __this, app::Vector3 velocity, float reachMaxDownVelocityTime, MethodInfo* method) 
+// Raised when avatar fall on ground.
+// Sending fall speed, and how many time pass from gain max fall speed (~30m/s).
+// To disable fall damage reset reachMaxDownVelocityTime and decrease fall velocity.
+static void VCHumanoidMove_NotifyLandVelocity_Hook(app::VCHumanoidMove* __this, app::Vector3 velocity, float reachMaxDownVelocityTime, MethodInfo* method) 
 {
     if (Config::cfgGodModEnable.GetValue() && -velocity.y > 13) 
     {
@@ -33,7 +36,7 @@ void VCHumanoidMove_NotifyLandVelocity_Hook(app::VCHumanoidMove* __this, app::Ve
     callOrigin(VCHumanoidMove_NotifyLandVelocity_Hook, __this, velocity, reachMaxDownVelocityTime, method);
 }
 
-// Analog for GodMode (Thanks to Taiga74164)
+// Analog function for disable attack damage (Thanks to Taiga74164)
 //void LCBaseCombat_FireBeingHitEvent_Hook(app::LCBaseCombat* __this, uint32_t attackeeRuntimeID, app::AttackResult* attackResult, MethodInfo* method) 
 //{
 //    auto avatarEntity = GetAvatarEntity();
@@ -116,20 +119,14 @@ static void NetworkManager_1_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __
 
 void InitPlayerCheats() 
 {
-    //HookManager::install(app::LCBaseCombat_FireBeingHitEvent, LCBaseCombat_FireBeingHitEvent_Hook);
+    // God mode
+    // HookManager::install(app::LCBaseCombat_FireBeingHitEvent, LCBaseCombat_FireBeingHitEvent_Hook);
     HookManager::install(app::VCHumanoidMove_NotifyLandVelocity, VCHumanoidMove_NotifyLandVelocity_Hook);
-    
-    HookManager::install(app::NetworkManager_1_RequestSceneEntityMoveReq, NetworkManager_1_RequestSceneEntityMoveReq_Hook);
-    LOG_TRACE("Hooked NetworkManager_1_RequestSceneEntityMoveReq. Origin at 0x%p", HookManager::getOrigin(NetworkManager_1_RequestSceneEntityMoveReq_Hook));
-
-    // Teleport to mark hooks
     HookManager::install(app::Miscs_CheckTargetAttackable, Miscs_CheckTargetAttackable_Hook);
-    LOG_TRACE("Hooked Miscs_CheckTargetAttackable. Origin at 0x%p", HookManager::getOrigin(Miscs_CheckTargetAttackable_Hook));
 
+    // Infinite stamina
     HookManager::install(app::AvatarPropDictionary_SetItem, AvatarPropDictionary_SetItem_Hook);
-    LOG_TRACE("Hooked AvatarPropDictionary_SetItem. Origin at 0x%p", HookManager::getOrigin(AvatarPropDictionary_SetItem_Hook));
+    HookManager::install(app::NetworkManager_1_RequestSceneEntityMoveReq, NetworkManager_1_RequestSceneEntityMoveReq_Hook);
 
-    LOG_DEBUG("Hooks installed");
-
-    // ToggleConfigField::OnChangedEvent += FREE_METHOD_HANDLER(OnToggleFieldChange);
+    LOG_DEBUG("Initialized");
 }

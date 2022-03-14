@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include <helpers.h>
 #include <common/HookManager.h>
 #include <common/Config.h>
 #include <common/close-handle.h>
@@ -10,13 +11,13 @@
 
 static std::map<int32_t, std::string> correctSignatures;
 
-static app::Byte__Array* RecordUserData_Hook(int32_t nType) {
-
+static app::Byte__Array* RecordUserData_Hook(int32_t nType) 
+{
     if (correctSignatures.count(nType))
     {
         auto byteClass = app::GetIl2Classes()[0x25];
 
-        auto content = correctSignatures[nType];
+        auto &content = correctSignatures[nType];
         auto newArray = (app::Byte__Array*)il2cpp_array_new(byteClass, content.size());
         memmove_s(newArray->vector, content.size(), content.data(), content.size());
 
@@ -24,11 +25,11 @@ static app::Byte__Array* RecordUserData_Hook(int32_t nType) {
     }
 
     app::Byte__Array* result = callOrigin(RecordUserData_Hook, nType);
-    auto length = app::Array_get_Length(reinterpret_cast<app::Array*>(result), nullptr);
+    auto resultArray = ToUniArray(result, byte);
 
+    auto length = resultArray->length();
     if (length == 0)
         return result;
-
 
     auto stringValue = std::string((char*)result->vector, length);
     correctSignatures[nType] = stringValue;
@@ -38,10 +39,9 @@ static app::Byte__Array* RecordUserData_Hook(int32_t nType) {
     return result;
 }
 
-
-void InitProtectionBypass() {
+void InitProtectionBypass() 
+{
     HookManager::install(app::Unity_RecordUserData, RecordUserData_Hook);
-    LOG_DEBUG("Hooked UnityPlayer::RecordUserData. Origin at 0x%p", HookManager::getOrigin(RecordUserData_Hook));
 
     for (int i = 0; i < 4; i++) {
         LOG_TRACE("Emulating call of RecordUserData with type %d", i);
@@ -56,4 +56,5 @@ void InitProtectionBypass() {
             LOG_ERROR("Failed closing mhyprot2 handle. Maybe dev updated anti-cheat.");
     }
     
+    LOG_DEBUG("Initialized");
 }

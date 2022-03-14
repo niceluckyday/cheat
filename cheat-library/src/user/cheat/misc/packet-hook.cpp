@@ -140,7 +140,6 @@ static int32_t KcpNative_kcp_client_send_packet_Hook(void* __this, void* kcp_cli
 	if (!pipe.IsPipeOpened() && !TryConnectToPipe())
 		return callOrigin(KcpNative_kcp_client_send_packet_Hook, __this, kcp_client, packet, method);
 
-
 	PacketData data = ParseRawPacketData((char*)packet->data, packet->dataLen);
 	if (!data.valid) 
 		return callOrigin(KcpNative_kcp_client_send_packet_Hook, __this, kcp_client, packet, method);
@@ -208,12 +207,11 @@ bool KcpClient_TryDequeueEvent_Hook(void* __this, app::ClientKcpEvent* evt, Meth
 	return result;
 }
 
-void InitPacketHooks() {
+void InitPacketHooks() 
+{
 	HookManager::install(app::KcpNative_kcp_client_send_packet, KcpNative_kcp_client_send_packet_Hook);
 	HookManager::install(app::KcpClient_TryDequeueEvent, KcpClient_TryDequeueEvent_Hook);
 
-	if (pipe.Connect())
-		LOG_INFO("Connected to pipe successfully.");
-	else
-		LOG_WARNING("Failed connecting to pipe");
+	if (Config::cfgPacketCapturing.GetValue() && !TryConnectToPipe())
+		LOG_WARNING("Failed connect to pipe.");
 }

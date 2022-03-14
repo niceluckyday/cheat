@@ -19,11 +19,11 @@
 #define GetStaticFields(tpname) DoInitializeClass(tpname, (*app::## tpname ##__TypeInfo)->static_fields)
 
 #define COMMA ,
-#define GetUniCollection(field, collection) reinterpret_cast<collection*>(field)
-#define GetUniList(field, type) GetUniCollection(field, UniList<type>)
-#define GetUniDict(field, keyType, valueType) GetUniCollection(field, UniDict<keyType COMMA valueType>)
-#define GetUniArray(field, type) GetUniCollection(field, UniArray<type>)
-#define GetUniLinkList(field, type) GetUniCollection(field, UniLinkList<type>)
+#define ToUniCollection(field, collection) reinterpret_cast<collection*>(field)
+#define ToUniArray(field, type) ToUniCollection(field, UniArray<type>)
+#define ToUniList(field, type) ToUniCollection(field, UniList<type>)
+#define ToUniLinkList(field, type) ToUniCollection(field, UniLinkList<type>)
+#define ToUniDict(field, keyType, valueType) ToUniCollection(field, UniDict<keyType COMMA valueType>)
 
 template<class ElementT>
 struct UniLinkList;
@@ -60,7 +60,7 @@ struct UniArray {
     typedef ElementT* iterator;
     typedef const ElementT* const_iterator;
 
-    int length() const { return (bounds == nullptr) ? max_length : bounds->length; }
+    size_t length() const { return (bounds == nullptr) ? max_length : bounds->length; }
 
     iterator begin() { return &vector[0]; }
     const_iterator begin() const { return &vector[0]; }
@@ -161,16 +161,10 @@ void il2cppi_new_console();
 void il2cppi_close_console();
 
 #if _MSC_VER >= 1920
-// Helper function to convert Il2CppString to std::string
 std::string il2cppi_to_string(Il2CppString* str);
-
-// Helper function to convert System.String to std::string
 std::string il2cppi_to_string(app::String* str);
-
 std::string il2cppi_to_string(app::Vector vec);
-
 std::string il2cppi_to_string(app::Vector2 vec);
-
 std::string il2cppi_to_string(app::Vector3 vec);
 
 std::string to_hex_string(app::Byte__Array* barray, int length);

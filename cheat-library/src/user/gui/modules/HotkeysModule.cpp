@@ -8,7 +8,8 @@
 
 void HotkeysModule::Draw()
 {
-    for (auto& field : Config::GetToggleFields()) {
+    for (auto& field : Config::GetToggleFields()) 
+    {
         auto hotkeyField = field->GetHotkeyField();
         ConfigWidget(hotkeyField);
     }

@@ -4975,14 +4975,14 @@ namespace app {
         struct String* CIEHCIIHEBA;
     };
 
-    struct LDFJBNJCCCE {
+    struct PlayerEnterSceneNotify {
         void* klass;
         MonitorData* monitor;
         struct LDFJBNJCCCE__Fields fields;
     };
 
     struct __declspec(align(8)) FACLNBELICD__Fields {
-        struct LDFJBNJCCCE* PNMMAJAEBII;
+        struct PlayerEnterSceneNotify* PNMMAJAEBII;
         bool NFOBFFMCPDA;
         bool CGFJCKJILJH;
         bool NIINJCNAELA;

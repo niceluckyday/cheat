@@ -5,7 +5,8 @@
 #include <helpers.h>
 
 // Getting resource from the memory
-bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& size) {
+bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& size) 
+{
     HRSRC hResource = FindResource(hInstance, MAKEINTRESOURCE(resId), RT_RCDATA);
     if (hResource) {
         HGLOBAL hGlob = LoadResource(hInstance, hResource);
@@ -19,6 +20,7 @@ bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& siz
     return false;
 }
 
+// Game utils
 
 app::Vector3 GetRelativePosition(app::BaseEntity* entity)
 {
@@ -101,7 +103,7 @@ std::vector<app::BaseEntity*> FindEntities(const EntityFilter& filter)
     if (entityManager == nullptr)
         return result;
 
-    auto entities = GetUniList(entityManager->fields._entities, app::BaseEntity*);
+    auto entities = ToUniList(entityManager->fields._entities, app::BaseEntity*);
     if (entities == nullptr)
         return result;
 

@@ -10,8 +10,8 @@ void StatusModule::Draw()
 
     static ImGuiTableFlags tabFlags = ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg;
 
-    if (ImGui::BeginTable("activesTable", 1, tabFlags)) {
-
+    if (ImGui::BeginTable("activesTable", 1, tabFlags)) 
+    {
         ImGui::TableSetupColumn("Active features");
         ImGui::TableHeadersRow();
 
@@ -32,7 +32,6 @@ void StatusModule::Draw()
             }
         }
 #undef DrawLine
-
         ImGui::EndTable();
     }
 }

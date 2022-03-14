@@ -7,6 +7,7 @@ enum class PacketModifyType
 	Blocked,
 	Unchanged
 };
+
 class PacketModifyData : public PipeSerializedObject
 {
 public:

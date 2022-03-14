@@ -8,7 +8,8 @@ Hotkey::Hotkey() : Hotkey(0, 0) {}
 
 Hotkey::Hotkey(short mKey, short aKey) : mKey(mKey), aKey(aKey) {}
 
-Hotkey::operator std::string() const {
+Hotkey::operator std::string() const 
+{
     auto mKeyName = GetKeyName(mKey);
     auto cKeyName = GetKeyName(aKey);
     if (cKeyName.size() > 0 && mKeyName.size() > 0) {
@@ -23,7 +24,8 @@ Hotkey::operator std::string() const {
     return std::string();
 }
 
-bool Hotkey::IsPressed() {
+bool Hotkey::IsPressed() 
+{
     if (IsEmpty())
         return false;
 
@@ -41,15 +43,18 @@ bool Hotkey::IsPressed(short keyDown)
     return (checkKey == 0 || GetKeyState(checkKey) & 0x8000);
 }
 
-bool Hotkey::IsEmpty() {
+bool Hotkey::IsEmpty() 
+{
     return mKey == 0 && aKey == 0;
 }
 
-short Hotkey::GetAKey() {
+short Hotkey::GetAKey() 
+{
     return aKey;
 }
 
-short Hotkey::GetMKey() {
+short Hotkey::GetMKey() 
+{
     return mKey;
 }
 
@@ -89,7 +94,8 @@ Hotkey Hotkey::GetPressedHotkey()
     return Hotkey(mKey, cKey);
 }
 
-std::string Hotkey::GetKeyName(int keyId) {
+std::string Hotkey::GetKeyName(int keyId) 
+{
     CHAR name[128];
     UINT scanCode = MapVirtualKeyA(keyId, MAPVK_VK_TO_VSC);
     LONG lParamValue = (scanCode << 16);

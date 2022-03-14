@@ -37,7 +37,8 @@ bool Patch::Restore(uint64_t address)
 	return true;
 }
 
-std::vector<uint8_t>* Patch::WriteMemory(uint64_t address, std::vector<uint8_t> value) {
+std::vector<uint8_t>* Patch::WriteMemory(uint64_t address, std::vector<uint8_t> value) 
+{
 	MEMORY_BASIC_INFORMATION information{};
 	auto size = VirtualQuery(reinterpret_cast<void*>(address), &information, sizeof(information));
 	if (size < sizeof(information))

@@ -2,9 +2,7 @@
 
 #include <gcclib/data/TestData.h>
 
-TestData::TestData()
-{
-}
+TestData::TestData() : testString({}), testVector({}), testInt(0) { }
 
 void TestData::Fill() 
 {

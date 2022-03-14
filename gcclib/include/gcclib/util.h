@@ -3,13 +3,14 @@
 #include <stdexcept>
 #include <memory>
 
+#include <gcclib/simple-ini.hpp>
 #include <gcclib/Logger.h>
 
 #define LogLastError(msg) LOG_ERROR("%s. Error: %s", msg, GetLastErrorAsString().c_str())
 
-std::string* SelectFile(const char* filter);
-
-std::string* GetOpenDirectory();
+std::string SelectFile(const char* filter, const char* title);
+std::string SelectDirectory(const char* title);
+std::string GetOrSelectPath(CSimpleIni& ini, const char* section, const char* name, const char* friendName, const char* filter);
 
 std::string GetLastErrorAsString();
 

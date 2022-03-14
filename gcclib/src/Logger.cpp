@@ -50,18 +50,22 @@ Logger::Level Logger::GetLevel(Logger::LoggerType type)
 	}
 }
 
-void LogToFile(std::string& filepath, std::string& msg) {
+void LogToFile(std::string& filepath, std::string& msg) 
+{
 	std::ofstream myfile;
 	myfile.open(filepath, std::ios::out | std::ios::app | std::ios::binary);
 	myfile << msg << std::endl;
 	myfile.close();
 }
 
-struct Prefix {
+struct Prefix 
+{
 	char color;
 	const char* text;
 };
-Prefix GetLevelPrefix(Logger::Level level) {
+
+Prefix GetLevelPrefix(Logger::Level level) 
+{
 	switch (level)
 	{
 	case Logger::Level::Critical:
@@ -95,7 +99,8 @@ void Logger::Log(Logger::Level logLevel, const char* filepath, int line, const c
 	vsprintf_s(buffer, fmt, args);
 	va_end(args);
 
-	if (Logger::s_ConsoleLogLevel != Logger::Level::None && Logger::s_ConsoleLogLevel >= logLevel) {
+	if (Logger::s_ConsoleLogLevel != Logger::Level::None && Logger::s_ConsoleLogLevel >= logLevel) 
+	{
 		auto logLineConsole = string_format("[%s:%d] %s", filename.c_str(), line, buffer);
 		std::cout << "[";
 
@@ -107,7 +112,8 @@ void Logger::Log(Logger::Level logLevel, const char* filepath, int line, const c
 		std::cout << "] " << logLineConsole << std::endl;
 	}
 
-	if (Logger::s_FileLogLevel != Logger::Level::None && Logger::s_FileLogLevel >= logLevel) {
+	if (Logger::s_FileLogLevel != Logger::Level::None && Logger::s_FileLogLevel >= logLevel) 
+	{
 		auto rawTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 		struct tm gmtm;
 		gmtime_s(&gmtm, &rawTime);

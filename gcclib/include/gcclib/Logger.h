@@ -9,9 +9,11 @@
 #define LOG_DEBUG(fmt, ...) EXTLOG(Logger::Level::Debug, fmt, __VA_ARGS__)
 #define LOG_TRACE(fmt, ...) EXTLOG(Logger::Level::Trace, fmt, __VA_ARGS__)
 
-class Logger {
+class Logger 
+{
 public:
-	enum class Level {
+	enum class Level 
+	{
 		None,
 		Critical,
 		Error,
@@ -21,7 +23,8 @@ public:
 		Trace
 	};
 
-	enum class LoggerType {
+	enum class LoggerType 
+	{
 		Any,
 		ConsoleLogger,
 		FileLogger

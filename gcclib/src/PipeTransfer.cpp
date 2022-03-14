@@ -72,7 +72,7 @@ void PipeTransfer::WriteBytes(void* buffer, size_t size)
 
 std::string PipeTransfer::ReadString()
 {
-	auto size = Read<int32_t>();
+	auto size = Read<size_t>();
 	std::string result((const size_t)size, '\0');
 	ReadBytes(result.data(), size);
 	return result;
@@ -80,7 +80,7 @@ std::string PipeTransfer::ReadString()
 
 void PipeTransfer::WriteString(std::string& value)
 {
-	Write<int32_t>(value.length());
+	Write<size_t>(value.length());
 	WriteBytes(value.data(), value.length());
 }
 
@@ -96,7 +96,7 @@ void PipeTransfer::WriteObject(PipeSerializedObject& object)
 
 std::vector<byte> PipeTransfer::ReadVector()
 {
-	auto size = Read<int32_t>();
+	auto size = Read<size_t>();
 	std::vector<byte> result((const size_t)size, (byte)0);
 	ReadBytes(result.data(), size);
 	return result;
@@ -104,6 +104,6 @@ std::vector<byte> PipeTransfer::ReadVector()
 
 void PipeTransfer::WriteVector(std::vector<byte>& value)
 {
-	Write<int32_t>(value.size());
+	Write<size_t>(value.size());
 	WriteBytes(value.data(), value.size());
 }

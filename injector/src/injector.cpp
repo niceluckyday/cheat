@@ -14,11 +14,12 @@
 #define CURRENT_ARCH IMAGE_FILE_MACHINE_I386
 #endif
 
-bool InjectDLL(HANDLE hProc, const std::string& filepath) {
-
+bool InjectDLL(HANDLE hProc, const std::string& filepath) 
+{
 #ifdef _DEBUG // _DEBUG
 	// Using LoadLibrary inject to be able to debug DLL in attached process.
 	// NOTE. For debug also needs disable mhyprot protection. (See protection-bypass.h in cheat-library)
+	// NOTE 2. Also need find way to disable antidebug.
 	bool result = LoadLibraryInject(hProc, filepath);
 #else
 	std::ifstream file(filepath, std::ios::in | std::ios::binary | std::ios::ate);

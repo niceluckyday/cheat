@@ -7,12 +7,15 @@
 
 #include <common/Hotkey.h>
 #include <common/Event.h>
+
 template<class FieldType>
-class ConfigField {
+class ConfigField 
+{
 public:
 	using OnChangeCallback = void (*)(ConfigField<FieldType>* field);
 
-	void operator=(const FieldType& other) {
+	void operator=(const FieldType& other) 
+	{
 		*field = other;
 		*prevValue = other; 
 		callback(this);
@@ -22,23 +25,28 @@ public:
 		: userName(friendlyName), section(section), name(name), field(new FieldType(defaultValue)), prevValue(new FieldType(defaultValue)), callback(callback)
 	{ }
 
-	std::string GetFriendlyName() {
+	std::string GetFriendlyName() 
+	{
 		return userName;
 	}
 
-	std::string GetName() {
+	std::string GetName() 
+	{
 		return name;
 	}
 
-	std::string GetSection() {
+	std::string GetSection() 
+	{
 		return section;
 	}
 
-	FieldType GetValue() {
+	FieldType GetValue() 
+	{
 		return *field;
 	}
 
-	FieldType* GetValuePtr() {
+	FieldType* GetValuePtr() 
+	{
 		return field;
 	}
 
@@ -91,7 +99,8 @@ public:
 		return hotkeyField;
 	}
 
-	virtual bool Check() override {
+	virtual bool Check() override 
+	{
 		if (!ConfigField<bool>::Check())
 			return false;
 
@@ -115,7 +124,8 @@ class Config {
 
 private:
 	template<class FieldType>
-	static void OnChangeValue(ConfigField<FieldType>* field) {
+	static void OnChangeValue(ConfigField<FieldType>* field) 
+	{
 		SetValue(field->GetSection(), field->GetName(), field->GetValue());
 		Save();
 	}
@@ -191,20 +201,24 @@ private:
 	inline static CSimpleIni m_INIFile{};
 	inline static std::vector<ToggleConfigField*> toggleFields{};
 
-	static void SetValue(std::string section, std::string name, bool value);
-	static void SetValue(std::string section, std::string name, int value);
-	static void SetValue(std::string section, std::string name, float value);
+	static void LoadFieldValue(ConfigField<char*>& field);
 	static void SetValue(std::string section, std::string name, char* value);
-	static void SetValue(std::string section, std::string name, Hotkey value);
+
+	static void LoadFieldValue(ConfigField<float>& field);
+	static void SetValue(std::string section, std::string name, float value);
 
 	static void LoadFieldValue(ConfigField<bool>& field);
-	static void LoadFieldValue(ConfigField<int>& field);
-	static void LoadFieldValue(ConfigField<float>& field);
-	static void LoadFieldValue(ConfigField<char*>& field);
-	static void LoadFieldValue(ConfigField<Hotkey>& field);
-	static void LoadFieldValue(ToggleConfigField& field);
+	static void SetValue(std::string section, std::string name, bool value);
 
+	static void LoadFieldValue(ConfigField<int>& field);
+	static void SetValue(std::string section, std::string name, int value);
+
+	static void LoadFieldValue(ConfigField<Hotkey>& field);
+	static void SetValue(std::string section, std::string name, Hotkey value);
+	
+	static void LoadFieldValue(ToggleConfigField& field);
 };
 
 #undef Field
 #undef ToggleField
+#undef NoSaveField

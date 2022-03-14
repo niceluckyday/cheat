@@ -52,39 +52,25 @@ int main(int argc, char* argv[])
     CloseHandle(hProcess);
 }
 
-HANDLE OpenGenshinProcess() {
+HANDLE OpenGenshinProcess() 
+{
     STARTUPINFOA startInfo{};
     PROCESS_INFORMATION processInformation{};
 
-    auto savedPath = ini.GetValue("Inject", "GenshinPath");
-    bool exePathNotExist = savedPath == nullptr;
+    auto filePath = GetOrSelectPath(ini, "Inject", "GenshinPath", "genshin path", "Executable\0*.exe\0");
+    if (filePath.empty())
+        return NULL;
 
-    std::string* filePath = exePathNotExist ? nullptr : new std::string(savedPath);
-    if (exePathNotExist) {
-        std::cout << "Genshin path not found. Please point to it manually. ^)" << std::endl;
-        filePath = SelectFile("Executable\0*.exe\0");
-        if (filePath == nullptr) {
-            std::cout << "Failed to get genshin path from user. Exiting..." << std::endl;
-            return NULL;
-        }
-    }
-
-    BOOL result = CreateProcessA(filePath->c_str(),
+    BOOL result = CreateProcessA(filePath.c_str(),
         nullptr, 0, 0, FALSE, CREATE_SUSPENDED, nullptr, nullptr, &startInfo, &processInformation);
-    if (result == FALSE) {
+    if (result == FALSE) 
+    {
         LogLastError("Failed to create game process.");
         LOG_ERROR("If you have problem with GenshinImpact.exe path. You can change it manually in %s.", Globals::configFileName.c_str());
         return NULL;
     }
 
-    if (exePathNotExist) {
-        ini.SetValue("Inject", "genshinPath", (*filePath).c_str());
-        LOG_INFO("New GenshinImpact.exe path saved to %s.", Globals::configFileName.c_str());
-    }
-
-    delete filePath;
-
-    std::cout << "Created game process." << std::endl;
+    ini.SaveFile(Globals::configFileName.c_str());
 
     ResumeThread(processInformation.hThread);
 

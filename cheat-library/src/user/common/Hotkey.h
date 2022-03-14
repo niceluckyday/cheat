@@ -2,7 +2,8 @@
 
 #include <string>
 
-class Hotkey {
+class Hotkey 
+{
 public:
 
     Hotkey();

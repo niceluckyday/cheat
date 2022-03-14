@@ -67,7 +67,7 @@ std::string to_hex_string(app::Byte__Array* barray, int length) {
         return std::string();
 
     std::stringstream stream;
-    auto uarray = GetUniArray(barray, uint8_t);
+    auto uarray = ToUniArray(barray, uint8_t);
     return to_hex_string(uarray->begin(), length);
 }
 

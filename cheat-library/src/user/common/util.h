@@ -32,7 +32,7 @@ app::BaseEntity* GetAvatarEntity();
 void SetAvatarRelativePosition(app::Vector3 position);
 float GetDistToAvatar(app::BaseEntity* entity);
 
-// Entity fields
+// Entity filters
 std::vector<app::BaseEntity*> FindEntities(const EntityFilter& filter);
 app::BaseEntity* FindNearestEntity(const EntityFilter& filter);
 

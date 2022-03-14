@@ -13,127 +13,6 @@
 #include <common/util.h>
 #include <cheat/cheat.h>
 
-static app::AttackResult_1__Fields attackResult {};
-static app::AttackResult_1__Fields targetResult {};
-
-#define TOGGLEFIELD(field) static bool field ##_toggle = false
-TOGGLEFIELD(attackerId_);
-TOGGLEFIELD(defenseId_);
-TOGGLEFIELD(animEventId_);
-TOGGLEFIELD(abilityIdentifier_);
-TOGGLEFIELD(damage_);
-TOGGLEFIELD(isCrit_);
-TOGGLEFIELD(hitPosType_);
-TOGGLEFIELD(endureBreak_);
-TOGGLEFIELD(resolvedDir_);
-TOGGLEFIELD(hitRetreatAngleCompat_);
-TOGGLEFIELD(hitEffResult_);
-TOGGLEFIELD(elementType_);
-TOGGLEFIELD(useGadgetDamageAction_);
-TOGGLEFIELD(gadgetDamageActionIdx_);
-TOGGLEFIELD(isResistText_);
-TOGGLEFIELD(criticalRand_);
-TOGGLEFIELD(elementAmplifyRate_);
-TOGGLEFIELD(damageShield_);
-TOGGLEFIELD(muteElementHurt_);
-TOGGLEFIELD(amplifyReactionType_);
-TOGGLEFIELD(addhurtReactionType_);
-TOGGLEFIELD(bulletFlyTimeMs_);
-TOGGLEFIELD(attackCount_);
-TOGGLEFIELD(hashedAnimEventId_);
-TOGGLEFIELD(attackTimestampMs_);
-TOGGLEFIELD(endureDelta_);
-TOGGLEFIELD(targetType_);
-TOGGLEFIELD(elementDurabilityAttenuation_);
-TOGGLEFIELD(HGENJBMMFDH);
-#undef TOGGLEFIELD
-
-static app::AttackResult_1* AttackResult_FillProtoAttackResult_Hook(app::AttackResult* __this, uint32_t attackerID, uint32_t defenseId, app::AttackResult_1* protoAttackResult, MethodInfo* method)
-{
-    auto result = callOrigin(AttackResult_FillProtoAttackResult_Hook, __this, attackerID, defenseId, protoAttackResult, method);
-    // LOG_DEBUG("Proto attack event {attacker id: %d, defencer id: %d}", result->fields.attackerId_, result->fields.defenseId_);
-
-    auto fields = result->fields;
-
-#define CHANGE_FIELD(field) attackResult.## field ## = fields.## field ##; if (field ##_toggle) result->fields.## field ## = targetResult.## field
-    CHANGE_FIELD(attackerId_);
-    CHANGE_FIELD(defenseId_);
-    CHANGE_FIELD(animEventId_);
-    CHANGE_FIELD(abilityIdentifier_);
-    CHANGE_FIELD(damage_);
-    CHANGE_FIELD(isCrit_);
-    CHANGE_FIELD(hitPosType_);
-    CHANGE_FIELD(endureBreak_);
-    CHANGE_FIELD(hitRetreatAngleCompat_);
-    CHANGE_FIELD(hitEffResult_);
-    CHANGE_FIELD(elementType_);
-    CHANGE_FIELD(useGadgetDamageAction_);
-    CHANGE_FIELD(gadgetDamageActionIdx_);
-    CHANGE_FIELD(isResistText_);
-    CHANGE_FIELD(criticalRand_);
-    CHANGE_FIELD(elementAmplifyRate_);
-    CHANGE_FIELD(damageShield_);
-    CHANGE_FIELD(muteElementHurt_);
-    CHANGE_FIELD(amplifyReactionType_);
-    CHANGE_FIELD(addhurtReactionType_);
-    CHANGE_FIELD(bulletFlyTimeMs_);
-    CHANGE_FIELD(attackCount_);
-    CHANGE_FIELD(hashedAnimEventId_);
-    CHANGE_FIELD(attackTimestampMs_);
-    CHANGE_FIELD(endureDelta_);
-    CHANGE_FIELD(targetType_);
-    CHANGE_FIELD(elementDurabilityAttenuation_);
-    CHANGE_FIELD(HGENJBMMFDH);
-#undef CHANGE_FIELD
-
-    // LOG_DEBUG("after Proto attack event {attacker id: %d, defencer id: %d}", result->fields.attackerId_, result->fields.defenseId_);
-    return result;
-}
-
-void DrawAttackInfo() 
-{
-#define drawField(field, imguistring) ImGui::Checkbox("## toggle_"#field, &field ##_toggle); ImGui::SameLine(); ImGui::PushItemWidth(100); imguistring; ImGui::PopItemWidth()
-#define drawBool(field) drawField(field, ImGui::Checkbox("## "#field, &targetResult.## field)); ImGui::SameLine(); ImGui::Text("%s: %s", #field, attackResult.## field ? "true" : "false" )
-// #define drawString(field) { char buffer[256]; drawField(field, ImGui::InputText(#field, buffer.c_str(), temp.size())); auto newString = new app::String(); }
-#define drawUInt(field) drawField(field, ImGui::DragInt("## "#field, (int*)&targetResult.## field)); ImGui::SameLine(); ImGui::Text("%s: %d", #field, attackResult.## field)
-#define drawFloat(field) drawField(field, ImGui::DragFloat("## "#field, &targetResult.## field)); ImGui::SameLine(); ImGui::Text("%s: %f", #field, attackResult.## field)
-#define drawVector(field) if (attackResult.## field ## != nullptr) ImGui::Text("%s: %f %f %f", #field, attackResult.## field ##->fields.x, attackResult.## field ##->fields.y, attackResult.## field ##->fields.z)
-
-    drawUInt(attackerId_);
-    drawUInt(defenseId_);
-    ImGui::Text("animEventId_: %s", il2cppi_to_string(attackResult.animEventId_).c_str());
-    drawFloat(damage_);
-    drawBool(isCrit_);
-    drawBool(useGadgetDamageAction_);
-    drawBool(isResistText_);
-    drawUInt(hitPosType_);
-    drawUInt(endureBreak_);
-    drawVector(resolvedDir_);
-    drawUInt(endureBreak_);
-    drawUInt(hitRetreatAngleCompat_);
-    drawUInt(elementType_);
-    drawUInt(gadgetDamageActionIdx_);
-    drawUInt(criticalRand_);
-    drawFloat(elementAmplifyRate_);
-    drawFloat(elementAmplifyRate_);
-    drawBool(muteElementHurt_);
-    drawUInt(amplifyReactionType_);
-    drawUInt(addhurtReactionType_);
-    drawUInt(bulletFlyTimeMs_);
-    drawUInt(attackCount_);
-    drawUInt(hashedAnimEventId_);
-    drawUInt(attackTimestampMs_);
-    drawFloat(endureDelta_);
-    drawUInt(targetType_);
-    drawFloat(elementDurabilityAttenuation_);
-    drawUInt(HGENJBMMFDH);
-#undef drawField
-#undef drawBool
-#undef drawUInt
-#undef drawFloat
-#undef drawVector
-}
-
 void DrawWaypoints(UniDict<uint32_t, UniDict<uint32_t, app::MapModule_ScenePointData>*>* waypointsGrops) 
 {
     if (waypointsGrops == nullptr)
@@ -171,8 +50,8 @@ void DrawWaypoints(UniDict<uint32_t, UniDict<uint32_t, app::MapModule_ScenePoint
     }
 }
 
-void DrawManagerData() {
-
+void DrawManagerData() 
+{
     if (!IsSingletonLoaded(MBHLOBDPKEC))
         return;
 
@@ -185,7 +64,7 @@ void DrawManagerData() {
 
     if (ImGui::TreeNode("Waypoints"))
     {
-        auto waypoints = GetUniDict(singleton->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
+        auto waypoints = ToUniDict(singleton->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
         DrawWaypoints(waypoints);
         ImGui::TreePop();
     }
@@ -206,7 +85,7 @@ void DrawEntity(struct app::BaseEntity* entity)
 
     if (entity->fields.jsonConfig != nullptr && entity->fields.jsonConfig->fields._entityTags != nullptr)
     {
-        auto tagsArray = GetUniArray(entity->fields.jsonConfig->fields._entityTags->fields.KNOAKPHDIIK, app::String*);
+        auto tagsArray = ToUniArray(entity->fields.jsonConfig->fields._entityTags->fields.KNOAKPHDIIK, app::String*);
         if (tagsArray->length() > 0)
         {
             ImGui::Text("Entity tags:");
@@ -239,7 +118,7 @@ static void DrawEntitiesData()
     if (entityManager == nullptr)
         return;
 
-    auto entities = GetUniList(entityManager->fields._entities, app::BaseEntity*);
+    auto entities = ToUniList(entityManager->fields._entities, app::BaseEntity*);
     if (entities == nullptr)
         return;
 
@@ -359,7 +238,7 @@ static void DrawInteractionManagerInfo()
     DRAW_BOOL(interactionManager, _canShowAvatarEffectWhenTalkStart);
 
 
-    auto keyList = GetUniLinkList(interactionManager->fields._keyInterList, app::InterActionGrp*);
+    auto keyList = ToUniLinkList(interactionManager->fields._keyInterList, app::InterActionGrp*);
     if (keyList != nullptr && ImGui::TreeNode("KeyList")) 
     {
         auto reminder = keyList->count;
@@ -376,7 +255,7 @@ static void DrawInteractionManagerInfo()
 
                 if (item->fields._interActionList != nullptr && ImGui::TreeNode("Interactions"))
                 {
-                    auto interactions = GetUniList(item->fields._interActionList, app::BaseInterAction*);
+                    auto interactions = ToUniList(item->fields._interActionList, app::BaseInterAction*);
                     for (auto& interaction : *interactions) 
                     {
                         if (interaction == nullptr)
@@ -398,27 +277,11 @@ static void DrawInteractionManagerInfo()
         ImGui::TreePop();
 
     }
+}
 
 #undef DRAW_UINT
 #undef DRAW_FLOAT
 #undef DRAW_BOOL
-}
-
-void DrawMessageInfoNames() 
-{
-    auto messageInfo = GetSingleton(MessageInfo);
-    auto nameDict = GetUniDict(messageInfo->fields._cmdIdDict, app::String *, uint16_t);
-    for (const auto& [name, id] : nameDict->pairs())
-    {
-        ImGui::Text("%u : %s", id, il2cppi_to_string(name).c_str());
-    }
-
-    //auto allocDict = GetUniDict(messageInfo->fields._cmdAllocFunc, uint16_t, app::Object*);
-    //for (const auto& [id, obj] : allocDict->pairs())
-    //{
-    //    ImGui::Text("%u", id);
-    //}
-}
 
 void DrawPositionInfo() 
 {
@@ -450,34 +313,7 @@ void DrawPositionInfo()
         static float length = 1000;
         ImGui::DragFloat("Raycast length", &length, 1.0f, -2000.0f, 2000.0f);
 
-#define ShowGroundHeight(method) ImGui::Text("%s (%d): %f", #method, app::Miscs_Get## method ##(nullptr, nullptr), app::Miscs_CalcCurrentGroundHeight_1(nullptr, pos.x, pos.z, pos.y, length, app::Miscs_Get## method ##(nullptr, nullptr), nullptr));
-
-        auto vector3 = app::Vector3_get_down(nullptr, nullptr);
-        ImGui::Text("Direction: %s", il2cppi_to_string(vector3).c_str());
-    
-        bool raycastResult = app::Physics_Raycast_3(nullptr, pos, vector3, length, nullptr);
-        ImGui::Text("Raycast result: %s", raycastResult ? "true" : "false");
-
-        ShowGroundHeight(HitLayerMask);
-        ShowGroundHeight(SceneLayerMask);
-        ShowGroundHeight(SceneLayerMaskWithBothDynamicBarrierLayer);
-        ShowGroundHeight(SceneCameraLayerMask);
-        ShowGroundHeight(StaticSceneLayerMask);
-        ShowGroundHeight(HitSceneLayerMask);
-        ShowGroundHeight(OccluderLayerMask);
-        ShowGroundHeight(WaterLayerMask);
-        ShowGroundHeight(SceneGroundLayerMask);
-        ShowGroundHeight(SceneGroundLayerMaskWithoutTemp);
-        ShowGroundHeight(CameraLayerMask);
-        ShowGroundHeight(IKSceneLayerMask);
-        ShowGroundHeight(CharacterLayerMask);
-        ShowGroundHeight(BulletHitLayerMask);
-        ShowGroundHeight(DynamicBarrierLayerMask);
-
-
         ImGui::Text("All: %f", app::Miscs_CalcCurrentGroundHeight_1(nullptr, avatarPos.x, avatarPos.z, avatarPos.y, length, 0xFFFFFFFF, nullptr));
-
-#undef ShowGroundHeight
 
         ImGui::TreePop();
     }
@@ -485,33 +321,20 @@ void DrawPositionInfo()
 
 void DebugModule::Draw()
 {
-    if (ImGui::CollapsingHeader("Message info", ImGuiTreeNodeFlags_None))
-        DrawMessageInfoNames();
+    if (ImGui::CollapsingHeader("Entity manager", ImGuiTreeNodeFlags_None))
+        DrawEntitiesData();
+
+    if (ImGui::CollapsingHeader("Position", ImGuiTreeNodeFlags_None))
+        DrawPositionInfo();
 
     if (ImGui::CollapsingHeader("Interaction manager", ImGuiTreeNodeFlags_None))
         DrawInteractionManagerInfo();
-
-    if (ImGui::CollapsingHeader("Entity manager", ImGuiTreeNodeFlags_None)) 
-        DrawEntitiesData();
     
     if (ImGui::CollapsingHeader("Map manager", ImGuiTreeNodeFlags_None))
         DrawManagerData();
-
-    if (ImGui::CollapsingHeader("Attack info", ImGuiTreeNodeFlags_None))
-        DrawAttackInfo();
-
-    if (ImGui::CollapsingHeader("Position", ImGuiTreeNodeFlags_None)) 
-        DrawPositionInfo();
-
 }
 
 std::string DebugModule::GetName()
 {
     return "Debug";
-}
-
-DebugModule::DebugModule() 
-{
-    LOG_DEBUG("Hook initialized"); 
-    HookManager::install(app::AttackResult_FillProtoAttackResult, AttackResult_FillProtoAttackResult_Hook);
 }
