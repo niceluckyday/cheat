@@ -17,21 +17,18 @@ void StatusModule::Draw()
 
         int row = 0;
 
-#define DrawLine(field) 
-
         for (auto& field : Config::GetToggleFields()) 
         {
-            if (field->GetValue()) 
+            if (field->HasFlag(ConfigFieldFlag::NeedToShowStatus) && field->GetValue()) 
             {
-                    ImGui::TableNextRow(); 
-                    ImGui::TableSetColumnIndex(0);
-                    ImGui::TextUnformatted(field->GetFriendlyName().c_str());
-                    ImU32 row_bg_color = ImGui::GetColorU32(ImVec4(0.2f + row * 0.1f, 0.1f + row * 0.05f, 0.1f + row * 0.03f, 0.85f));
-                    ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, row_bg_color);
-                    row++;
+                ImGui::TableNextRow(); 
+                ImGui::TableSetColumnIndex(0);
+                ImGui::TextUnformatted(field->GetFriendlyName().c_str());
+                ImU32 row_bg_color = ImGui::GetColorU32(ImVec4(0.2f + row * 0.1f, 0.1f + row * 0.05f, 0.1f + row * 0.03f, 0.85f));
+                ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, row_bg_color);
+                row++;
             }
         }
-#undef DrawLine
         ImGui::EndTable();
     }
 }

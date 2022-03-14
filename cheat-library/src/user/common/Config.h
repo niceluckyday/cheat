@@ -8,8 +8,32 @@
 #include <common/Hotkey.h>
 #include <common/Event.h>
 
+class ConfigFieldHeader
+{
+public:
+	ConfigFieldHeader(const std::string friendlyName, const std::string section, const std::string name, const uint32_t flags);
+
+	std::string GetFriendlyName() const;
+	std::string GetName() const;
+	std::string GetSection() const;
+	uint32_t GetFlags() const;
+
+	template<typename flagEnumT>
+	bool HasFlag(flagEnumT flag) const 
+	{ 
+		return flags & static_cast<uint32_t>(flag); 
+	};
+
+private:
+	std::string name;
+	std::string section;
+	std::string userName;
+	uint32_t flags;
+};
+
+
 template<class FieldType>
-class ConfigField 
+class ConfigField : public ConfigFieldHeader
 {
 public:
 	using OnChangeCallback = void (*)(ConfigField<FieldType>* field);
@@ -21,33 +45,29 @@ public:
 		callback(this);
 	}
 
-	ConfigField(const std::string friendlyName, const std::string section, const std::string name, FieldType defaultValue, OnChangeCallback callback)
-		: userName(friendlyName), section(section), name(name), field(new FieldType(defaultValue)), prevValue(new FieldType(defaultValue)), callback(callback)
+	ConfigField(const std::string friendlyName, const std::string section, const std::string name, const uint32_t flags,
+		FieldType defaultValue, OnChangeCallback callback)
+		: ConfigFieldHeader(friendlyName, section, name, flags),
+		field(new FieldType(defaultValue)), prevValue(new FieldType(defaultValue)), 
+		callback(callback)
 	{ }
 
-	std::string GetFriendlyName() 
-	{
-		return userName;
-	}
-
-	std::string GetName() 
-	{
-		return name;
-	}
-
-	std::string GetSection() 
-	{
-		return section;
-	}
-
-	FieldType GetValue() 
+	FieldType GetValue() const 
 	{
 		return *field;
 	}
 
-	FieldType* GetValuePtr() 
+	FieldType* GetValuePtr() const 
 	{
 		return field;
+	}
+
+	operator FieldType() const {
+		return GetValue();
+	}
+
+	operator FieldType* () const {
+		return GetValuePtr();
 	}
 
 	virtual bool Check()
@@ -64,61 +84,44 @@ private:
 	OnChangeCallback callback;
 	FieldType* field;
 	FieldType* prevValue;
-
-	std::string name;
-	std::string section;
-	std::string userName;
-
 };
 
+
+enum class ConfigFieldFlag
+{
+	None = 0,
+	ToggleField = 1,
+	NeedToShowStatus = 2
+};
+
+// Toggle config field, need for 
 class ToggleConfigField : public ConfigField<bool> 
 {
 public:
 
-	inline static TEvent<ToggleConfigField*> OnChangedEvent{};
+	inline static TEvent<ToggleConfigField*> OnChangedEvent {};
 
 	using OnChangeCallbackHotkey = void (*)(ConfigField<Hotkey>* field);
 	using OnChangeCallback = void (*)(ConfigField<bool>* field);
 
-	ToggleConfigField(const std::string friendlyName, const std::string section, const std::string name, bool defaultValue, 
-		OnChangeCallback callback, OnChangeCallbackHotkey hotkeyCallback)
-		: ToggleConfigField(friendlyName, section, name, defaultValue, Hotkey(0, 0), callback, hotkeyCallback) { }
+	ToggleConfigField(const std::string friendlyName, const std::string section, const std::string name, const uint32_t flags,
+		bool defaultValue, OnChangeCallback callback, OnChangeCallbackHotkey hotkeyCallback);
 
-	ToggleConfigField(const std::string friendlyName, const std::string section, const std::string name, bool defaultValue, 
-		Hotkey hotkey, OnChangeCallback callback, OnChangeCallbackHotkey hotkeyCallback)
-		: ConfigField<bool>(friendlyName, section, name, defaultValue, callback),
-		hotkeyField(ConfigField<Hotkey>(friendlyName, "Hotkeys", name, hotkey, hotkeyCallback)) { }
+	ToggleConfigField(const std::string friendlyName, const std::string section, const std::string name, const uint32_t flags, 
+		bool defaultValue, Hotkey hotkey, OnChangeCallback callback, OnChangeCallbackHotkey hotkeyCallback);
 
-	Hotkey* GetHotkey() 
-	{
-		return hotkeyField.GetValuePtr();
-	}
-
-	ConfigField<Hotkey> GetHotkeyField() 
-	{
-		return hotkeyField;
-	}
-
-	virtual bool Check() override 
-	{
-		if (!ConfigField<bool>::Check())
-			return false;
-
-		OnChangedEvent(this);
-
-		return true;
-	}
+	Hotkey* GetHotkey();
+	ConfigField<Hotkey> GetHotkeyField();
+	virtual bool Check() override;
 
 private:
-
 	ConfigField<Hotkey> hotkeyField;
-	
 };
 
-#define NoSaveField(type, field, uname, section, def) inline static ConfigField<type> cfg## field = { uname, section, #field, def, nullptr }
-#define Field(type, field, uname, section, def) inline static ConfigField<type> cfg## field = { uname, section, #field, def, Config::OnChangeValue }
+#define NoSaveField(type, field, uname, section, def) inline static ConfigField<type> cfg## field = { uname, section, #field, 0, def, nullptr }
 
-#define ToggleField(field, uname, section, defBool) inline static ToggleConfigField cfg## field = { uname, section, #field, defBool, Config::OnChangeValue, Config::OnChangeValue }
+#define Field(type, field, uname, section, def) inline static ConfigField<type> cfg## field = { uname, section, #field, 0, def, Config::OnChangeValue }
+#define ToggleField(field, uname, section, defBool, flags) inline static ToggleConfigField cfg## field = { uname, section, #field, static_cast<uint32_t>(flags), defBool, Config::OnChangeValue, Config::OnChangeValue }
 
 class Config {
 
@@ -136,27 +139,27 @@ public:
 	// Note. ToggleField hotkey will be automaticaly added to gui. See gui/modules/HotkeysModule.h.
 
 	// Player cheats
-	ToggleField(GodModEnable,          "God mode", "Player", false);
+	ToggleField(GodModEnable,          "God mode", "Player", false, ConfigFieldFlag::NeedToShowStatus);
 	
 	//   Infinite stamina
-	ToggleField(InfiniteStaminaEnable, "Infinite stamina", "Player", false);
-	ToggleField(ISMovePacketMode,      "Move packet replacement", "Player", false);
+	ToggleField(InfiniteStaminaEnable, "Infinite stamina", "Player", false, ConfigFieldFlag::NeedToShowStatus);
+	ToggleField(ISMovePacketMode,      "Move packet replacement", "Player", false, ConfigFieldFlag::None);
 
-	ToggleField(InstantBowEnable,      "Instant bow", "Player", false);
-	ToggleField(NoCDEnable,            "No ability CD", "Player", false);
-	ToggleField(NoGravityEnable,       "No gravity", "Player", false);
-	ToggleField(MoveSpeedhackEnable,   "Move speedhack", "Player", false);
+	ToggleField(InstantBowEnable,      "Instant bow",    "Player", false, ConfigFieldFlag::NeedToShowStatus);
+	ToggleField(NoSkillCDEnable,       "No ability CD",  "Player", false, ConfigFieldFlag::NeedToShowStatus);
+	ToggleField(NoSprintCDEnable,      "No sprint CD",   "Player", false, ConfigFieldFlag::None);
+	ToggleField(NoGravityEnable,       "No gravity",     "Player", false, ConfigFieldFlag::NeedToShowStatus);
+	ToggleField(MoveSpeedhackEnable,   "Move speedhack", "Player", false, ConfigFieldFlag::None);
 
 	// World 
-	ToggleField(UnlockWaypointsEnable, "Unlock waypoints", "World", false);
-	ToggleField(DumbEnemiesEnabled,    "Dumb enemies", "World", false);
+	ToggleField(UnlockWaypointsEnable, "Unlock waypoints", "World", false, ConfigFieldFlag::None);
+	ToggleField(DumbEnemiesEnabled,    "Dumb enemies", "World", false, ConfigFieldFlag::NeedToShowStatus);
 
-	ToggleField(TalkSkipEnabled,	   "Talk skip", "Dialog", false);
-	ToggleField(AutoTalkEnabled,	   "Auto talk", "Dialog", false);
+	ToggleField(AutoTalkEnabled,	   "Auto talk", "Dialog", false, ConfigFieldFlag::NeedToShowStatus);
 
 	// Teleport to nearest oculi
 	Field(Hotkey, TeleportToOculi,     "TP to oculi key",          "Teleport", Hotkey());
-	Field(bool, ShowOculiInfo,      "Show nearest oculi info",  "Teleport", true);
+	Field(bool, ShowOculiInfo,         "Show nearest oculi info",  "Teleport", true);
 	
 	// Teleport to nearest chest
 	Field(Hotkey, TeleportToChest,     "TP to chest key",          "Teleport", Hotkey());
@@ -164,7 +167,7 @@ public:
 	Field(bool, ShowOnlyUnlockedChest, "Show only unlocked chest", "Teleport", true);
 
 	// Teleportation
-	ToggleField(  MapTPEnable,         "Map teleport",             "Teleport", true);
+	ToggleField(  MapTPEnable,         "Map teleport",             "Teleport", true, ConfigFieldFlag::None);
 	Field(bool,   CalcHeight,          "Auto detect ground height","Teleport", true);
 	Field(float,  TeleportHeight,      "Teleport height",          "Teleport", 500.0f);
 	Field(Hotkey, TeleportKey,         "Teleport key",             "Teleport", Hotkey('T', 0));
@@ -194,11 +197,13 @@ public:
 
 	static void Save();
 
+	static std::vector<ConfigFieldHeader*> GetFields();
 	static std::vector<ToggleConfigField*> GetToggleFields();
 
 private:
 
 	inline static CSimpleIni m_INIFile{};
+	inline static std::vector<ConfigFieldHeader*> fields{};
 	inline static std::vector<ToggleConfigField*> toggleFields{};
 
 	static void LoadFieldValue(ConfigField<char*>& field);
@@ -222,3 +227,4 @@ private:
 #undef Field
 #undef ToggleField
 #undef NoSaveField
+

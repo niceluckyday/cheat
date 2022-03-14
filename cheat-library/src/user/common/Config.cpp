@@ -10,7 +10,9 @@ static bool changed = false;
 
 static std::string filename;
 
-#define LoadToggleValue(field) LoadFieldValue(field); toggleFields.push_back(&field)
+#define LoadField(field) LoadFieldValue(field);\
+						 fields.push_back(&field);\
+                         if (field.HasFlag(ConfigFieldFlag::ToggleField)) toggleFields.push_back(reinterpret_cast<ToggleConfigField*>(&field))
 
 void Config::Init(const std::string configFile)
 {
@@ -20,42 +22,47 @@ void Config::Init(const std::string configFile)
 	if (status < 0)
 		LOG_ERROR("Failed to load config file.");
 
-	LoadToggleValue(cfgGodModEnable);
-	LoadToggleValue(cfgInfiniteStaminaEnable);
-	LoadFieldValue(cfgISMovePacketMode);
-	LoadToggleValue(cfgInstantBowEnable);
-	LoadToggleValue(cfgNoCDEnable);
-	LoadToggleValue(cfgNoGravityEnable);
-	LoadToggleValue(cfgMoveSpeedhackEnable);
+	LoadField(cfgGodModEnable);
+	LoadField(cfgInfiniteStaminaEnable);
+	LoadField(cfgISMovePacketMode);
+	LoadField(cfgInstantBowEnable);
+	LoadField(cfgNoSprintCDEnable);
+	LoadField(cfgNoSkillCDEnable);
+	LoadField(cfgNoGravityEnable);
+	LoadField(cfgMoveSpeedhackEnable);
 
-	LoadToggleValue(cfgUnlockWaypointsEnable);
-	LoadToggleValue(cfgDumbEnemiesEnabled);
+	LoadField(cfgUnlockWaypointsEnable);
+	LoadField(cfgDumbEnemiesEnabled);
 
-	LoadToggleValue(cfgTalkSkipEnabled);
-	LoadToggleValue(cfgAutoTalkEnabled);
+	LoadField(cfgAutoTalkEnabled);
 
-	LoadToggleValue(cfgMapTPEnable);
-	LoadFieldValue(cfgTeleportHeight);
-	LoadFieldValue(cfgTeleportKey);
+	LoadField(cfgMapTPEnable);
+	LoadField(cfgTeleportHeight);
+	LoadField(cfgTeleportKey);
 
-	LoadFieldValue(cfgShowOculiInfo);
-	LoadFieldValue(cfgTeleportToOculi);
+	LoadField(cfgShowOculiInfo);
+	LoadField(cfgTeleportToOculi);
 
-	LoadFieldValue(cfgShowChestInfo);
-	LoadFieldValue(cfgTeleportToChest);
+	LoadField(cfgShowChestInfo);
+	LoadField(cfgTeleportToChest);
 
-	LoadFieldValue(cfgPacketCapturing);
-	LoadFieldValue(cfgPacketManipulation);
+	LoadField(cfgPacketCapturing);
+	LoadField(cfgPacketManipulation);
 
-	LoadFieldValue(cfgDisableMhyprot);
-	LoadFieldValue(cfgConsoleLogEnabled);
-	LoadFieldValue(cfgFileLogEnabled);
+	LoadField(cfgDisableMhyprot);
+	LoadField(cfgConsoleLogEnabled);
+	LoadField(cfgFileLogEnabled);
 
-	LoadFieldValue(cfgMoveStatusWindow);
-	LoadFieldValue(cfgShowStatusWindow);
+	LoadField(cfgMoveStatusWindow);
+	LoadField(cfgShowStatusWindow);
 
-	LoadFieldValue(cfgMoveInfoWindow);
-	LoadFieldValue(cfgShowInfoWindow);
+	LoadField(cfgMoveInfoWindow);
+	LoadField(cfgShowInfoWindow);
+}
+
+std::vector<ConfigFieldHeader*> Config::GetFields()
+{
+	return fields;
 }
 
 std::vector<ToggleConfigField*> Config::GetToggleFields()
@@ -139,4 +146,59 @@ void Config::LoadFieldValue(ToggleConfigField& field) {
 	LoadFieldValue(baseField);
 	auto hotkeyField = field.GetHotkeyField();
 	LoadFieldValue(hotkeyField);
+}
+
+// Config header
+ConfigFieldHeader::ConfigFieldHeader(const std::string friendlyName, const std::string section, const std::string name, const uint32_t flags)
+	: userName(friendlyName), section(section), name(name), flags(flags)
+{}
+
+std::string ConfigFieldHeader::GetFriendlyName() const
+{
+	return userName;
+}
+
+std::string ConfigFieldHeader::GetName() const
+{
+	return name;
+}
+
+std::string ConfigFieldHeader::GetSection() const
+{
+	return section;
+}
+
+uint32_t ConfigFieldHeader::GetFlags() const
+{
+	return flags;
+}
+
+
+// Toggle config field
+
+ToggleConfigField::ToggleConfigField(const std::string friendlyName, const std::string section, const std::string name, const uint32_t flags, bool defaultValue, OnChangeCallback callback, OnChangeCallbackHotkey hotkeyCallback)
+	: ToggleConfigField(friendlyName, section, name, flags, defaultValue, Hotkey(0, 0), callback, hotkeyCallback) { }
+
+ToggleConfigField::ToggleConfigField(const std::string friendlyName, const std::string section, const std::string name, const uint32_t flags, bool defaultValue, Hotkey hotkey, OnChangeCallback callback, OnChangeCallbackHotkey hotkeyCallback)
+	: ConfigField<bool>(friendlyName, section, name, flags | (uint32_t)ConfigFieldFlag::ToggleField, defaultValue, callback),
+	hotkeyField(ConfigField<Hotkey>(friendlyName, "Hotkeys", name, flags, hotkey, hotkeyCallback)) { }
+
+Hotkey* ToggleConfigField::GetHotkey()
+{
+	return hotkeyField.GetValuePtr();
+}
+
+ConfigField<Hotkey> ToggleConfigField::GetHotkeyField()
+{
+	return hotkeyField;
+}
+
+bool ToggleConfigField::Check()
+{
+	if (!ConfigField<bool>::Check())
+		return false;
+
+	OnChangedEvent(this);
+
+	return true;
 }

@@ -116,6 +116,14 @@ static void NetworkManager_1_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __
     callOrigin(NetworkManager_1_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
 }
 
+// Check sprint cooldown, we just return true if sprint no cd enabled.
+bool HumanoidMoveFSM_CheckSprintCooldown_Hook(void* __this, MethodInfo* method) 
+{
+    if (Config::cfgNoSprintCDEnable)
+        return true;
+
+    return callOrigin(HumanoidMoveFSM_CheckSprintCooldown_Hook, __this, method);
+}
 
 void InitPlayerCheats() 
 {
@@ -127,6 +135,9 @@ void InitPlayerCheats()
     // Infinite stamina
     HookManager::install(app::AvatarPropDictionary_SetItem, AvatarPropDictionary_SetItem_Hook);
     HookManager::install(app::NetworkManager_1_RequestSceneEntityMoveReq, NetworkManager_1_RequestSceneEntityMoveReq_Hook);
+
+    // No cooldown
+    HookManager::install(app::HumanoidMoveFSM_CheckSprintCooldown, HumanoidMoveFSM_CheckSprintCooldown_Hook);
 
     LOG_DEBUG("Initialized");
 }

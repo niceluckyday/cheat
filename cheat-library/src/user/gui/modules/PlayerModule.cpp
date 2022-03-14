@@ -10,6 +10,14 @@ void PlayerModule::Draw()
 {
     ConfigWidget(Config::cfgGodModEnable, "Enables god mode. (No income damage); May not work with some types of damage.");
 
+    BeginGroupPanel("No cooldown", ImVec2(-1.0f, 0.0f));
+    {
+        ConfigWidget(Config::cfgInstantBowEnable, "Disable cooldown of bow charge.");
+        ConfigWidget(Config::cfgNoSkillCDEnable, "Disable skills cooldown.");
+        ConfigWidget(Config::cfgNoSprintCDEnable, "Disable speed cooldown.");
+    }
+    EndGroupPanel();
+
     BeginGroupPanel("Infinite stamina", ImVec2(-1.0f, 0.0f));
     {
         ConfigWidget("Enable", Config::cfgInfiniteStaminaEnable, "Enables infinite stamina option.");

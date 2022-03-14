@@ -144,15 +144,15 @@ int main(int argc, char* argv[])
 		if (packetNameMap.count(packetData.messageId))
 		{
 			auto protoName = packetNameMap[packetData.messageId];
-			// std::cout << "Head: " << GetJSON("PacketHead", packetData.headData) << std::endl;
 			auto type = packetData.type == PacketType::Receive ? "Receive" : "Send";
+			// std::cout << type << " | Head: " << GetJSON("PacketHead", packetData.headData) << std::endl;
+			
 			std::cout << type << " | Message name: " << protoName << std::endl;
 			std::cout << type << " | Message: " << GetJSON(protoName, packetData.messageData) << std::endl;
 		}
 
 		if (packetData.waitForModifyData) 
 		{
-			LOG_INFO("Write data");
 			PacketModifyData data {};
 			// TODO: do modification data or block packet
 			pipe.WriteObject(data);
