@@ -8,26 +8,35 @@ Simple cheat for genshin with protection bypass.
 - [X] Map teleportation
 - [X] Teleport to chest and oculi
 - [X] Infinite sprint with "no send move sync" mode
-- [X] God mode, dumb enemies
+- [X] God mode, dumb enemies, rapid fire, auto talk, no cd
 
 ### Demo
 <details>
   <summary>Map tp demo</summary>
-  <img src="demo/map-teleport-demo-new.gif"/>
+  <img src="https://github.com/CallowBlack/gif-demos/blob/main/genshin-cheat/map-teleport-demo.gif"/>
 </details>
 
 <details>
   <summary>Tp to oculi demo</summary>
-  <img src="demo/oculi-teleport-demo.gif"/>
+  <img src="https://github.com/CallowBlack/gif-demos/blob/main/genshin-cheat/oculi-teleport-demo.gif"/>
 </details>
 
 <details>
   <summary>Tp to chest demo</summary>
-  <img src="demo/chest-teleport-demo.gif"/>
+  <img src="https://github.com/CallowBlack/gif-demos/blob/main/genshin-cheat/chest-teleport-demo.gif"/>
+</details>
+
+<details>
+  <summary>Rapid fire demo</summary>
+  <img src="https://github.com/CallowBlack/gif-demos/blob/main/genshin-cheat/rapid-fire-demo.gif"/>
+</details>
+
+<details>
+  <summary>Auto talk demo</summary>
+  <img src="https://github.com/CallowBlack/gif-demos/blob/main/genshin-cheat/auto-talk-demo.gif"/>
 </details>
 
 ## Planned
-- [ ] Standard cheat features (i.e. No CD, Flying and so on)
 - [ ] Scene skip
 - [ ] Create database of all chests, oculi locations
 - [ ] etc...
