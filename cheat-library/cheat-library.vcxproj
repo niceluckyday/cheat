@@ -550,7 +550,6 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClCompile Include="src\user\common\close-handle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="vendor\google\protobuf\compiler\cpp\cpp_unittest.inc" />
     <None Include="vendor\google\protobuf\map_test.inc" />
     <None Include="vendor\google\protobuf\map_test_util.inc" />

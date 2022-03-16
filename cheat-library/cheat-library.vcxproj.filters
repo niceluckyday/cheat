@@ -1213,7 +1213,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="vendor\google\protobuf\compiler\cpp\cpp_unittest.inc">
       <Filter>Header Files</Filter>
     </None>
