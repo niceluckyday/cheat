@@ -46,6 +46,7 @@ DO_APP_FUNC(0x01F10360, bool, HumanoidMoveFSM_CheckSprintCooldown, (/* HumanoidM
 DO_APP_FUNC(0x0145AB40, bool, LCAvatarCombat_IsEnergyMax, (void* __this, MethodInfo* method));
 DO_APP_FUNC(0x01458C60, bool, LCAvatarCombat_IsSkillInCD_1, (void* __this, void* skillInfo, MethodInfo* method));
 DO_APP_FUNC(0x01034EE0, void, ActorAbilityPlugin_AddDynamicFloatWithRange, (void* __this, String* key, float value, float min, float max, bool forceDoAtRemote, MethodInfo* method));
+DO_APP_FUNC(0x02AE15E0, void, LCBaseCombat_DoHitEntity, (LCBaseCombat* __this, uint32_t targetID, AttackResult* attackResult, bool ignoreCheckCanBeHitInMP, MethodInfo* method));
 
 
 // World cheats

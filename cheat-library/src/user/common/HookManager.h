@@ -38,6 +38,15 @@ public:
 		holderMap.erase(reinterpret_cast<void*>(handler));
 	}
 
+	static void detachAll() noexcept
+	{
+		for (const auto &[key, value] : holderMap) 
+		{
+			disable(key);
+		}
+		holderMap.clear();
+	}
+
 private:
 	inline static std::map<void*, void*> holderMap{};
 

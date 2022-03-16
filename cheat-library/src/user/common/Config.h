@@ -145,6 +145,10 @@ public:
 	ToggleField(InfiniteStaminaEnable, "Infinite stamina", "Player", false, ConfigFieldFlag::NeedToShowStatus);
 	ToggleField(ISMovePacketMode,      "Move packet replacement", "Player", false, ConfigFieldFlag::None);
 
+	ToggleField(RapidFire,             "Rapid fire",     "Player", false, ConfigFieldFlag::NeedToShowStatus);
+	Field(int,   RapidFireMultiplier,  "Multiplier",     "Player", 2);
+	Field(bool,  RapidFireOnePunch,    "One punch",      "Player", false);
+
 	ToggleField(InstantBowEnable,      "Instant bow",    "Player", false, ConfigFieldFlag::NeedToShowStatus);
 	ToggleField(NoSkillCDEnable,       "No ability CD",  "Player", false, ConfigFieldFlag::NeedToShowStatus);
 	ToggleField(NoSprintCDEnable,      "No sprint CD",   "Player", false, ConfigFieldFlag::None);

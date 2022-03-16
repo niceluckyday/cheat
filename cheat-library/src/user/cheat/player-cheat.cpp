@@ -11,6 +11,7 @@
 #include <common/Config.h>
 #include <gcclib/Logger.h>
 #include <common/Patch.h>
+#include <common/GlobalEvents.h>
 
 // Godmode (return false when target is avatar, that mean avatar entity isn't attackable)
 static bool Miscs_CheckTargetAttackable_Hook(void* __this, app::BaseEntity* attacker, app::BaseEntity* target, MethodInfo* method)
@@ -153,6 +154,20 @@ void ActorAbilityPlugin_AddDynamicFloatWithRange_Hook(void* __this, app::String*
     callOrigin(ActorAbilityPlugin_AddDynamicFloatWithRange_Hook, __this, key, value, minValue, maxValue, forceDoAtRemote, method);
 }
 
+// Raises when any entity do hit event.
+// Just recall attack few times (regulating by config)
+// It's not tested well, so, I think, anticheat can detect it.
+// When new information will be received, I update this comment.
+void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID, app::AttackResult* attackResult,
+    bool ignoreCheckCanBeHitInMP, MethodInfo* method)
+{
+    if (__this->fields._._.entityRuntimeID != GetAvatarEntity()->fields._runtimeID_k__BackingField || !Config::cfgRapidFire)
+        return callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
+
+    for (int i = 0; i < Config::cfgRapidFireMultiplier; i++)
+        callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
+}
+
 void InitPlayerCheats() 
 {
     // God mode
@@ -169,6 +184,9 @@ void InitPlayerCheats()
     HookManager::install(app::LCAvatarCombat_IsEnergyMax, LCAvatarCombat_IsEnergyMax_Hook);
     HookManager::install(app::LCAvatarCombat_IsSkillInCD_1, LCAvatarCombat_IsSkillInCD_1_Hook);
     HookManager::install(app::ActorAbilityPlugin_AddDynamicFloatWithRange, ActorAbilityPlugin_AddDynamicFloatWithRange_Hook);
-    
+
+    // Rapid fire
+    HookManager::install(app::LCBaseCombat_DoHitEntity, LCBaseCombat_DoHitEntity_Hook);
+
     LOG_DEBUG("Initialized");
 }

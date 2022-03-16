@@ -18,6 +18,19 @@ void PlayerModule::Draw()
     }
     EndGroupPanel();
 
+    BeginGroupPanel("Rapid fire", ImVec2(-1.0f, 0.0f));
+    {
+        ConfigWidget("Enable", Config::cfgRapidFire, "Enables rapid fire.\n\
+            Rapid fire just multiply your attack count.\n\
+            It's not well tested, and can be detected by anticheat.\n\
+            So not recommend to you that in your main account.");
+
+        ConfigWidget(Config::cfgRapidFireMultiplier, 1, 2, 1000, "Rapid fire multiply count.\n\
+            For example: 100 means that whey you hit enemy, attack duplicates 100 times.\n\
+            Be aware, big value can produce lags.");
+    }
+    EndGroupPanel();
+
     BeginGroupPanel("Infinite stamina", ImVec2(-1.0f, 0.0f));
     {
         ConfigWidget("Enable", Config::cfgInfiniteStaminaEnable, "Enables infinite stamina option.");

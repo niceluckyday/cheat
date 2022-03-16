@@ -25,6 +25,10 @@ void Config::Init(const std::string configFile)
 	LoadField(cfgGodModEnable);
 	LoadField(cfgInfiniteStaminaEnable);
 	LoadField(cfgISMovePacketMode);
+
+	LoadField(cfgRapidFire);
+	LoadField(cfgRapidFireMultiplier);
+	LoadField(cfgRapidFireOnePunch);
 	LoadField(cfgInstantBowEnable);
 	LoadField(cfgNoSprintCDEnable);
 	LoadField(cfgNoSkillCDEnable);
