@@ -28,6 +28,9 @@ void PlayerModule::Draw()
         ConfigWidget(Config::cfgRapidFireMultiplier, 1, 2, 1000, "Rapid fire multiply count.\n\
             For example: 100 means that whey you hit enemy, attack duplicates 100 times.\n\
             Be aware, big value can produce lags.");
+
+        ConfigWidget(Config::cfgRapidFireOnePunch, "Calculate count of attack repeat to kill entity by one attack.\n\
+            Due to that damage calculate on server side, that can be calculated incorrect count of attacks.");
     }
     EndGroupPanel();
 

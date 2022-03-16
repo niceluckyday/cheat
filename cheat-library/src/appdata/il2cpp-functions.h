@@ -46,7 +46,13 @@ DO_APP_FUNC(0x01F10360, bool, HumanoidMoveFSM_CheckSprintCooldown, (/* HumanoidM
 DO_APP_FUNC(0x0145AB40, bool, LCAvatarCombat_IsEnergyMax, (void* __this, MethodInfo* method));
 DO_APP_FUNC(0x01458C60, bool, LCAvatarCombat_IsSkillInCD_1, (void* __this, void* skillInfo, MethodInfo* method));
 DO_APP_FUNC(0x01034EE0, void, ActorAbilityPlugin_AddDynamicFloatWithRange, (void* __this, String* key, float value, float min, float max, bool forceDoAtRemote, MethodInfo* method));
+
+
+// Rapid fire
 DO_APP_FUNC(0x02AE15E0, void, LCBaseCombat_DoHitEntity, (LCBaseCombat* __this, uint32_t targetID, AttackResult* attackResult, bool ignoreCheckCanBeHitInMP, MethodInfo* method));
+DO_APP_FUNC(0x04564540, LCBaseCombat*, BaseEntity_GetBaseCombat, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC_METHODINFO(0x0B19B338, BaseEntity_GetBaseCombat__MethodInfo);
+DO_APP_FUNC(0x03BB1030, void, Formula_CalcAttackResult, (void* __this, CombatProperty* attackCombatProperty, CombatProperty* defenseCombatProperty, AttackResult* attackResult, BaseEntity* attackerEntity, BaseEntity* attackeeEntity, MethodInfo* method));
 
 
 // World cheats
@@ -112,6 +118,7 @@ DO_APP_FUNC(0x02662BD0, Notify, Notify_CreateNotify_1, (void* __this, AJAPIFPNFK
 
 DO_APP_FUNC(0x0154C5A0, String*, BaseEntity_ToStringRelease, (BaseEntity* __this, MethodInfo* method));
 DO_APP_FUNC(0x01E9F520, BaseEntity*, EntityManager_GetCurrentAvatar, (EntityManager* __this, MethodInfo* method));
+DO_APP_FUNC(0x02F571D0, float, SafeFloat_GetValue, (void* __this, SafeFloat safeFloat, MethodInfo* method));
 
 
 // Singletons

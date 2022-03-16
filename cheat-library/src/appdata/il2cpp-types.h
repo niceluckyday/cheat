@@ -7836,7 +7836,7 @@ namespace app {
     // DAGIDCFOCEA__Fields
     struct LCBaseCombat__Fields {
         struct LCBase__Fields _;
-        struct OIAODCALEJK* _combatProperty_k__BackingField;
+        struct CombatProperty* _combatProperty_k__BackingField;
         struct NKOKPMBFHHP* configCombat;
         struct Action_1_DAGIDCFOCEA_* onHPChanged;
         bool needCallHpChanged;

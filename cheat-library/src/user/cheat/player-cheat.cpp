@@ -2,6 +2,7 @@
 #include "cheat.h"
 
 #include <vector>
+#include <math.h>
 
 #include <magic_enum.hpp>
 
@@ -154,6 +155,23 @@ void ActorAbilityPlugin_AddDynamicFloatWithRange_Hook(void* __this, app::String*
     callOrigin(ActorAbilityPlugin_AddDynamicFloatWithRange_Hook, __this, key, value, minValue, maxValue, forceDoAtRemote, method);
 }
 
+int CalcCountToKill(float attackDamage, uint32_t targetID) 
+{
+    auto targetEntity = GetEntityByRuntimeId(targetID);
+    if (targetEntity == nullptr)
+        return Config::cfgRapidFireMultiplier;
+
+    auto baseCombat = app::BaseEntity_GetBaseCombat(targetEntity, *app::BaseEntity_GetBaseCombat__MethodInfo);
+    if (baseCombat == nullptr)
+        return Config::cfgRapidFireMultiplier;
+
+    auto safeHP = baseCombat->fields._combatProperty_k__BackingField->fields.HP;
+    auto HP = app::SafeFloat_GetValue(nullptr, safeHP, nullptr);
+    LOG_DEBUG("HP: %f, attack damage: %f", HP, attackDamage);
+    int attackCount = (int)ceil(HP / attackDamage);
+    return min(attackCount, 1000);
+}
+
 // Raises when any entity do hit event.
 // Just recall attack few times (regulating by config)
 // It's not tested well, so, I think, anticheat can detect it.
@@ -164,7 +182,18 @@ void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID,
     if (__this->fields._._.entityRuntimeID != GetAvatarEntity()->fields._runtimeID_k__BackingField || !Config::cfgRapidFire)
         return callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
 
-    for (int i = 0; i < Config::cfgRapidFireMultiplier; i++)
+    int countOfAttacks = Config::cfgRapidFireMultiplier.GetValue();
+    if (Config::cfgRapidFireOnePunch)
+    {
+        auto targetEntity = GetEntityByRuntimeId(targetID);
+        auto baseCombat = app::BaseEntity_GetBaseCombat(targetEntity, *app::BaseEntity_GetBaseCombat__MethodInfo);
+        app::Formula_CalcAttackResult(targetEntity, __this->fields._combatProperty_k__BackingField, 
+            baseCombat->fields._combatProperty_k__BackingField, 
+            attackResult, GetAvatarEntity(), targetEntity, nullptr);
+        countOfAttacks = CalcCountToKill(attackResult->fields.damage - attackResult->fields.damageShield, targetID);
+    }
+    
+    for (int i = 0; i < countOfAttacks; i++)
         callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
 }
 

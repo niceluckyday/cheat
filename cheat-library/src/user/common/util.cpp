@@ -92,22 +92,40 @@ bool IsEntityFilterValid(app::BaseEntity* entity, const EntityFilter& filter)
     return true;
 }
 
-std::vector<app::BaseEntity*> FindEntities(const EntityFilter& filter)
+std::vector<app::BaseEntity*> GetEntities() 
 {
-    std::vector<app::BaseEntity*> result {};
-
     if (!IsSingletonLoaded(EntityManager))
-        return result;
+        return {};
 
     auto entityManager = GetSingleton(EntityManager);
     if (entityManager == nullptr)
-        return result;
+        return {};
 
     auto entities = ToUniList(entityManager->fields._entities, app::BaseEntity*);
     if (entities == nullptr)
-        return result;
+        return {};
 
-    for (auto& entity : *entities) 
+    return entities->vec();
+}
+
+app::BaseEntity* GetEntityByRuntimeId(uint32_t runtimeId) 
+{
+    for (auto& entity: GetEntities()) 
+    {
+        if (entity == nullptr)
+            continue;
+
+        if (entity->fields._runtimeID_k__BackingField == runtimeId)
+            return entity;
+    }
+    return nullptr;
+}
+
+std::vector<app::BaseEntity*> FindEntities(const EntityFilter& filter)
+{
+
+    std::vector<app::BaseEntity*> result{};
+    for (auto& entity : GetEntities())
     {
         if (IsEntityFilterValid(entity, filter))
             result.push_back(entity);
