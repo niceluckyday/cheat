@@ -157,6 +157,9 @@ void ActorAbilityPlugin_AddDynamicFloatWithRange_Hook(void* __this, app::String*
 
 int CalcCountToKill(float attackDamage, uint32_t targetID) 
 {
+    if (attackDamage == 0)
+        return Config::cfgRapidFireMultiplier;
+
     auto targetEntity = GetEntityByRuntimeId(targetID);
     if (targetEntity == nullptr)
         return Config::cfgRapidFireMultiplier;
@@ -167,9 +170,8 @@ int CalcCountToKill(float attackDamage, uint32_t targetID)
 
     auto safeHP = baseCombat->fields._combatProperty_k__BackingField->fields.HP;
     auto HP = app::SafeFloat_GetValue(nullptr, safeHP, nullptr);
-    LOG_DEBUG("HP: %f, attack damage: %f", HP, attackDamage);
     int attackCount = (int)ceil(HP / attackDamage);
-    return min(attackCount, 1000);
+    return std::clamp(1, attackCount, 1000);
 }
 
 // Raises when any entity do hit event.
@@ -196,6 +198,7 @@ void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID,
     for (int i = 0; i < countOfAttacks; i++)
         callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
 }
+
 
 void InitPlayerCheats() 
 {
