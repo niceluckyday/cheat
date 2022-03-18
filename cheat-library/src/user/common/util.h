@@ -41,5 +41,6 @@ app::BaseEntity* FindNearestEntity(const EntityFilter& filter);
 
 const EntityFilter& GetFilterCrystalShell();
 const EntityFilter& GetFilterChest();
+const EntityFilter& GetMonsterFilter();
 
 bool IsEntityCrystalShell(app::BaseEntity* entity);

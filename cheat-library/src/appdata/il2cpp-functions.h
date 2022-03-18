@@ -28,7 +28,7 @@ DO_APP_FUNC(0x0152E720, void, Entity_SetPosition, (BaseEntity* __this, Vector3 p
 
 
 // Unlimited stamina
-DO_APP_FUNC(0x0349EF50, void, NetworkManager_1_RequestSceneEntityMoveReq, (BKFGGJFIIKC* __this, uint32_t entityId, MotionInfo* syncInfo, bool isReliable, uint32_t HAOCOEMOMBG, MethodInfo* method));
+DO_APP_FUNC(0x0349EF50, void, LevelSyncCombatPlugin_RequestSceneEntityMoveReq, (BKFGGJFIIKC* __this, uint32_t entityId, MotionInfo* syncInfo, bool isReliable, uint32_t HAOCOEMOMBG, MethodInfo* method));
 DO_APP_FUNC(0x07B4A950, void, AvatarPropDictionary_SetItem, (Dictionary_2_JNHGGGCKJNA_JKNLDEEBGLL_* __this, JNHGGGCKJNA key, JKNLDEEBGLL value, MethodInfo* method));
 DO_APP_FUNC(0x047E6420, double, AvatarProp_DecodePropValue, (void* __this, JKNLDEEBGLL EODGKCKCMDM, MethodInfo* method));
 DO_APP_FUNC(0x02707260, PropType__Enum, AvatarProp_DecodePropType, (void* __this, JNHGGGCKJNA EODGKCKCMDM, MethodInfo* method));
@@ -54,6 +54,8 @@ DO_APP_FUNC(0x04564540, LCBaseCombat*, BaseEntity_GetBaseCombat, (BaseEntity* __
 DO_APP_FUNC_METHODINFO(0x0B19B338, BaseEntity_GetBaseCombat__MethodInfo);
 DO_APP_FUNC(0x03BB1030, void, Formula_CalcAttackResult, (void* __this, CombatProperty* attackCombatProperty, CombatProperty* defenseCombatProperty, AttackResult* attackResult, BaseEntity* attackerEntity, BaseEntity* attackeeEntity, MethodInfo* method));
 
+// Killaura
+DO_APP_FUNC(0x02AEA450, void, LCBaseCombat_DoAttackEvent, (LCBaseCombat* __this, String* animEventID, MethodInfo* method));
 
 // World cheats
 DO_APP_FUNC(0x04691F40, void, VCMonsterAIController_TryDoSkill, (/* VCMonsterAIController */ void* __this, uint32_t skillID, MethodInfo* method));
@@ -87,7 +89,7 @@ DO_APP_FUNC(0x01CBB760, void, LuaShellManager_ReportLuaShellResult, (void* __thi
 
 // Debug hooks
 DO_APP_FUNC(0x047D6B60, AttackResult_1*, AttackResult_FillProtoAttackResult, (AttackResult* __this, uint32_t attackerID, uint32_t defenseId, AttackResult_1* protoAttackResult, MethodInfo* method));
-
+DO_APP_FUNC(0x034A0660, void, LevelSyncCombatPlugin_SendFaceToDir, (void* __this, uint32_t runtimeID, Vector3 forward, MethodInfo* method));
 
 // Utility
 DO_APP_FUNC(0x01402C90, float,   Miscs_CalcCurrentGroundWaterHeight, (void* __this, float x, float z, MethodInfo* method));
@@ -119,6 +121,19 @@ DO_APP_FUNC(0x02662BD0, Notify, Notify_CreateNotify_1, (void* __this, AJAPIFPNFK
 DO_APP_FUNC(0x0154C5A0, String*, BaseEntity_ToStringRelease, (BaseEntity* __this, MethodInfo* method));
 DO_APP_FUNC(0x01E9F520, BaseEntity*, EntityManager_GetCurrentAvatar, (EntityManager* __this, MethodInfo* method));
 DO_APP_FUNC(0x02F571D0, float, SafeFloat_GetValue, (void* __this, SafeFloat safeFloat, MethodInfo* method));
+
+DO_APP_FUNC(0x0151C910, void, BaseEntity_SetRelativePosition, (BaseEntity* __this, Vector3 position, bool forceSyncToRigidbody, MethodInfo* method));
+DO_APP_FUNC(0x0152E720, void, BaseEntity_SetAbsolutePosition, (BaseEntity* __this, Vector3 abpos, bool forceSyncToRigidbody, MethodInfo* method));
+DO_APP_FUNC(0x0151D390, Vector3, BaseEntity_GetAbsolutePosition, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x01516150, Vector3, BaseEntity_GetRelativePosition, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x0151BD00, Vector3, BaseEntity_GetForward, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x01534C40, void, BaseEntity_EnableRigidbodyKinematic, (BaseEntity* __this, bool enable, int32_t priority, MethodInfo* method));
+DO_APP_FUNC(0x01536B90, void, BaseEntity_ClearDynamicCollision, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x0151C730, void, BaseEntity_SetRigidbodyCollisionDetectionMode, (BaseEntity* __this, CollisionDetectionMode__Enum collisionDetectionMode, MethodInfo* method));
+DO_APP_FUNC(0x0153AA10, Rigidbody*, BaseEntity_GetRigidbody, (BaseEntity* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x084045B0, void, Rigidbody_set_detectCollisions, (Rigidbody* __this, bool value, MethodInfo* method));
+DO_APP_FUNC(0x08404790, void, Rigidbody_set_isKinematic, (Rigidbody* __this, bool value, MethodInfo* method));
 
 
 // Singletons

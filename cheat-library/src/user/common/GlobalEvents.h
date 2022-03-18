@@ -7,4 +7,5 @@ class GlobalEvents
 {
 public:
 	inline static TCancelableEvent<short> KeyUpEvent{};
+	inline static TEvent<> GameUpdateEvent{};
 };

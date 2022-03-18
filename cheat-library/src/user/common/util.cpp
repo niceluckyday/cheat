@@ -38,15 +38,15 @@ app::BaseEntity* GetAvatarEntity()
         return nullptr;
 
     auto entityManager = GetSingleton(EntityManager);
+    if (entityManager == nullptr)
+        return nullptr;
+
     auto avatarEntity = app::EntityManager_GetCurrentAvatar(entityManager, nullptr);
     return avatarEntity;
 }
 
 app::Vector3 GetAvatarRelativePosition()
 {
-    if (!IsSingletonLoaded(EntityManager))
-        return app::Vector3();
-
     return GetRelativePosition(GetAvatarEntity());
 }
 
@@ -169,6 +169,14 @@ const EntityFilter& GetFilterChest()
 {
     static const EntityFilter filter = {
         {true, app::EntityType__Enum_1::Chest}
+    };
+    return filter;
+}
+
+const EntityFilter& GetMonsterFilter()
+{
+    static const EntityFilter filter = {
+        {true, app::EntityType__Enum_1::Monster}
     };
     return filter;
 }

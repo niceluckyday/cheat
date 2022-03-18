@@ -8906,6 +8906,43 @@ namespace app {
         MonitorData* monitor;
         struct FHEJEJANBLD__Fields fields;
     };
+
+    enum class CanBeModifiedBy__Enum : int32_t {
+        None = 0x00000000,
+        Owner = 0x00000001,
+        OriginOwner = 0x00000002,
+    };
+
+    struct __declspec(align(8)) BDBOMOMOBNM__Fields {
+        struct String* _attackTag;
+        struct String* _attenuationTag;
+        struct String* _attenuationGroup;
+        struct ConfigAttackProperty* _attackProperty;
+        struct ConfigHitPattern* _hitPattern;
+        bool _canHitHead;
+        struct JMEHFAFIGOB* _hitHeadPattern;
+        bool _forceCameraShake;
+        struct HIFJNLHKFEE* NADMPJNLGEC;
+        struct EMKDPBDJPFA* HHIMIJDIPPE;
+        CanBeModifiedBy__Enum FLCCOAEHOJH;
+    };
+
+    struct ConfigAttackInfo {
+        struct BDBOMOMOBNM__Class* klass;
+        MonitorData* monitor;
+        struct BDBOMOMOBNM__Fields fields;
+    };
+
+    struct Rigidbody__Fields {
+        struct Component_1__Fields _;
+    };
+
+    struct Rigidbody {
+        struct Rigidbody__Class* klass;
+        MonitorData* monitor;
+        struct Rigidbody__Fields fields;
+    };
+
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }
 #endif

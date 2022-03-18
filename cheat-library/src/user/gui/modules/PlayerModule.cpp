@@ -20,7 +20,7 @@ void PlayerModule::Draw()
 
     BeginGroupPanel("Rapid fire", ImVec2(-1.0f, 0.0f));
     {
-        ConfigWidget("Enable", Config::cfgRapidFire, "Enables rapid fire.\n\
+        ConfigWidget("Enable ## Rapid fire", Config::cfgRapidFire, "Enables rapid fire.\n\
             Rapid fire just multiply your attack count.\n\
             It's not well tested, and can be detected by anticheat.\n\
             So not recommend to you that in your main account.");
@@ -34,9 +34,21 @@ void PlayerModule::Draw()
     }
     EndGroupPanel();
 
+    BeginGroupPanel("Mob vacum", ImVec2(-1.0f, 0.0f));
+    {
+        ConfigWidget("Enable ## MobVaccum", Config::cfgMobVaccumEnable, "Enables mob vacum.\n\
+            Mob in specified radius will be moved front of player in specified distance.");
+        //ConfigWidget(Config::cfgMobVaccumInstantly, "Move performs instantly.");
+        //ConfigWidget(Config::cfgMobVaccumSpeed, 0.1, 1, 15, "If 'Instantly' not checked, regulate speed of move.");
+        ConfigWidget(Config::cfgMobVaccumRadius, 1, 5, 150, "Radius of mob vacum work area.");
+        ConfigWidget(Config::cfgMobVaccumDistance, 0.1, 0.5, 10, "Distance beetween player and monster to move.");
+        ConfigWidget(Config::cfgMobVaccumOnlyTarget, "Mob vacum will be work only on entity targeted at the player.");
+    }
+    EndGroupPanel();
+
     BeginGroupPanel("Infinite stamina", ImVec2(-1.0f, 0.0f));
     {
-        ConfigWidget("Enable", Config::cfgInfiniteStaminaEnable, "Enables infinite stamina option.");
+        ConfigWidget("Enable ## Infinite stamina", Config::cfgInfiniteStaminaEnable, "Enables infinite stamina option.");
         ConfigWidget(Config::cfgISMovePacketMode, 
             "This mode prevent send to server packets with stamina cost actions,\nlike (swim, climb, sprint and so on).\nNOTE. This is can be more safe than standart method. But it is not tested.");
     }

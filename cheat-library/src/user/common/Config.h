@@ -145,15 +145,25 @@ public:
 	ToggleField(InfiniteStaminaEnable, "Infinite stamina", "Player", false, ConfigFieldFlag::NeedToShowStatus);
 	ToggleField(ISMovePacketMode,      "Move packet replacement", "Player", false, ConfigFieldFlag::None);
 
+	//   Rapid fire
 	ToggleField(RapidFire,             "Rapid fire",     "Player", false, ConfigFieldFlag::NeedToShowStatus);
 	Field(int,   RapidFireMultiplier,  "Multiplier",     "Player", 2);
 	Field(bool,  RapidFireOnePunch,    "One punch",      "Player", false);
 
+	//   No coldown
 	ToggleField(InstantBowEnable,      "Instant bow",    "Player", false, ConfigFieldFlag::NeedToShowStatus);
 	ToggleField(NoSkillCDEnable,       "No ability CD",  "Player", false, ConfigFieldFlag::NeedToShowStatus);
 	ToggleField(NoSprintCDEnable,      "No sprint CD",   "Player", false, ConfigFieldFlag::None);
 	ToggleField(NoGravityEnable,       "No gravity",     "Player", false, ConfigFieldFlag::NeedToShowStatus);
 	ToggleField(MoveSpeedhackEnable,   "Move speedhack", "Player", false, ConfigFieldFlag::None);
+
+	//   Mob vaccum
+	ToggleField( MobVaccumEnable,      "Mob vacum",      "Player", false, ConfigFieldFlag::NeedToShowStatus);
+	Field(bool,  MobVaccumInstantly,   "Instantly",      "Player", false);
+	Field(float, MobVaccumSpeed,       "Vacum speed",    "Player", 2.0f);
+	Field(float, MobVaccumDistance,    "Front distance", "Player", 1.5f);
+	Field(float, MobVaccumRadius,      "Vacum radius",   "Player", 60.0f);
+	Field(bool,  MobVaccumOnlyTarget,  "Only targeted",  "Player", true);
 
 	// World 
 	ToggleField(UnlockWaypointsEnable, "Unlock waypoints", "World", false, ConfigFieldFlag::None);

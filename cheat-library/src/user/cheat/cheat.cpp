@@ -2,14 +2,26 @@
 #include "cheat.h"
 
 #include <common/Config.h>
+#include <common/Event.h>
 #include <common/GlobalEvents.h>
+#include <common/HookManager.h>
 
 static void OnKeyUp(short key, bool& cancelled);
 static void InitToggleFields();
 
+static void GameManager_Update_Hook(app::GameManager* __this, MethodInfo* method)
+{
+    GlobalEvents::GameUpdateEvent();
+    callOrigin(GameManager_Update_Hook, __this, method);
+}
+
 void InitCheats() 
 {
-	InitProtectionBypass(); // Removes protection
+    InitProtectionBypass(); // Removes protection
+
+    // Game thread
+    HookManager::install(app::GameManager_Update, GameManager_Update_Hook);
+
 	InitDebugHooks(); // Hooks for debbug information
     InitPacketHooks();
 

@@ -68,13 +68,14 @@ static void AvatarPropDictionary_SetItem_Hook(app::Dictionary_2_JNHGGGCKJNA_JKNL
 // Infinite stamina packet mode.
 // Note. Blocking packets with movement information, to prevent ability server to know stamina info.
 //       But server may see incorrect movements. What mode safer don't tested.
-static void NetworkManager_1_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __this, uint32_t entityId, app::MotionInfo* syncInfo, bool isReliable, uint32_t relseq, MethodInfo* method)
+static void LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __this, uint32_t entityId, app::MotionInfo* syncInfo, 
+    bool isReliable, uint32_t relseq, MethodInfo* method)
 {
     static bool afterDash = false;
 
     if (!IsSingletonLoaded(EntityManager)) 
     {
-        callOrigin(NetworkManager_1_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
+        callOrigin(LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
         return;
     }
         
@@ -82,7 +83,7 @@ static void NetworkManager_1_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __
     auto avatarEntity = app::EntityManager_GetCurrentAvatar(entityManager, nullptr);
     if (entityId != avatarEntity->fields._runtimeID_k__BackingField)
     {
-        callOrigin(NetworkManager_1_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
+        callOrigin(LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
         return;
     }
 
@@ -115,7 +116,7 @@ static void NetworkManager_1_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __
             afterDash = state == app::MotionState__Enum::MotionDash;
     }
 
-    callOrigin(NetworkManager_1_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
+    callOrigin(LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
 }
 
 // Check sprint cooldown, we just return true if sprint no cd enabled.
@@ -171,7 +172,7 @@ int CalcCountToKill(float attackDamage, uint32_t targetID)
     auto safeHP = baseCombat->fields._combatProperty_k__BackingField->fields.HP;
     auto HP = app::SafeFloat_GetValue(nullptr, safeHP, nullptr);
     int attackCount = (int)ceil(HP / attackDamage);
-    return std::clamp(1, attackCount, 1000);
+    return std::clamp(attackCount, 1, 1000);
 }
 
 // Raises when any entity do hit event.
@@ -192,13 +193,63 @@ void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID,
         app::Formula_CalcAttackResult(targetEntity, __this->fields._combatProperty_k__BackingField, 
             baseCombat->fields._combatProperty_k__BackingField, 
             attackResult, GetAvatarEntity(), targetEntity, nullptr);
-        countOfAttacks = CalcCountToKill(attackResult->fields.damage - attackResult->fields.damageShield, targetID);
+        countOfAttacks = CalcCountToKill(attackResult->fields.damage, targetID);
     }
     
     for (int i = 0; i < countOfAttacks; i++)
         callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
 }
 
+static void UpdateMobVaccum() 
+{
+    if (!Config::cfgMobVaccumEnable)
+        return;
+
+    auto avatarEntity = GetAvatarEntity();
+    if (avatarEntity == nullptr)
+        return;
+
+    auto avatarRuntimeID = avatarEntity->fields._runtimeID_k__BackingField;
+    auto avatarRelPos = app::BaseEntity_GetRelativePosition(avatarEntity, nullptr);
+    auto avatarForward = app::BaseEntity_GetForward(avatarEntity, nullptr);
+
+    app::Vector3 avatarForwardPos = {
+        avatarForward.x * Config::cfgMobVaccumDistance + avatarRelPos.x,
+        avatarForward.y * Config::cfgMobVaccumDistance + avatarRelPos.y,
+        avatarForward.z * Config::cfgMobVaccumDistance + avatarRelPos.z
+    };
+
+    for (const auto& monster : FindEntities(GetMonsterFilter()))
+    {
+        if (Config::cfgMobVaccumOnlyTarget)
+        {
+            auto monsterCombat = app::BaseEntity_GetBaseCombat(monster, *app::BaseEntity_GetBaseCombat__MethodInfo);
+            if (monsterCombat == nullptr || monsterCombat->fields._attackTarget.runtimeID != avatarRuntimeID)
+                continue;
+        }
+
+        auto distance = GetDistToAvatar(monster);
+        if (distance > Config::cfgMobVaccumRadius)
+            return;
+        //if (Config::cfgMobVaccumInstantly)
+        //{
+            app::BaseEntity_SetRelativePosition(monster, avatarForwardPos, true, nullptr);
+            //return;
+        //}
+    }
+}
+
+static void OnGameUpdate()
+{
+    // Mob vaccum
+    UpdateMobVaccum();
+}
+
+void LCBaseCombat_DoAttackEvent_Hook(app::LCBaseCombat* __this, app::String* animEventID, MethodInfo* method) 
+{
+    LOG_DEBUG("Event string: %s", il2cppi_to_string(animEventID).c_str());
+    callOrigin(LCBaseCombat_DoAttackEvent_Hook, __this, animEventID, method);
+}
 
 void InitPlayerCheats() 
 {
@@ -209,7 +260,7 @@ void InitPlayerCheats()
 
     // Infinite stamina
     HookManager::install(app::AvatarPropDictionary_SetItem, AvatarPropDictionary_SetItem_Hook);
-    HookManager::install(app::NetworkManager_1_RequestSceneEntityMoveReq, NetworkManager_1_RequestSceneEntityMoveReq_Hook);
+    HookManager::install(app::LevelSyncCombatPlugin_RequestSceneEntityMoveReq, LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook);
 
     // No cooldown
     HookManager::install(app::HumanoidMoveFSM_CheckSprintCooldown, HumanoidMoveFSM_CheckSprintCooldown_Hook);
@@ -219,6 +270,8 @@ void InitPlayerCheats()
 
     // Rapid fire
     HookManager::install(app::LCBaseCombat_DoHitEntity, LCBaseCombat_DoHitEntity_Hook);
+
+    GlobalEvents::GameUpdateEvent += FREE_METHOD_HANDLER(OnGameUpdate);
 
     LOG_DEBUG("Initialized");
 }

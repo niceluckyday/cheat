@@ -171,8 +171,7 @@ static void InLevelMapPageContext_OnMarkClicked_Hook(app::InLevelMapPageContext*
 // Because, when we use Teleport call in non game thread (imgui update thread for example)
 // the game just skip this call, and only with second call you start teleporting, 
 // but to prev selected location.
-// If more task needs in game thread, this hook can be moved to global space.
-static void GameManager_Update_Hook(app::GameManager* __this, MethodInfo* method) 
+static void OnGameUpdate()
 {
     if (taskInfo.waitingThread)
     {
@@ -180,7 +179,6 @@ static void GameManager_Update_Hook(app::GameManager* __this, MethodInfo* method
         auto someSingleton = GetSingleton(LoadingManager);
         app::LoadingManager_RequestSceneTransToPoint(someSingleton, taskInfo.sceneId, taskInfo.waypointId, nullptr, nullptr);
     }
-    callOrigin(GameManager_Update_Hook, __this, method);
 }
 
 // Before call, game checked if distantion is near (<60) to cast near teleport.
@@ -285,9 +283,6 @@ static void OnKeyUp(short key, bool& cancelled)
 
 void InitMapTPHooks() 
 {
-    // Game thread
-    HookManager::install(app::GameManager_Update, GameManager_Update_Hook);
-
     // Map touch
     HookManager::install(app::InLevelMapPageContext_OnMarkClicked, InLevelMapPageContext_OnMarkClicked_Hook);
     HookManager::install(app::InLevelMapPageContext_OnMapClicked, InLevelMapPageContext_OnMapClicked_Hook);
@@ -303,6 +298,7 @@ void InitMapTPHooks()
     HookManager::install(app::Entity_SetPosition, Entity_SetPosition_Hook);
 
     GlobalEvents::KeyUpEvent += FREE_METHOD_HANDLER(OnKeyUp);
-    
+    GlobalEvents::GameUpdateEvent += FREE_METHOD_HANDLER(OnGameUpdate);
+
     LOG_DEBUG("Initialized");
 }

@@ -25,15 +25,24 @@ void Config::Init(const std::string configFile)
 	LoadField(cfgGodModEnable);
 	LoadField(cfgInfiniteStaminaEnable);
 	LoadField(cfgISMovePacketMode);
+	LoadField(cfgMoveSpeedhackEnable);
 
 	LoadField(cfgRapidFire);
 	LoadField(cfgRapidFireMultiplier);
 	LoadField(cfgRapidFireOnePunch);
+
+	LoadField(cfgMobVaccumEnable);
+	LoadField(cfgMobVaccumInstantly);
+	LoadField(cfgMobVaccumDistance);
+	LoadField(cfgMobVaccumSpeed);
+	LoadField(cfgMobVaccumRadius);
+	LoadField(cfgMobVaccumOnlyTarget);
+
 	LoadField(cfgInstantBowEnable);
 	LoadField(cfgNoSprintCDEnable);
 	LoadField(cfgNoSkillCDEnable);
 	LoadField(cfgNoGravityEnable);
-	LoadField(cfgMoveSpeedhackEnable);
+	
 
 	LoadField(cfgUnlockWaypointsEnable);
 	LoadField(cfgDumbEnemiesEnabled);
