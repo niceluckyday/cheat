@@ -163,7 +163,7 @@ static void UpdateMobVaccum()
         uint32_t monsterId = monster->fields._runtimeID_k__BackingField;
         app::Vector3 monsterRelPos = positions->count(monsterId) ? (*positions)[monsterId] : GetRelativePosition(monster);
         app::Vector3 newPosition = {};
-        if (app::Vector3_Distance(nullptr, monsterRelPos, targetPos, nullptr) < 0.2)
+        if (app::Vector3_Distance(nullptr, monsterRelPos, targetPos, nullptr) < 0.1)
         {
             newPosition = targetPos;
         }
@@ -206,7 +206,7 @@ static void MobVaccumOnSync(uint32_t entityId, app::MotionInfo* syncInfo)
 
     app::Vector3 targetPos = CalcMobVacTargetPos();
     app::Vector3 entityPos = GetRelativePosition(entity);
-    if (app::Vector3_Distance(nullptr, targetPos, entityPos, nullptr) < 0.5)
+    if (app::Vector3_Distance(nullptr, targetPos, entityPos, nullptr) < 0.2)
         return;
 
     float speed = Config::cfgMobVaccumSpeed;
@@ -225,8 +225,6 @@ static void MobVaccumOnSync(uint32_t entityId, app::MotionInfo* syncInfo)
     case app::MotionState__Enum::MotionDangerDash:
         syncInfo->fields.motionState = app::MotionState__Enum::MotionRun;
     }
-    
-    LOG_DEBUG("Update mob: %d -> %s", entityId, il2cppi_to_string(scaledDir).c_str());
 }
 
 static void LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __this, uint32_t entityId, app::MotionInfo* syncInfo,
@@ -322,12 +320,6 @@ void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID,
 static void OnGameUpdate()
 {
     UpdateMobVaccum();
-}
-
-void LCBaseCombat_DoAttackEvent_Hook(app::LCBaseCombat* __this, app::String* animEventID, MethodInfo* method) 
-{
-    LOG_DEBUG("Event string: %s", il2cppi_to_string(animEventID).c_str());
-    callOrigin(LCBaseCombat_DoAttackEvent_Hook, __this, animEventID, method);
 }
 
 void InitPlayerCheats() 

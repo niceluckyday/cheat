@@ -8960,6 +8960,13 @@ namespace app {
         UGCDirectedForceType = 0x0000000d,
     };
 
+    // DPLADHCBJOP
+    struct ItemModule {
+        struct DPLADHCBJOP__Class* klass;
+        MonitorData* monitor;
+        // struct DPLADHCBJOP__Fields fields;
+    };
+
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }
 #endif

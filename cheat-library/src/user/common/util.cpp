@@ -1,6 +1,8 @@
 #include <pch-il2cpp.h>
 #include "util.h"
 
+#include <chrono>
+
 #include <Windows.h>
 #include <helpers.h>
 
@@ -18,6 +20,11 @@ bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& siz
         }
     }
     return false;
+}
+
+int64_t GetCurrentTimeMillisec() 
+{
+    return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
 // Game utils

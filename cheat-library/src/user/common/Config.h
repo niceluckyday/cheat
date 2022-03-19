@@ -169,6 +169,11 @@ public:
 	ToggleField(UnlockWaypointsEnable, "Unlock waypoints", "World", false, ConfigFieldFlag::None);
 	ToggleField(DumbEnemiesEnabled,    "Dumb enemies", "World", false, ConfigFieldFlag::NeedToShowStatus);
 
+	ToggleField( AutoLootEnabled,              "Auto loot", "World", false, ConfigFieldFlag::NeedToShowStatus);
+	Field(int,   AutoLootDelayTime,            "Delay time (in ms)", "World", 150);
+	Field(bool,  AutoLootCustomRangeEnabled,   "Use custom range", "World", false);
+	Field(float, AutoLootCustomRange,          "Custom range", "World", 5);
+
 	ToggleField(AutoTalkEnabled,	   "Auto talk", "Dialog", false, ConfigFieldFlag::NeedToShowStatus);
 
 	// Teleport to nearest oculi

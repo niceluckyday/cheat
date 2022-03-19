@@ -23,6 +23,7 @@ struct SimpleEntityFilter
 };
 
 bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& size);
+int64_t GetCurrentTimeMillisec();
 
 // Position utils
 app::Vector3 GetRelativePosition(app::BaseEntity* entity);

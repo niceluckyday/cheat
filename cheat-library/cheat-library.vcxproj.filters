@@ -1101,6 +1101,9 @@
     <ClInclude Include="src\user\common\Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\user\common\thread-safe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\user\main.cpp">

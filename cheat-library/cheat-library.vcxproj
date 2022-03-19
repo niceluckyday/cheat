@@ -128,6 +128,7 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClInclude Include="src\user\common\Event.h" />
     <ClInclude Include="src\user\common\GlobalEvents.h" />
     <ClInclude Include="src\user\common\Patch.h" />
+    <ClInclude Include="src\user\common\thread-safe.h" />
     <ClInclude Include="src\user\gui\main-window.h" />
     <ClInclude Include="src\user\gui\modules\StatusModule.h" />
     <ClInclude Include="res\resource.h" />

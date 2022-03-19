@@ -59,6 +59,11 @@ DO_APP_FUNC(0x02AEA450, void, LCBaseCombat_DoAttackEvent, (LCBaseCombat* __this,
 
 // World cheats
 DO_APP_FUNC(0x04691F40, void, VCMonsterAIController_TryDoSkill, (/* VCMonsterAIController */ void* __this, uint32_t skillID, MethodInfo* method));
+DO_APP_FUNC(0x04D96080, void, LCSelectPickup_AddInteeBtnByID, (void* __this, BaseEntity* entity, MethodInfo* method));
+DO_APP_FUNC(0x04D94930, bool, LCSelectPickup_IsInPosition, (void* __this, BaseEntity* entity, MethodInfo* method));
+DO_APP_FUNC(0x04D946E0, bool, LCSelectPickup_IsOutPosition, (void* __this, BaseEntity* entity, MethodInfo* method));
+DO_APP_FUNC(0x012316E0, void, ItemModule_PickItem, (ItemModule* __this, uint32_t entityID, MethodInfo* method));
+
 
 
 // Dialog skipping
@@ -149,3 +154,4 @@ DO_APP_FUNC_METHODINFO(0x0B18EF88, Singleton_1_EntityManager__get_Instance__Meth
 DO_APP_FUNC_METHODINFO(0x0B29B0F0, Singleton_1_InteractionManager__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B23BCF0, Singleton_1_MessageInfo__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B18C3C0, Singleton_1_UIManager_1__get_Instance__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B20B748, Singleton_1_ItemModule__get_Instance__MethodInfo);

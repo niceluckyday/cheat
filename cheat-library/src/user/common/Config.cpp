@@ -42,10 +42,14 @@ void Config::Init(const std::string configFile)
 	LoadField(cfgNoSprintCDEnable);
 	LoadField(cfgNoSkillCDEnable);
 	LoadField(cfgNoGravityEnable);
-	
 
 	LoadField(cfgUnlockWaypointsEnable);
 	LoadField(cfgDumbEnemiesEnabled);
+
+	LoadField(cfgAutoLootEnabled);
+	LoadField(cfgAutoLootDelayTime);
+	LoadField(cfgAutoLootCustomRangeEnabled);
+	LoadField(cfgAutoLootCustomRange);
 
 	LoadField(cfgAutoTalkEnabled);
 
