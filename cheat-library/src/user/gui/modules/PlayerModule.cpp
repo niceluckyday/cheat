@@ -38,8 +38,9 @@ void PlayerModule::Draw()
     {
         ConfigWidget("Enable ## MobVaccum", Config::cfgMobVaccumEnable, "Enables mob vacum.\n\
             Mob in specified radius will be moved front of player in specified distance.");
-        //ConfigWidget(Config::cfgMobVaccumInstantly, "Move performs instantly.");
-        //ConfigWidget(Config::cfgMobVaccumSpeed, 0.1, 1, 15, "If 'Instantly' not checked, regulate speed of move.");
+
+        ConfigWidget(Config::cfgMobVaccumInstantly, "Move performs instantly.");
+        ConfigWidget(Config::cfgMobVaccumSpeed, 0.1, 1, 15, "If 'Instantly' not checked, regulate speed of move.");
         ConfigWidget(Config::cfgMobVaccumRadius, 1, 5, 150, "Radius of mob vacum work area.");
         ConfigWidget(Config::cfgMobVaccumDistance, 0.1, 0.5, 10, "Distance beetween player and monster to move.");
         ConfigWidget(Config::cfgMobVaccumOnlyTarget, "Mob vacum will be work only on entity targeted at the player.");

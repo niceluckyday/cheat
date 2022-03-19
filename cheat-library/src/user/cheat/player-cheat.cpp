@@ -65,27 +65,16 @@ static void AvatarPropDictionary_SetItem_Hook(app::Dictionary_2_JNHGGGCKJNA_JKNL
     callOrigin(AvatarPropDictionary_SetItem_Hook, __this, key, value, method);
 }
 
+
 // Infinite stamina packet mode.
 // Note. Blocking packets with movement information, to prevent ability server to know stamina info.
 //       But server may see incorrect movements. What mode safer don't tested.
-static void LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __this, uint32_t entityId, app::MotionInfo* syncInfo, 
-    bool isReliable, uint32_t relseq, MethodInfo* method)
+static void InfiniteStaminaOnSync(uint32_t entityId, app::MotionInfo* syncInfo)
 {
     static bool afterDash = false;
 
-    if (!IsSingletonLoaded(EntityManager)) 
-    {
-        callOrigin(LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
+    if (GetAvatarRuntimeId() != entityId)
         return;
-    }
-        
-    auto entityManager = GetSingleton(EntityManager);
-    auto avatarEntity = app::EntityManager_GetCurrentAvatar(entityManager, nullptr);
-    if (entityId != avatarEntity->fields._runtimeID_k__BackingField)
-    {
-        callOrigin(LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
-        return;
-    }
 
     // LOG_DEBUG("Movement packet: %s", magic_enum::enum_name(syncInfo->fields.motionState).data());
     if (Config::cfgInfiniteStaminaEnable.GetValue() && Config::cfgISMovePacketMode.GetValue())
@@ -115,7 +104,137 @@ static void LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIK
         if (state != app::MotionState__Enum::MotionJump && state != app::MotionState__Enum::MotionFallOnGround)
             afterDash = state == app::MotionState__Enum::MotionDash;
     }
+}
 
+// Check if entity valid for mob vaccum.
+static bool IsEntityForVac(app::BaseEntity* entity)
+{
+    if (!IsEntityFilterValid(entity, GetMonsterFilter()))
+        return false;
+
+    if (Config::cfgMobVaccumOnlyTarget)
+    {
+        auto monsterCombat = app::BaseEntity_GetBaseCombat(entity, *app::BaseEntity_GetBaseCombat__MethodInfo);
+        if (monsterCombat == nullptr || monsterCombat->fields._attackTarget.runtimeID != GetAvatarRuntimeId())
+            return false;
+    }
+
+    auto distance = GetDistToAvatar(entity);
+    if (distance > Config::cfgMobVaccumRadius)
+        return false;
+
+    return true;
+}
+
+// Calculate mob vacum target position.
+static app::Vector3 CalcMobVacTargetPos() 
+{
+    auto avatarEntity = GetAvatarEntity();
+    if (avatarEntity == nullptr)
+        return {};
+
+    auto avatarRelPos = GetRelativePosition(avatarEntity);
+    auto avatarForward = app::BaseEntity_GetForward(avatarEntity, nullptr);
+    return avatarRelPos + avatarForward * Config::cfgMobVaccumDistance;
+}
+
+// Mob vaccum update function.
+// Changes position of monster, if mob vaccum enabled.
+static void UpdateMobVaccum()
+{
+    static auto positions = new std::map<uint32_t, app::Vector3>();
+
+    if (!Config::cfgMobVaccumEnable)
+        return;
+
+    app::Vector3 targetPos = CalcMobVacTargetPos();
+    if (IsVectorZero(targetPos))
+        return;
+
+    auto newPositions = new std::map<uint32_t, app::Vector3>();
+    for (const auto& monster : FindEntities(IsEntityForVac))
+    {
+        if (Config::cfgMobVaccumInstantly)
+        {
+            SetRelativePosition(monster, targetPos);
+            continue;
+        }
+
+        uint32_t monsterId = monster->fields._runtimeID_k__BackingField;
+        app::Vector3 monsterRelPos = positions->count(monsterId) ? (*positions)[monsterId] : GetRelativePosition(monster);
+        app::Vector3 newPosition = {};
+        if (app::Vector3_Distance(nullptr, monsterRelPos, targetPos, nullptr) < 0.2)
+        {
+            newPosition = targetPos;
+        }
+        else 
+        {
+            app::Vector3 dir = GetVectorDirection(monsterRelPos, targetPos);
+            float deltaTime = app::Time_get_deltaTime(nullptr, nullptr);
+            float speed = Config::cfgMobVaccumSpeed;
+
+            newPosition = monsterRelPos + dir * Config::cfgMobVaccumSpeed * deltaTime;
+        }
+
+        (*newPositions)[monsterId] = newPosition;
+        SetRelativePosition(monster, newPosition);
+    }
+
+    delete positions;
+    positions = newPositions;
+}
+
+// Mob vaccum sync packet replace.
+// Replacing move sync speed and motion state.
+//   Callow: I think it is more safe method, 
+//           because for server monster don't change position instantly.
+static void MobVaccumOnSync(uint32_t entityId, app::MotionInfo* syncInfo)
+{
+    if (!Config::cfgMobVaccumEnable || Config::cfgMobVaccumInstantly)
+        return;
+
+    auto entityManager = GetSingleton(EntityManager);
+    if (entityManager == nullptr)
+        return;
+
+    auto entity = app::EntityManager_GetValidEntity(entityManager, entityId, nullptr);
+    if (entity == nullptr)
+        return;
+
+    if (!IsEntityForVac(entity))
+        return;
+
+    app::Vector3 targetPos = CalcMobVacTargetPos();
+    app::Vector3 entityPos = GetRelativePosition(entity);
+    if (app::Vector3_Distance(nullptr, targetPos, entityPos, nullptr) < 0.5)
+        return;
+
+    float speed = Config::cfgMobVaccumSpeed;
+    app::Vector3 dir = GetVectorDirection(targetPos, entityPos);
+    app::Vector3 scaledDir = dir * speed;
+
+    syncInfo->fields.speed_->fields.x = scaledDir.x;
+    syncInfo->fields.speed_->fields.y = scaledDir.y;
+    syncInfo->fields.speed_->fields.z = scaledDir.z;
+
+    switch (syncInfo->fields.motionState)
+    {
+    case app::MotionState__Enum::MotionStandby:
+    case app::MotionState__Enum::MotionStandbyMove:
+    case app::MotionState__Enum::MotionWalk:
+    case app::MotionState__Enum::MotionDangerDash:
+        syncInfo->fields.motionState = app::MotionState__Enum::MotionRun;
+    }
+    
+    LOG_DEBUG("Update mob: %d -> %s", entityId, il2cppi_to_string(scaledDir).c_str());
+}
+
+static void LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __this, uint32_t entityId, app::MotionInfo* syncInfo,
+    bool isReliable, uint32_t relseq, MethodInfo* method)
+{
+    InfiniteStaminaOnSync(entityId, syncInfo);
+    MobVaccumOnSync(entityId, syncInfo);
+   
     callOrigin(LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
 }
 
@@ -200,48 +319,8 @@ void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID,
         callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
 }
 
-static void UpdateMobVaccum() 
-{
-    if (!Config::cfgMobVaccumEnable)
-        return;
-
-    auto avatarEntity = GetAvatarEntity();
-    if (avatarEntity == nullptr)
-        return;
-
-    auto avatarRuntimeID = avatarEntity->fields._runtimeID_k__BackingField;
-    auto avatarRelPos = app::BaseEntity_GetRelativePosition(avatarEntity, nullptr);
-    auto avatarForward = app::BaseEntity_GetForward(avatarEntity, nullptr);
-
-    app::Vector3 avatarForwardPos = {
-        avatarForward.x * Config::cfgMobVaccumDistance + avatarRelPos.x,
-        avatarForward.y * Config::cfgMobVaccumDistance + avatarRelPos.y,
-        avatarForward.z * Config::cfgMobVaccumDistance + avatarRelPos.z
-    };
-
-    for (const auto& monster : FindEntities(GetMonsterFilter()))
-    {
-        if (Config::cfgMobVaccumOnlyTarget)
-        {
-            auto monsterCombat = app::BaseEntity_GetBaseCombat(monster, *app::BaseEntity_GetBaseCombat__MethodInfo);
-            if (monsterCombat == nullptr || monsterCombat->fields._attackTarget.runtimeID != avatarRuntimeID)
-                continue;
-        }
-
-        auto distance = GetDistToAvatar(monster);
-        if (distance > Config::cfgMobVaccumRadius)
-            return;
-        //if (Config::cfgMobVaccumInstantly)
-        //{
-            app::BaseEntity_SetRelativePosition(monster, avatarForwardPos, true, nullptr);
-            //return;
-        //}
-    }
-}
-
 static void OnGameUpdate()
 {
-    // Mob vaccum
     UpdateMobVaccum();
 }
 

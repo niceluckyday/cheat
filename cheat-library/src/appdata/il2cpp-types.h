@@ -8943,6 +8943,23 @@ namespace app {
         struct Rigidbody__Fields fields;
     };
 
+    enum class VelocityForceType__Enum : int32_t {
+        RetreatType = 0x00000000,
+        RetreatAirType = 0x00000001,
+        RushMoveType = 0x00000002,
+        WindZoneType = 0x00000003,
+        AirflowType = 0x00000004,
+        RiseType = 0x00000005,
+        SpeedupType = 0x00000006,
+        AirflowAccType = 0x00000007,
+        InertiaType = 0x00000008,
+        FixedRushMoveType = 0x00000009,
+        LightCoreTypeNormal = 0x0000000a,
+        LightCoreTypeAccelerate = 0x0000000b,
+        GorouZoneType = 0x0000000c,
+        UGCDirectedForceType = 0x0000000d,
+    };
+
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }
 #endif

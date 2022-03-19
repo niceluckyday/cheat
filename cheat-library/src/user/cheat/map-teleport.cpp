@@ -36,9 +36,6 @@ TeleportTaskInfo taskInfo;
 
 static std::vector<WaypointInfo> getUnlockedWaypoints() 
 {    
-    if (!IsSingletonLoaded(MBHLOBDPKEC))
-        return {};
-
     auto singleton = GetSingleton(MBHLOBDPKEC);
     if (singleton == nullptr)
         return {};
@@ -105,9 +102,6 @@ static bool ScreenToMapPosition(app::InLevelMapPageContext * context, app::Vecto
 {
     auto mapBackground = app::MonoInLevelMapPage_get_mapBackground(context->fields._pageMono, nullptr);
     if (!mapBackground)
-        return false;
-
-    if (!IsSingletonLoaded(UIManager_1))
         return false;
 
     auto uimanager = GetSingleton(UIManager_1);

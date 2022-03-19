@@ -160,9 +160,9 @@ public:
 	//   Mob vaccum
 	ToggleField( MobVaccumEnable,      "Mob vacum",      "Player", false, ConfigFieldFlag::NeedToShowStatus);
 	Field(bool,  MobVaccumInstantly,   "Instantly",      "Player", false);
-	Field(float, MobVaccumSpeed,       "Vacum speed",    "Player", 2.0f);
+	Field(float, MobVaccumSpeed,       "Vacum speed",    "Player", 2.5f);
 	Field(float, MobVaccumDistance,    "Front distance", "Player", 1.5f);
-	Field(float, MobVaccumRadius,      "Vacum radius",   "Player", 60.0f);
+	Field(float, MobVaccumRadius,      "Vacum radius",   "Player", 10.0f);
 	Field(bool,  MobVaccumOnlyTarget,  "Only targeted",  "Player", true);
 
 	// World 

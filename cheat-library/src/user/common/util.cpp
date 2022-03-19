@@ -24,19 +24,22 @@ bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& siz
 
 app::Vector3 GetRelativePosition(app::BaseEntity* entity)
 {
-    return app::Transform_get_position(entity->fields._transform_k__BackingField, nullptr);
+    if (entity == nullptr)
+        return {};
+
+    return app::BaseEntity_GetRelativePosition(entity, nullptr);
 }
 
 void SetRelativePosition(app::BaseEntity* entity, app::Vector3 position)
 {
-    app::Transform_set_position(entity->fields._transform_k__BackingField, position, nullptr);
+    if (entity == nullptr)
+        return;
+
+    app::BaseEntity_SetRelativePosition(entity, position, true, nullptr);
 }
 
 app::BaseEntity* GetAvatarEntity()
 {
-    if (!IsSingletonLoaded(EntityManager))
-        return nullptr;
-
     auto entityManager = GetSingleton(EntityManager);
     if (entityManager == nullptr)
         return nullptr;
@@ -47,14 +50,11 @@ app::BaseEntity* GetAvatarEntity()
 
 app::Vector3 GetAvatarRelativePosition()
 {
-    return GetRelativePosition(GetAvatarEntity());
+    return app::BaseEntity_GetRelativePosition(GetAvatarEntity(), nullptr);
 }
 
 void SetAvatarRelativePosition(app::Vector3 position)
 {
-    if (!IsSingletonLoaded(EntityManager))
-        return;
-
     SetRelativePosition(GetAvatarEntity(), position);
 }
 
@@ -67,7 +67,7 @@ float GetDistToAvatar(app::BaseEntity* entity)
     return dist;
 }
 
-bool IsEntityFilterValid(app::BaseEntity* entity, const EntityFilter& filter) 
+bool IsEntityFilterValid(app::BaseEntity* entity, const SimpleEntityFilter& filter) 
 {
     if (entity == nullptr)
         return false;
@@ -94,9 +94,6 @@ bool IsEntityFilterValid(app::BaseEntity* entity, const EntityFilter& filter)
 
 std::vector<app::BaseEntity*> GetEntities() 
 {
-    if (!IsSingletonLoaded(EntityManager))
-        return {};
-
     auto entityManager = GetSingleton(EntityManager);
     if (entityManager == nullptr)
         return {};
@@ -105,25 +102,37 @@ std::vector<app::BaseEntity*> GetEntities()
     if (entities == nullptr)
         return {};
 
-    return entities->vec();
+    std::vector<app::BaseEntity*> aliveEntities;
+    aliveEntities.reserve(entities->size);
+
+    for (const auto& entity : *entities) 
+    {
+        if (entity != nullptr)
+            aliveEntities.push_back(entity);
+    }
+    return aliveEntities;
+}
+
+uint32_t GetAvatarRuntimeId() 
+{
+    auto entityManager = GetSingleton(EntityManager);
+    if (entityManager == nullptr)
+        return 0;
+
+    return entityManager->fields._curAvatarEntityID;
 }
 
 app::BaseEntity* GetEntityByRuntimeId(uint32_t runtimeId) 
 {
-    for (auto& entity: GetEntities()) 
-    {
-        if (entity == nullptr)
-            continue;
+    auto entityManager = GetSingleton(EntityManager);
+    if (entityManager == nullptr)
+        return nullptr;
 
-        if (entity->fields._runtimeID_k__BackingField == runtimeId)
-            return entity;
-    }
-    return nullptr;
+    return app::EntityManager_GetValidEntity(entityManager, runtimeId, nullptr);
 }
 
-std::vector<app::BaseEntity*> FindEntities(const EntityFilter& filter)
+std::vector<app::BaseEntity*> FindEntities(const SimpleEntityFilter& filter)
 {
-
     std::vector<app::BaseEntity*> result{};
     for (auto& entity : GetEntities())
     {
@@ -134,7 +143,18 @@ std::vector<app::BaseEntity*> FindEntities(const EntityFilter& filter)
     return result;
 }
 
-app::BaseEntity* FindNearestEntity(const EntityFilter& filter)
+std::vector<app::BaseEntity*> FindEntities(FilterFunc func) 
+{
+    std::vector<app::BaseEntity*> result{};
+    for (auto& entity : GetEntities()) 
+    {
+        if (func(entity))
+            result.push_back(entity);
+    }
+    return result;
+}
+
+app::BaseEntity* FindNearestEntity(const SimpleEntityFilter& filter)
 {
     auto entities = FindEntities(filter);
     app::BaseEntity* minDistEntity = nullptr;
@@ -151,9 +171,9 @@ app::BaseEntity* FindNearestEntity(const EntityFilter& filter)
     return minDistEntity;
 }
 
-const EntityFilter& GetFilterCrystalShell() 
+const SimpleEntityFilter& GetFilterCrystalShell() 
 {
-    static const EntityFilter crystallShellFilter = {
+    static const SimpleEntityFilter crystallShellFilter = {
         {true, app::EntityType__Enum_1::GatherObject},
         {true, {
             /*Anemoculus, Geoculus*/ "CrystalShell" ,
@@ -165,17 +185,17 @@ const EntityFilter& GetFilterCrystalShell()
     return crystallShellFilter;
 }
 
-const EntityFilter& GetFilterChest() 
+const SimpleEntityFilter& GetFilterChest() 
 {
-    static const EntityFilter filter = {
+    static const SimpleEntityFilter filter = {
         {true, app::EntityType__Enum_1::Chest}
     };
     return filter;
 }
 
-const EntityFilter& GetMonsterFilter()
+const SimpleEntityFilter& GetMonsterFilter()
 {
-    static const EntityFilter filter = {
+    static const SimpleEntityFilter filter = {
         {true, app::EntityType__Enum_1::Monster}
     };
     return filter;

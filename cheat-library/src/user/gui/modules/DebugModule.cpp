@@ -52,9 +52,6 @@ void DrawWaypoints(UniDict<uint32_t, UniDict<uint32_t, app::MapModule_ScenePoint
 
 void DrawManagerData() 
 {
-    if (!IsSingletonLoaded(MBHLOBDPKEC))
-        return;
-
     auto singleton = GetSingleton(MBHLOBDPKEC);
     if (singleton == nullptr)
     {
@@ -110,9 +107,6 @@ static void DrawEntitiesData()
     static char objectNameFilter[128] = {};
 
     static bool checkOnlyShells = false;
-
-    if (!IsSingletonLoaded(EntityManager))
-        return;
 
     auto entityManager = GetSingleton(EntityManager);
     if (entityManager == nullptr)
@@ -213,12 +207,12 @@ static void DrawBaseInteraction(app::BaseInterAction* inter)
 
 static void DrawInteractionManagerInfo() 
 {
-    if (!IsSingletonLoaded(InteractionManager))
+    auto interactionManager = GetSingleton(InteractionManager);
+    if (interactionManager == nullptr)
     {
         ImGui::Text("Manager not loaded.");
         return;
     }
-    auto interactionManager = GetSingleton(InteractionManager);
 
     DRAW_UINT(interactionManager, _keyInterCnt);
     DRAW_FLOAT(interactionManager, _endFadeInTime);

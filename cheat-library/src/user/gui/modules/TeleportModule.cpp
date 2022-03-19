@@ -10,7 +10,7 @@
 #include <common/util.h>
 #include <gui/gui-util.h>
 
-static void DrawEntities(const EntityFilter& filter) 
+static void DrawEntities(const SimpleEntityFilter& filter) 
 {
     auto entities = FindEntities(filter);
     if (entities.size() == 0)
@@ -90,7 +90,7 @@ std::string TeleportModule::GetName()
 	return "Teleport";
 }
 
-static void DrawNearestEntityInfo(const char* prefix, const EntityFilter& filter) 
+static void DrawNearestEntityInfo(const char* prefix, const SimpleEntityFilter& filter) 
 {
     auto nearestEntity = FindNearestEntity(filter);
     if (nearestEntity == nullptr) 

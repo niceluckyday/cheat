@@ -15,7 +15,7 @@
 
 #define IsSingletonLoaded(className) (*app::Singleton_1_## className ##___TypeInfo != nullptr)
 #define DoInitializeClass(className, expr) (il2cpp_runtime_class_init(reinterpret_cast<Il2CppClass*>(*app::## className ##__TypeInfo)), expr)
-#define GetSingleton(tpname) reinterpret_cast<app:: ## tpname ## *>(app::Singleton_GetInstance(nullptr, *app::Singleton_1_ ## tpname ## __get_Instance__MethodInfo))
+#define GetSingleton(tpname) IsSingletonLoaded(tpname) ? reinterpret_cast<app:: ## tpname ## *>(app::Singleton_GetInstance(nullptr, *app::Singleton_1_ ## tpname ## __get_Instance__MethodInfo)) : nullptr
 #define GetStaticFields(tpname) DoInitializeClass(tpname, (*app::## tpname ##__TypeInfo)->static_fields)
 
 #define COMMA ,
@@ -149,6 +149,52 @@ struct __declspec(align(8)) UniDict {
         return pairs;
     }
 };
+
+inline app::Vector3 operator + (const app::Vector3& A, const app::Vector3& B)
+{
+    return { A.x + B.x, A.y + B.y, A.z + B.z };
+}
+
+inline app::Vector3 operator + (const app::Vector3& A, const float k)
+{
+    return { A.x + k, A.y + k, A.z + k };
+}
+
+inline app::Vector3 operator - (const app::Vector3& A, const app::Vector3& B)
+{
+    return { A.x - B.x, A.y - B.y, A.z - B.z };
+}
+
+inline app::Vector3 operator - (const app::Vector3& A, const float k)
+{
+    return { A.x - k, A.y - k, A.z - k };
+}
+
+inline app::Vector3 operator * (const app::Vector3& A, const float k)
+{
+    return { A.x * k, A.y * k, A.z * k };
+}
+
+inline app::Vector3 operator / (const app::Vector3& A, const float k)
+{
+    return { A.x / k, A.y / k, A.z / k };
+}
+
+inline float GetVectorMagnitude(const app::Vector3& A) 
+{
+    return sqrtf(A.x * A.x + A.y * A.y + A.z * A.z);
+}
+
+inline app::Vector3 GetVectorDirection(const app::Vector3& from, const app::Vector3& to) 
+{
+    auto dirRaw = to - from;
+    return dirRaw / GetVectorMagnitude(dirRaw);
+}
+
+inline bool IsVectorZero(const app::Vector3& vector) 
+{
+    return vector.x == 0 && vector.y == 0 && vector.z == 0;
+}
 
 // Helper function to get the module base address
 uintptr_t il2cppi_get_base_address();

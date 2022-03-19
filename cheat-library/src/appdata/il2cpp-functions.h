@@ -134,7 +134,12 @@ DO_APP_FUNC(0x0153AA10, Rigidbody*, BaseEntity_GetRigidbody, (BaseEntity* __this
 
 DO_APP_FUNC(0x084045B0, void, Rigidbody_set_detectCollisions, (Rigidbody* __this, bool value, MethodInfo* method));
 DO_APP_FUNC(0x08404790, void, Rigidbody_set_isKinematic, (Rigidbody* __this, bool value, MethodInfo* method));
+DO_APP_FUNC(0x04D65660, void, VCAnimatorMove_AddVelocity, (VCAnimatorMove* __this, VelocityForceType__Enum velocityType, Vector3 velocity, float time, float stopVelocity, bool forceSet, MethodInfo* method));
+DO_APP_FUNC(0x01EA44F0, BaseEntity*, EntityManager_GetValidEntity, (EntityManager* __this, uint32_t runtimeID, MethodInfo* method));
+DO_APP_FUNC(0x07496F70, float, Time_get_deltaTime, (void* __this, MethodInfo* method));
 
+DO_APP_FUNC(0x04564740, VCBaseMove*, BaseEntity_GetMoveComponent_1, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC_METHODINFO(0x0B25D518, BaseEntity_GetMoveComponent_1__MethodInfo);
 
 // Singletons
 DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));
