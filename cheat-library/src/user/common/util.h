@@ -29,7 +29,9 @@ int64_t GetCurrentTimeMillisec();
 app::Vector3 GetRelativePosition(app::BaseEntity* entity);
 void SetRelativePosition(app::BaseEntity* entity, app::Vector3 position);
 app::Vector3 GetAvatarRelativePosition();
+
 app::BaseEntity* GetAvatarEntity();
+app::CameraEntity* GetMainCameraEntity();
 void SetAvatarRelativePosition(app::Vector3 position);
 float GetDistToAvatar(app::BaseEntity* entity);
 

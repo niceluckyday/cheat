@@ -180,6 +180,11 @@ inline app::Vector3 operator / (const app::Vector3& A, const float k)
     return { A.x / k, A.y / k, A.z / k };
 }
 
+inline app::Vector3 operator - (const app::Vector3& A)
+{
+    return { -A.x, -A.y, -A.z};
+}
+
 inline float GetVectorMagnitude(const app::Vector3& A) 
 {
     return sqrtf(A.x * A.x + A.y * A.y + A.z * A.z);

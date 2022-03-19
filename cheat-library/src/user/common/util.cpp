@@ -55,6 +55,16 @@ app::BaseEntity* GetAvatarEntity()
     return avatarEntity;
 }
 
+app::CameraEntity* GetMainCameraEntity()
+{
+    auto entityManager = GetSingleton(EntityManager);
+    if (entityManager == nullptr)
+        return nullptr;
+
+    auto cameraEntity = app::EntityManager_GetMainCameraEntity(entityManager, nullptr);
+    return cameraEntity;
+}
+
 app::Vector3 GetAvatarRelativePosition()
 {
     return app::BaseEntity_GetRelativePosition(GetAvatarEntity(), nullptr);

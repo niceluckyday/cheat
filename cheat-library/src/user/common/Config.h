@@ -157,6 +157,11 @@ public:
 	ToggleField(NoGravityEnable,       "No gravity",     "Player", false, ConfigFieldFlag::NeedToShowStatus);
 	ToggleField(MoveSpeedhackEnable,   "Move speedhack", "Player", false, ConfigFieldFlag::None);
 
+	//   No clip
+	ToggleField(NoClipEnable,          "No clip",        "Player", false, ConfigFieldFlag::NeedToShowStatus);
+	Field(float,NoClipSpeed,           "Speed",          "Player", 3.5f);
+	Field(bool, NoClipCameraMove,      "Relative to camera", "Player", true);
+
 	//   Mob vaccum
 	ToggleField( MobVaccumEnable,      "Mob vacum",      "Player", false, ConfigFieldFlag::NeedToShowStatus);
 	Field(bool,  MobVaccumInstantly,   "Instantly",      "Player", false);

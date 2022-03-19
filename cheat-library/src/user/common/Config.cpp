@@ -43,6 +43,10 @@ void Config::Init(const std::string configFile)
 	LoadField(cfgNoSkillCDEnable);
 	LoadField(cfgNoGravityEnable);
 
+	LoadField(cfgNoClipEnable);
+	LoadField(cfgNoClipSpeed);
+	LoadField(cfgNoClipCameraMove);
+
 	LoadField(cfgUnlockWaypointsEnable);
 	LoadField(cfgDumbEnemiesEnabled);
 

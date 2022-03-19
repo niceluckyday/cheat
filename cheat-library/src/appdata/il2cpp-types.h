@@ -7188,11 +7188,11 @@ namespace app {
         uint64_t heroGuid;
         EntityManager_EOMGOAGJEGM__Enum heroAvatarState;
         struct BaseEntity* _paimonEntity;
-        struct DNPCBHKHGMO* _mainCamera;
+        struct CameraEntity* _mainCamera;
         bool _bUseOverrideCamera_k__BackingField;
         struct Vector3 _overrideCameraPos_k__BackingField;
         struct Matrix4x4 _overrideCameraMVPMatix_k__BackingField;
-        struct DNPCBHKHGMO* _subCamera;
+        struct CameraEntity* _subCamera;
         struct ELIMODDNHMA* _levelEntity;
         struct List_1_MoleMole_BaseEntity_* _entityListTemp;
         struct List_1_MoleMole_BaseEntity_* _combatEntitiesTemp;
@@ -8966,6 +8966,31 @@ namespace app {
         MonitorData* monitor;
         // struct DPLADHCBJOP__Fields fields;
     };
+
+    struct Nullable_1_Single_ {
+        float value;
+        bool has_value;
+    };
+
+    struct DNPCBHKHGMO__Fields {
+        struct BaseEntity__Fields _;
+        bool _isMainCamera_k__BackingField;
+        struct Camera* _camera_k__BackingField;
+        struct AMFIHBKLLOL* _vcStackCamera;
+        struct JCOMDPAHEEE* _vcSensors;
+        bool _OIOGGJEMMBH_k__BackingField;
+        float _GLAIDJHGMLG_k__BackingField;
+        float _FGJJGABEDPO_k__BackingField;
+        bool _CPBPKKPKOAG_k__BackingField;
+        float _ABBLOHKNLOE_k__BackingField;
+    };
+
+    struct CameraEntity {
+        struct DNPCBHKHGMO__Class* klass;
+        MonitorData* monitor;
+        struct DNPCBHKHGMO__Fields fields;
+    };
+
 
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }

@@ -227,17 +227,8 @@ static void MobVaccumOnSync(uint32_t entityId, app::MotionInfo* syncInfo)
     }
 }
 
-static void LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __this, uint32_t entityId, app::MotionInfo* syncInfo,
-    bool isReliable, uint32_t relseq, MethodInfo* method)
-{
-    InfiniteStaminaOnSync(entityId, syncInfo);
-    MobVaccumOnSync(entityId, syncInfo);
-   
-    callOrigin(LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
-}
-
 // Check sprint cooldown, we just return true if sprint no cd enabled.
-bool HumanoidMoveFSM_CheckSprintCooldown_Hook(void* __this, MethodInfo* method) 
+static bool HumanoidMoveFSM_CheckSprintCooldown_Hook(void* __this, MethodInfo* method) 
 {
     if (Config::cfgNoSprintCDEnable)
         return true;
@@ -245,7 +236,7 @@ bool HumanoidMoveFSM_CheckSprintCooldown_Hook(void* __this, MethodInfo* method)
     return callOrigin(HumanoidMoveFSM_CheckSprintCooldown_Hook, __this, method);
 }
 
-bool LCAvatarCombat_IsEnergyMax_Hook(void* __this, MethodInfo* method)
+static bool LCAvatarCombat_IsEnergyMax_Hook(void* __this, MethodInfo* method)
 {
     if (Config::cfgNoSkillCDEnable)
         return true;
@@ -253,7 +244,7 @@ bool LCAvatarCombat_IsEnergyMax_Hook(void* __this, MethodInfo* method)
     return callOrigin(LCAvatarCombat_IsEnergyMax_Hook, __this, method);
 }
 
-bool LCAvatarCombat_IsSkillInCD_1_Hook(void* __this, void* skillInfo, MethodInfo* method)
+static bool LCAvatarCombat_IsSkillInCD_1_Hook(void* __this, void* skillInfo, MethodInfo* method)
 {
     if (Config::cfgNoSkillCDEnable)
         return false;
@@ -265,7 +256,7 @@ bool LCAvatarCombat_IsSkillInCD_1_Hook(void* __this, void* skillInfo, MethodInfo
 // value - increase value
 // min and max - bounds of charge.
 // So, to charge make full charge instantly, just replace value to maxValue.
-void ActorAbilityPlugin_AddDynamicFloatWithRange_Hook(void* __this, app::String* key, float value, float minValue, float maxValue, 
+static void ActorAbilityPlugin_AddDynamicFloatWithRange_Hook(void* __this, app::String* key, float value, float minValue, float maxValue, 
     bool forceDoAtRemote, MethodInfo* method)
 {
     if (Config::cfgInstantBowEnable)
@@ -273,7 +264,7 @@ void ActorAbilityPlugin_AddDynamicFloatWithRange_Hook(void* __this, app::String*
     callOrigin(ActorAbilityPlugin_AddDynamicFloatWithRange_Hook, __this, key, value, minValue, maxValue, forceDoAtRemote, method);
 }
 
-int CalcCountToKill(float attackDamage, uint32_t targetID) 
+static int CalcCountToKill(float attackDamage, uint32_t targetID) 
 {
     if (attackDamage == 0)
         return Config::cfgRapidFireMultiplier;
@@ -296,7 +287,7 @@ int CalcCountToKill(float attackDamage, uint32_t targetID)
 // Just recall attack few times (regulating by config)
 // It's not tested well, so, I think, anticheat can detect it.
 // When new information will be received, I update this comment.
-void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID, app::AttackResult* attackResult,
+static void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID, app::AttackResult* attackResult,
     bool ignoreCheckCanBeHitInMP, MethodInfo* method)
 {
     if (__this->fields._._.entityRuntimeID != GetAvatarEntity()->fields._runtimeID_k__BackingField || !Config::cfgRapidFire)
@@ -317,9 +308,145 @@ void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID,
         callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
 }
 
+// No clip update function.
+// We just disabling collision detect and move avatar when noclip moving keys pressed.
+static void NoClipUpdate()
+{
+    static bool enabled = false;
+
+    if (!Config::cfgNoClipEnable && enabled)
+    {
+        auto avatarEntity = GetAvatarEntity();
+        if (avatarEntity == nullptr || !app::BaseEntity_IsActive(avatarEntity, nullptr))
+            return;
+
+        auto rigidBody = app::BaseEntity_GetRigidbody(avatarEntity, nullptr);
+        app::Rigidbody_set_detectCollisions(rigidBody, true, nullptr);
+        enabled = false;
+    }
+
+    if (!Config::cfgNoClipEnable)
+        return;
+
+    enabled = true;
+
+    auto avatarEntity = GetAvatarEntity();
+    if (avatarEntity == nullptr || !app::BaseEntity_IsActive(avatarEntity, nullptr))
+        return;
+
+    auto baseMove = app::BaseEntity_GetMoveComponent_1(avatarEntity, *app::BaseEntity_GetMoveComponent_1__MethodInfo);
+    if (baseMove == nullptr)
+        return;
+
+    auto rigidBody = app::BaseEntity_GetRigidbody(avatarEntity, nullptr);
+    app::Rigidbody_set_detectCollisions(rigidBody, false, nullptr);
+
+    auto cameraEntity = (app::BaseEntity*) GetMainCameraEntity();
+    auto entity = Config::cfgNoClipCameraMove ? cameraEntity : avatarEntity;
+
+    app::Vector3 dir = {};
+    if (Hotkey('W', 0).IsPressed())
+        dir = dir + app::BaseEntity_GetForward(entity, nullptr);
+
+    if (Hotkey('S', 0).IsPressed())
+        dir = dir - app::BaseEntity_GetForward(entity, nullptr);
+
+    if (Hotkey('D', 0).IsPressed())
+        dir = dir + app::BaseEntity_GetRight(entity, nullptr);
+
+    if (Hotkey('A', 0).IsPressed())
+        dir = dir - app::BaseEntity_GetRight(entity, nullptr);
+
+    if (Hotkey(VK_SPACE, 0).IsPressed())
+        dir = dir + app::BaseEntity_GetUp(avatarEntity, nullptr);
+
+    if (Hotkey(VK_SHIFT, 0).IsPressed())
+        dir = dir - app::BaseEntity_GetUp(avatarEntity, nullptr);
+
+    app::Vector3 prevPos = GetRelativePosition(avatarEntity);
+    if (IsVectorZero(prevPos))
+        return;
+
+    float deltaTime = app::Time_get_deltaTime(nullptr, nullptr);
+    float speed = Config::cfgNoClipSpeed;
+
+    app::Vector3 newPos = prevPos + dir * speed * deltaTime;
+    SetRelativePosition(avatarEntity, newPos);
+}
+
+// Disabling standard motion performing.
+// This disabling any animations, climb, jump, swim and so on.
+// But when it disabled, MoveSync sending our last position, so needs to update position in packet.
+static void HumanoidMoveFSM_LateTick_Hook(void* __this, float deltaTime, MethodInfo* method) 
+{
+    if (Config::cfgNoClipEnable)
+        return;
+    
+    callOrigin(HumanoidMoveFSM_LateTick_Hook, __this, deltaTime, method);
+}
+
+// Fixing player sync packets when noclip
+static void NoClipOnSync(uint32_t entityId, app::MotionInfo* syncInfo) 
+{
+    static app::Vector3 prevPosition = {};
+    static int64_t prevSyncTime = 0;
+
+    if (!Config::cfgNoClipEnable)
+    {
+        prevSyncTime = 0;
+        return;
+    }
+        
+    if (GetAvatarRuntimeId() != entityId)
+        return;
+
+    auto avatarEntity = GetAvatarEntity();
+    if (avatarEntity == nullptr)
+        return;
+
+    auto avatarPosition = app::BaseEntity_GetAbsolutePosition(avatarEntity, nullptr);
+    auto currentTime = GetCurrentTimeMillisec();
+
+    if (prevSyncTime > 0)
+    {
+        auto posDiff = avatarPosition - prevPosition;
+        auto timeDiff = ((float)(currentTime - prevSyncTime)) / 1000;
+        auto velocity = posDiff / timeDiff;
+        
+        auto speed = GetVectorMagnitude(velocity);
+        if (speed > 0.1)
+        {
+            syncInfo->fields.motionState = (speed < 2) ? app::MotionState__Enum::MotionWalk : app::MotionState__Enum::MotionRun;
+
+            syncInfo->fields.speed_->fields.x = velocity.x;
+            syncInfo->fields.speed_->fields.y = velocity.y;
+            syncInfo->fields.speed_->fields.z = velocity.z;
+        }
+
+        syncInfo->fields.pos_->fields.x = avatarPosition.x;
+        syncInfo->fields.pos_->fields.y = avatarPosition.y;
+        syncInfo->fields.pos_->fields.z = avatarPosition.z;
+    }
+
+    prevPosition = avatarPosition;
+    prevSyncTime = currentTime;
+}
+
+
+static void LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __this, uint32_t entityId, app::MotionInfo* syncInfo,
+    bool isReliable, uint32_t relseq, MethodInfo* method)
+{
+    InfiniteStaminaOnSync(entityId, syncInfo);
+    MobVaccumOnSync(entityId, syncInfo);
+    NoClipOnSync(entityId, syncInfo);
+
+    callOrigin(LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
+}
+
 static void OnGameUpdate()
 {
     UpdateMobVaccum();
+    NoClipUpdate();
 }
 
 void InitPlayerCheats() 
@@ -341,6 +468,9 @@ void InitPlayerCheats()
 
     // Rapid fire
     HookManager::install(app::LCBaseCombat_DoHitEntity, LCBaseCombat_DoHitEntity_Hook);
+
+    // No clip
+    HookManager::install(app::HumanoidMoveFSM_LateTick, HumanoidMoveFSM_LateTick_Hook);
 
     GlobalEvents::GameUpdateEvent += FREE_METHOD_HANDLER(OnGameUpdate);
 
