@@ -107,9 +107,6 @@ static LRESULT CALLBACK hWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	bool canceled = false;
 	if (uMsg == WM_KEYUP)
 		canceled = !GlobalEvents::KeyUpEvent(wParam);
-
-	if (NeedInput()) 
-		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
 	
 	if (NeedInput() && Config::cfgOriginalInputBlock.GetValue() || canceled)
 		return true;
