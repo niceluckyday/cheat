@@ -8,31 +8,36 @@ Simple cheat for genshin with protection bypass.
 - [X] Map teleportation
 - [X] Teleport to chest and oculi
 - [X] Infinite sprint with "no send move sync" mode
-- [X] God mode, dumb enemies, rapid fire, auto talk, no cd
+- [X] Simple features: `God mode`, `Dumb enemies`, `Rapid fire`, `Auto talk`, `No cooldowns`, `No clip`, `Auto loot`
 
 ### Demo
 <details>
-  <summary>Map tp demo</summary>
+  <summary>Map tp</summary>
   <img src="https://github.com/CallowBlack/gif-demos/blob/main/genshin-cheat/map-teleport-demo.gif"/>
 </details>
 
 <details>
-  <summary>Tp to oculi demo</summary>
+  <summary>No clip</summary>
+  <img src="https://github.com/CallowBlack/gif-demos/blob/main/genshin-cheat/noclip-demo.gif"/>
+</details>
+
+<details>
+  <summary>Tp to oculi</summary>
   <img src="https://github.com/CallowBlack/gif-demos/blob/main/genshin-cheat/oculi-teleport-demo.gif"/>
 </details>
 
 <details>
-  <summary>Tp to chest demo</summary>
+  <summary>Tp to chest</summary>
   <img src="https://github.com/CallowBlack/gif-demos/blob/main/genshin-cheat/chest-teleport-demo.gif"/>
 </details>
 
 <details>
-  <summary>Rapid fire demo</summary>
+  <summary>Rapid fire</summary>
   <img src="https://github.com/CallowBlack/gif-demos/blob/main/genshin-cheat/rapid-fire-demo.gif"/>
 </details>
 
 <details>
-  <summary>Auto talk demo</summary>
+  <summary>Auto talk</summary>
   <img src="https://github.com/CallowBlack/gif-demos/blob/main/genshin-cheat/auto-talk-demo.gif"/>
 </details>
 
