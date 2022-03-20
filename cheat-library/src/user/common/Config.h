@@ -179,6 +179,13 @@ public:
 	Field(bool,  AutoLootCustomRangeEnabled,   "Use custom range", "World", false);
 	Field(float, AutoLootCustomRange,          "Custom range", "World", 5);
 
+	ToggleField(KillAura, "Kill aura", "World", false, ConfigFieldFlag::NeedToShowStatus);
+	Field(float, KillAuraRange, "Only targeted", "World", 15.0);
+	Field(bool, KillAuraOnlyTarget, "Only targeted", "World", true);
+	Field(int, KillAuraAttackDelayTime, "Attack delay time (in ms)", "World", 100);
+	Field(int, KillAuraRepeatDelayTime, "Repeat delay time (in ms)", "World", 1000);
+	
+
 	ToggleField(AutoTalkEnabled,	   "Auto talk", "Dialog", false, ConfigFieldFlag::NeedToShowStatus);
 
 	// Teleport to nearest oculi

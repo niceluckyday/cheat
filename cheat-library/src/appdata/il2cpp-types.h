@@ -6557,7 +6557,7 @@ namespace app {
         IsForwarded = 0x00000001,
     };
 
-    // NLHGPLIGNNJ
+    // BaseEvent
     struct __declspec(align(8)) BaseEvent__Fields {
         EventID__Enum eventID;
         uint32_t targetID;
@@ -6786,6 +6786,12 @@ namespace app {
         struct SafeFloat fields;
     };
 
+    struct FixedBoolStack {
+        struct BMFDELKBFAN__Class* klass;
+        MonitorData* monitor;
+        // struct BMFDELKBFAN__Fields fields;
+    };
+
     struct __declspec(align(8)) CombatProperty__Fields {
         struct SafeFloat maxHP;
         struct SafeFloat HP;
@@ -6862,14 +6868,14 @@ namespace app {
         struct SafeFloat waneSpeed;
         struct SafeFloat recoverTime;
         struct SafeFloat endurance;
-        void* denyLockOn;
-        void* isInvincible;
-        void* islockHP;
-        void* isGhostToAllied;
-        void* isGhostToEnemy;
-        void* canTriggerBullet;
-        void* denyElementStick;
-        void* CAANFECBIIK;
+        struct FixedBoolStack* denyLockOn;
+        struct FixedBoolStack* isInvincible;
+        struct FixedBoolStack* islockHP;
+        struct FixedBoolStack* isGhostToAllied;
+        struct FixedBoolStack* isGhostToEnemy;
+        struct FixedBoolStack* canTriggerBullet;
+        struct FixedBoolStack* denyElementStick;
+        struct FixedBoolStack* CAANFECBIIK;
         void* _ability;
         bool useAbilityProperty;
     };
@@ -8991,6 +8997,133 @@ namespace app {
         struct DNPCBHKHGMO__Fields fields;
     };
 
+    struct __declspec(align(8)) NLHGPLIGNNJ__Fields {
+        EventID__Enum eventID;
+        uint32_t targetID;
+        bool canBeHandledImmediately;
+        bool canBeHandledByLogic;
+        bool canBeHandledByVisual;
+        bool canBeHandledByLogicResolved;
+        bool canBeHandledByDispatcher;
+        bool canBeHandledOnlyByListeners;
+        bool canBeHandledIfDie;
+        bool fromEventCache;
+        EventRemoteState__Enum remoteState;
+        ForwardType__Enum forwardType;
+        uint32_t fromPeerID;
+    };
+
+    struct BaseEvent {
+        struct NLHGPLIGNNJ__Class* klass;
+        MonitorData* monitor;
+        struct NLHGPLIGNNJ__Fields fields;
+    };
+    
+    struct EvtCrash__Fields {
+        struct BaseEvent__Fields _;
+        float velChange;
+        float maxHp;
+        struct Vector3 hitPos;
+    };
+
+    struct EvtCrash {
+        struct EvtCrash__Class* klass;
+        MonitorData* monitor;
+        struct EvtCrash__Fields fields;
+    };
+
+    struct __declspec(align(8)) ADOCDLJKPGF__Fields {
+        struct Dictionary_2_UniRx_Tuple_2_Dictionary_2_System_UInt32_MoleMole_IndexHandleObjectList_1_* PKPGAJELFJP;
+        struct Dictionary_2_System_UInt32_MoleMole_IndexHandleObjectList_1__2* EPNNKHDPMKN;
+        struct Dictionary_2_System_UInt32_Dictionary_2_System_Type_ADOCDLJKPGF_NCKPKBOOPAE_* NHLMDJCPBOI;
+        struct List_1_NLHGPLIGNNJ_* OCCMKONNAFF;
+        struct List_1_NLHGPLIGNNJ_* ODMMGNLPPKO;
+        struct List_1_NLHGPLIGNNJ_* FMJOCJEEDNA;
+        struct Dictionary_2_System_Type_MoleMole_IndexHandleObjectList_1_* BGCNGICCMNG;
+        bool IKIHCFFFACC;
+        struct List_1_UniRx_Tuple_5__1* AOENJPJCHCP;
+        int32_t AANDAKJMONI;
+        bool GEPOJPNFMKO;
+    };
+
+    struct EventManager {
+        struct ADOCDLJKPGF__Class* klass;
+        MonitorData* monitor;
+        struct ADOCDLJKPGF__Fields fields;
+    };
+
+
+    struct FFFIBMKHGML__Fields {
+        struct BaseComponentPlugin__Fields _;
+        struct Action_3_EAPPPCHHMHO_GHHPPDNDOMP_CECMDFHMDKC_* _addGlobalValueHandlerClosureDelegate;
+        struct Action_3_EAPPPCHHMHO_KCDOEGJPJIL_CECMDFHMDKC_* _setGlobalValueHandlerClosureDelegate;
+        struct Action_3_EAPPPCHHMHO_OHOPEIJOHNL_CECMDFHMDKC_* _multiplyGlobalValueHandlerClosureDelegate;
+        struct Action_4_EAPPPCHHMHO_FMDGAHPAIJI_CECMDFHMDKC_Single_* _effectProxyListCache;
+        struct Action_4_EAPPPCHHMHO_String_Single_AEDAJPDFADC_* _effectProxyListCacheForChangFollowDampTime;
+        struct List_1_HCHLLIEMNEK_* LFBAEIEGOJO;
+        struct List_1_HCHLLIEMNEK_* IGDPCDIHPFF;
+        struct List_1_UnityEngine_Vector3_* _pushedPosList;
+        struct OFNNOHHEDII* _owner;
+        struct List_1_CECMDFHMDKC_* _appliedAbilities;
+        struct Dictionary_2_System_UInt32_System_Int32_* _appliedAbilitiesIndex;
+        uint32_t nextValidAbilityID;
+        struct List_1_HJCGOEDMIAF_* _appliedModifiers;
+        struct List_1_HJCGOEDMIAF_* _deadModifiers;
+        struct List_1_HJCGOEDMIAF_* _appliedServerBuffModifiers;
+        struct List_1_HJCGOEDMIAF_* _allAppliedModifiers;
+        bool _isTicking;
+        struct List_1_CECMDFHMDKC_* _tickAbilities;
+        struct List_1_CECMDFHMDKC_* _addTickAbilities;
+        struct List_1_CECMDFHMDKC_* _removeTickAbilities;
+        struct List_1_HJCGOEDMIAF_* _tickModifiers;
+        struct List_1_HJCGOEDMIAF_* _addTickModifiers;
+        struct List_1_HJCGOEDMIAF_* _removeTickModifiers;
+        struct Dictionary_2_GCGKMNJMCDB_BFNAMAMFMHM_* _dynamicFloatMap;
+        bool _isKilled;
+        struct IOIMNKBHEFO* lcAbilityElement;
+        struct NAPAIPLOOAL* lcAbilityState;
+        struct FOIKKPFPBMI* _tokenMgr;
+        struct Func_3_Single_Object_Boolean_* _hanlderModifierThinkTimerUp;
+        struct List_1_System_Nullable_1__3* _modifierThinkTimers;
+        struct HashSet_1_MoleMole_TimerReceiver_* _modifierThinkTimersAffectedByTimeScale;
+        struct HashSet_1_MoleMole_TimerReceiver_* _modifierThinkTimersAffectedByAlive;
+        struct Action_1_GLNKOGEHMEC_* _onOwnerTimeScaleChangedCache;
+        struct Action_1_DHNFOJOKMIN_* _onOwnerAliveChangedCache;
+        bool _isOnEventing;
+        struct Dictionary_2_System_Int32_List_1_HMEBMIOEAKF_* _onEventMixins;
+        struct List_1_HMEBMIOEAKF_* _addOnEventMixins;
+        struct List_1_HMEBMIOEAKF_* _removeOnEventMixins;
+        bool _isOnEventRemoting;
+        struct Dictionary_2_System_Int32_List_1_HMEBMIOEAKF_* _onEventRemoteMixins;
+        struct List_1_HMEBMIOEAKF_* _addOnEventRemoteMixins;
+        struct List_1_HMEBMIOEAKF_* _removeOnEventRemoteMixins;
+        bool _isOnEventResolveing;
+        struct Dictionary_2_System_Int32_List_1_HMEBMIOEAKF_* _onEventResolvedMixins;
+        struct List_1_HMEBMIOEAKF_* _addOnEventResolvedMixins;
+        struct List_1_HMEBMIOEAKF_* _removeOnEventResolvedMixins;
+        bool _isListenEventing;
+        struct Dictionary_2_System_Int32_List_1_HMEBMIOEAKF_* _listenEventMixins;
+        struct List_1_HMEBMIOEAKF_* _addListenEventMixins;
+        struct List_1_HMEBMIOEAKF_* _removeListenEventMixins;
+        int32_t GIBLDFDIDFB;
+        bool IsImmuneDebuff;
+        bool _isDuringInitAbility_k__BackingField;
+        bool _isDuringChangeAbility_k__BackingField;
+        struct Action_1_BLFCFIJHMAA_* _handleServerBuffChangedOnEntityReady;
+        struct Dictionary_2_System_UInt32_HNCBHGMDCOL_GKPBJFKNDFG_* _addSBuffsBeforeEntityReady;
+        struct Dictionary_2_System_UInt32_HNCBHGMDCOL_GKPBJFKNDFG_* _rmvSBuffsBeforeEntityReady;
+        struct KDGEJACIAHK* _spriteLoadProxy;
+        struct Dictionary_2_System_UInt32_NCONMADOMGI_* _abilityAttachContainers;
+        struct Dictionary_2_System_UInt32_NCONMADOMGI_* _modifierAttachContainers;
+        struct ClosureList* _onEntityReadyClosureList;
+        struct Action_1_BLFCFIJHMAA_* _callOnEntityReadyClosure;
+    };
+
+    struct ActorAbilityPlugin {
+        struct FFFIBMKHGML__Class* klass;
+        MonitorData* monitor;
+        struct FFFIBMKHGML__Fields fields;
+    };
 
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }

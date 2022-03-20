@@ -10,6 +10,18 @@ void WorldModule::Draw()
 {
     ConfigWidget(Config::cfgDumbEnemiesEnabled, "Enemies don't respond to player.");
 
+    BeginGroupPanel("Kill aura", ImVec2(-1.0f, 0.0f));
+    {
+        ConfigWidget("Enable ## Killaura", Config::cfgKillAura, "Enables killaura.\nKillaura cause crash damage for monster around you.");
+        ConfigWidget(Config::cfgKillAuraRange, 0.1, 5, 100);
+        ConfigWidget(Config::cfgKillAuraOnlyTarget, "If enabled, only monsters whose target at you will be affected by kill aura.");
+        ConfigWidget(Config::cfgKillAuraAttackDelayTime, 1, 0, 1000, "Delay before attack next monster.");
+        ConfigWidget(Config::cfgKillAuraRepeatDelayTime, 1, 100, 2000, "Delay before next attack same monster.");
+    }
+    EndGroupPanel();
+
+    
+
     BeginGroupPanel("Dialog", ImVec2(-1.0f, 0.0f));
     {
         //ImGui::Text("For current time, only skips talk dialog, but don't skip choose dialog.");

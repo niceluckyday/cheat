@@ -284,7 +284,7 @@ static int CalcCountToKill(float attackDamage, uint32_t targetID)
 }
 
 // Raises when any entity do hit event.
-// Just recall attack few times (regulating by config)
+// Just recall attack few times (regulating by combatProp)
 // It's not tested well, so, I think, anticheat can detect it.
 // When new information will be received, I update this comment.
 static void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID, app::AttackResult* attackResult,
@@ -431,7 +431,6 @@ static void NoClipOnSync(uint32_t entityId, app::MotionInfo* syncInfo)
     prevPosition = avatarPosition;
     prevSyncTime = currentTime;
 }
-
 
 static void LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __this, uint32_t entityId, app::MotionInfo* syncInfo,
     bool isReliable, uint32_t relseq, MethodInfo* method)

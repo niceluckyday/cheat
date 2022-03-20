@@ -4,6 +4,8 @@
 #include <vector>
 #include <ctime>
 #include <chrono>
+#include <unordered_set>
+#include <random>
 
 #include <magic_enum.hpp>
 #include <gcclib/Logger.h>
@@ -133,9 +135,92 @@ bool LCSelectPickup_IsOutPosition_Hook(void* __this, app::BaseEntity* entity, Me
     return callOrigin(LCSelectPickup_IsOutPosition_Hook, __this, entity, method);
 }
 
+static void KillAuraUpdate()
+{
+    static std::default_random_engine generator;
+    static std::uniform_int_distribution<int> distribution(-50, 50);
+
+    static uint64_t nextAttackTime = 0;
+    static std::map<uint32_t, uint64_t> monsterRepeatTimeMap;
+    static std::queue<app::BaseEntity*> attackQueue;
+    static std::unordered_set<uint32_t> attackSet;
+
+    if (!Config::cfgKillAura)
+        return;
+
+    auto eventManager = GetSingleton(EventManager);
+    if (eventManager == nullptr || *app::CreateCrashEvent__MethodInfo == nullptr)
+        return;
+
+    auto currentTime = GetCurrentTimeMillisec();
+    if (currentTime < nextAttackTime)
+        return;
+
+    for (const auto& monster : FindEntities(GetMonsterFilter()))
+    {
+        auto monsterID = monster->fields._runtimeID_k__BackingField;
+
+        if (attackSet.count(monsterID) > 0)
+            continue;
+
+        if (monsterRepeatTimeMap.count(monsterID) > 0 && monsterRepeatTimeMap[monsterID] > currentTime)
+            continue;
+
+        auto combat = app::BaseEntity_GetBaseCombat(monster, *app::BaseEntity_GetBaseCombat__MethodInfo);
+        if (combat == nullptr)
+            continue;
+
+        auto combatProp = combat->fields._combatProperty_k__BackingField;
+        if (combatProp == nullptr)
+            continue;
+
+        auto maxHP = app::SafeFloat_GetValue(nullptr, combatProp->fields.maxHP, nullptr);
+        auto isLockHp = app::FixedBoolStack_get_value(combatProp->fields.islockHP, nullptr);
+        auto isInvincible = app::FixedBoolStack_get_value(combatProp->fields.isInvincible, nullptr);
+        auto HP = app::SafeFloat_GetValue(nullptr, combatProp->fields.HP, nullptr);
+        if (maxHP < 10 || HP < 2 || isLockHp || isInvincible)
+            continue;
+
+        if (Config::cfgKillAuraOnlyTarget && combat->fields._attackTarget.runtimeID != GetAvatarRuntimeId())
+            continue;
+
+        if (GetDistToAvatar(monster) > Config::cfgKillAuraRange)
+            continue;
+
+        attackQueue.push(monster);
+        attackSet.insert(monsterID);
+    }
+
+    if (attackQueue.empty())
+        return;
+
+    auto monster = attackQueue.front();
+    attackQueue.pop();
+
+    auto monsterID = monster->fields._runtimeID_k__BackingField;
+    attackSet.erase(monsterID);
+
+    auto combat = app::BaseEntity_GetBaseCombat(monster, *app::BaseEntity_GetBaseCombat__MethodInfo);
+    auto maxHP = app::SafeFloat_GetValue(nullptr, combat->fields._combatProperty_k__BackingField->fields.maxHP, nullptr);
+
+    auto crashEvt = app::CreateCrashEvent(nullptr, *app::CreateCrashEvent__MethodInfo);
+    app::EvtCrash_Init(crashEvt, monsterID, nullptr);
+    crashEvt->fields.maxHp = maxHP;
+    crashEvt->fields.velChange = 1000;
+    crashEvt->fields.hitPos = app::BaseEntity_GetAbsolutePosition(monster, nullptr);
+
+    app::EventManager_FireEvent(eventManager, reinterpret_cast<app::BaseEvent*>(crashEvt), false, nullptr);
+
+    monsterRepeatTimeMap[monsterID] = currentTime + (int)Config::cfgKillAuraRepeatDelayTime + distribution(generator);
+
+    nextAttackTime = currentTime + (int)Config::cfgKillAuraAttackDelayTime + distribution(generator);
+}
+
+
 static void OnGameUpdate() 
 {
     AutoLootUpdate();
+    KillAuraUpdate();
 }
 
 void InitWorldCheats()

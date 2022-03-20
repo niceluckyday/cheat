@@ -55,6 +55,8 @@ void Config::Init(const std::string configFile)
 	LoadField(cfgAutoLootCustomRangeEnabled);
 	LoadField(cfgAutoLootCustomRange);
 
+	LoadField(cfgKillAura);
+	
 	LoadField(cfgAutoTalkEnabled);
 
 	LoadField(cfgMapTPEnable);
