@@ -73,6 +73,7 @@ public:
     SafeValue& operator=(const T& newValue)
     {
         SetValue(newValue);
+        return *this;
     }
 
     operator T() const 
