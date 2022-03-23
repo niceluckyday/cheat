@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "injector", "injector\inject
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cheat-library", "cheat-library\cheat-library.vcxproj", "{704C8746-1BD9-4BC8-9EBE-8187F1A1AD72}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "packet-handler", "packet-handler\packet-handler.vcxproj", "{F82EFB67-C352-41DD-B4F9-18BCF3B88538}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gcclib", "gcclib\gcclib.vcxproj", "{ADB35022-823B-4DC0-B495-3EFEFBD3A82F}"
 EndProject
 Global
@@ -35,14 +33,6 @@ Global
 		{704C8746-1BD9-4BC8-9EBE-8187F1A1AD72}.Release|x64.Build.0 = Release|x64
 		{704C8746-1BD9-4BC8-9EBE-8187F1A1AD72}.Release|x86.ActiveCfg = Release|x64
 		{704C8746-1BD9-4BC8-9EBE-8187F1A1AD72}.Release|x86.Build.0 = Release|x64
-		{F82EFB67-C352-41DD-B4F9-18BCF3B88538}.Debug|x64.ActiveCfg = Debug|x64
-		{F82EFB67-C352-41DD-B4F9-18BCF3B88538}.Debug|x64.Build.0 = Debug|x64
-		{F82EFB67-C352-41DD-B4F9-18BCF3B88538}.Debug|x86.ActiveCfg = Debug|x64
-		{F82EFB67-C352-41DD-B4F9-18BCF3B88538}.Debug|x86.Build.0 = Debug|x64
-		{F82EFB67-C352-41DD-B4F9-18BCF3B88538}.Release|x64.ActiveCfg = Release|x64
-		{F82EFB67-C352-41DD-B4F9-18BCF3B88538}.Release|x64.Build.0 = Release|x64
-		{F82EFB67-C352-41DD-B4F9-18BCF3B88538}.Release|x86.ActiveCfg = Release|x64
-		{F82EFB67-C352-41DD-B4F9-18BCF3B88538}.Release|x86.Build.0 = Release|x64
 		{ADB35022-823B-4DC0-B495-3EFEFBD3A82F}.Debug|x64.ActiveCfg = Debug|x64
 		{ADB35022-823B-4DC0-B495-3EFEFBD3A82F}.Debug|x64.Build.0 = Debug|x64
 		{ADB35022-823B-4DC0-B495-3EFEFBD3A82F}.Debug|x86.ActiveCfg = Debug|x64

@@ -128,9 +128,9 @@ static bool IsValueChanged(void* valuePtr, bool result)
 }
 
 
-bool ConfigWidget(const char* label, ConfigField<bool>& field, const char* desc) 
+bool ConfigWidget(const char* label, config::field::BaseField<bool>& field, const char* desc)
 {
-    bool result = ImGui::Checkbox(label, field.GetValuePtr());
+    bool result = ImGui::Checkbox(label, field.valuePtr());
 
     if (result)
         field.Check();
@@ -140,16 +140,16 @@ bool ConfigWidget(const char* label, ConfigField<bool>& field, const char* desc)
     return result;
 }
 
-bool ConfigWidget(const char* label, ConfigField<int>& field, int step, int start, int end, const char* desc)
+bool ConfigWidget(const char* label, config::field::BaseField<int>& field, int step, int start, int end, const char* desc)
 {
     bool result = false;
 
     if (start == end)
-        result = ImGui::InputInt(label, field.GetValuePtr(), step);
+        result = ImGui::InputInt(label, field.valuePtr(), step);
     else
-        result = ImGui::DragInt(label, field.GetValuePtr(), (float)step, start, end);
+        result = ImGui::DragInt(label, field.valuePtr(), (float)step, start, end);
 
-    if (IsValueChanged(field.GetValuePtr(), result))
+    if (IsValueChanged(field.valuePtr(), result))
         field.Check();
 
     ShowDesc(desc);
@@ -157,16 +157,16 @@ bool ConfigWidget(const char* label, ConfigField<int>& field, int step, int star
     return result;
 }
 
-bool ConfigWidget(const char* label, ConfigField<float>& field, float step, float start, float end, const char* desc)
+bool ConfigWidget(const char* label, config::field::BaseField<float>& field, float step, float start, float end, const char* desc)
 {
     bool result = false;
 
     if (start == end)
-        result = ImGui::InputFloat(label, field.GetValuePtr(), step);
+        result = ImGui::InputFloat(label, field.valuePtr(), step);
     else
-        result = ImGui::DragFloat(label, field.GetValuePtr(), step, start, end);
+        result = ImGui::DragFloat(label, field.valuePtr(), step, start, end);
 
-    if (IsValueChanged(field.GetValuePtr(), result))
+    if (IsValueChanged(field.valuePtr(), result))
         field.Check();
 
     ShowDesc(desc);
@@ -174,10 +174,10 @@ bool ConfigWidget(const char* label, ConfigField<float>& field, float step, floa
     return result;
 }
 
-bool ConfigWidget(const char* label, ConfigField<Hotkey>& field, bool clearable, const char* desc)
+bool ConfigWidget(const char* label, config::field::HotkeyField& field, bool clearable, const char* desc)
 {
-    bool result = InputHotkey(label, field.GetValuePtr(), clearable);
-    if (IsValueChanged(field.GetValuePtr(), result))
+    bool result = InputHotkey(label, field.valuePtr(), clearable);
+    if (IsValueChanged(field.valuePtr(), result))
         field.Check();
 
     ShowDesc(desc);
@@ -185,10 +185,10 @@ bool ConfigWidget(const char* label, ConfigField<Hotkey>& field, bool clearable,
     return result;
 }
 
-bool ConfigWidget(const char* label, ConfigField<std::string>& field, const char* desc)
+bool ConfigWidget(const char* label, config::field::BaseField<std::string>& field, const char* desc)
 {
-    bool result = ImGui::InputText(label, field.GetValuePtr());
-    if (IsValueChanged(field.GetValuePtr(), result))
+    bool result = ImGui::InputText(label, field.valuePtr());
+    if (IsValueChanged(field.valuePtr(), result))
         field.Check();
 
     ShowDesc(desc);
@@ -196,27 +196,27 @@ bool ConfigWidget(const char* label, ConfigField<std::string>& field, const char
     return result;
 }
 
-bool ConfigWidget(ConfigField<bool>& field, const char* desc)
+bool ConfigWidget(config::field::BaseField<bool>& field, const char* desc)
 {
     return ConfigWidget(field.GetFriendlyName().c_str(), field, desc);
 }
 
-bool ConfigWidget(ConfigField<int>& field, int step, int start, int end, const char* desc)
+bool ConfigWidget(config::field::BaseField<int>& field, int step, int start, int end, const char* desc)
 {
     return ConfigWidget(field.GetFriendlyName().c_str(), field, step, start, end, desc);
 }
 
-bool ConfigWidget(ConfigField<float>& field, float step, float start, float end, const char* desc)
+bool ConfigWidget(config::field::BaseField<float>& field, float step, float start, float end, const char* desc)
 {
     return ConfigWidget(field.GetFriendlyName().c_str(), field, step, start, end, desc);
 }
 
-bool ConfigWidget(ConfigField<Hotkey>& field, bool clearable, const char* desc)
+bool ConfigWidget(config::field::HotkeyField& field, bool clearable, const char* desc)
 {
     return ConfigWidget(field.GetFriendlyName().c_str(), field, clearable, desc);
 }
 
-bool ConfigWidget(ConfigField<std::string>& field, const char* desc)
+bool ConfigWidget(config::field::BaseField<std::string>& field, const char* desc)
 {
     return ConfigWidget(field.GetFriendlyName().c_str(), field, desc);;
 }

@@ -124,21 +124,39 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\user\common\Config.h" />
+    <ClInclude Include="src\user\cheat\CheatManager.h" />
+    <ClInclude Include="src\user\cheat\events.h" />
+    <ClInclude Include="src\user\cheat\misc\Debug.h" />
+    <ClInclude Include="src\user\cheat\misc\Hotkeys.h" />
+    <ClInclude Include="src\user\cheat\misc\PacketSniffer.h" />
+    <ClInclude Include="src\user\cheat\misc\ProtectionBypass.h" />
+    <ClInclude Include="src\user\cheat\misc\Settings.h" />
+    <ClInclude Include="src\user\cheat\player\GodMode.h" />
+    <ClInclude Include="src\user\cheat\player\InfiniteStamina.h" />
+    <ClInclude Include="src\user\cheat\player\NoCD.h" />
+    <ClInclude Include="src\user\cheat\player\NoClip.h" />
+    <ClInclude Include="src\user\cheat\player\RapidFire.h" />
+    <ClInclude Include="src\user\cheat\teleport\ChestTeleport.h" />
+    <ClInclude Include="src\user\cheat\teleport\ItemTeleportBase.h" />
+    <ClInclude Include="src\user\cheat\teleport\MapTeleport.h" />
+    <ClInclude Include="src\user\cheat\teleport\OculiTeleport.h" />
+    <ClInclude Include="src\user\cheat\world\AutoLoot.h" />
+    <ClInclude Include="src\user\cheat\world\DialogSkip.h" />
+    <ClInclude Include="src\user\cheat\world\DumbEnemies.h" />
+    <ClInclude Include="src\user\cheat\world\KillAura.h" />
+    <ClInclude Include="src\user\common\config\FieldBase.h" />
+    <ClInclude Include="src\user\common\config\field\HotkeyField.h" />
+    <ClInclude Include="src\user\common\config\field\BaseField.h" />
+    <ClInclude Include="src\user\common\config\FieldHeader.h" />
+    <ClInclude Include="src\user\cheat\world\MobVacuum.h" />
+    <ClInclude Include="src\user\cheat\Feature.h" />
+    <ClInclude Include="src\user\common\config\Config.h" />
+    <ClInclude Include="src\user\common\config\ConfigEntry.h" />
     <ClInclude Include="src\user\common\Event.h" />
-    <ClInclude Include="src\user\common\GlobalEvents.h" />
     <ClInclude Include="src\user\common\Patch.h" />
     <ClInclude Include="src\user\common\thread-safe.h" />
-    <ClInclude Include="src\user\gui\main-window.h" />
-    <ClInclude Include="src\user\gui\modules\StatusModule.h" />
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="src\user\cheat\cheat.h" />
-    <ClInclude Include="src\user\gui\modules\DebugModule.h" />
-    <ClInclude Include="src\user\gui\modules\HotkeysModule.h" />
-    <ClInclude Include="src\user\gui\modules\PlayerModule.h" />
-    <ClInclude Include="src\user\gui\modules\SettingsModule.h" />
-    <ClInclude Include="src\user\gui\modules\IGUIModule.h" />
-    <ClInclude Include="src\user\gui\modules\WorldModule.h" />
     <ClInclude Include="src\user\gui\renderer.h" />
     <ClInclude Include="src\user\gui\gui-util.h" />
     <ClInclude Include="src\user\common\close-handle.h" />
@@ -156,9 +174,9 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClInclude Include="src\framework\il2cpp-init.h" />
     <ClInclude Include="src\framework\pch-il2cpp.h" />
     <ClInclude Include="src\user\main.h" />
-    <ClInclude Include="src\user\gui\modules\TeleportModule.h" />
     <ClInclude Include="src\user\common\Hotkey.h" />
     <ClInclude Include="src\user\common\util.h" />
+    <ClInclude Include="src\user\common\config\field\ToggleField.h" />
     <ClInclude Include="vendor\google\protobuf\any.h" />
     <ClInclude Include="vendor\google\protobuf\any.pb.h" />
     <ClInclude Include="vendor\google\protobuf\any_test.pb.h" />
@@ -483,26 +501,37 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
     <ClInclude Include="vendor\magic_enum\include\magic_enum.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\user\common\Config.cpp" />
-    <ClCompile Include="src\user\cheat\misc\packet-hook.cpp" />
-    <ClCompile Include="src\user\cheat\world-cheat.cpp" />
+    <ClCompile Include="src\user\cheat\CheatManager.cpp" />
+    <ClCompile Include="src\user\cheat\misc\Debug.cpp" />
+    <ClCompile Include="src\user\cheat\misc\Hotkeys.cpp" />
+    <ClCompile Include="src\user\cheat\misc\PacketSniffer.cpp" />
+    <ClCompile Include="src\user\cheat\misc\ProtectionBypass.cpp" />
+    <ClCompile Include="src\user\cheat\misc\Settings.cpp" />
+    <ClCompile Include="src\user\cheat\player\GodMode.cpp" />
+    <ClCompile Include="src\user\cheat\player\InfiniteStamina.cpp" />
+    <ClCompile Include="src\user\cheat\player\NoCD.cpp" />
+    <ClCompile Include="src\user\cheat\player\NoClip.cpp" />
+    <ClCompile Include="src\user\cheat\player\RapidFire.cpp" />
+    <ClCompile Include="src\user\cheat\teleport\ChestTeleport.cpp" />
+    <ClCompile Include="src\user\cheat\teleport\ItemTeleportBase.cpp" />
+    <ClCompile Include="src\user\cheat\teleport\MapTeleport.cpp" />
+    <ClCompile Include="src\user\cheat\teleport\OculiTeleport.cpp" />
+    <ClCompile Include="src\user\cheat\world\AutoLoot.cpp" />
+    <ClCompile Include="src\user\cheat\world\DialogSkip.cpp" />
+    <ClCompile Include="src\user\cheat\world\DumbEnemies.cpp" />
+    <ClCompile Include="src\user\cheat\world\KillAura.cpp" />
+    <ClCompile Include="src\user\common\config\field\HotkeyField.cpp" />
+    <ClCompile Include="src\user\common\config\FieldHeader.cpp" />
+    <ClCompile Include="src\user\cheat\world\MobVacuum.cpp" />
+    <ClCompile Include="src\user\common\config\Config.cpp" />
     <ClCompile Include="src\user\common\Patch.cpp" />
     <ClCompile Include="src\user\cheat\cheat.cpp" />
-    <ClCompile Include="src\user\gui\main-window.cpp" />
-    <ClCompile Include="src\user\gui\modules\StatusModule.cpp" />
-    <ClCompile Include="src\user\cheat\map-teleport.cpp" />
-    <ClCompile Include="src\user\cheat\player-cheat.cpp" />
-    <ClCompile Include="src\user\gui\modules\DebugModule.cpp" />
-    <ClCompile Include="src\user\gui\modules\HotkeysModule.cpp" />
-    <ClCompile Include="src\user\gui\modules\PlayerModule.cpp" />
-    <ClCompile Include="src\user\gui\modules\SettingsModule.cpp" />
-    <ClCompile Include="src\user\gui\modules\WorldModule.cpp" />
     <ClCompile Include="src\user\gui\renderer.cpp" />
     <ClCompile Include="src\user\gui\gui-util.cpp" />
     <ClCompile Include="src\user\common\dx11-hook.cpp" />
-    <ClCompile Include="src\user\gui\modules\TeleportModule.cpp" />
     <ClCompile Include="src\user\common\Hotkey.cpp" />
     <ClCompile Include="src\user\common\util.cpp" />
+    <ClCompile Include="src\user\common\config\field\ToggleField.cpp" />
     <ClCompile Include="vendor\imgui\backends\imgui_impl_dx11.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -535,8 +564,6 @@ inject-dll.bat "$(SolutionDir)injector\bin\$(PlatformShortName)\$(Configuration)
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\misc\debug-hooks.cpp" />
-    <ClCompile Include="src\user\cheat\misc\protection-bypass.cpp" />
     <ClCompile Include="src\framework\dllmain.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>

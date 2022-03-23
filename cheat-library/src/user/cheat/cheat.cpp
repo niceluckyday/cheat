@@ -1,60 +1,93 @@
 #include <pch-il2cpp.h>
 #include "cheat.h"
 
-#include <common/Config.h>
-#include <common/Event.h>
-#include <common/GlobalEvents.h>
+#include <cheat/events.h>
+#include <cheat/CheatManager.h>
 #include <common/HookManager.h>
+#include <common/config/Config.h>
 
-static void OnKeyUp(short key, bool& cancelled);
-static void InitToggleFields();
+#include <cheat/misc/ProtectionBypass.h>
+#include <cheat/misc/Settings.h>
+#include <cheat/misc/PacketSniffer.h>
+#include <cheat/misc/Hotkeys.h>
+#include <cheat/misc/Debug.h>
 
-static void GameManager_Update_Hook(app::GameManager* __this, MethodInfo* method)
+#include <cheat/player/GodMode.h>
+#include <cheat/player/InfiniteStamina.h>
+#include <cheat/player/NoCD.h>
+#include <cheat/player/NoClip.h>
+#include <cheat/player/RapidFire.h>
+
+#include <cheat/world/AutoLoot.h>
+#include <cheat/world/DialogSkip.h>
+#include <cheat/world/DumbEnemies.h>
+#include <cheat/world/KillAura.h>
+#include <cheat/world/MobVacuum.h>
+
+#include <cheat/teleport/ChestTeleport.h>
+#include <cheat/teleport/MapTeleport.h>
+#include <cheat/teleport/OculiTeleport.h>
+
+namespace cheat 
 {
-    GlobalEvents::GameUpdateEvent();
-    callOrigin(GameManager_Update_Hook, __this, method);
+	static void InstallEventHooks();
+
+	void Init(HMODULE hModule)
+	{
+		auto& protectionBypass = feature::ProtectionBypass::GetInstance();
+		protectionBypass.Init();
+
+		InstallEventHooks();
+
+		CheatManager& manager = CheatManager::GetInstance();
+
+#define FEAT_INST(name) &feature::##name##::GetInstance()
+		manager.AddFeatures({
+			&protectionBypass,
+			FEAT_INST(Settings),
+			FEAT_INST(PacketSniffer),
+			FEAT_INST(Hotkeys),
+			FEAT_INST(Debug),
+
+			FEAT_INST(GodMode),
+			FEAT_INST(InfiniteStamina),
+			FEAT_INST(NoCD),
+			FEAT_INST(NoClip),
+			FEAT_INST(RapidFire),
+
+			FEAT_INST(AutoLoot),
+			FEAT_INST(DialogSkip),
+			FEAT_INST(DumbEnemies),
+			FEAT_INST(KillAura),
+			FEAT_INST(MobVacuum),
+
+			FEAT_INST(ChestTeleport),
+			FEAT_INST(OculiTeleport),
+			FEAT_INST(MapTeleport)
+			});
+#undef FEAT_INST
+
+		manager.Init(hModule);
+	}
+
+	static void GameManager_Update_Hook(app::GameManager* __this, MethodInfo* method)
+	{
+		events::GameUpdateEvent();
+		callOrigin(GameManager_Update_Hook, __this, method);
+	}
+
+	static void LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook(app::BKFGGJFIIKC* __this, uint32_t entityId, app::MotionInfo* syncInfo,
+		bool isReliable, uint32_t relseq, MethodInfo* method)
+	{
+		events::MoveSyncEvent(entityId, syncInfo);
+		callOrigin(LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook, __this, entityId, syncInfo, isReliable, relseq, method);
+	}
+
+	static void InstallEventHooks() 
+	{
+		HookManager::install(app::GameManager_Update, GameManager_Update_Hook);
+		HookManager::install(app::LevelSyncCombatPlugin_RequestSceneEntityMoveReq, LevelSyncCombatPlugin_RequestSceneEntityMoveReq_Hook);
+	}
+
 }
 
-void InitCheats() 
-{
-    InitProtectionBypass(); // Removes protection
-
-    // Game thread
-    HookManager::install(app::GameManager_Update, GameManager_Update_Hook);
-
-	InitDebugHooks(); // Hooks for debbug information
-    InitPacketHooks();
-
-	InitMapTPHooks(); // Map teleport hooks
-	InitPlayerCheats(); // Cheats for player
-    InitWorldCheats();
-
-    GlobalEvents::KeyUpEvent += FREE_METHOD_HANDLER(OnKeyUp);
-
-    InitToggleFields();
-}
-
-static void InitToggleFields() 
-{
-    for (auto& field : Config::GetToggleFields())
-    {
-        if (field->GetValue())
-            ToggleConfigField::OnChangedEvent(field);   
-    }
-}
-
-static void OnKeyUp(short key, bool& cancelled) 
-{
-    if (Config::cfgCheatWindowShowed.GetValue())
-        return;
-
-    for (auto& field : Config::GetToggleFields())
-    {
-        if (field->GetHotkey()->IsPressed(key))
-        {
-            bool* value = field->GetValuePtr();
-            *value = !*value;
-            field->Check();
-        }
-    }
-}

@@ -171,21 +171,29 @@ std::vector<app::BaseEntity*> FindEntities(FilterFunc func)
     return result;
 }
 
+app::BaseEntity* FindNearestEntity(FilterFunc func) 
+{
+    auto entities = FindEntities(func);
+    return FindNearestEntity(entities);
+}
+
 app::BaseEntity* FindNearestEntity(const SimpleEntityFilter& filter)
 {
     auto entities = FindEntities(filter);
-    app::BaseEntity* minDistEntity = nullptr;
-    float minDistance = 100000;
-    for (auto& entity : entities) 
-    {
-        auto dist = GetDistToAvatar(entity);
-        if ( dist < minDistance)
-        {
-            minDistance = dist;
-            minDistEntity = entity;
-        }
-    }
-    return minDistEntity;
+    return FindNearestEntity(entities);
+}
+
+static bool compareDistance(app::BaseEntity* a, app::BaseEntity* b)
+{
+    return GetDistToAvatar(a) < GetDistToAvatar(b);
+}
+
+app::BaseEntity* FindNearestEntity(std::vector<app::BaseEntity*>& entities) 
+{
+    if (entities.size() == 0)
+        return nullptr;
+
+    return *std::min_element(entities.begin(), entities.end(), compareDistance);
 }
 
 const SimpleEntityFilter& GetFilterCrystalShell() 
@@ -202,12 +210,12 @@ const SimpleEntityFilter& GetFilterCrystalShell()
     return crystallShellFilter;
 }
 
-const SimpleEntityFilter& GetFilterChest() 
+const SimpleEntityFilter& GetFilterChest()
 {
-    static const SimpleEntityFilter filter = {
-        {true, app::EntityType__Enum_1::Chest}
-    };
-    return filter;
+	static const SimpleEntityFilter filter = {
+		{true, app::EntityType__Enum_1::Chest}
+	};
+	return filter;
 }
 
 const SimpleEntityFilter& GetMonsterFilter()
@@ -223,3 +231,42 @@ bool IsEntityCrystalShell(app::BaseEntity* entity) {
     return IsEntityFilterValid(entity, GetFilterCrystalShell());
 }
 
+std::vector<WaypointInfo> GetUnlockedWaypoints()
+{
+	auto singleton = GetSingleton(MBHLOBDPKEC);
+	if (singleton == nullptr)
+		return {};
+
+	auto result = std::vector<WaypointInfo>();
+
+	auto waypointGroups = ToUniDict(singleton->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
+	for (const auto& [sceneId, waypoints] : waypointGroups->pairs())
+	{
+		// TODO: get current scene id, for teleport in not only big world loca
+		if (sceneId != 3)
+			continue;
+
+		for (const auto& [waypointId, waypoint] : waypoints->pairs())
+		{
+			if (waypoint.isUnlocked)
+				result.push_back(WaypointInfo{ sceneId, waypointId, waypoint.config->fields._tranPos, (app::MapModule_ScenePointData*)&waypoint });
+		}
+	}
+	return result;
+}
+
+// Finding nearest unlocked waypoint to the position
+WaypointInfo FindNearestWaypoint(app::Vector3& position)
+{
+	float minDistance = -1;
+	WaypointInfo result{};
+	for (const auto& info : GetUnlockedWaypoints()) {
+		float distance = app::Vector3_Distance(nullptr, position, info.position, nullptr);
+		if (minDistance < 0 || distance < minDistance)
+		{
+			minDistance = distance;
+			result = info;
+		}
+	}
+	return result;
+}

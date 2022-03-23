@@ -12,9 +12,10 @@
 
 #include <helpers.h>
 #include <il2cpp-init.h>
-#include <common/Config.h>
 #include <gui/renderer.h>
 #include <cheat/cheat.h>
+#include <common/config/Config.h>
+#include <cheat/misc/Settings.h>
 
 void Run(HMODULE* phModule)
 {
@@ -25,16 +26,17 @@ void Run(HMODULE* phModule)
 
     // Init config
     std::string configPath = (std::filesystem::current_path() / Globals::configFileName).string();
-    Config::Init(configPath);
+    config::Init(configPath);
 
     // Init logger
-    if (Config::cfgFileLogEnabled.GetValue())
+    auto& settings = cheat::feature::Settings::GetInstance();
+    if (settings.m_FileLogging)
     {
         Logger::PrepareFileLogging((std::filesystem::current_path() / "logs").string());
         Logger::SetLevel(Logger::Level::Trace, Logger::LoggerType::FileLogger);
     }
 
-    if (Config::cfgConsoleLogEnabled.GetValue())
+    if (settings.m_ConsoleLogging)
     {
         Logger::SetLevel(Logger::Level::Debug, Logger::LoggerType::ConsoleLogger);
         il2cppi_new_console();
@@ -44,6 +46,5 @@ void Run(HMODULE* phModule)
     LOG_DEBUG("UserAssembly.dll at 0x%p", il2cppi_get_base_address());
     LOG_DEBUG("UnityPlayer.dll  at 0x%p", il2cppi_get_unity_address());
 
-    InitCheats();
-    InitRenderer(*phModule);
+    cheat::Init(*phModule);
 }
