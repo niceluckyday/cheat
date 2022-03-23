@@ -1,0 +1,12 @@
+[submodule "cheat-base/cheat-base/vendor/imgui"]
+	path = cheat-base/cheat-base/vendor/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "cheat-base/cheat-base/vendor/magic_enum"]
+	path = cheat-base/cheat-base/vendor/magic_enum
+	url = https://github.com/Neargye/magic_enum.git
+[submodule "cheat-base/cheat-base/vendor/simpleIni"]
+	path = cheat-base/cheat-base/vendor/simpleIni
+	url = https://github.com/brofield/simpleini.git
+[submodule "cheat-base/cheat-base/vendor/fmt"]
+	path = cheat-base/cheat-base/vendor/fmt
+	url = https://github.com/fmtlib/fmt.git
