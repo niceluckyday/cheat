@@ -10,6 +10,9 @@
 // add headers that you want to pre-compile here
 #include "il2cpp-appdata.h"
 
+#include <magic_enum.hpp>
+#include <fmt/format.h>
+
 #include <iostream>
 #include <filesystem>
 #include <sstream>
@@ -38,7 +41,5 @@
 #include <cheat-base/render/gui-util.h>
 
 #include <imgui.h>
-#include <fmt/format.h>
-#include <magic_enum.hpp>
 
 #endif //PCH_IL2CPP_H

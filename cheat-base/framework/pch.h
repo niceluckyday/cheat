@@ -10,6 +10,8 @@
 // add headers that you want to pre-compile here
 #include "framework.h"
 
+#include <magic_enum.hpp>
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -28,7 +30,6 @@
 #include <backends/imgui_impl_dx11.h>
 
 #include <SimpleIni.h>
-#include <magic_enum.hpp>
 #include <fmt/format.h>
 #include <detours.h>
 
