@@ -1,6 +1,0 @@
-[submodule "cheat-library/vendor/imgui"]
-	path = cheat-library/vendor/imgui
-	url = https://github.com/ocornut/imgui.git
-[submodule "cheat-library/vendor/magic_enum"]
-	path = cheat-library/vendor/magic_enum
-	url = https://github.com/Neargye/magic_enum.git
