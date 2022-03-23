@@ -1,6 +1,5 @@
 #pragma once
 #include "ItemTeleportBase.h"
-#include <common/config/Config.h>
 
 namespace cheat::feature 
 {

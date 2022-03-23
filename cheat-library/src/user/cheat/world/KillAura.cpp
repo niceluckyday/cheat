@@ -1,15 +1,10 @@
 #include "pch-il2cpp.h"
 #include "KillAura.h"
 
-#include <imgui.h>
-#include <common/util.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
-#include <random>
-#include <queue>
-#include <unordered_set>
 
 #include <cheat/events.h>
+#include <cheat/game.h>
 
 namespace cheat::feature 
 {
@@ -73,11 +68,11 @@ namespace cheat::feature
 		if (eventManager == nullptr || *app::CreateCrashEvent__MethodInfo == nullptr)
 			return;
 
-		auto currentTime = GetCurrentTimeMillisec();
+		auto currentTime = util::GetCurrentTimeMillisec();
 		if (currentTime < nextAttackTime)
 			return;
 
-		for (const auto& monster : FindEntities(GetMonsterFilter()))
+		for (const auto& monster : game::FindEntities(game::GetMonsterFilter()))
 		{
 			auto monsterID = monster->fields._runtimeID_k__BackingField;
 
@@ -102,10 +97,10 @@ namespace cheat::feature
 			if (maxHP < 10 || HP < 2 || isLockHp || isInvincible)
 				continue;
 
-			if (m_OnlyTargeted && combat->fields._attackTarget.runtimeID != GetAvatarRuntimeId())
+			if (m_OnlyTargeted && combat->fields._attackTarget.runtimeID != game::GetAvatarRuntimeId())
 				continue;
 
-			if (GetDistToAvatar(monster) > m_Range)
+			if (game::GetDistToAvatar(monster) > m_Range)
 				continue;
 
 			attackQueue.push(monster);

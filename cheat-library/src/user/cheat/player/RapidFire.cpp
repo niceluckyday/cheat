@@ -1,11 +1,8 @@
 #include "pch-il2cpp.h"
 #include "RapidFire.h"
 
-#include <imgui.h>
-#include <common/util.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
-#include <common/HookManager.h>
+#include <cheat/game.h>
 
 namespace cheat::feature 
 {
@@ -66,7 +63,7 @@ namespace cheat::feature
 		if (attackDamage == 0)
 			return m_Multiplier;
 
-		auto targetEntity = GetEntityByRuntimeId(targetID);
+		auto targetEntity = game::GetEntityByRuntimeId(targetID);
 		if (targetEntity == nullptr)
 			return m_Multiplier;
 
@@ -88,11 +85,11 @@ namespace cheat::feature
 		int countOfAttacks = m_Multiplier;
 		if (m_OnePunch)
 		{
-			auto targetEntity = GetEntityByRuntimeId(targetID);
+			auto targetEntity = game::GetEntityByRuntimeId(targetID);
 			auto baseCombat = app::BaseEntity_GetBaseCombat(targetEntity, *app::BaseEntity_GetBaseCombat__MethodInfo);
 			app::Formula_CalcAttackResult(targetEntity, combat->fields._combatProperty_k__BackingField,
 				baseCombat->fields._combatProperty_k__BackingField,
-				attackResult, GetAvatarEntity(), targetEntity, nullptr);
+				attackResult, game::GetAvatarEntity(), targetEntity, nullptr);
 			countOfAttacks = CalcCountToKill(attackResult->fields.damage, targetID);
 		}
 		return countOfAttacks;
@@ -105,7 +102,7 @@ namespace cheat::feature
 	static void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID, app::AttackResult* attackResult,
 		bool ignoreCheckCanBeHitInMP, MethodInfo* method)
 	{
-		if (__this->fields._._.entityRuntimeID != GetAvatarEntity()->fields._runtimeID_k__BackingField)
+		if (__this->fields._._.entityRuntimeID != game::GetAvatarEntity()->fields._runtimeID_k__BackingField)
 			return callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
 
 		RapidFire& rapidFire = RapidFire::GetInstance();

@@ -1,12 +1,9 @@
 #include "pch-il2cpp.h"
 #include "MobVacuum.h"
 
-#include <imgui.h>
-#include <common/util.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
-
 #include <cheat/events.h>
+#include <cheat/game.h>
 
 namespace cheat::feature 
 {
@@ -58,17 +55,17 @@ namespace cheat::feature
     // Check if entity valid for mob vacuum.
     bool MobVacuum::IsEntityForVac(app::BaseEntity* entity)
     {
-        if (!IsEntityFilterValid(entity, GetMonsterFilter()))
+        if (!game::IsEntityFilterValid(entity, game::GetMonsterFilter()))
             return false;
 
         if (m_OnlyTarget)
         {
             auto monsterCombat = app::BaseEntity_GetBaseCombat(entity, *app::BaseEntity_GetBaseCombat__MethodInfo);
-            if (monsterCombat == nullptr || monsterCombat->fields._attackTarget.runtimeID != GetAvatarRuntimeId())
+            if (monsterCombat == nullptr || monsterCombat->fields._attackTarget.runtimeID != game::GetAvatarRuntimeId())
                 return false;
         }
 
-        auto distance = GetDistToAvatar(entity);
+        auto distance = game::GetDistToAvatar(entity);
         if (distance > m_Radius)
             return false;
 
@@ -78,11 +75,11 @@ namespace cheat::feature
     // Calculate mob vacuum target position.
     app::Vector3 MobVacuum::CalcMobVacTargetPos()
     {
-        auto avatarEntity = GetAvatarEntity();
+        auto avatarEntity = game::GetAvatarEntity();
         if (avatarEntity == nullptr)
             return {};
 
-        auto avatarRelPos = GetRelativePosition(avatarEntity);
+        auto avatarRelPos = game::GetRelativePosition(avatarEntity);
         auto avatarForward = app::BaseEntity_GetForward(avatarEntity, nullptr);
         return avatarRelPos + avatarForward * m_Distance;
     }
@@ -101,19 +98,19 @@ namespace cheat::feature
             return;
 
         auto newPositions = new std::map<uint32_t, app::Vector3>();
-        for (const auto& monster : FindEntities(GetMonsterFilter()))
+        for (const auto& monster : game::FindEntities(game::GetMonsterFilter()))
         {
             if (!IsEntityForVac(monster))
                 return;
 
             if (m_Instantly)
             {
-                SetRelativePosition(monster, targetPos);
+                game::SetRelativePosition(monster, targetPos);
                 continue;
             }
 
             uint32_t monsterId = monster->fields._runtimeID_k__BackingField;
-            app::Vector3 monsterRelPos = positions->count(monsterId) ? (*positions)[monsterId] : GetRelativePosition(monster);
+            app::Vector3 monsterRelPos = positions->count(monsterId) ? (*positions)[monsterId] : game::GetRelativePosition(monster);
             app::Vector3 newPosition = {};
             if (app::Vector3_Distance(nullptr, monsterRelPos, targetPos, nullptr) < 0.1)
             {
@@ -127,7 +124,7 @@ namespace cheat::feature
             }
 
             (*newPositions)[monsterId] = newPosition;
-            SetRelativePosition(monster, newPosition);
+            game::SetRelativePosition(monster, newPosition);
         }
 
         delete positions;
@@ -155,7 +152,7 @@ namespace cheat::feature
             return;
 
         app::Vector3 targetPos = CalcMobVacTargetPos();
-        app::Vector3 entityPos = GetRelativePosition(entity);
+        app::Vector3 entityPos = game::GetRelativePosition(entity);
         if (app::Vector3_Distance(nullptr, targetPos, entityPos, nullptr) < 0.2)
             return;
 

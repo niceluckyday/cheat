@@ -1,12 +1,9 @@
 #include "pch-il2cpp.h"
 #include "AutoLoot.h"
 
-#include <imgui.h>
-#include <common/util.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
-#include <common/HookManager.h>
 #include <cheat/events.h>
+#include <cheat/game.h>
 
 namespace cheat::feature 
 {
@@ -84,7 +81,7 @@ namespace cheat::feature
 
 	void AutoLoot::OnGameUpdate()
 	{
-		auto currentTime = GetCurrentTimeMillisec();
+		auto currentTime = util::GetCurrentTimeMillisec();
 		if (currentTime < nextLootTime)
 			return;
 
@@ -112,8 +109,8 @@ namespace cheat::feature
 	{
 		if (m_Enabled && m_UseCustomRange)
 		{
-			auto avatarPos = GetAvatarRelativePosition();
-			auto entityPos = GetRelativePosition(entity);
+			auto avatarPos = game::GetAvatarRelativePosition();
+			auto entityPos = game::GetRelativePosition(entity);
 			result = app::Vector3_Distance(nullptr, avatarPos, entityPos, nullptr) < m_CustomRange;
 		}
 	}

@@ -1,12 +1,8 @@
 #include "pch-il2cpp.h"
 #include "ProtectionBypass.h"
 
-#include <imgui.h>
-#include <common/util.h>
+#include <cheat/native.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
-#include <common/HookManager.h>
-#include <common/close-handle.h>
 
 namespace cheat::feature 
 {
@@ -33,7 +29,7 @@ namespace cheat::feature
 
 		if (m_Enabled) {
 			LOG_TRACE("Trying to close mhyprot handle.");
-			if (CloseHandleByName(L"\\Device\\mhyprot2"))
+			if (util::CloseHandleByName(L"\\Device\\mhyprot2"))
 				LOG_INFO("Mhyprot2 handle successfuly closed. Happy hacking ^)");
 			else
 				LOG_ERROR("Failed closing mhyprot2 handle. Maybe dev updated anti-cheat.");

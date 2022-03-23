@@ -1,10 +1,10 @@
 #pragma once
-#include <cheat/Feature.h>
-#include <common/config/Config.h>
+#include <cheat-base/cheat/Feature.h>
+#include <cheat-base/config/Config.h>
 
-#include <gcclib/PipeTransfer.h>
-#include <gcclib/data/PacketData.h>
-#include <gcclib/data/PacketModifyData.h>
+#include <cheat-base/PipeTransfer.h>
+#include <cheat-base/pipe/PacketData.h>
+#include <cheat-base/pipe/PacketModifyData.h>
 
 namespace cheat::feature 
 {

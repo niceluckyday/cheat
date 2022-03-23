@@ -1,12 +1,9 @@
 #include "pch-il2cpp.h"
 #include "NoClip.h"
 
-#include <imgui.h>
-#include <common/util.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
-#include <common/HookManager.h>
 #include <cheat/events.h>
+#include <cheat/game.h>
 
 namespace cheat::feature 
 {
@@ -64,7 +61,7 @@ namespace cheat::feature
 
 		if (!m_Enabled && isApplied)
 		{
-			auto avatarEntity = GetAvatarEntity();
+			auto avatarEntity = game::GetAvatarEntity();
 			if (avatarEntity == nullptr || !app::BaseEntity_IsActive(avatarEntity, nullptr))
 				return;
 
@@ -78,7 +75,7 @@ namespace cheat::feature
 
 		isApplied = true;
 
-		auto avatarEntity = GetAvatarEntity();
+		auto avatarEntity = game::GetAvatarEntity();
 		if (avatarEntity == nullptr || !app::BaseEntity_IsActive(avatarEntity, nullptr))
 			return;
 
@@ -89,7 +86,7 @@ namespace cheat::feature
 		auto rigidBody = app::BaseEntity_GetRigidbody(avatarEntity, nullptr);
 		app::Rigidbody_set_detectCollisions(rigidBody, false, nullptr);
 
-		auto cameraEntity = (app::BaseEntity*)GetMainCameraEntity();
+		auto cameraEntity = (app::BaseEntity*)game::GetMainCameraEntity();
 		auto relativeEntity = m_CameraRelative ? cameraEntity : avatarEntity;
 
 		app::Vector3 dir = {};
@@ -111,14 +108,14 @@ namespace cheat::feature
 		if (Hotkey(VK_SHIFT, 0).IsPressed())
 			dir = dir - app::BaseEntity_GetUp(avatarEntity, nullptr);
 
-		app::Vector3 prevPos = GetRelativePosition(avatarEntity);
+		app::Vector3 prevPos = game::GetRelativePosition(avatarEntity);
 		if (IsVectorZero(prevPos))
 			return;
 
 		float deltaTime = app::Time_get_deltaTime(nullptr, nullptr);
 
 		app::Vector3 newPos = prevPos + dir * m_Speed * deltaTime;
-		SetRelativePosition(avatarEntity, newPos);
+		game::SetRelativePosition(avatarEntity, newPos);
 	}
 
 	// Fixing player sync packets when no clip
@@ -133,15 +130,15 @@ namespace cheat::feature
 			return;
 		}
 
-		if (GetAvatarRuntimeId() != entityId)
+		if (game::GetAvatarRuntimeId() != entityId)
 			return;
 
-		auto avatarEntity = GetAvatarEntity();
+		auto avatarEntity = game::GetAvatarEntity();
 		if (avatarEntity == nullptr)
 			return;
 
 		auto avatarPosition = app::BaseEntity_GetAbsolutePosition(avatarEntity, nullptr);
-		auto currentTime = GetCurrentTimeMillisec();
+		auto currentTime = util::GetCurrentTimeMillisec();
 
 		if (prevSyncTime > 0)
 		{

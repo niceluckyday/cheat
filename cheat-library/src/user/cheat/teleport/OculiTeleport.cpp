@@ -1,16 +1,14 @@
 #include "pch-il2cpp.h"
 #include "OculiTeleport.h"
 
-#include <imgui.h>
-#include <common/util.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
+#include <cheat/game.h>
 
 namespace cheat::feature 
 {
     static bool OculiFilter(app::BaseEntity* entity) 
     {
-        return IsEntityFilterValid(entity, GetFilterCrystalShell());
+        return game::IsEntityFilterValid(entity, game::GetFilterCrystalShell());
     }
 
     OculiTeleport::OculiTeleport() : ItemTeleportBase("OculiTeleport", "Oculi", OculiFilter)

@@ -1,19 +1,17 @@
 #include "pch-il2cpp.h"
 #include "ChestTeleport.h"
 
-#include <imgui.h>
-#include <common/util.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
+#include <cheat/game.h>
 
 namespace cheat::feature 
 {
-    static bool OculiFilter(app::BaseEntity* entity) 
+    static bool ChestFilter(app::BaseEntity* entity) 
     {
-        return IsEntityFilterValid(entity, GetFilterChest());
+        return game::IsEntityFilterValid(entity, game::GetFilterChest());
     }
 
-    ChestTeleport::ChestTeleport() : ItemTeleportBase("ChestTeleport", "Chest", OculiFilter),
+    ChestTeleport::ChestTeleport() : ItemTeleportBase("ChestTeleport", "Chest", ChestFilter),
         NF(m_OnlyUnlocked, "Show only unlocked chest", "ChestTeleport", true) { }
 
     void cheat::feature::ChestTeleport::DrawFilterOptions()

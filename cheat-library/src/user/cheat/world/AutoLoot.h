@@ -1,7 +1,7 @@
 #pragma once
-#include <cheat/Feature.h>
-#include <common/config/Config.h>
-#include <common/thread-safe.h>
+#include <cheat-base/cheat/Feature.h>
+#include <cheat-base/config/Config.h>
+#include <cheat-base/thread-safe.h>
 
 namespace cheat::feature 
 {

@@ -20,12 +20,12 @@
     <ClInclude Include="src\util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\cheat-base\cheat-base.vcxproj">
+      <Project>{adb35022-823b-4dc0-b495-3efefbd3a82f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\cheat-library\cheat-library.vcxproj">
       <Project>{704c8746-1bd9-4bc8-9ebe-8187f1a1ad72}</Project>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
-    </ProjectReference>
-    <ProjectReference Include="..\gcclib\gcclib.vcxproj">
-      <Project>{adb35022-823b-4dc0-b495-3efefbd3a82f}</Project>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -83,7 +83,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <SupportJustMyCode>false</SupportJustMyCode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include/;$(SolutionDir)/gcclib/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include/;$(SolutionDir)cheat-base/src;$(SolutionDir)cheat-base/vendor/simpleIni/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -92,7 +92,7 @@
       <ImageHasSafeExceptionHandlers>
       </ImageHasSafeExceptionHandlers>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>gcclib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cheat-base.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -112,7 +112,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include/;$(SolutionDir)/gcclib/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include/;$(SolutionDir)cheat-base/src;$(SolutionDir)cheat-base/vendor/simpleIni/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,7 +122,7 @@
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>gcclib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cheat-base.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>

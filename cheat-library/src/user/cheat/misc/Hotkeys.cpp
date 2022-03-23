@@ -1,11 +1,7 @@
 #include "pch-il2cpp.h"
 #include "Hotkeys.h"
 
-#include <imgui.h>
-#include <common/util.h>
-#include <common/config/Config.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
 
 namespace cheat::feature 
 {

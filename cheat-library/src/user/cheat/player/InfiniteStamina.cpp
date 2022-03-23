@@ -1,12 +1,9 @@
 #include "pch-il2cpp.h"
 #include "InfiniteStamina.h"
 
-#include <imgui.h>
-#include <common/util.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
-#include <common/HookManager.h>
 #include <cheat/events.h>
+#include <cheat/game.h>
 
 namespace cheat::feature 
 {
@@ -73,7 +70,7 @@ namespace cheat::feature
 	void InfiniteStamina::OnMoveSync(uint32_t entityId, app::MotionInfo* syncInfo)
 	{
 		static bool afterDash = false;
-		if (GetAvatarRuntimeId() != entityId)
+		if (game::GetAvatarRuntimeId() != entityId)
 			return;
 
 		// LOG_DEBUG("Movement packet: %s", magic_enum::enum_name(syncInfo->fields.motionState).data());

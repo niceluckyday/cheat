@@ -1,6 +1,8 @@
 #pragma once
-#include <cheat/Feature.h>
-#include <common/config/Config.h>
+#include <cheat-base/cheat/Feature.h>
+#include <cheat-base/config/Config.h>
+
+#include <il2cpp-appdata.h>
 
 namespace cheat::feature 
 {

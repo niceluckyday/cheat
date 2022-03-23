@@ -3,15 +3,14 @@
 #include <sstream>
 #include <filesystem>
 
-#include <gcclib/simple-ini.hpp>
-#include <gcclib/Globals.h>
+#include <SimpleIni.h>
+#include <cheat-base/Logger.h>
 
 #include "injector.h"
 #include "util.h"
 
 const std::string GlobalGenshinProcName = "GenshinImpact.exe";
 const std::string ChinaGenshinProcName = "YuanShen.exe";
-
 
 static CSimpleIni ini;
 
@@ -30,7 +29,7 @@ int main(int argc, char* argv[])
     Sleep(1000); // Wait for unloading all dlls.
 
     ini.SetUnicode();
-    ini.LoadFile(Globals::configFileName.c_str());
+    ini.LoadFile("cfg.ini");
 
     HANDLE hProcess = OpenGenshinProcess();
     if (hProcess == NULL)
@@ -40,7 +39,7 @@ int main(int argc, char* argv[])
     }
 
     std::filesystem::current_path(path);
-    ini.SaveFile(Globals::configFileName.c_str());
+    ini.SaveFile("cfg.ini");
 
     std::string filename = (argc == 2 ? argv[1] : "CLibrary.dll");
     std::filesystem::path currentDllPath = std::filesystem::current_path() / filename;
@@ -57,7 +56,7 @@ HANDLE OpenGenshinProcess()
     STARTUPINFOA startInfo{};
     PROCESS_INFORMATION processInformation{};
 
-    auto filePath = GetOrSelectPath(ini, "Inject", "GenshinPath", "genshin path", "Executable\0*.exe\0");
+    auto filePath = util::GetOrSelectPath(ini, "Inject", "GenshinPath", "genshin path", "Executable\0*.exe\0");
     if (filePath.empty())
         return NULL;
 
@@ -65,12 +64,12 @@ HANDLE OpenGenshinProcess()
         nullptr, 0, 0, FALSE, CREATE_SUSPENDED, nullptr, nullptr, &startInfo, &processInformation);
     if (result == FALSE) 
     {
-        LogLastError("Failed to create game process.");
-        LOG_ERROR("If you have problem with GenshinImpact.exe path. You can change it manually in %s.", Globals::configFileName.c_str());
+        LOG_LAST_ERROR("Failed to create game process.");
+        LOG_ERROR("If you have problem with GenshinImpact.exe path. You can change it manually in cfg.ini.");
         return NULL;
     }
 
-    ini.SaveFile(Globals::configFileName.c_str());
+    ini.SaveFile("cfg.ini");
 
     ResumeThread(processInformation.hThread);
 

@@ -1,6 +1,5 @@
 #pragma once
-#include <cheat/Feature.h>
-#include <common/config/Config.h>
+#include <cheat-base/cheat/Feature.h>
 
 namespace cheat::feature 
 {

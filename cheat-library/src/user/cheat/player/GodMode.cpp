@@ -1,11 +1,7 @@
 #include "pch-il2cpp.h"
 #include "GodMode.h"
 
-#include <imgui.h>
-#include <common/util.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
-#include <common/HookManager.h>
 
 namespace cheat::feature 
 {

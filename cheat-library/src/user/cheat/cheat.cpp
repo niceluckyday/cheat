@@ -1,13 +1,14 @@
 #include <pch-il2cpp.h>
 #include "cheat.h"
 
+#include <resource.h>
+
 #include <cheat/events.h>
-#include <cheat/CheatManager.h>
-#include <common/HookManager.h>
-#include <common/config/Config.h>
+#include <cheat/GenshinMisc.h>
+
+#include <cheat-base/cheat/misc/Settings.h>
 
 #include <cheat/misc/ProtectionBypass.h>
-#include <cheat/misc/Settings.h>
 #include <cheat/misc/PacketSniffer.h>
 #include <cheat/misc/Hotkeys.h>
 #include <cheat/misc/Debug.h>
@@ -67,7 +68,12 @@ namespace cheat
 			});
 #undef FEAT_INST
 
-		manager.Init(hModule);
+		LPBYTE pFontData = nullptr;
+		DWORD dFontSize = 0;
+		if (!util::GetResourceMemory(hModule, IDR_RCDATA1, pFontData, dFontSize))
+			LOG_WARNING("Failed to get font from resources.");
+
+		manager.Init(pFontData, dFontSize, &GenshinMisc::GetInstance());
 	}
 
 	static void GameManager_Update_Hook(app::GameManager* __this, MethodInfo* method)

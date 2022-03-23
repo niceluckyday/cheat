@@ -1,7 +1,8 @@
 #pragma once
-#include <cheat/Feature.h>
-#include <common/config/Config.h>
-#include <common/util.h>
+#include <cheat-base/cheat/Feature.h>
+#include <cheat-base/config/Config.h>
+
+#include <cheat/game.h>
 
 namespace cheat::feature 
 {
@@ -25,15 +26,15 @@ namespace cheat::feature
 		void OnKeyUp(short key, bool& cancelled);
 	
 	protected:
-		ItemTeleportBase(const std::string& section, const std::string& name, FilterFunc filter);
+		ItemTeleportBase(const std::string& section, const std::string& name, game::FilterFunc filter);
 	
 	private:
-		void DrawEntities(const FilterFunc& filter);
-		void DrawNearestEntityInfo(const char* prefix, FilterFunc filter);
+		void DrawEntities(const game::FilterFunc& filter);
+		void DrawNearestEntityInfo(const char* prefix, game::FilterFunc filter);
 		
 		std::string section;
 		std::string name;
-		FilterFunc filter;
+		game::FilterFunc filter;
 	};
 }
 

@@ -1,12 +1,9 @@
 #include "pch-il2cpp.h"
 #include "MapTeleport.h"
 
-#include <imgui.h>
-#include <common/util.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
-#include <common/HookManager.h>
 #include <cheat/events.h>
+#include <cheat/game.h>
 
 namespace cheat::feature 
 {
@@ -98,7 +95,7 @@ namespace cheat::feature
 		LOG_DEBUG("Stage 0. Target location at %s", il2cppi_to_string(position).c_str());
 
 		auto avatarPosition = app::ActorUtils_GetAvatarPos(nullptr, nullptr);
-		auto nearestWaypoint = FindNearestWaypoint(position);
+		auto nearestWaypoint = game::FindNearestWaypoint(position);
 
 		if (nearestWaypoint.data == nullptr)
 		{
@@ -274,7 +271,7 @@ namespace cheat::feature
 
 	static void Entity_SetPosition_Hook(app::BaseEntity* __this, app::Vector3 position, bool someBool, MethodInfo* method)
 	{
-		if (__this->fields._runtimeID_k__BackingField == GetAvatarRuntimeId())
+		if (__this->fields._runtimeID_k__BackingField == game::GetAvatarRuntimeId())
 		{
 			MapTeleport& mapTeleport = MapTeleport::GetInstance();
 			mapTeleport.OnSetAvatarPosition(position);

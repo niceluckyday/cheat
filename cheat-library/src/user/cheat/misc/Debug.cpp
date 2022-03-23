@@ -1,13 +1,10 @@
 #include "pch-il2cpp.h"
 #include "Debug.h"
 
-#include <imgui.h>
-#include <common/util.h>
-#include <helpers.h>
-#include <gui/gui-util.h>
-#include <common/HookManager.h>
-#include <magic_enum.hpp>
 #include <cheat/teleport/MapTeleport.h>
+#include <cheat/game.h>
+
+#include <helpers.h>
 
 namespace cheat::feature 
 {
@@ -253,17 +250,17 @@ namespace cheat::feature
                 if (!typeFilters[(int)entity->fields.entityType])
                     continue;
 
-                if (checkOnlyShells && !IsEntityCrystalShell(entity))
+                if (checkOnlyShells && !game::IsEntityCrystalShell(entity))
                     continue;
 
                 if (useObjectNameFilter && il2cppi_to_string(app::BaseEntity_ToStringRelease(entity, nullptr)).find(objectNameFilter) == -1)
                     continue;
 
-                if (ImGui::TreeNode(&entity, "Entity 0x%p; Dist %.3fm", entity, GetDistToAvatar(entity)))
+                if (ImGui::TreeNode(&entity, "Entity 0x%p; Dist %.3fm", entity, game::GetDistToAvatar(entity)))
                 {
                     if (ImGui::Button("Teleport"))
                     {
-                        auto rpos = GetRelativePosition(entity);
+                        auto rpos = game::GetRelativePosition(entity);
                         auto apos = app::WorldShiftManager_GetAbsolutePosition(nullptr, rpos, nullptr);
 
                         auto& mapTeleport = MapTeleport::GetInstance();

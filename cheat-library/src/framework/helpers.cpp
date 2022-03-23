@@ -2,16 +2,11 @@
 // Helper functions
 
 #include "pch-il2cpp.h"
+#include "helpers.h"
 
 #define WIN32_LEAN_AND_MEAN
 
-#include <windows.h>
-#include <string>
 #include <codecvt>
-
-#include <gcclib/util.h>
-
-#include "helpers.h"
 
 
 // Helper function to get the module base address
@@ -44,15 +39,15 @@ std::string il2cppi_to_string(Il2CppString* str) {
 }
 
 std::string il2cppi_to_string(app::Vector vec) {
-    return string_format("{ x = %f, y = %f, z = %f }", vec._x, vec._y, vec._z);
+    return util::string_format("{ x = %f, y = %f, z = %f }", vec._x, vec._y, vec._z);
 }
 
 std::string il2cppi_to_string(app::Vector2 vec) {
-    return string_format("{ x = %f, y = %f }", vec.x, vec.y);
+    return util::string_format("{ x = %f, y = %f }", vec.x, vec.y);
 }
 
 std::string il2cppi_to_string(app::Vector3 vec) {
-    return string_format("{ x = %f, y = %f, z = %f }", vec.x, vec.y, vec.z);
+    return util::string_format("{ x = %f, y = %f, z = %f }", vec.x, vec.y, vec.z);
 }
 
 // Helper function to convert System.String to std::string
@@ -68,7 +63,7 @@ std::string to_hex_string(app::Byte__Array* barray, int length) {
 
     std::stringstream stream;
     auto uarray = ToUniArray(barray, uint8_t);
-    return to_hex_string(uarray->begin(), length);
+    return util::to_hex_string(uarray->begin(), length);
 }
 
 #endif

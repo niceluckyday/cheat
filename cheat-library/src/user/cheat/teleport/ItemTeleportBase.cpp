@@ -1,18 +1,14 @@
 #include "pch-il2cpp.h"
 #include "ItemTeleportBase.h"
 
-#include <imgui.h>
-#include <common/util.h>
-#include <gcclib/util.h>
 #include <helpers.h>
-#include <gui/gui-util.h>
 #include <cheat/teleport/MapTeleport.h>
-#include <cheat/CheatManager.h>
+#include <cheat-base/cheat/CheatManager.h>
 #include <cheat/events.h>
 
 namespace cheat::feature 
 {
-    ItemTeleportBase::ItemTeleportBase(const std::string& section, const std::string& name, FilterFunc filter) : Feature(),
+    ItemTeleportBase::ItemTeleportBase(const std::string& section, const std::string& name, game::FilterFunc filter) : Feature(),
 		NF(m_Key, "TP to nearest key", section, Hotkey()),
 		NF(m_ShowInfo, "Show info", section, true),
         section(section), name(name), filter(filter)
@@ -22,12 +18,12 @@ namespace cheat::feature
 
     void ItemTeleportBase::DrawMain()
     {
-		auto desc = string_format("When key pressed, will teleport to nearest %s if exists.", name.c_str());
+		auto desc = util::string_format("When key pressed, will teleport to nearest %s if exists.", name.c_str());
 		ConfigWidget(m_Key, desc.c_str());
 
 		DrawFilterOptions();
 
-		auto nodeName = string_format("%s list", name.c_str());
+		auto nodeName = util::string_format("%s list", name.c_str());
 		if (ImGui::TreeNode(nodeName.c_str()))
 		{
 			DrawEntities(filter);
@@ -52,21 +48,18 @@ namespace cheat::feature
 
 		if (m_Key.value().IsPressed(key))
 		{
-			auto entity = FindNearestEntity(GetFilterChest());
+			auto entity = game::FindNearestEntity(filter);
 			if (entity != nullptr)
 			{
-				auto relPos = GetRelativePosition(entity);
-				auto absPos = app::WorldShiftManager_GetAbsolutePosition(nullptr, relPos, nullptr);
 				MapTeleport& mapTeleport = MapTeleport::GetInstance();
-
-				mapTeleport.TeleportTo(absPos);
+				mapTeleport.TeleportTo(game::GetAbsolutePosition(entity));
 			}
 		}
 	}
 
-	void ItemTeleportBase::DrawNearestEntityInfo(const char* prefix, FilterFunc filter)
+	void ItemTeleportBase::DrawNearestEntityInfo(const char* prefix, game::FilterFunc filter)
 	{
-		auto nearestEntity = FindNearestEntity(filter);
+		auto nearestEntity = game::FindNearestEntity(filter);
 		if (nearestEntity == nullptr)
 		{
 			ImGui::Text(prefix); ImGui::SameLine();
@@ -74,12 +67,12 @@ namespace cheat::feature
 			return;
 		}
 		ImGui::Text(prefix); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 1.0f, 0.1f, 1.0f), "%.3fm", GetDistToAvatar(nearestEntity));
+		ImGui::TextColored(ImVec4(0.1f, 1.0f, 0.1f, 1.0f), "%.3fm", game::GetDistToAvatar(nearestEntity));
 	}
 
-	void ItemTeleportBase::DrawEntities(const FilterFunc& filter)
+	void ItemTeleportBase::DrawEntities(const game::FilterFunc& filter)
 	{
-		auto entities = FindEntities(filter);
+		auto entities = game::FindEntities(filter);
 		if (entities.size() == 0)
 		{
 			ImGui::Text("Not found.");
@@ -88,16 +81,13 @@ namespace cheat::feature
 
 		for (const auto& entity : entities)
 		{
-			ImGui::Text("Dist %.03fm", GetDistToAvatar(entity));
+			ImGui::Text("Dist %.03fm", game::GetDistToAvatar(entity));
 			ImGui::SameLine();
-			auto label = string_format("Teleport ## %p", entity);
+			auto label = util::string_format("Teleport ## %p", entity);
 			if (ImGui::Button(label.c_str()))
 			{
-				auto rpos = GetRelativePosition(entity);
-				auto apos = app::WorldShiftManager_GetAbsolutePosition(nullptr, rpos, nullptr);
-
 				MapTeleport& mapTeleport = MapTeleport::GetInstance();
-				mapTeleport.TeleportTo(apos);
+				mapTeleport.TeleportTo(game::GetAbsolutePosition(entity));
 			}
 		}
 	}

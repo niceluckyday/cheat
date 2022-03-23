@@ -1,21 +1,10 @@
 #include "pch-il2cpp.h"
 #include "main.h"
 
-#include <filesystem>
-#include <string>
-#include <iostream>
-
-#include <magic_enum.hpp>
-
-#include <gcclib/Logger.h>
-#include <gcclib/Globals.h>
-
 #include <helpers.h>
 #include <il2cpp-init.h>
-#include <gui/renderer.h>
 #include <cheat/cheat.h>
-#include <common/config/Config.h>
-#include <cheat/misc/Settings.h>
+#include <cheat-base/cheat/misc/Settings.h>
 
 void Run(HMODULE* phModule)
 {
@@ -25,7 +14,7 @@ void Run(HMODULE* phModule)
     il2cpp_thread_attach(il2cpp_domain_get());
 
     // Init config
-    std::string configPath = (std::filesystem::current_path() / Globals::configFileName).string();
+    std::string configPath = (std::filesystem::current_path() / "cfg.ini").string();
     config::Init(configPath);
 
     // Init logger

@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 
-#include <gcclib/Logger.h>
+#include <cheat-base/Logger.h>
 
 #include "il2cpp-metadata-version.h"
 
@@ -204,7 +204,7 @@ inline bool IsVectorZero(const app::Vector3& vector)
 // Helper function to get the module base address
 uintptr_t il2cppi_get_base_address();
 
-// Helpre function to get the UnityPlayer.dll base address
+// Helper function to get the UnityPlayer.dll base address
 uintptr_t il2cppi_get_unity_address();
 
 // Helper function to open a new console window and redirect stdout there

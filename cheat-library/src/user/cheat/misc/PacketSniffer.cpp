@@ -1,12 +1,7 @@
 #include "pch-il2cpp.h"
 #include "PacketSniffer.h"
 
-#include <imgui.h>
-#include <common/util.h>
-#include <common/HookManager.h>
-#include <gui/gui-util.h>
 #include <helpers.h>
-#include <gcclib/Globals.h>
 
 namespace cheat::feature 
 {
@@ -18,7 +13,7 @@ namespace cheat::feature
 		NF(m_CapturingEnabled, "Capturing", "PacketSniffer", false),
 		NF(m_ManipulationEnabled, "Manipulation", "PacketSniffer", false),
 		m_NextTimeToConnect(0),
-		m_Pipe({ Globals::packetPipeName })
+		m_Pipe({ "genshin_packet_pipe" })
 	{
 		HookManager::install(app::KcpNative_kcp_client_send_packet, KcpNative_kcp_client_send_packet_Hook);
 		HookManager::install(app::KcpClient_TryDequeueEvent, KcpClient_TryDequeueEvent_Hook);

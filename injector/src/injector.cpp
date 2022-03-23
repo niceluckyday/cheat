@@ -5,7 +5,7 @@
 #define IPrintError(text, ...)
 #else
 #define ILog(text, ...) printf(text, __VA_ARGS__)
-#define ILogError(text, ...) ILog(text, __VA_ARGS__); std::cout << "Error: " << GetLastErrorAsString() << std::endl
+#define ILogError(text, ...) ILog(text, __VA_ARGS__); std::cout << "Error: " << util::GetLastErrorAsString() << std::endl
 #endif
 
 #ifdef _WIN64
