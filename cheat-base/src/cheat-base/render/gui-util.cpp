@@ -6,6 +6,7 @@
 
 #include <imgui.h>
 #include <misc/cpp/imgui_stdlib.h>
+#include <cheat-base/util.h>
 
 
 void HelpMarker(const char* desc)
@@ -58,6 +59,26 @@ bool InputHotkey(const char* label, Hotkey* hotkey, bool clearable)
     ImGui::InputText(label, hotkeyBuffer, 10, ImGuiInputTextFlags_CallbackAlways, HotkeyCallback, &userdata);
     ImGui::PopItemWidth();
 
+    return changed;
+}
+
+bool InputPath(const char* label, std::filesystem::path* buffer, bool folder, const char* filter)
+{
+    bool changed = false;
+    ImGui::PushID(label);
+    if (ImGui::Button("Browse"))
+    {
+        auto value = folder ? util::SelectDirectory(label) : util::SelectFile(filter, label);
+        if (value)
+        {
+            *buffer = *value;
+            changed = true;
+        }
+    }
+    ImGui::SameLine();
+    changed |= ImGui::InputText(label, (char*)buffer->c_str(), buffer->string().capacity());
+
+    ImGui::PopID();
     return changed;
 }
 
@@ -193,6 +214,17 @@ bool ConfigWidget(const char* label, config::field::BaseField<std::string>& fiel
     return result;
 }
 
+bool ConfigWidget(const char* label, config::field::BaseField<std::filesystem::path>& field, bool onlyDirectories, const char* filter, const char* desc)
+{
+    bool result = InputPath(label, field);
+    if (IsValueChanged(field.valuePtr(), result))
+        field.Check();
+
+    ShowDesc(desc);
+
+    return result;
+}
+
 bool ConfigWidget(config::field::BaseField<bool>& field, const char* desc)
 {
     return ConfigWidget(field.GetFriendlyName().c_str(), field, desc);
@@ -215,7 +247,12 @@ bool ConfigWidget(config::field::HotkeyField& field, bool clearable, const char*
 
 bool ConfigWidget(config::field::BaseField<std::string>& field, const char* desc)
 {
-    return ConfigWidget(field.GetFriendlyName().c_str(), field, desc);;
+    return ConfigWidget(field.GetFriendlyName().c_str(), field, desc);
+}
+
+bool ConfigWidget(config::field::BaseField<std::filesystem::path>& field, bool folder, const char* filter, const char* desc)
+{
+    return ConfigWidget(field.GetFriendlyName().c_str(), field, folder, filter, desc);
 }
 
 #undef ShowDesc

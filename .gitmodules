@@ -10,3 +10,9 @@
 [submodule "cheat-base/vendor/magic_enum"]
 	path = cheat-base/vendor/magic_enum
 	url = https://github.com/Neargye/magic_enum.git
+[submodule "cheat-library/vendor/protobuf"]
+	path = cheat-library/vendor/protobuf
+	url = https://github.com/protocolbuffers/protobuf.git
+[submodule "cheat-library/vendor/json"]
+	path = cheat-library/vendor/json
+	url = https://github.com/nlohmann/json.git

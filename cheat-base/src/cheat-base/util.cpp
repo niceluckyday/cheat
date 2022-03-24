@@ -54,7 +54,7 @@ namespace util
         return stream.str();
     }
 
-    std::string SelectDirectory(const char* title)
+    std::optional<std::string> SelectDirectory(const char* title)
     {
         auto currPath = std::filesystem::current_path();
 
@@ -98,7 +98,7 @@ namespace util
         return std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}.to_bytes(u16);
     }
 
-    std::string SelectFile(const char* filter, const char* title)
+    std::optional<std::string> SelectFile(const char* filter, const char* title)
     {
         auto currPath = std::filesystem::current_path();
 
@@ -119,7 +119,7 @@ namespace util
         ofn.lpstrInitialDir = NULL;
         ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
-        std::string result = {};
+        std::optional<std::string> result = {};
         if (GetOpenFileName(&ofn) == TRUE)
             result = std::string(szFile);
 
@@ -127,9 +127,8 @@ namespace util
         return result;
     }
 
-    std::string GetOrSelectPath(CSimpleIni& ini, const char* section, const char* name, const char* friendName, const char* filter)
+    std::optional<std::string> GetOrSelectPath(CSimpleIni& ini, const char* section, const char* name, const char* friendName, const char* filter)
     {
-
         auto savedPath = ini.GetValue(section, name);
         if (savedPath != nullptr)
             return std::string(savedPath);
@@ -138,8 +137,10 @@ namespace util
 
         auto titleStr = string_format("Select %s", friendName);
         auto selectedPath = filter == nullptr ? SelectDirectory(titleStr.c_str()) : SelectFile(filter, titleStr.c_str());
+        if (!selectedPath)
+            return {};
 
-        ini.SetValue(section, name, (selectedPath).c_str());
+        ini.SetValue(section, name, selectedPath->c_str());
         return selectedPath;
     }
 

@@ -124,6 +124,7 @@
     <ClInclude Include="src\cheat-base\config\FieldHeader.h" />
     <ClInclude Include="src\cheat-base\config\field\BaseField.h" />
     <ClInclude Include="src\cheat-base\config\field\HotkeyField.h" />
+    <ClInclude Include="src\cheat-base\config\field\StringField.h" />
     <ClInclude Include="src\cheat-base\config\field\ToggleField.h" />
     <ClInclude Include="src\cheat-base\render\backend\dx11-hook.h" />
     <ClInclude Include="src\cheat-base\Event.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="src\cheat-base\config\Config.cpp" />
     <ClCompile Include="src\cheat-base\config\FieldHeader.cpp" />
     <ClCompile Include="src\cheat-base\config\field\HotkeyField.cpp" />
+    <ClCompile Include="src\cheat-base\config\field\StringField.cpp" />
     <ClCompile Include="src\cheat-base\config\field\ToggleField.cpp" />
     <ClCompile Include="src\cheat-base\render\backend\dx11-hook.cpp" />
     <ClCompile Include="src\cheat-base\render\gui-util.cpp" />

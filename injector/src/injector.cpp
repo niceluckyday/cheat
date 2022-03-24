@@ -16,7 +16,7 @@
 
 bool InjectDLL(HANDLE hProc, const std::string& filepath) 
 {
-#ifdef _DEBUG // _DEBUG
+#ifndef MANUAL_MAP// _DEBUG
 	// Using LoadLibrary inject to be able to debug DLL in attached process.
 	// NOTE. For debug also needs disable mhyprot protection. (See protection-bypass.h in cheat-library)
 	// NOTE 2. Also need find way to disable antidebug.
@@ -46,7 +46,7 @@ bool InjectDLL(HANDLE hProc, const std::string& filepath)
 	return result;
 }
 
-#ifdef _DEBUG
+#ifndef MANUAL_MAP
 static bool LoadLibraryInject(HANDLE hProc, const std::string& dllpath)
 {
 	HMODULE hKernel = GetModuleHandle("kernel32.dll");

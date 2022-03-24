@@ -39,7 +39,7 @@ struct MANUAL_MAPPING_DATA
 
 bool InjectDLL(HANDLE hProc, const std::string& filepath);
 
-#ifdef _DEBUG
+#ifndef MANUAL_MAP
 static bool LoadLibraryInject(HANDLE hProc, const std::string& dllpath);
 #endif 
 

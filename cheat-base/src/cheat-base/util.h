@@ -2,6 +2,7 @@
 #include <string>
 #include <stdexcept>
 #include <memory>
+#include <optional>
 
 #include <SimpleIni.h>
 
@@ -9,9 +10,9 @@
 
 namespace util 
 {
-	std::string SelectFile(const char* filter, const char* title);
-	std::string SelectDirectory(const char* title);
-	std::string GetOrSelectPath(CSimpleIni& ini, const char* section, const char* name, const char* friendName, const char* filter);
+	std::optional<std::string> SelectFile(const char* filter, const char* title);
+	std::optional<std::string> SelectDirectory(const char* title);
+	std::optional<std::string> GetOrSelectPath(CSimpleIni& ini, const char* section, const char* name, const char* friendName, const char* filter);
 
 	std::string GetLastErrorAsString();
 	bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& size);

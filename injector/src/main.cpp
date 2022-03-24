@@ -57,10 +57,10 @@ HANDLE OpenGenshinProcess()
     PROCESS_INFORMATION processInformation{};
 
     auto filePath = util::GetOrSelectPath(ini, "Inject", "GenshinPath", "genshin path", "Executable\0*.exe\0");
-    if (filePath.empty())
+    if (!filePath)
         return NULL;
 
-    BOOL result = CreateProcessA(filePath.c_str(),
+    BOOL result = CreateProcessA(filePath->c_str(),
         nullptr, 0, 0, FALSE, CREATE_SUSPENDED, nullptr, nullptr, &startInfo, &processInformation);
     if (result == FALSE) 
     {

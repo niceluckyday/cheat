@@ -9,7 +9,7 @@
 #include <cheat-base/cheat/misc/Settings.h>
 
 #include <cheat/misc/ProtectionBypass.h>
-#include <cheat/misc/PacketSniffer.h>
+#include <cheat/misc/sniffer/PacketSniffer.h>
 #include <cheat/misc/Hotkeys.h>
 #include <cheat/misc/Debug.h>
 

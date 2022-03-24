@@ -10,6 +10,7 @@
 // add headers that you want to pre-compile here
 #include "il2cpp-appdata.h"
 
+#include <nlohmann/json.hpp>
 #include <magic_enum.hpp>
 #include <fmt/format.h>
 
