@@ -1,6 +1,8 @@
 #include "pch-il2cpp.h"
 #include "PacketSniffer.h"
 
+#include "SnifferWindow.h"
+
 #include <fstream>
 
 #include <helpers.h>
@@ -17,6 +19,7 @@ namespace cheat::feature
 		NF(m_PipeEnabled, "Pipe", "PacketSniffer", false),
 		NF(m_ProtoDirPath, "Proto dir path", "PacketSniffer", ""),
 		NF(m_ProtoIDFilePath, "Proto id file path", "PacketSniffer", ""),
+
 		m_ProtoManager(m_ProtoIDFilePath, m_ProtoDirPath),
 		m_NextTimeToConnect(0),
 		m_Pipe({ "genshin_packet_pipe" })
@@ -63,6 +66,12 @@ namespace cheat::feature
 			}
 		}
 
+		auto& window = sniffer::SnifferWindow::GetInstance();
+
+		ConfigWidget(window.m_Show, "Show capturing window.");
+		if (window.m_Show)
+			window.Draw();
+		
 		if (ImGui::BeginPopup("Error"))
 		{
 			ImGui::Text("Please fill 'Proto dir path' and 'Proto id file path' before enabling capture.");
@@ -105,23 +114,21 @@ namespace cheat::feature
 		auto name = m_ProtoManager.GetName(packetData.messageId);
 		if (!name)
 			return true;
-
-		std::cout << magic_enum::enum_name(type) << " Name: " << *name;
+		packetData.name = *name;
+		packetData.type = type;
 
 		auto message = m_ProtoManager.GetJson(packetData.messageId, packetData.messageData);
 		if (!message)
-		{
-			std::cout << std::endl;
 			return true;
-		}
+		packetData.messageJson = *message;
 
-		std::cout << " Message: " << *message << std::endl;
+		sniffer::PacketInfo info(packetData);
+		sniffer::SnifferWindow::GetInstance().OnPacketIO(info);
 
 		if (!m_PipeEnabled || (!m_Pipe.IsPipeOpened() && !TryConnectToPipe()))
 			return true;
 
 		packetData.waitForModifyData = false; // m_ManipulationEnabled;
-		packetData.type = type;
 		SendData(packetData);
 
 		//if (m_ManipulationEnabled)

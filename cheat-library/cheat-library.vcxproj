@@ -67,6 +67,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\user\cheat\misc\sniffer\SnifferWindow.h" />
+    <ClInclude Include="src\user\cheat\misc\sniffer\PacketInfo.h" />
     <ClInclude Include="src\user\cheat\misc\sniffer\ProtoManager.h" />
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="src\user\cheat\events.h" />
@@ -106,6 +108,8 @@
     <ClInclude Include="src\user\cheat\game.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\user\cheat\misc\sniffer\SnifferWindow.cpp" />
+    <ClCompile Include="src\user\cheat\misc\sniffer\PacketInfo.cpp" />
     <ClCompile Include="src\user\cheat\misc\sniffer\ProtoManager.cpp" />
     <ClCompile Include="src\user\cheat\events.cpp" />
     <ClCompile Include="src\user\cheat\GenshinMisc.cpp" />

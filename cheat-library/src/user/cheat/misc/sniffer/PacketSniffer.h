@@ -11,6 +11,7 @@
 #include <cheat-base/pipe/PacketModifyData.h>
 
 #include "ProtoManager.h"
+#include "PacketInfo.h"
 
 namespace cheat::feature 
 {
@@ -38,7 +39,7 @@ namespace cheat::feature
 		bool OnPacketIO(app::KcpPacket_1* packet, PacketType type);
 
 	private:
-		
+
 		sniffer::ProtoManager m_ProtoManager;
 		PipeTransfer m_Pipe;
 		std::time_t m_NextTimeToConnect;
@@ -49,6 +50,7 @@ namespace cheat::feature
 		PacketData ParseRawPacketData(char* encryptedData, uint32_t length);
 		void SendData(PacketData& data);
 		PacketModifyData ReceiveData();
+
 		bool OnCapturingChanged();
 
 		static char* EncryptXor(void* content, uint32_t length);

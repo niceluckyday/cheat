@@ -5,12 +5,12 @@ void PacketModifyData::Write(PipeTransfer* transfer)
 {
 	transfer->Write<PacketModifyType>(type);
 	if (type == PacketModifyType::Modified)
-		transfer->WriteVector(modifiedData);
+		transfer->WriteString(modifiedData);
 }
 
 void PacketModifyData::Read(PipeTransfer* transfer)
 {
 	type = transfer->Read<PacketModifyType>();
 	if (type == PacketModifyType::Modified) 
-		modifiedData = transfer->ReadVector();
+		modifiedData = transfer->ReadString();
 }

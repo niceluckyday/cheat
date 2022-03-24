@@ -15,7 +15,7 @@ public:
 	~PacketModifyData() {}
 	
 	PacketModifyType type;
-	std::vector<byte> modifiedData;
+	std::string modifiedData;
 
 	// Inherited via PipeSerializedObject
 	virtual void Write(PipeTransfer* transfer) override;
