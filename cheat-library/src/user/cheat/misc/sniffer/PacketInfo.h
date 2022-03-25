@@ -23,6 +23,11 @@ namespace cheat::feature::sniffer
 	private:
 		nlohmann::json m_JObject;
 		int64_t m_Time;
+
+		bool m_DrawBeauty;
+		std::string m_JsonMessageBeauty;
+		std::string m_Header;
+
 		PacketData m_Data;
 	};
 }

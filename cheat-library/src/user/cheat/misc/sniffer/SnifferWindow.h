@@ -3,7 +3,17 @@
 
 namespace cheat::feature::sniffer
 {
-	class Filter
+
+	class IFilter
+	{
+	public:
+		virtual bool Draw(bool canBeRemoved = true)  = 0;
+		virtual bool Execute(const sniffer::PacketInfo& info) = 0;
+		virtual nlohmann::json Serialize() = 0;
+	};
+
+
+	class Filter : public IFilter
 	{
 	public:
 		enum class CompareType
@@ -13,16 +23,31 @@ namespace cheat::feature::sniffer
 
 		enum class ObjectType
 		{
-			KeyValue, AnyKey, AnyValue
+			KeyValue, AnyKey, AnyValue, Name, PacketId
 		};
 
-		void Draw();
-		bool Execute(const sniffer::PacketInfo& info);
+		virtual bool Draw(bool canBeRemoved = true) override;
+		virtual bool Execute(const sniffer::PacketInfo& info) override;
 
-		nlohmann::json Serialize();
+		virtual nlohmann::json Serialize() override;
+		
+		Filter();
+		Filter(nlohmann::json& object);
+	private:
+
+		bool FindAnyValue(const sniffer::PacketInfo& info);
+		bool FindAnyKey(const sniffer::PacketInfo& info);
+		bool FindKeyValue(const sniffer::PacketInfo& info);
+		std::vector<nlohmann::json> FindKeys(const sniffer::PacketInfo& info, bool onlyFirst = false);
+
+		CompareType m_CompareType;
+		ObjectType m_ObjectType;
+
+		std::string m_KeyPattern;
+		std::string m_ObjectPattern;
 	};
 
-	class FilterGroup
+	class FilterGroup : public IFilter
 	{
 	public:
 
@@ -31,15 +56,18 @@ namespace cheat::feature::sniffer
 			AND, OR, NOT
 		};
 
-		void Draw();
-		bool Execute(const sniffer::PacketInfo& info);
+		virtual bool Draw(bool canBeRemoved = true) override;
+		virtual bool Execute(const sniffer::PacketInfo& info) override;
 
-		void AddFilter(const Filter& filter);
-		void RemoveFilter(const Filter& filter);
+		virtual nlohmann::json Serialize() override;
 
-		void SetRule(Rule rule);
+		FilterGroup();
+		FilterGroup(nlohmann::json& object);
 
-		nlohmann::json Serialize();
+	private:
+		Rule m_Rule;
+		std::list<IFilter*> m_Filters;
+
 	};
 
 	class SnifferWindow
@@ -69,6 +97,9 @@ namespace cheat::feature::sniffer
 		SortType m_SortType;
 
 		std::list<sniffer::PacketInfo> m_CapturedPackets;
+		std::list<sniffer::PacketInfo> m_CachedPackets;
+
+
 		FilterGroup m_FilterGroup;
 
 		SnifferWindow();

@@ -4,8 +4,10 @@
 #include <misc/cpp/imgui_stdlib.h>
 
 cheat::feature::sniffer::PacketInfo::PacketInfo(PacketData packetData)
-	: m_Data(packetData), m_JObject(nlohmann::json::parse(packetData.messageJson)),
-	m_Time(util::GetCurrentTimeMillisec())
+	: m_Data(packetData),
+	m_JObject(nlohmann::json::parse(packetData.messageJson)),
+	m_Time(util::GetCurrentTimeMillisec()),
+	m_DrawBeauty(false)
 {
 
 }
@@ -113,7 +115,27 @@ void DrawObject(const std::string& key, nlohmann::json& jsonObject)
 void cheat::feature::sniffer::PacketInfo::Draw()
 {
 	ImGui::PushID(this);
-	auto key = fmt::format("[{}] {} | {}. Size: {}", magic_enum::enum_name(type()), id(), name(), size());
-	DrawObject(key, m_JObject);
+
+	if (m_Header.empty())
+		m_Header = fmt::format("[{}] {} | {}. Size: {}", magic_enum::enum_name(type()), id(), name(), size());
+
+	if (ImGui::TreeNode(m_Header.c_str()))
+	{
+		if (ImGui::Checkbox("## Beauty", &m_DrawBeauty) && m_DrawBeauty && m_JsonMessageBeauty.empty())
+		{
+			m_JsonMessageBeauty = m_JObject.dump(2);
+		}
+		ImGui::SameLine();
+
+		if (m_DrawBeauty)
+			ImGui::InputTextMultiline("JSON Message", &m_JsonMessageBeauty);
+		else
+			ImGui::InputText("JSON Message", &m_Data.messageJson);
+
+
+		DrawObject("Data", m_JObject);
+		ImGui::TreePop();
+	}
+
 	ImGui::PopID();
 }
