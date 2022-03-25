@@ -84,7 +84,7 @@ namespace cheat::feature::sniffer
 		auto message = ParseMessage(*name, data);
 		if (message == nullptr)
 		{
-			LOG_ERROR("Failed to parse message with id %d.");
+			LOG_ERROR("Failed to parse message with id %u.", id);
 			return {};
 		}
 
@@ -102,7 +102,7 @@ namespace cheat::feature::sniffer
 
 		if (nameMap.count(id) == 0)
 		{
-			LOG_WARNING("Failed to find proto with id %d", id);
+			LOG_WARNING("Failed to find proto with id %u", id);
 			return {};
 		}
 
