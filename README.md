@@ -4,6 +4,7 @@ Simple cheat for genshin with protection bypass.
 ## Status
 Some funcitonal can work incorrect with version 2.6.
 In the nearest feature it will be fix.
+
 For now the following issues are known: 
 - `Game mode` don't work
 - `Map teleport` && `Oculi/Chest teleport` don't work
