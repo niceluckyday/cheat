@@ -296,15 +296,6 @@ void PatternScanner::SearchAll()
 
 uintptr_t PatternScanner::Search(const std::string& name)
 {	
-	for (auto& [moduleName, moduleOffsetsData] : m_CacheOffsets)
-	{
-		if (moduleOffsetsData.count(name) > 0)
-		{
-			uintptr_t moduleBase = GetModuleInfo(moduleName).base;
-			return moduleBase + moduleOffsetsData[name];
-		}
-	}
-
 	for (auto& [moduleName, modulePatternsData] : m_ModulePatterns)
 	{
 		if (modulePatternsData.count(name) > 0)
@@ -319,7 +310,10 @@ uintptr_t PatternScanner::Search(const std::string& moduleName, const std::strin
 	uintptr_t moduleBase = GetModuleInfo(moduleName).base;
 
 	if (m_CacheOffsets.count(moduleName) > 0 && m_CacheOffsets[moduleName].count(name) > 0)
-		return moduleBase + m_CacheOffsets[moduleName][name];
+	{
+		uintptr_t offset = m_CacheOffsets[moduleName][name];
+		return offset != 0 ? moduleBase + offset : 0;
+	}
 
 	if (m_ModulePatterns.count(moduleName) > 0 && m_ModulePatterns[moduleName].count(name) > 0)
 		return Search(moduleName, name, m_ModulePatterns[moduleName][name]);

@@ -25,6 +25,10 @@ namespace util
 	std::string to_hex_string(uint8_t* barray, int length);
 	bool IsLittleEndian();
 
+	std::string base64_encode(BYTE const* buf, unsigned int bufLen);
+	std::vector<BYTE> base64_decode(std::string const&);
+
+
 	template<typename ... Args>
 	std::string string_format(const std::string& format, Args ... args)
 	{

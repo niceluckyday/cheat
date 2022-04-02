@@ -53,7 +53,7 @@ DO_APP_FUNC(0x03BB1030, void, Formula_CalcAttackResult, (void* __this, CombatPro
 
 
 // World cheats
-DO_APP_FUNC(0x04691F40, void, VCMonsterAIController_TryDoSkill, (/* VCMonsterAIController */ void* __this, uint32_t skillID, MethodInfo* method)); // Manual
+DO_APP_FUNC(0x01A56020, void, VCMonsterAIController_TryDoSkill, (/* VCMonsterAIController */ void* __this, uint32_t skillID, MethodInfo* method)); // Manual
 DO_APP_FUNC(0x04D96080, void, LCSelectPickup_AddInteeBtnByID, (void* __this, BaseEntity* entity, MethodInfo* method));
 DO_APP_FUNC(0x04D94930, bool, LCSelectPickup_IsInPosition, (void* __this, BaseEntity* entity, MethodInfo* method));
 DO_APP_FUNC(0x04D946E0, bool, LCSelectPickup_IsOutPosition, (void* __this, BaseEntity* entity, MethodInfo* method));
@@ -94,7 +94,7 @@ DO_APP_FUNC(0x01092510, bool, ActorAbilityPlugin_OnEvent, (void* __this, BaseEve
 
 
 // Kill aura
-DO_APP_FUNC(0x02A02D60, void, EvtCrash_Init, (EvtCrash* __this, uint32_t targetID, MethodInfo* method)); // Manual offset
+DO_APP_FUNC(0x04F8C3A0, void, EvtCrash_Init, (EvtCrash* __this, uint32_t targetID, MethodInfo* method)); // Manual offset
 DO_APP_FUNC(0x02F2A3E0, void, EventManager_FireEvent, (EventManager* __this, BaseEvent* e, bool immediately, MethodInfo* method));
 DO_APP_FUNC(0x050ABF60, bool, FixedBoolStack_get_value, (FixedBoolStack* __this, MethodInfo* method));
 DO_APP_FUNC(0x04566900, EvtCrash*, CreateCrashEvent, (void* __this, MethodInfo* method));

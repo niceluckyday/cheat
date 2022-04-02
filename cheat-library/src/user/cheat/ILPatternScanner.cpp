@@ -236,7 +236,7 @@ uintptr_t ILPatternScanner::Search(const std::string& moduleName, const std::str
 	}
 
 	uintptr_t result = PatternScanner::Search(moduleName, name);
-	if (result != 0)
+	if (result != 0 || isSaved)
 	{
 		if (!isSaved)
 			LOG_DEBUG("Method '%s::%s' was found at %s + 0x%p.", moduleName.c_str(), name.c_str(),
@@ -343,6 +343,7 @@ void ILPatternScanner::LoadMethodPointers()
 #undef LOAD_METHOD_POINTERS
 
 	std::sort(m_MethodPointers.begin(), m_MethodPointers.end());
+	LOG_DEBUG("Loaded %llu method pointers.", m_MethodPointers.size());
 }
 
 template<typename T>
@@ -548,7 +549,8 @@ void ILPatternScanner::LoadMetadata()
 	}
 	// LoadGenericMethods();
 
-	LOG_DEBUG("Loaded %llu methods.", m_MethodPointers.size());
+	LOG_DEBUG("Loaded %llu method names.", m_MethodNameMap.size());
+	LOG_DEBUG("Loaded %llu usages.", m_UsageOffsetMap.size());
 }
 
 void ILPatternScanner::LoadClassMethods(Il2CppClass* klass)

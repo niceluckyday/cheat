@@ -50,7 +50,7 @@ namespace cheat::feature
 		PacketData ParseRawPacketData(char* encryptedData, uint32_t length);
 		void SendData(PacketData& data);
 		PacketModifyData ReceiveData();
-
+		void ProcessUnionMessage(const PacketData& packetData);
 		bool OnCapturingChanged();
 
 		static char* EncryptXor(void* content, uint32_t length);

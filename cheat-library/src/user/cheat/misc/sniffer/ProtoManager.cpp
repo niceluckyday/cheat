@@ -50,6 +50,7 @@ namespace cheat::feature::sniffer
 		{
 			auto id = std::stoi(it.key().c_str());
 			nameMap[id] = it.value();
+			idMap[it.value()] = id;
 		}
 		file.close();
 	}
@@ -77,16 +78,12 @@ namespace cheat::feature::sniffer
 		LoadProtoDir(protoDir);
 	}
 
-	std::optional<std::string> ProtoManager::GetJson(uint32_t id, std::vector<byte>& data)
+	std::optional <std::string> ProtoManager::GetJson(const std::string& name, std::vector<byte>& data)
 	{
-		auto name = GetName(id);
-		if (!name)
-			return {};
-		
-		auto message = ParseMessage(*name, data);
+		auto message = ParseMessage(name, data);
 		if (message == nullptr)
 		{
-			LOG_ERROR("Failed to parse message with id %u.", id);
+			LOG_ERROR("Failed to parse message with name %s.", name);
 			return {};
 		}
 
@@ -96,6 +93,15 @@ namespace cheat::feature::sniffer
 		delete message;
 
 		return jsonMessage;
+	}
+
+	std::optional<std::string> ProtoManager::GetJson(uint32_t id, std::vector<byte>& data)
+	{
+		auto name = GetName(id);
+		if (!name)
+			return {};
+		
+		return GetJson(*name, data);
 	}
 
 	std::optional<std::string> ProtoManager::GetName(uint32_t id)
@@ -110,4 +116,10 @@ namespace cheat::feature::sniffer
 
 		return nameMap[id];
 	}
+
+	uint16_t ProtoManager::GetId(const std::string& name)
+	{
+		return idMap.count(name) == 0 ? 0 : idMap[name];
+	}
+
 }

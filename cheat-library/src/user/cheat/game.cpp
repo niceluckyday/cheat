@@ -77,9 +77,6 @@ namespace cheat::game
 
 	float GetDistToAvatar(app::BaseEntity* entity)
 	{
-		if (entity == nullptr || entity->fields._transform_k__BackingField == nullptr)
-			return 0;
-
 		auto dist = app::Vector3_Distance(nullptr, GetAvatarRelativePosition(), GetRelativePosition(entity), nullptr);
 		return dist;
 	}

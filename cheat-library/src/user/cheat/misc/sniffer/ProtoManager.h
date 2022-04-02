@@ -16,7 +16,9 @@ namespace cheat::feature::sniffer
 		ProtoManager();
 
 		std::optional<std::string> GetJson(uint32_t id, std::vector<byte>& data);
+		std::optional<std::string> GetJson(const std::string& name, std::vector<byte>& byte);
 		std::optional<std::string> GetName(uint32_t id);
+		uint16_t GetId(const std::string& name);
 
 		void Load(const std::string& idFilePath, const std::string& protoDir);
 		void LoadIDFile(const std::string& filepath);
@@ -29,6 +31,7 @@ namespace cheat::feature::sniffer
 		std::shared_ptr<google::protobuf::compiler::DiskSourceTree> diskTree;
 
 		std::map<uint16_t, std::string> nameMap;
+		std::map<std::string, uint16_t> idMap;
 
 		google::protobuf::Message* ParseMessage(const std::string& name, std::vector<byte> data);
 

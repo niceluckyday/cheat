@@ -103,6 +103,83 @@ namespace cheat::feature
 		return instance;
 	}
 
+	void PacketSniffer::ProcessUnionMessage(const PacketData& packetData)
+	{
+		nlohmann::json cmdListObject = nlohmann::json::parse(packetData.messageJson);
+
+		for (auto& cmd : cmdListObject["cmdList"])
+		{
+			uint32_t id = cmd["messageId"];
+			std::string body = cmd["body"];
+			auto bodyBytes = util::base64_decode(body);
+
+			auto combatJsonString = m_ProtoManager.GetJson(id, bodyBytes);
+			if (!combatJsonString)
+				return;
+
+			if (id != 347)
+			{
+				PacketData newPacketData;
+				newPacketData.headData = packetData.headData;
+				newPacketData.headJson = packetData.headJson;
+				newPacketData.messageId = id;
+				newPacketData.messageData = bodyBytes;
+				newPacketData.messageJson = *combatJsonString;
+				auto name = m_ProtoManager.GetName(packetData.messageId);
+				newPacketData.name = !name ? "<Unknown>" : *name;
+				newPacketData.type = packetData.type;
+				newPacketData.valid = true;
+
+				sniffer::PacketInfo packetInfo = sniffer::PacketInfo(newPacketData);
+				sniffer::SnifferWindow::GetInstance().OnPacketIO(packetInfo);
+				return;
+			}
+
+			auto combatJsonObject = nlohmann::json::parse(*combatJsonString);
+			for (auto& invokeJson : combatJsonObject["invokeList"])
+			{
+				std::string argumentType = invokeJson["argumentType"];
+				static std::map<std::string, std::string> typeMap = {
+					{ "ENTITY_MOVE", "EntityMoveInfo" },
+					{ "COMBAT_EVT_BEING_HIT", "EvtBeingHitInfo" },
+					{ "COMBAT_ANIMATOR_STATE_CHANGED", "EvtAnimatorStateChangedInfo" },
+					{ "COMBAT_FACE_TO_DIR", "EvtFaceToDirInfo" },
+					{ "COMBAT_SET_ATTACK_TARGET", "EvtSetAttackTargetInfo" },
+					{ "COMBAT_RUSH_MOVE", "EvtRushMoveInfo" },
+					{ "COMBAT_ANIMATOR_PARAMETER_CHANGED", "EvtAnimatorParameterInfo" },
+					{ "SYNC_ENTITY_POSITION", "EvtSyncEntityPositionInfo" },
+					{ "COMBAT_STEER_MOTION_INFO", "EvtCombatSteerMotionInfo" },
+					{ "COMBAT_FORCE_SET_POSITION_INFO", "EvtCombatForceSetPosInfo" },
+					{ "COMBAT_COMPENSATE_POS_DIFF", "EvtCompensatePosDiffInfo" },
+					{ "COMBAT_MONSTER_DO_BLINK", "EvtMonsterDoBlink" },
+					{ "COMBAT_FIXED_RUSH_MOVE", "EvtFixedRushMove" },
+					{ "COMBAT_SYNC_TRANSFORM", "EvtSyncTransform" },
+					{ "COMBAT_LIGHT_CORE_MOVE", "EvtLightCoreMove" }
+				};
+
+				if (typeMap.count(argumentType) == 0)
+				{
+					LOG_WARNING("Failed to find argument type %s", argumentType.c_str());
+					continue;
+				}
+
+				PacketData newPacketData;
+				newPacketData.name = typeMap[argumentType];
+				newPacketData.messageId = packetData.messageId;
+				newPacketData.headData = packetData.headData;
+				newPacketData.headJson = packetData.headJson;
+				newPacketData.messageData = util::base64_decode(invokeJson["combatData"]);
+
+				auto jsonData = m_ProtoManager.GetJson(newPacketData.name, newPacketData.messageData);
+				newPacketData.messageJson = jsonData ? *jsonData : "";
+				newPacketData.type = packetData.type;
+				newPacketData.valid = true;
+
+				sniffer::SnifferWindow::GetInstance().OnPacketIO(sniffer::PacketInfo(newPacketData));
+			}
+		}
+	}
+
 	bool PacketSniffer::OnPacketIO(app::KcpPacket_1* packet, PacketType type)
 	{
 		if (!m_CapturingEnabled)
@@ -122,6 +199,9 @@ namespace cheat::feature
 		if (!message)
 			return true;
 		packetData.messageJson = *message;
+
+		if (packetData.messageId == 55)
+			ProcessUnionMessage(packetData);
 
 		sniffer::PacketInfo info(packetData);
 		sniffer::SnifferWindow::GetInstance().OnPacketIO(info);
