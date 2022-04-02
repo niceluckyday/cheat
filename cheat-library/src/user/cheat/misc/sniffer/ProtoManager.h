@@ -13,11 +13,12 @@ namespace cheat::feature::sniffer
 	class ProtoManager
 	{
 	public:
-		ProtoManager(const std::string& idFilePath, const std::string& protoDir);
+		ProtoManager();
 
 		std::optional<std::string> GetJson(uint32_t id, std::vector<byte>& data);
 		std::optional<std::string> GetName(uint32_t id);
 
+		void Load(const std::string& idFilePath, const std::string& protoDir);
 		void LoadIDFile(const std::string& filepath);
 		void LoadProtoDir(const std::string& dirPath);
 
@@ -30,6 +31,7 @@ namespace cheat::feature::sniffer
 		std::map<uint16_t, std::string> nameMap;
 
 		google::protobuf::Message* ParseMessage(const std::string& name, std::vector<byte> data);
+
 	};
 }
 

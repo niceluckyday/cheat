@@ -10,7 +10,9 @@ namespace cheat::feature
     DumbEnemies::DumbEnemies() : Feature(),
         NFF(m_Enabled, "Dumb enemies", "m_DumbEnemiesEnabled", "World", false)
     {
-        HookManager::install(app::VCMonsterAIController_TryDoSkill, VCMonsterAIController_TryDoSkill_Hook);
+        *m_Enabled = false;
+        // Disabled before getting offsets
+        // HookManager::install(app::VCMonsterAIController_TryDoSkill, VCMonsterAIController_TryDoSkill_Hook);
     }
 
     const FeatureGUIInfo& DumbEnemies::GetGUIInfo() const
@@ -21,7 +23,12 @@ namespace cheat::feature
 
     void DumbEnemies::DrawMain()
     {
+        ImGui::Text("Waiting for update");
+        ImGui::BeginDisabled();
+
         ConfigWidget(m_Enabled, "Enemies don't react to player.");
+
+        ImGui::EndDisabled();
     }
 
     bool DumbEnemies::NeedStatusDraw() const

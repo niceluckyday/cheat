@@ -27,13 +27,13 @@ namespace cheat::feature
 			app::Application_RecordUserData(nullptr, i, nullptr);
 		}
 
-		if (m_Enabled) {
+		// if (m_Enabled) {
 			LOG_TRACE("Trying to close mhyprot handle.");
 			if (util::CloseHandleByName(L"\\Device\\mhyprot2"))
 				LOG_INFO("Mhyprot2 handle successfuly closed. Happy hacking ^)");
 			else
 				LOG_ERROR("Failed closing mhyprot2 handle. Maybe dev updated anti-cheat.");
-		}
+		//}
 
 		LOG_DEBUG("Initialized");
 	}

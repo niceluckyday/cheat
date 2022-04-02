@@ -1,6 +1,7 @@
 #include <pch-il2cpp.h>
 #include "cheat.h"
 
+#include <helpers.h>
 #include <resource.h>
 
 #include <cheat/events.h>
@@ -28,6 +29,7 @@
 #include <cheat/teleport/ChestTeleport.h>
 #include <cheat/teleport/MapTeleport.h>
 #include <cheat/teleport/OculiTeleport.h>
+#include <cheat/ILPatternScanner.h>
 
 namespace cheat 
 {

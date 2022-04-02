@@ -52,6 +52,8 @@ END
 
 IDR_RCDATA1             RCDATA                  "Ruda-Bold.ttf"
 
+IDR_RCDATA2             RCDATA                  "signatures.json"
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

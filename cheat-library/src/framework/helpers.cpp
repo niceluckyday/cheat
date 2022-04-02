@@ -7,9 +7,37 @@
 #define WIN32_LEAN_AND_MEAN
 
 #include <codecvt>
+#include <Psapi.h>
 
 
 // Helper function to get the module base address
+
+uintptr_t il2cpp_get_mono_base_address()
+{
+	static HMODULE hMono = GetModuleHandle("mono.dll");
+
+	if (hMono != NULL)
+		return (uintptr_t)hMono;
+
+	HMODULE hModules[1024] = {};
+
+	DWORD cbNeeded = 0;
+	BOOL result = EnumProcessModules(GetCurrentProcess(), hModules, sizeof(hModules), &cbNeeded);
+	if (result == FALSE)
+		return NULL;
+
+	for (int i = 0; i < (cbNeeded / sizeof(HMODULE)); i++)
+	{
+		if (hModules[i] == NULL)
+			continue;
+
+		if (GetProcAddress(hModules[i], "il2cpp_thread_attach") != NULL)
+			return (uintptr_t)hModules[i];
+	}
+
+    return 0;
+}
+
 uintptr_t il2cppi_get_base_address() {
     return (uintptr_t) GetModuleHandleW(L"UserAssembly.dll");
 }

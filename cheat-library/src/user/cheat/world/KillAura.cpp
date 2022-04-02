@@ -15,7 +15,7 @@ namespace cheat::feature
         NF(m_AttackDelay,  "Attack delay time (in ms)", "KillAura", 100),
         NF(m_RepeatDelay,  "Repeat delay time (in ms)", "KillAura", 1000)
     { 
-
+		*m_Enabled = false;
 		events::GameUpdateEvent += MY_METHOD_HANDLER(KillAura::OnGameUpdate);
 	}
 
@@ -27,16 +27,21 @@ namespace cheat::feature
 
     void KillAura::DrawMain()
     {
+		ImGui::Text("Waiting for update");
+		ImGui::BeginDisabled();
+
 		ConfigWidget("Enabled", m_Enabled, "Enables kill aura.\n" \
             "Kill aura cause crash damage for monster around you.");
 		ConfigWidget(m_Range, 0.1f, 5.0f, 100.0f);
 		ConfigWidget(m_OnlyTargeted, "If enabled, only monsters whose target at you will be affected by kill aura.");
 		ConfigWidget(m_AttackDelay, 1, 0, 1000, "Delay before attack next monster.");
 		ConfigWidget(m_RepeatDelay, 1, 100, 2000, "Delay before next attack same monster.");
+
+		ImGui::EndDisabled();
     }
 
     bool KillAura::NeedStatusDraw() const
-{
+	{
         return m_Enabled;
     }
 

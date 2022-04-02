@@ -45,7 +45,14 @@ int main(int argc, char* argv[])
     std::filesystem::path currentDllPath = std::filesystem::current_path() / filename;
     std::filesystem::path tempDllPath = std::filesystem::temp_directory_path() / filename;
 
-    std::filesystem::copy(currentDllPath, tempDllPath, std::filesystem::copy_options::update_existing);
+    std::error_code ec;
+    std::filesystem::copy_file(currentDllPath, tempDllPath, std::filesystem::copy_options::update_existing, ec);
+    if (ec)
+    {
+        LOG_ERROR("Copy dll failed: %s", ec.message().c_str());
+        std::system("pause");
+    }
+
     InjectDLL(hProcess, tempDllPath.string());
 
     CloseHandle(hProcess);

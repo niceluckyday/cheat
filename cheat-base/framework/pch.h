@@ -11,6 +11,7 @@
 #include "framework.h"
 
 #include <magic_enum.hpp>
+#include <nlohmann/json.hpp>
 
 #include <iostream>
 #include <string>

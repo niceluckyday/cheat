@@ -24,7 +24,7 @@
       <Project>{adb35022-823b-4dc0-b495-3efefbd3a82f}</Project>
     </ProjectReference>
     <ProjectReference Include="..\cheat-library\cheat-library.vcxproj">
-      <Project>{704c8746-1bd9-4bc8-9ebe-8187f1a1ad72}</Project>
+      <Project>{ce178784-cb96-45ca-ae16-fc0da1126970}</Project>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
   </ItemGroup>

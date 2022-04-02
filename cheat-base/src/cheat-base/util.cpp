@@ -54,7 +54,14 @@ namespace util
         return stream.str();
     }
 
-    std::optional<std::string> SelectDirectory(const char* title)
+	bool IsLittleEndian()
+	{
+		unsigned int i = 1;
+		char* c = (char*)&i;
+		return (*c);
+	}
+
+	std::optional<std::string> SelectDirectory(const char* title)
     {
         auto currPath = std::filesystem::current_path();
 
@@ -163,4 +170,20 @@ namespace util
 	{
 		return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	}
+
+	std::vector<std::string> StringSplit(const std::string& delimiter, const std::string& content)
+	{
+		std::vector<std::string> tokens;
+		size_t pos = 0;
+		size_t prevPos = 0;
+		std::string token;
+		while ((pos = content.find(delimiter, prevPos)) != std::string::npos) {
+			token = content.substr(prevPos, pos - prevPos);
+			tokens.push_back(token);
+			prevPos = pos + delimiter.length();
+		}
+		tokens.push_back(content.substr(prevPos));
+		return tokens;
+	}
+
 }

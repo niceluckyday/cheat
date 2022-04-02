@@ -20,10 +20,11 @@ namespace cheat::feature
 		NF(m_ProtoDirPath, "Proto dir path", "PacketSniffer", ""),
 		NF(m_ProtoIDFilePath, "Proto id file path", "PacketSniffer", ""),
 
-		m_ProtoManager(m_ProtoIDFilePath, m_ProtoDirPath),
+		m_ProtoManager(),
 		m_NextTimeToConnect(0),
 		m_Pipe({ "genshin_packet_pipe" })
 	{
+		m_ProtoManager.Load(m_ProtoIDFilePath, m_ProtoDirPath);
 		HookManager::install(app::KcpNative_kcp_client_send_packet, KcpNative_kcp_client_send_packet_Hook);
 		HookManager::install(app::KcpClient_TryDequeueEvent, KcpClient_TryDequeueEvent_Hook);
 

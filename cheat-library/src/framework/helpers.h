@@ -201,6 +201,9 @@ inline bool IsVectorZero(const app::Vector3& vector)
     return vector.x == 0 && vector.y == 0 && vector.z == 0;
 }
 
+// Helper function to get mono module base address
+uintptr_t il2cpp_get_mono_base_address();
+
 // Helper function to get the module base address
 uintptr_t il2cppi_get_base_address();
 

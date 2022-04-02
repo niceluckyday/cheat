@@ -3,10 +3,13 @@
 #include <stdexcept>
 #include <memory>
 #include <optional>
+#include <vector>
+#include <cheat-base/Logger.h>
 
 #include <SimpleIni.h>
 
-#define LOG_LAST_ERROR(msg) LOG_ERROR("%s. Error: %s", msg, util::GetLastErrorAsString().c_str())
+
+#define LOG_LAST_ERROR(fmt, ...) util::LogLastError(__FILE__, __LINE__, fmt, __VA_ARGS__)
 
 namespace util 
 {
@@ -18,7 +21,9 @@ namespace util
 	bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& size);
 	int64_t GetCurrentTimeMillisec();
 
+	std::vector<std::string> StringSplit(const std::string& delimiter, const std::string& content);
 	std::string to_hex_string(uint8_t* barray, int length);
+	bool IsLittleEndian();
 
 	template<typename ... Args>
 	std::string string_format(const std::string& format, Args ... args)
@@ -29,5 +34,27 @@ namespace util
 		auto buf = std::make_unique<char[]>(size);
 		std::snprintf(buf.get(), size, format.c_str(), args ...);
 		return std::string(buf.get(), buf.get() + size - 1); // We don't want the '\0' inside
+	}
+
+	template<typename ... Args>
+	void LogLastError(const char* filepath, int line, const char* fmt, Args ... args)
+	{
+		auto newFmt = string_format("%s. Error: %s", fmt, GetLastErrorAsString().c_str());
+		Logger::Log(Logger::Level::Error, filepath, line, newFmt.c_str(), args ...);
+	}
+
+	template<class T>
+	static T ReadValue(void* data, int offset, bool littleEndian = false)
+	{
+		char* cData = (char*)data;
+		T result = {};
+		if (IsLittleEndian() != littleEndian)
+		{
+			for (int i = 0; i < sizeof(T); i++)
+				((char*)&result)[i] = cData[offset + sizeof(T) - i - 1];
+			return result;
+		}
+		memcpy_s(&result, sizeof(result), cData + offset, sizeof(result));
+		return result;
 	}
 }

@@ -20,11 +20,11 @@ namespace config
 	void AddField(field::ToggleField& entry);
 
 	template<class R, typename ... Args>
-	R NewField(Args ... args) 
+	R& NewField(Args ... args) 
 	{
-		auto value = R(args ...);
-		AddField(value);
-		return value;
+		auto value = new R(args ...);
+		AddField(*value);
+		return *value;
 	}
 }
 

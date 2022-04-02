@@ -16,7 +16,7 @@
 
 bool InjectDLL(HANDLE hProc, const std::string& filepath) 
 {
-#ifndef MANUAL_MAP// _DEBUG
+#ifndef MANUAL_MAP
 	// Using LoadLibrary inject to be able to debug DLL in attached process.
 	// NOTE. For debug also needs disable mhyprot protection. (See protection-bypass.h in cheat-library)
 	// NOTE 2. Also need find way to disable antidebug.
@@ -86,11 +86,11 @@ static bool LoadLibraryInject(HANDLE hProc, const std::string& dllpath)
 	// TODO: Add waiting for thread end and release unneccessary data.
 	// VirtualFreeEx(hProc, pDLLPath, 0, MEM_RELEASE); 
 
-	ILogError("[DLL Injection] Successfully LoadLibraryA injection.\n");
+	ILog("[DLL Injection] Successfully LoadLibraryA injection.\n");
 	return true;
 }
 
-#endif // _DEBUG
+#else
 
 bool ManualMapDll(HANDLE hProc, BYTE* pSrcData, SIZE_T FileSize, bool ClearHeader, bool ClearNonNeededSections, bool AdjustProtections, bool SEHExceptionSupport, DWORD fdwReason) {
 	IMAGE_NT_HEADERS* pOldNtHeader = nullptr;
@@ -411,3 +411,4 @@ void __stdcall Shellcode(MANUAL_MAPPING_DATA* pData) {
 	else
 		pData->hMod = reinterpret_cast<HINSTANCE>(pBase);
 }
+#endif // MANUAL_MAP

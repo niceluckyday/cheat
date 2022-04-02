@@ -69,7 +69,9 @@ namespace cheat::feature::sniffer
 		return message;
 	}
 
-	ProtoManager::ProtoManager(const std::string& idFilePath, const std::string& protoDir)
+	ProtoManager::ProtoManager() {}
+	
+	void ProtoManager::Load(const std::string& idFilePath, const std::string& protoDir)
 	{
 		LoadIDFile(idFilePath);
 		LoadProtoDir(protoDir);
