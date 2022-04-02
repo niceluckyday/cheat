@@ -3999,6 +3999,7 @@ namespace app {
         bool _isCleared;
         bool _checkRemoveifCached_k__BackingField;
         bool _hasAddedInitialComponents;
+        float DKAFALDPOIH;
         bool _isEntityReady;
         void* onComponentInitPostCallback;
         void* onEntityReadyPreCallback;
