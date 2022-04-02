@@ -6,9 +6,9 @@ Some funcitonal can work incorrect with version 2.6.
 In the nearest feature it will be fix.
 
 For now the following issues are known: 
-- `Game mode` don't work
+- `God mode` don't work
 - `Map teleport` && `Oculi/Chest teleport` don't work
-- `Mob vaccum` don't work
+- `Mob vacuum` don't work
 - `Dumb enemies` don't work
 - `Kill aura` don't work
 - `Infinite stamina` default mode not working. (With `Move sync packet replacement` work fine)
