@@ -7,7 +7,7 @@ In the nearest feature it will be fix.
 
 For now the following issues are known: 
 - `God mode` don't work (fixed)
-- `Map teleport` && `Oculi/Chest teleport` don't work
+- `Map teleport` && `Oculi/Chest teleport` don't work (fixed)
 - `Mob vacuum` don't work (partially fixed)
 - `Dumb enemies` don't work
 - `Kill aura` don't work

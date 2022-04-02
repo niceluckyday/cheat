@@ -1,5 +1,6 @@
 #include "pch-il2cpp.h"
 #include "GodMode.h"
+#include <cheat/game.h>
 
 #include <helpers.h>
 
@@ -47,7 +48,7 @@ namespace cheat::feature
 	static bool Miscs_CheckTargetAttackable_Hook(void* __this, app::BaseEntity* attacker, app::BaseEntity* target, MethodInfo* method)
 	{
         auto& gm = GodMode::GetInstance();
-		if (gm.m_Enabled && target->fields.entityType == app::EntityType__Enum_1::Avatar)
+		if (gm.m_Enabled && game::IsAvatarEntity(target))
 			return false;
 
 		return callOrigin(Miscs_CheckTargetAttackable_Hook, __this, attacker, target, method);

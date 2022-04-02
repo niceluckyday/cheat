@@ -39,13 +39,14 @@ namespace cheat::game
 	app::Vector3 GetAvatarAbsolutePosition();
 
 	app::BaseEntity* GetAvatarEntity();
-	app::CameraEntity* GetMainCameraEntity();
+	uint32_t GetAvatarRuntimeId();
+	bool IsAvatarEntity(app::BaseEntity* entity);
 	void SetAvatarRelativePosition(app::Vector3 position);
 	float GetDistToAvatar(app::BaseEntity* entity);
+	app::CameraEntity* GetMainCameraEntity();
 
 	std::vector<app::BaseEntity*> GetEntities();
 	app::BaseEntity* GetEntityByRuntimeId(uint32_t runtimeId);
-	uint32_t GetAvatarRuntimeId();
 
 	// Entity filters
 	typedef bool (*FilterFunc)(app::BaseEntity* entity);

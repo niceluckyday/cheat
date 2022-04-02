@@ -3033,6 +3033,23 @@
             }
           ]
         },
+        "EntityManager_GetEntities": {
+          "signatures": [],
+          "xref": [
+            {
+              "offset": 11,
+              "sig": "4C 89 A4 24 B0 01 00 00 48 8B C8 E8"
+            },
+            {
+              "offset": 0,
+              "sig": "E8 ?? ?? ?? ?? 48 8B E8 48 85 C0 0F 84 01 01 00 00 48 8B 15"
+            },
+            {
+              "offset": 11,
+              "sig": "4C 89 BC 24 60 01 00 00 48 8B C8 E8"
+            }
+          ]
+        },
         "BaseEntity_ToStringRelease": {
           "signatures": [
             "E8 ?? ?? ?? ?? 84 C0 0F 85 0E 02 00 00 48 8B 0D ?? ?? ?? ?? 48 89 7C 24 50",

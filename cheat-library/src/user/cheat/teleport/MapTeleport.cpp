@@ -119,6 +119,9 @@ namespace cheat::feature
 			return false;
 
 		auto uimanager = GetSingleton(UIManager_1);
+		if (uimanager == nullptr)
+			return false;
+
 		auto screenCamera = uimanager->fields._uiCamera;
 		if (screenCamera == nullptr)
 			return false;
@@ -156,15 +159,19 @@ namespace cheat::feature
 	static void InLevelMapPageContext_OnMapClicked_Hook(app::InLevelMapPageContext* __this, app::Vector2 screenPos, MethodInfo* method)
 	{
 		MapTeleport& mapTeleport = MapTeleport::GetInstance();
+		LOG_DEBUG("Map clicked");
 
 		if (!mapTeleport.m_Enabled || !mapTeleport.m_Key.value().IsPressed())
 			return callOrigin(InLevelMapPageContext_OnMapClicked_Hook, __this, screenPos, method);
+
+		LOG_DEBUG("Map start finding location");
 
 		app::Vector2 mapPosition{};
 		bool mapPosResult = ScreenToMapPosition(__this, screenPos, &mapPosition);
 		if (!mapPosResult)
 			return;
 
+		LOG_DEBUG("Calling teleport");
 		mapTeleport.TeleportTo(mapPosition);
 	}
 
@@ -271,7 +278,7 @@ namespace cheat::feature
 
 	static void Entity_SetPosition_Hook(app::BaseEntity* __this, app::Vector3 position, bool someBool, MethodInfo* method)
 	{
-		if (__this->fields._runtimeID_k__BackingField == game::GetAvatarRuntimeId())
+		if (game::IsAvatarEntity(__this))
 		{
 			MapTeleport& mapTeleport = MapTeleport::GetInstance();
 			mapTeleport.OnSetAvatarPosition(position);

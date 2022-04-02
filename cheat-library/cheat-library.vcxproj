@@ -181,7 +181,7 @@ timeout /t 5</Command>
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>$(OutDir)injector.exe
-powershell -nop -c "&amp; {sleep 10}"</Command>
+powershell -nop -c "&amp; {sleep 15}"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -216,7 +216,7 @@ timeout /t 5</Command>
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>$(OutDir)injector.exe
-powershell -nop -c "&amp; {sleep 10}"</Command>
+powershell -nop -c "&amp; {sleep 15}"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

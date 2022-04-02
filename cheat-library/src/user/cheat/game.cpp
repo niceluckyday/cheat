@@ -115,7 +115,7 @@ namespace cheat::game
 		if (entityManager == nullptr)
 			return {};
 
-		auto entities = ToUniList(entityManager->fields._entities, app::BaseEntity*);
+		auto entities = ToUniList(app::EntityManager_GetEntities(entityManager, nullptr), app::BaseEntity*);
 		if (entities == nullptr)
 			return {};
 
@@ -136,7 +136,23 @@ namespace cheat::game
 		if (entityManager == nullptr)
 			return 0;
 
-		return entityManager->fields._curAvatarEntityID;
+		auto avatarEntity = GetAvatarEntity();
+		if (avatarEntity == nullptr)
+			return 0;
+
+		return avatarEntity->fields._runtimeID_k__BackingField;
+	}
+
+	bool IsAvatarEntity(app::BaseEntity* entity)
+	{
+		if (entity == nullptr)
+			return false;
+
+		auto avatarID = GetAvatarRuntimeId();
+		if (avatarID == 0)
+			return false;
+
+		return avatarID == entity->fields._runtimeID_k__BackingField;
 	}
 
 	app::BaseEntity* GetEntityByRuntimeId(uint32_t runtimeId)

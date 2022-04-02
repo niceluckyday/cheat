@@ -150,6 +150,7 @@ DO_APP_FUNC_METHODINFO(0x0B19B338,     BaseEntity_GetBaseCombat__MethodInfo);
 DO_APP_FUNC(0x01E9F520, BaseEntity*,   EntityManager_GetCurrentAvatar,    (EntityManager* __this, MethodInfo* method));
 DO_APP_FUNC(0x01EBAB90, CameraEntity*, EntityManager_GetMainCameraEntity, (EntityManager* __this, MethodInfo* method));
 DO_APP_FUNC(0x01EA44F0, BaseEntity*,   EntityManager_GetValidEntity,      (EntityManager* __this, uint32_t runtimeID, MethodInfo* method));
+DO_APP_FUNC(0x01E9F090, List_1_MoleMole_BaseEntity_*, EntityManager_GetEntities, (EntityManager* __this, MethodInfo* method));
 
 DO_APP_FUNC(0x084045B0, void, Rigidbody_set_detectCollisions, (Rigidbody* __this, bool value, MethodInfo* method));
 DO_APP_FUNC(0x08404790, void, Rigidbody_set_isKinematic,      (Rigidbody* __this, bool value, MethodInfo* method));
