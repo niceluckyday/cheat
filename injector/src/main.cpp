@@ -63,7 +63,7 @@ HANDLE OpenGenshinProcess()
     STARTUPINFOA startInfo{};
     PROCESS_INFORMATION processInformation{};
 
-    auto filePath = util::GetOrSelectPath(ini, "Inject", "GenshinPath", "genshin path", "Executable\0*.exe\0");
+    auto filePath = GetOrSelectPath(ini, "Inject", "GenshinPath", "genshin path", "Executable\0GenshinImpact.exe;YuanShen.exe\0");
     if (!filePath)
         return NULL;
 
