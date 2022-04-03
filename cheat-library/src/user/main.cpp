@@ -14,7 +14,7 @@ bool StubTerminateProcess();
 
 void Run(HMODULE* phModule)
 {
-    Sleep(4000);
+    Sleep(10000);
 
 	// Init config
 	std::string configPath = (std::filesystem::current_path() / "cfg.ini").string();
