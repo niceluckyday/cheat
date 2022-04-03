@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-
+#include <mutex>
 #define EXTLOG(level, fmt, ...) Logger::Log(level, __FILE__, __LINE__, fmt, __VA_ARGS__)
 #define LOG_CRIT(fmt, ...) EXTLOG(Logger::Level::Critical, fmt, __VA_ARGS__)
 #define LOG_ERROR(fmt, ...) EXTLOG(Logger::Level::Error, fmt, __VA_ARGS__)
