@@ -44,6 +44,8 @@ namespace renderer
 	static void OnDX11Initialize(HWND window, ID3D11Device* pDevice, ID3D11DeviceContext* pContext, IDXGISwapChain* pChain)
 	{
 
+		LOG_DEBUG("ImGUI: DirectX11 backend initialized successfully.");
+
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;

@@ -4,7 +4,7 @@
 #include <detours.h>
 
 #define callOrigin(function, ...) \
-	HookManager::getOrigin(function)(__VA_ARGS__)
+	HookManager::getOrigin(function)(__VA_ARGS__, __func__)
 
 class HookManager
 {
@@ -17,10 +17,10 @@ public:
 	}
 
 	template <typename Fn>
-	[[nodiscard]] static Fn getOrigin(Fn handler) noexcept 
+	[[nodiscard]] static Fn getOrigin(Fn handler, const char* callerName = nullptr) noexcept
 	{
 		if (holderMap.count(reinterpret_cast<void*>(handler)) == 0) {
-			LOG_CRIT("Origin not found for handler.");
+			LOG_CRIT("Origin not found for handler: %s", callerName == nullptr ? "<Unknown>" : callerName);
 			system("pause");
 			exit(1);
 		}
