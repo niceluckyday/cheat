@@ -212,7 +212,8 @@ namespace cheat::game
 			{true, {
 				/*Anemoculus, Geoculus*/ "CrystalShell" ,
 				/*Crimson Agate*/ "Prop_Essence_01",
-				/*Electroculus*/ "ElectricCrystal"
+				/*Electroculus*/ "ElectricCrystal",
+				/*Lumenspar*/ "CelestiaSplinter_01"
 				}
 			}
 		};
