@@ -17,7 +17,7 @@ namespace util
 	std::optional<std::string> SelectDirectory(const char* title);
 	std::optional<std::string> GetOrSelectPath(CSimpleIni& ini, const char* section, const char* name, const char* friendName, const char* filter);
 
-	std::string GetLastErrorAsString();
+	std::string GetLastErrorAsString(DWORD errorId = 0);
 	bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& size);
 	int64_t GetCurrentTimeMillisec();
 
@@ -43,7 +43,8 @@ namespace util
 	template<typename ... Args>
 	void LogLastError(const char* filepath, int line, const char* fmt, Args ... args)
 	{
-		auto newFmt = string_format("%s. Error: %s", fmt, GetLastErrorAsString().c_str());
+		auto errorId = ::GetLastError();
+		auto newFmt = string_format("%s. Error: %d %s", fmt, errorId, GetLastErrorAsString(errorId).c_str());
 		Logger::Log(Logger::Level::Error, filepath, line, newFmt.c_str(), args ...);
 	}
 

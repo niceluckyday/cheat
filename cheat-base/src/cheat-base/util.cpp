@@ -17,10 +17,10 @@
 namespace util
 {
 
-    std::string GetLastErrorAsString()
-    {
+    std::string GetLastErrorAsString(DWORD errorId /*= 0*/)
+	{
         //Get the error message ID, if any.
-        DWORD errorMessageID = ::GetLastError();
+        DWORD errorMessageID = errorId == 0 ? ::GetLastError() : 0;
         if (errorMessageID == 0)
         {
             return std::string(); //No error message has been recorded

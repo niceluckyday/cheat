@@ -143,7 +143,8 @@ uintptr_t ILPatternScanner::SearchAPI(const std::string& apiFunctionName)
 	uintptr_t apiFuncAddress = reinterpret_cast<uintptr_t>(GetProcAddress(hMono, apiFunctionName.c_str()));
 	if (apiFuncAddress == 0)
 	{
-		LOG_WARNING("API %s not found.", apiFunctionName.c_str());
+		LOG_LAST_ERROR("API %s not found.", apiFunctionName.c_str());
+
 		return 0;
 	}
 
