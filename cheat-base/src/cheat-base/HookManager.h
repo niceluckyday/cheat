@@ -4,7 +4,7 @@
 #include <detours.h>
 
 #define callOrigin(function, ...) \
-	HookManager::getOrigin(function)(__VA_ARGS__, __func__)
+	HookManager::getOrigin(function, __func__)(__VA_ARGS__)
 
 class HookManager
 {
