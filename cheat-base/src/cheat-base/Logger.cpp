@@ -15,6 +15,7 @@ Logger::Level Logger::s_ConsoleLogLevel = Logger::Level::None;
 
 std::string Logger::directory = "";
 std::string Logger::logfilepath = "";
+std::mutex Logger::_mutex{};
 
 void Logger::SetLevel(Level level, LoggerType type)
 {
@@ -101,6 +102,8 @@ void Logger::Log(Logger::Level logLevel, const char* filepath, int line, const c
 
 	if (Logger::s_ConsoleLogLevel != Logger::Level::None && Logger::s_ConsoleLogLevel >= logLevel) 
 	{
+		const std::lock_guard<std::mutex> lock(_mutex);
+
 		auto logLineConsole = util::string_format("[%s:%d] %s", filename.c_str(), line, buffer);
 		std::cout << "[";
 
@@ -114,6 +117,8 @@ void Logger::Log(Logger::Level logLevel, const char* filepath, int line, const c
 
 	if (Logger::s_FileLogLevel != Logger::Level::None && Logger::s_FileLogLevel >= logLevel) 
 	{
+		const std::lock_guard<std::mutex> lock(_mutex);
+
 		auto rawTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 		struct tm gmtm;
 		gmtime_s(&gmtm, &rawTime);

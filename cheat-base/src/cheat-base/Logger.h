@@ -41,6 +41,8 @@ private:
 	static Level s_FileLogLevel;
 	static Level s_ConsoleLogLevel;
 
+	static std::mutex _mutex;
+
 	static std::string directory;
 	static std::string logfilepath;
 };
