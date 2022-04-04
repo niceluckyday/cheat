@@ -145,7 +145,7 @@
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\$(Configuration)\obj\$(ProjectName)\</IntDir>
     <CustomBuildBeforeTargets>Run</CustomBuildBeforeTargets>
-    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -159,7 +159,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_AMD64_;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_WINDOWS;_USRDLL;_DEBUG;CHEATLIBRARY_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_AMD64_;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_WINDOWS;_USRDLL;_DEBUG;CHEATLIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
@@ -167,9 +167,10 @@
       <AdditionalIncludeDirectories>$(ProjectDir)src/appdata;$(ProjectDir)src/framework;$(ProjectDir)res/;$(ProjectDir)vendor/protobuf/src/;$(ProjectDir)src/user;$(SolutionDir)cheat-base/src/;$(SolutionDir)cheat-base/vendor/imgui/;$(SolutionDir)cheat-base/vendor/json/single_include/;$(SolutionDir)cheat-base/vendor/magic_enum/include/;$(SolutionDir)cheat-base/vendor/fmt/include/;$(SolutionDir)cheat-base/vendor/simpleIni/;$(SolutionDir)cheat-base/vendor/detours/</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <Optimization>Full</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -177,14 +178,17 @@
       <EnableUAC>false</EnableUAC>
       <AdditionalLibraryDirectories>$(OutDir);$(ProjectDir)vendor\lib\</AdditionalLibraryDirectories>
       <AdditionalDependencies>cheat-base.lib;ntdll.lib;libprotobufd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
     <CustomBuildStep>
-      <Command>$(OutDir)injector.exe
-timeout /t 5</Command>
+      <Command>"$(OutDir)injector.exe"
+powershell -nop -c "&amp; {sleep 15}"</Command>
+      <Outputs>something</Outputs>
+      <Inputs>something</Inputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>$(OutDir)injector.exe
-powershell -nop -c "&amp; {sleep 15}"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
