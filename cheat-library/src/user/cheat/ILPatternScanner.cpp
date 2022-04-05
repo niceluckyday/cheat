@@ -61,14 +61,28 @@ void ILPatternScanner::ParseSignatureJson(void* signatureJson)
 	ParseXrefsJson(jsonContent["typeInfo"], m_TypeInfoPattern);
 }
 
+std::map<std::string, uintptr_t> ILPatternScanner::LoadOffsetMap(const nlohmann::json& inObject)
+{
+	std::map<std::string, uintptr_t> result;
+	for (auto& entry : inObject.items())
+		result[entry.key()] = GetOffsetInt(entry.value());
+	return result;
+}
+
+void ILPatternScanner::SaveOffsetMap(nlohmann::json& outObject, const std::map<std::string, uintptr_t>& map)
+{
+	for (auto& [key, value] : map)
+		outObject[key] = GetOffsetStr(value);
+}
+
 void ILPatternScanner::SaveJson(nlohmann::json & outObject)
 {
 	PatternScanner::SaveJson(outObject["moduleInfo"]);
 
 	outObject["monoHash"] = PatternScanner::ComputeModuleHash(GetMonoHandle());
-	outObject["apiFunctions"] = m_ApiMethodsCache;
-	outObject["typeInfo"] = m_TypeInfoCache;
-	outObject["methodInfo"] = m_MethodInfoCache;
+	SaveOffsetMap(outObject["apiFunctions"], m_ApiMethodsCache);
+	SaveOffsetMap(outObject["typeInfo"], m_TypeInfoCache);
+	SaveOffsetMap(outObject["methodInfo"], m_MethodInfoCache);
 }
 
 void ILPatternScanner::LoadJson(const nlohmann::json & object)
@@ -83,13 +97,13 @@ void ILPatternScanner::LoadJson(const nlohmann::json & object)
 	}
 
 	if (object.contains("apiFunctions"))
-		m_ApiMethodsCache = object["apiFunctions"];
+		m_ApiMethodsCache = LoadOffsetMap(object["apiFunctions"]);
 
 	if (object.contains("typeInfo"))
-		m_TypeInfoCache = object["typeInfo"];
+		m_TypeInfoCache = LoadOffsetMap(object["typeInfo"]);
 
 	if (object.contains("methodInfo"))
-		m_MethodInfoCache = object["methodInfo"];
+		m_MethodInfoCache = LoadOffsetMap(object["methodInfo"]);
 }
 
 std::string SubstrFromLastOccur(const std::string & value, char findChar)

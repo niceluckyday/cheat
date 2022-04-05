@@ -41,6 +41,9 @@ protected:
 
 	void ParseXrefsJson(const nlohmann::json& xrefsJson, std::map<std::string, std::vector<PatternScanner::OffsetSignature>>& out);
 
+	std::map<std::string, uintptr_t> LoadOffsetMap(const nlohmann::json& inObject);
+	void SaveOffsetMap(nlohmann::json& outObject, const std::map<std::string, uintptr_t>& map);
+
 	void SaveJson(nlohmann::json& outObject) override;
 	void LoadJson(const nlohmann::json& object) override;
 

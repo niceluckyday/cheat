@@ -60,6 +60,29 @@ void PatternScanner::ParseSignatureJson(void* signatureJson)
 	}
 }
 
+uintptr_t PatternScanner::GetOffsetInt(const nlohmann::json& value)
+{
+	std::uintptr_t offset = 0;
+	if (value.is_string())
+	{
+		std::string strValue = value;
+		offset = strtoul(strValue.c_str(), nullptr, 16);
+	}
+	else if (value.is_number_unsigned())
+	{
+		offset = value;
+	}
+	return offset;
+}
+
+
+std::string PatternScanner::GetOffsetStr(uintptr_t offset)
+{
+	std::stringstream ss;
+	ss << std::hex << offset;
+	return ss.str();
+}
+
 void PatternScanner::Save(const std::filesystem::path& filename)
 {
 	std::ofstream outputStream(filename, std::ios::out);
@@ -96,7 +119,7 @@ void PatternScanner::SaveJson(nlohmann::json& outObject)
 		auto& functionsObject = outObject[moduleName]["functions"];
 		for (auto& [functionName, offset] : functionsOffsets)
 		{
-			functionsObject[functionName] = offset;
+			functionsObject[functionName] = GetOffsetStr(offset);
 		}
 	}
 }
@@ -153,8 +176,7 @@ void PatternScanner::LoadJson(const nlohmann::json& object)
 		auto& functionsOffsets = m_CacheOffsets[moduleName];
 		for (auto& funcOffsetEntry : moduleJson["functions"].items())
 		{
-			std::uintptr_t offset = funcOffsetEntry.value();
-			functionsOffsets[funcOffsetEntry.key()] = offset;
+			functionsOffsets[funcOffsetEntry.key()] = GetOffsetInt(funcOffsetEntry.value());
 		}
 	}
 }

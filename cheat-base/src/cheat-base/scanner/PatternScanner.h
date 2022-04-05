@@ -92,6 +92,9 @@ protected:
 	uintptr_t SearchInModule(const std::string& moduleName, const std::string& pattern);
 	uintptr_t SearchInModule(HMODULE hModule, const std::string& pattern);
 
+	uintptr_t GetOffsetInt(const nlohmann::json& value);
+	std::string GetOffsetStr(uintptr_t offset);
+
 	template<typename R>
 	std::optional<R> SearchValue(HMODULE hModule, const std::string& pattern, uint32_t codeOffset)
 	{
