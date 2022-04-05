@@ -145,7 +145,7 @@
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\$(Configuration)\obj\$(ProjectName)\</IntDir>
     <CustomBuildBeforeTargets>Run</CustomBuildBeforeTargets>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -187,8 +187,8 @@ powershell -nop -c "&amp; {sleep 15}"</Command>
       <Inputs>something</Inputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>"$(OutDir)injector.exe"
+powershell -nop -c "&amp; {sleep 15}"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -218,11 +218,11 @@ powershell -nop -c "&amp; {sleep 15}"</Command>
       <AdditionalDependencies>cheat-base.lib;ntdll.lib;libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
-      <Command>$(OutDir)injector.exe
-timeout /t 5</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>$(OutDir)injector.exe
+      <Command>"$(OutDir)injector.exe"
 powershell -nop -c "&amp; {sleep 15}"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
