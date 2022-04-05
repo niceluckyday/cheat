@@ -58,10 +58,10 @@ namespace cheat::feature
 	{
 		using PT = app::PropType__Enum;
 
-		return !(m_Enabled && m_PacketReplacement &&
-					(propType == PT::PROP_MAX_STAMINA || 
-				     propType == PT::PROP_CUR_PERSIST_STAMINA || 
-					 propType == PT::PROP_CUR_TEMPORARY_STAMINA));
+		return !m_Enabled || m_PacketReplacement ||
+					(propType != PT::PROP_MAX_STAMINA &&
+				     propType != PT::PROP_CUR_PERSIST_STAMINA &&
+					 propType != PT::PROP_CUR_TEMPORARY_STAMINA);
 	}
 
 	// Infinite stamina packet mode.
