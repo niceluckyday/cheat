@@ -54,6 +54,8 @@ IDR_RCDATA1             RCDATA                  "Ruda-Bold.ttf"
 
 IDR_RCDATA2             RCDATA                  "signatures.json"
 
+IDR_RCDATA3             RCDATA                  "cached_offsets.json"
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

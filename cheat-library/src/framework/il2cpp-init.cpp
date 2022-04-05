@@ -36,7 +36,7 @@ namespace app {
 #define SELECT_OR(container, type, val, def) { auto value = val; if (value == 0) container = (type)(def); else container = (type)val; }
 
 // IL2CPP application initializer
-void init_il2cpp(const std::string& signaturePatterns)
+void init_il2cpp(const std::string& signaturePatterns, const std::string& cachedOffsets)
 {
 	// Get base address of IL2CPP module
 	uintptr_t baseAddress = il2cppi_get_base_address();
@@ -47,7 +47,7 @@ void init_il2cpp(const std::string& signaturePatterns)
 	config::AddField(m_OffsetData);
 
 	auto scanner = ILPatternScanner(signaturePatterns);
-	scanner.Load(m_OffsetData.value());
+	scanner.Load(m_OffsetData.value() != "{}" ? m_OffsetData.value() : cachedOffsets);
 
 	// Define IL2CPP API function addresses
 	#define DO_API(r, n, p) n = (r (*) p)scanner.SearchAPI(#n);
@@ -76,11 +76,14 @@ void init_il2cpp(const std::string& signaturePatterns)
     #include "il2cpp-unityplayer-functions.h"
     #undef DO_APP_FUNC
 
-	scanner.Save(*m_OffsetData.valuePtr());
-	m_OffsetData.Check();
-
 	if (scanner.IsUpdated())
+	{
+		scanner.Save(*m_OffsetData.valuePtr());
+		m_OffsetData.Check();
+
 		LOG_INFO("Seems like some offsets was found for a first time. Recommend to restart game for correct cheat and game work.");
+	}
+		
 }
 
 #undef SELECT_OR

@@ -114,7 +114,7 @@ void PatternScanner::SaveJson(nlohmann::json& outObject)
 {
 	for (auto& [moduleName, functionsOffsets] : m_CacheOffsets)
 	{
-		outObject[moduleName]["hash"] = ComputeModuleHash(moduleName);
+		SaveModuleHash(moduleName, outObject[moduleName]["hash"]);
 
 		auto& functionsObject = outObject[moduleName]["functions"];
 		for (auto& [functionName, offset] : functionsOffsets)
@@ -163,10 +163,10 @@ void PatternScanner::LoadJson(const nlohmann::json& object)
 		std::string moduleName = moduleEntry.key();
 		auto& moduleJson = moduleEntry.value();
 
-		size_t savedHash = moduleJson["hash"];
-		if (savedHash != ComputeModuleHash(moduleName))
+		if (!IsValidModuleHash(moduleName, moduleJson["hash"]))
 		{
 			LOG_WARNING("Module '%s' hash don't match with saved one. Seems module was updated.", moduleName.c_str());
+			system("pause");
 			continue;
 		}
 
@@ -279,25 +279,79 @@ void PatternScanner::AddOffset(const std::string& moduleName, const std::string&
 	m_CacheChanged = true;
 }
 
-int64_t PatternScanner::ComputeModuleHash(const std::string& moduleName)
+size_t ComputeChecksum(const std::string& filename)
 {
-	auto& info = GetModuleInfo(moduleName);
-	return ComputeModuleHash(info.handle);
+	std::ifstream file(filename, std::ios::in | std::ios::binary);
+	if (!file.is_open())
+	{
+		LOG_ERROR("Failed to compute file json: %s", filename.c_str());
+		return 0;
+	}
+
+	size_t sum = 0;
+	size_t word = 0;
+	while (file.read(reinterpret_cast<char*>(&word), sizeof(word))) {
+		sum += word;
+	}
+
+	if (file.gcount()) {
+		word &= (~0U >> ((sizeof(size_t) - file.gcount()) * 8));
+		sum += word;
+	}
+
+	return sum;
 }
 
-int64_t PatternScanner::ComputeModuleHash(HMODULE hModule)
+
+bool PatternScanner::IsValidModuleHash(const std::string& moduleName, const nlohmann::json& hashObject)
 {
-	static std::map<HMODULE, int64_t> s_ComputedHashes;
-	if (s_ComputedHashes.count(hModule) > 0)
-		return s_ComputedHashes[hModule];
+	auto& info = GetModuleInfo(moduleName);
+	return IsValidModuleHash(info.handle, hashObject);
+}
+
+bool PatternScanner::IsValidModuleHash(HMODULE hModule, const nlohmann::json& hashObject)
+{
+	if (!hashObject.contains("timestamp") || !hashObject.contains("checksum"))
+		return false;
 
 	auto& moduleInfo = GetModuleInfo(hModule);
 	auto write_time = std::filesystem::last_write_time(moduleInfo.filePath);
+	int64_t currTimestamp = write_time.time_since_epoch().count();
 
-	int64_t hash = write_time.time_since_epoch().count();
-	s_ComputedHashes[hModule] = hash;
+	int64_t timestamp = hashObject["timestamp"];
+	size_t checksum = hashObject["checksum"];
 
-	return hash;
+	// To increase speed, we don't check checksum if timestamp matches
+	if (timestamp == currTimestamp)
+	{
+		m_ComputedHashes[hModule] = checksum;
+		return true;
+	}
+
+	size_t currChecksum = m_ComputedHashes.count(hModule) > 0 ? m_ComputedHashes[hModule] : ComputeChecksum(moduleInfo.filePath);
+	m_ComputedHashes[hModule] = currChecksum;
+
+	return checksum == currChecksum;
+}
+
+void PatternScanner::SaveModuleHash(const std::string& moduleName, nlohmann::json& outObject)
+{
+	auto& info = GetModuleInfo(moduleName);
+	SaveModuleHash(info.handle, outObject);
+}
+
+void PatternScanner::SaveModuleHash(HMODULE hModule, nlohmann::json& outObject)
+{
+	auto& moduleInfo = GetModuleInfo(hModule);
+	auto write_time = std::filesystem::last_write_time(moduleInfo.filePath);
+	int64_t timestamp = write_time.time_since_epoch().count();
+
+	size_t checksum = m_ComputedHashes.count(hModule) > 0 ? m_ComputedHashes[hModule] : ComputeChecksum(moduleInfo.filePath);
+
+	outObject["timestamp"] = timestamp;
+	outObject["checksum"] = checksum;
+
+	m_ComputedHashes[hModule] = checksum;
 }
 
 void PatternScanner::SearchAll()

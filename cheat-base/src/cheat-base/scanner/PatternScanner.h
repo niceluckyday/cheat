@@ -57,6 +57,9 @@ protected:
 	std::map<std::string, std::map<std::string, uintptr_t>> m_CacheOffsets;
 	bool m_CacheChanged;
 	std::string m_LoadCache;
+	
+	std::map<HMODULE, int64_t> m_ComputedHashes;
+
 
 	struct RegionInfo
 	{
@@ -75,8 +78,11 @@ protected:
 	
 	void AddOffset(const std::string& moduleName, const std::string& name, uintptr_t offset);
 
-	int64_t ComputeModuleHash(HMODULE hModule);
-	int64_t ComputeModuleHash(const std::string& moduleName);
+	void SaveModuleHash(HMODULE hModule, nlohmann::json& outObject);
+	void SaveModuleHash(const std::string& moduleName, nlohmann::json& outObject);
+
+	bool IsValidModuleHash(HMODULE HMODULE, const nlohmann::json& hashObject);
+	bool IsValidModuleHash(const std::string& moduleName, const nlohmann::json& hashObject);
 	
 	ModuleInfo& GetModuleInfo(HMODULE hModule);
 	ModuleInfo& GetModuleInfo(const std::string& moduleName);

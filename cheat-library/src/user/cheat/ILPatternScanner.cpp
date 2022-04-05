@@ -79,7 +79,7 @@ void ILPatternScanner::SaveJson(nlohmann::json & outObject)
 {
 	PatternScanner::SaveJson(outObject["moduleInfo"]);
 
-	outObject["monoHash"] = PatternScanner::ComputeModuleHash(GetMonoHandle());
+	PatternScanner::SaveModuleHash(GetMonoHandle(), outObject["monoHash"]);
 	SaveOffsetMap(outObject["apiFunctions"], m_ApiMethodsCache);
 	SaveOffsetMap(outObject["typeInfo"], m_TypeInfoCache);
 	SaveOffsetMap(outObject["methodInfo"], m_MethodInfoCache);
@@ -90,7 +90,7 @@ void ILPatternScanner::LoadJson(const nlohmann::json & object)
 	if (object.contains("moduleInfo"))
 		PatternScanner::LoadJson(object["moduleInfo"]);
 
-	if (object.contains("monoHash") && object["monoHash"] != PatternScanner::ComputeModuleHash(GetMonoHandle()))
+	if (object.contains("monoHash") && !PatternScanner::IsValidModuleHash(GetMonoHandle(), object["monoHash"]))
 	{
 		LOG_DEBUG("Mono module hash mismatch. Seems game was updated.");
 		return;
