@@ -58,6 +58,7 @@ namespace cheat::feature
         if (!game::IsEntityFilterValid(entity, game::GetMonsterFilter()))
             return false;
 
+        
         if (m_OnlyTarget)
         {
             auto monsterCombat = app::BaseEntity_GetBaseCombat(entity, *app::BaseEntity_GetBaseCombat__MethodInfo);
@@ -65,11 +66,8 @@ namespace cheat::feature
                 return false;
         }
 
-        auto distance = game::GetDistToAvatar(entity);
-        if (distance > m_Radius)
-            return false;
-
-        return true;
+		auto distance = game::GetDistToAvatar(entity);
+        return distance <= m_Radius;
     }
 
     // Calculate mob vacuum target position.
@@ -101,7 +99,7 @@ namespace cheat::feature
         for (const auto& monster : game::FindEntities(game::GetMonsterFilter()))
         {
             if (!IsEntityForVac(monster))
-                return;
+                continue;
 
             if (m_Instantly)
             {
