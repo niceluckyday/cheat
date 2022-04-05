@@ -85,7 +85,7 @@ void ILPatternScanner::SaveJson(nlohmann::json & outObject)
 	SaveOffsetMap(outObject["methodInfo"], m_MethodInfoCache);
 }
 
-void ILPatternScanner::LoadJson(const nlohmann::json & object)
+bool ILPatternScanner::LoadJson(const nlohmann::json & object)
 {
 	if (object.contains("moduleInfo"))
 		PatternScanner::LoadJson(object["moduleInfo"]);
@@ -93,7 +93,7 @@ void ILPatternScanner::LoadJson(const nlohmann::json & object)
 	if (object.contains("monoHash") && !PatternScanner::IsValidModuleHash(GetMonoHandle(), object["monoHash"]))
 	{
 		LOG_DEBUG("Mono module hash mismatch. Seems game was updated.");
-		return;
+		return false;
 	}
 
 	if (object.contains("apiFunctions"))
@@ -104,6 +104,8 @@ void ILPatternScanner::LoadJson(const nlohmann::json & object)
 
 	if (object.contains("methodInfo"))
 		m_MethodInfoCache = LoadOffsetMap(object["methodInfo"]);
+
+	return true;
 }
 
 std::string SubstrFromLastOccur(const std::string & value, char findChar)

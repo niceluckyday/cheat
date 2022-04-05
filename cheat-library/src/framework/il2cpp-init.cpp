@@ -47,7 +47,9 @@ void init_il2cpp(const std::string& signaturePatterns, const std::string& cached
 	config::AddField(m_OffsetData);
 
 	auto scanner = ILPatternScanner(signaturePatterns);
-	scanner.Load(m_OffsetData.value() != "{}" ? m_OffsetData.value() : cachedOffsets);
+
+	if (!scanner.Load(cachedOffsets))
+		scanner.Load(m_OffsetData.value());
 
 	// Define IL2CPP API function addresses
 	#define DO_API(r, n, p) n = (r (*) p)scanner.SearchAPI(#n);

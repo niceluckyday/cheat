@@ -45,7 +45,7 @@ protected:
 	void SaveOffsetMap(nlohmann::json& outObject, const std::map<std::string, uintptr_t>& map);
 
 	void SaveJson(nlohmann::json& outObject) override;
-	void LoadJson(const nlohmann::json& object) override;
+	bool LoadJson(const nlohmann::json& object) override;
 
 	void LoadMetadata();
 	void LoadMethodPointers();

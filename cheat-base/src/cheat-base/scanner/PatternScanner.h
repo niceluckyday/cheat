@@ -18,8 +18,8 @@ public:
 	void Save(const std::filesystem::path& filename);
 	void Save(std::string& outContent);
 
-	void Load(const std::filesystem::path& filename);
-	void Load(const std::string& content);
+	bool Load(const std::filesystem::path& filename);
+	bool Load(const std::string& content);
 
 	void ParseSignatureFile(const std::string& signaturesContent);
 
@@ -28,7 +28,7 @@ public:
 protected:
 	
 	virtual void SaveJson(nlohmann::json& outObject);
-	virtual void LoadJson(const nlohmann::json& object);
+	virtual bool LoadJson(const nlohmann::json& object);
 
 	class AddressCounter
 	{

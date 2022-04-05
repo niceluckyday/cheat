@@ -124,21 +124,21 @@ void PatternScanner::SaveJson(nlohmann::json& outObject)
 	}
 }
 
-void PatternScanner::Load(const std::filesystem::path& filename)
+bool PatternScanner::Load(const std::filesystem::path& filename)
 {
 	std::ifstream inputStream(filename, std::ios::in);
 	if (!inputStream.is_open())
 	{
 		LOG_ERROR("Failed to open file '%s' for load offsets.", filename.c_str());
-		return;
+		return false;
 	}
 
 	std::stringstream buffer;
 	buffer << inputStream.rdbuf();
-	Load(buffer.str());
+	return Load(buffer.str());
 }
 
-void PatternScanner::Load(const std::string& content)
+bool PatternScanner::Load(const std::string& content)
 {
 	nlohmann::json contentJson;
 	try
@@ -148,16 +148,17 @@ void PatternScanner::Load(const std::string& content)
 	catch (nlohmann::json::parse_error* e)
 	{
 		LOG_ERROR("Failed to parse siganature json content. Error byte %d", e->byte);
-		return;
+		return false;
 	}
 
-	LoadJson(contentJson);
+	return LoadJson(contentJson);
 
 	m_LoadCache = content;
 }
 
-void PatternScanner::LoadJson(const nlohmann::json& object)
+bool PatternScanner::LoadJson(const nlohmann::json& object)
 {
+	bool result = true;
 	for (auto& moduleEntry : object.items())
 	{
 		std::string moduleName = moduleEntry.key();
@@ -166,7 +167,7 @@ void PatternScanner::LoadJson(const nlohmann::json& object)
 		if (!IsValidModuleHash(moduleName, moduleJson["hash"]))
 		{
 			LOG_WARNING("Module '%s' hash don't match with saved one. Seems module was updated.", moduleName.c_str());
-			system("pause");
+			result = false;
 			continue;
 		}
 
@@ -179,6 +180,7 @@ void PatternScanner::LoadJson(const nlohmann::json& object)
 			functionsOffsets[funcOffsetEntry.key()] = GetOffsetInt(funcOffsetEntry.value());
 		}
 	}
+	return result;
 }
 
 PatternScanner::ModuleInfo& PatternScanner::GetModuleInfo(const std::string& modulePath)
