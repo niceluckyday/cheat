@@ -188,7 +188,9 @@
     "Singleton_1_LoadingManager__get_Instance__MethodInfo": "b2c2ac0",
     "Singleton_1_MBHLOBDPKEC__get_Instance__MethodInfo": "b327ad0",
     "Singleton_1_MessageInfo__get_Instance__MethodInfo": "b37c078",
-    "Singleton_1_UIManager_1__get_Instance__MethodInfo": "b29f2d8"
+    "Singleton_1_UIManager_1__get_Instance__MethodInfo": "b29f2d8",
+    "Singleton_1_PlayerModule__get_Instance__MethodInfo": "0",
+    "Singleton_1_MapManager__get_Instance__MethodInfo": "0"
   },
   "moduleInfo": {
     "UnityPlayer.dll": {
@@ -316,6 +318,8 @@
     "Singleton_1_ItemModule_": "b291838",
     "Singleton_1_LoadingManager_": "b316a68",
     "Singleton_1_MBHLOBDPKEC_": "b3442d8",
-    "Singleton_1_UIManager_1_": "b2f8038"
+    "Singleton_1_UIManager_1_": "b2f8038",
+    "Singleton_1_PlayerModule_": "0",
+    "Singleton_1_MapManager_":  "0"
   }
 }

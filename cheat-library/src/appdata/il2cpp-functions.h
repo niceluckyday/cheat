@@ -169,3 +169,6 @@ DO_APP_FUNC_METHODINFO(0x0B23BCF0, Singleton_1_MessageInfo__get_Instance__Method
 DO_APP_FUNC_METHODINFO(0x0B18C3C0, Singleton_1_UIManager_1__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B20B748, Singleton_1_ItemModule__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B2648E0, Singleton_1_EventManager__get_Instance__MethodInfo);
+// 2.6
+DO_APP_FUNC_METHODINFO(0x0B2EC728, Singleton_1_PlayerModule__get_Instance__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B2FD3D0, Singleton_1_MapManager__get_Instance__MethodInfo);

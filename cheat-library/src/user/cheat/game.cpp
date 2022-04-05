@@ -241,19 +241,21 @@ namespace cheat::game
 		return IsEntityFilterValid(entity, GetFilterCrystalShell());
 	}
 
-	std::vector<WaypointInfo> GetUnlockedWaypoints()
+	std::vector<WaypointInfo> GetUnlockedWaypoints(uint32_t targetSceneId)
 	{
 		auto singleton = GetSingleton(MBHLOBDPKEC);
 		if (singleton == nullptr)
 			return {};
+
+		if (targetSceneId == 0)
+			targetSceneId = GetCurrentPlayerSceneID();
 
 		auto result = std::vector<WaypointInfo>();
 
 		auto waypointGroups = ToUniDict(singleton->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
 		for (const auto& [sceneId, waypoints] : waypointGroups->pairs())
 		{
-			// TODO: get current scene id, for teleport in not only big world loca
-			if (sceneId != 3)
+			if (sceneId != targetSceneId)
 				continue;
 
 			for (const auto& [waypointId, waypoint] : waypoints->pairs())
@@ -266,11 +268,11 @@ namespace cheat::game
 	}
 
 	// Finding nearest unlocked waypoint to the position
-	WaypointInfo FindNearestWaypoint(app::Vector3& position)
+	WaypointInfo FindNearestWaypoint(app::Vector3& position, uint32_t targetSceneId)
 	{
 		float minDistance = -1;
 		WaypointInfo result{};
-		for (const auto& info : GetUnlockedWaypoints()) {
+		for (const auto& info : GetUnlockedWaypoints(targetSceneId)) {
 			float distance = app::Vector3_Distance(nullptr, position, info.position, nullptr);
 			if (minDistance < 0 || distance < minDistance)
 			{
@@ -279,5 +281,23 @@ namespace cheat::game
 			}
 		}
 		return result;
+	}
+
+	uint32_t GetCurrentPlayerSceneID()
+	{
+		auto playerModule = GetSingleton(PlayerModule);
+		if (playerModule == nullptr)
+			return 0;
+
+		return playerModule->fields.curSceneID;
+	}
+
+	uint32_t GetCurrentMapSceneID()
+	{
+		auto mapManager = GetSingleton(MapManager);
+		if (mapManager == nullptr)
+			return 0;
+
+		return mapManager->fields.mapSceneID;
 	}
 }

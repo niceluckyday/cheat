@@ -90,18 +90,17 @@ namespace cheat::feature
 
 	// Finding nearest waypoint to position, and request teleport to it.
 	// After, in teleport events, change waypoint position to target position.
-	void MapTeleport::TeleportTo(app::Vector3 position, bool needHeightCalc)
+	void MapTeleport::TeleportTo(app::Vector3 position, bool needHeightCalc, uint32_t sceneId)
 	{
 		LOG_DEBUG("Stage 0. Target location at %s", il2cppi_to_string(position).c_str());
 
 		auto avatarPosition = app::ActorUtils_GetAvatarPos(nullptr, nullptr);
-		auto nearestWaypoint = game::FindNearestWaypoint(position);
+		auto nearestWaypoint = game::FindNearestWaypoint(position, sceneId);
 
 		if (nearestWaypoint.data == nullptr)
 		{
-			LOG_WARNING("Stage 0. Failed to find nearest unlocked waypoint. Using first unlockable waypoint.");
-			nearestWaypoint.sceneId = 3;
-			nearestWaypoint.waypointId = 6;
+			LOG_ERROR("Stage 0. Failed to find nearest unlocked waypoint. Maybe you didn't unlock anyone or scene don't have waypoints.");
+			return;
 		}
 		else
 		{
@@ -150,7 +149,7 @@ namespace cheat::feature
 		auto relativePos = app::WorldShiftManager_GetRelativePosition(nullptr, worldPosition, nullptr);
 		auto groundHeight = app::Miscs_CalcCurrentGroundHeight(nullptr, relativePos.x, relativePos.z, nullptr);
 
-		TeleportTo({ worldPosition.x, groundHeight > 0 ? groundHeight + 5 : m_DefaultHeight, worldPosition.z }, true);
+		TeleportTo({ worldPosition.x, groundHeight > 0 ? groundHeight + 5 : m_DefaultHeight, worldPosition.z }, true, game::GetCurrentMapSceneID());
 	}
 
 	// Calling teleport if map clicked.

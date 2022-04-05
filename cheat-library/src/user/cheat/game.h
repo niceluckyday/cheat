@@ -66,6 +66,8 @@ namespace cheat::game
 
 	bool IsEntityCrystalShell(app::BaseEntity* entity);
 
-	WaypointInfo FindNearestWaypoint(app::Vector3& position);
-	static std::vector<WaypointInfo> GetUnlockedWaypoints();
+	WaypointInfo FindNearestWaypoint(app::Vector3& position, uint32_t targetId = 0);
+	static std::vector<WaypointInfo> GetUnlockedWaypoints(uint32_t targetId = 0);
+	uint32_t GetCurrentMapSceneID();
+	uint32_t GetCurrentPlayerSceneID();
 }

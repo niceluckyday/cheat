@@ -18,7 +18,7 @@ namespace cheat::feature
 
 		static MapTeleport& GetInstance();
 
-		void TeleportTo(app::Vector3 position, bool needHeightCalc = false);
+		void TeleportTo(app::Vector3 position, bool needHeightCalc = false, uint32_t sceneId = 0);
 
 		void TeleportTo(app::Vector2 mapPosition);
 

@@ -5350,7 +5350,7 @@ namespace app {
         RefreshMailPageAfterFavMailChange = 0x0000013e,
         RefreshCoinNum = 0x0000013f,
         MutiPlayerAvailableChange = 0x00000140,
-        MutiPlayerModeChange = 0x00000141,
+        MutideChange = 0x00000141,
         CompanionCurrAvatarChanged = 0x00000142,
         CompanionAvatarHPChanged = 0x00000143,
         KickGuestFailed = 0x00000144,
@@ -9133,6 +9133,146 @@ namespace app {
         struct FFFIBMKHGML__Fields fields;
     };
 
+	enum class Miscs_ChangeAvatarFailType__Enum : int32_t {
+		NONE = 0x00000000,
+		FAIL_AIM = 0x00000001,
+		FAIL_CLIMB = 0x00000002,
+		FAIL_FLY = 0x00000003,
+		FAIL_JUMP = 0x00000004,
+		FAIL_LADDER = 0x00000005,
+		FAIL_SWIM = 0x00000006,
+		FAIL_IN_PROCESS = 0x00000007,
+		FAIL_LEVEL_FORBIDDEN = 0x00000008,
+		FAIL_TARGETAVATAR = 0x00000009,
+		FAIL_PERFORM = 0x0000000a,
+		FAIL_DEAD = 0x0000000b,
+		FAIL_COOLDOWN = 0x0000000c,
+	};
+
+	struct __declspec(align(8)) GMNHONOINDB__Fields {
+		struct Dictionary_2_System_UInt32_Dictionary_2_System_Int32_List_1_CFKBGDNLDGP_* MFEPPBMCAGP;
+	};
+
+	struct NEOGDEDNDHF__Fields {
+		struct GMNHONOINDB__Fields _;
+		struct BEKFICFOHKL* _accountData_k__BackingField;
+		struct HBFICKPEILE* openState;
+		uint32_t curWorldType;
+		uint32_t curSceneID;
+		struct OGNHDKJOONG* _curSceneConfig;
+		bool isSereverLevelPaused;
+		uint32_t extraAbilityId;
+		bool extraAbilityEnable;
+		uint64_t extraAbilityUseTime;
+		float AJMFBGNGPIB;
+		float KJKAPGLEELE;
+		struct List_1_UniRx_Tuple_3_* INANHBPCBLC;
+		bool MAOHENNPOMB;
+		bool HEJLGFNHKND;
+		bool NABCGFBLKDJ;
+		bool PNGMLKJFKND;
+		bool MNMODNDPIDD;
+		uint32_t OODBAMHAGPO;
+		uint32_t JPKIAEFDHMD;
+		bool NFMOCKLFAOF;
+		float JJLIHANGKEO;
+		struct Dictionary_2_System_UInt64_System_UInt32_* ICPIOBFBPGA;
+		struct LGPKIADMOBE_System_UInt64_CJFLLIKJGLF_* BDBFEGIMOFI;
+		struct DPHDLLFCIBC* HDOGLGNGMAP;
+		struct PHHEDBDLADE* ANDABFFFNHE;
+		struct Action_1_Single_* KGABFCPEBDG;
+		struct Dictionary_2_System_UInt32_System_UInt32_* EPNCJKKPNIN;
+		struct List_1_System_UInt64_* IDPDPDAENDP;
+		bool HJOJBIBHGEC;
+		struct List_1_JBONEPGMKAD_* ODDFKLCINLC;
+		struct Coroutine* FCJOEAPBMHB;
+		Miscs_ChangeAvatarFailType__Enum FDFCHGCAIPL;
+		uint32_t MFKCKBGCADE;
+		struct String* DMMKLMDFDLE;
+		struct String* JKFKIOAJPKF;
+		struct Dictionary_2_System_UInt32_System_UInt32_* FMMDIGIIBJB;
+		float NDFMECJGCKK;
+		float BHAMGAPDFEH;
+		uint32_t AFIIDKIKKMB;
+		struct List_1_System_UInt32_* DNKMPLJPOHG;
+		uint32_t MAPMNIDOJCG;
+		bool MIMGJGCADKB;
+		uint32_t LCMMMGHFEGG;
+		uint32_t DCGJMGBIDLD;
+		uint32_t GGJMEBPNECC;
+		uint32_t PIJHFCGJBJM;
+		struct CAIMHKHHLHK_LJBGLAADLNC_* FFMOHPPEKLN;
+		struct CAIMHKHHLHK_LJBGLAADLNC_* BLPNAPNOPFN;
+		uint64_t ONAPAACFOBM;
+		struct JIBKJBJNFED* LGADGGJMODA;
+	};
+
+	struct PlayerModule {
+		struct PlayerModule__Class* klass;
+		MonitorData* monitor;
+		struct NEOGDEDNDHF__Fields fields;
+	};
+
+	enum class MapManager_FEDPCJIHAJJ__Enum : int32_t {
+		None = 0x00000000,
+		Morning = 0x00000001,
+		Day = 0x00000002,
+		Afternoon = 0x00000003,
+		Night = 0x00000004,
+		BadWeather = 0x00000005,
+	};
+
+	struct Nullable_1_MoleMole_AsyncJob_ {
+		struct AsyncJob value;
+		bool has_value;
+	};
+
+	struct __declspec(align(8)) MHCEDJLGNMG__Fields {
+		struct String* _curLimitRegionName;
+		bool _isCurActivityLimitRegion;
+		bool _isCurHomeworldLimitRegion;
+		struct Coroutine* _curDestroyLimitRegionCoroutine;
+		struct Dictionary_2_System_String_MKKACPLIBDI_* _polygonLimitRegions;
+		struct MKKACPLIBDI* _curPolygonLimitRegion;
+		struct String* _curPolygonLimitRegionName;
+		bool GJKFDGHHMFA;
+		float _limitRegionDistance;
+		struct Vector3 _limitRegionDirection;
+		struct GameObject* mapObj;
+		struct MonoLevelMapUI* monoLevelMapUI;
+		uint32_t _mapContainerHandle;
+		uint32_t playerSceneID;
+		uint32_t mapSceneID;
+		struct SceneScriptData* _sceneDataInMap;
+		struct MapScriptData* mapData;
+		struct String* _currMapPrefabPath;
+		struct Nullable_1_MoleMole_AsyncJob_ IPADPFPPDJI;
+		bool _forceCurrentScene;
+		uint32_t _mapSceneIDSelected;
+		bool DebugNewmap;
+		struct String* currMapString;
+		struct RectTransform* currParent;
+		struct GameObject* mapGameObjectInst;
+		uint32_t _mapImageHandle;
+		struct MonoLevelMap* levelMap;
+		float mainPageCheckDistance;
+        MapManager_FEDPCJIHAJJ__Enum _currState;
+		bool _hasSignal;
+		struct Vector3 _signalPos;
+		float _distanceThreshold;
+		uint32_t _id;
+		bool CHKBLNNDFDH;
+		struct Dictionary_2_System_UInt32_List_1_CCHDCNEBLGP_* KKDHHBEFNNF;
+		struct List_1_System_String_* EENBABIJFKD;
+		struct List_1_System_String_* FDFHCABDDFE;
+		bool NMJJKJPPIGC;
+	};
+
+	struct MapManager {
+		struct MapManager__Class* klass;
+		MonitorData* monitor;
+		struct MHCEDJLGNMG__Fields fields;
+	};
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }
 #endif

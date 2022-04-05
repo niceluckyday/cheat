@@ -405,8 +405,24 @@ namespace cheat::feature
         }
     }
 
+    void DrawMapManager()
+    {
+		auto mapManager = GetSingleton(MapManager);
+        if (mapManager == nullptr)
+            return;
+
+        int temp = mapManager->fields.playerSceneID;
+        ImGui::InputInt("Player scene id", &temp);
+
+		temp = mapManager->fields.mapSceneID;
+		ImGui::InputInt("Map scene id", &temp);
+    }
+
 	void Debug::DrawMain()
 	{
+
+        DrawMapManager();
+
 		if (ImGui::CollapsingHeader("Entity manager", ImGuiTreeNodeFlags_None))
 			DrawEntitiesData();
 
