@@ -35,7 +35,6 @@ namespace cheat
 		if (!ImGui::Begin("CCGenshin (By Callow)"))
 		{
 			ImGui::End();
-			ImGui::PopFont();
 			return;
 		}
 

@@ -175,7 +175,7 @@ uintptr_t ILPatternScanner::SearchTypeInfo(const std::string& typeName)
 	HMODULE hMono = GetMonoHandle();
 	uintptr_t monoBase = il2cpp_get_mono_base_address();
 	if (m_TypeInfoCache.count(typeName) > 0)
-		return monoBase + m_TypeInfoCache[typeName];
+		return m_TypeInfoCache[typeName] == 0 ? 0 : monoBase + m_TypeInfoCache[typeName];
 
 	auto& xrefs = m_TypeInfoPattern[typeName];
 	AddressCounter counter;
@@ -209,7 +209,7 @@ uintptr_t ILPatternScanner::SearchMethodInfo(const std::string& methodName)
 	HMODULE hMono = GetMonoHandle();
 	uintptr_t monoBase = il2cpp_get_mono_base_address();
 	if (m_MethodInfoCache.count(methodName) > 0)
-		return monoBase + m_MethodInfoCache[methodName];
+		return m_MethodInfoCache[methodName] == 0 ? 0 : monoBase + m_MethodInfoCache[methodName];
 
 	auto& xrefs = m_MethodInfoPattern[methodName];
 	AddressCounter counter;
