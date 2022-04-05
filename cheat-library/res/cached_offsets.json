@@ -243,8 +243,6 @@
         "GameManager_Update": "3253b80",
         "HumanoidMoveFSM_CheckSprintCooldown": "24d5450",
         "HumanoidMoveFSM_LateTick": "24e0ba0",
-        "InLevelCutScenePageContext_OnFreeClick": "1949d20",
-        "InLevelCutScenePageContext_UpdateView": "3c846b0",
         "InLevelMapPageContext_OnMapClicked": "1390800",
         "InLevelMapPageContext_OnMarkClicked": "13815e0",
         "ItemModule_PickItem": "3d31930",
