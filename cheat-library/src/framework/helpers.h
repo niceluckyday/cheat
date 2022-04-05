@@ -13,7 +13,7 @@
 
 #include "il2cpp-metadata-version.h"
 
-#define IsSingletonLoaded(className) (*app::Singleton_1_## className ##___TypeInfo != nullptr)
+#define IsSingletonLoaded(className) (*app::Singleton_1_## className ##___TypeInfo != nullptr && *app::Singleton_1_ ## className ## __get_Instance__MethodInfo != nullptr)
 #define DoInitializeClass(className, expr) (il2cpp_runtime_class_init(reinterpret_cast<Il2CppClass*>(*app::## className ##__TypeInfo)), expr)
 #define GetSingleton(tpname) IsSingletonLoaded(tpname) ? reinterpret_cast<app:: ## tpname ## *>(app::Singleton_GetInstance(nullptr, *app::Singleton_1_ ## tpname ## __get_Instance__MethodInfo)) : nullptr
 #define GetStaticFields(tpname) DoInitializeClass(tpname, (*app::## tpname ##__TypeInfo)->static_fields)

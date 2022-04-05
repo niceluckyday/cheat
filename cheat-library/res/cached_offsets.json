@@ -296,7 +296,9 @@
         "VCMonsterAIController_TryDoSkill": "0",
         "Vector3_Distance": "73dad90",
         "WorldShiftManager_GetAbsolutePosition": "60f0810",
-        "WorldShiftManager_GetRelativePosition": "60f0aa0"
+        "WorldShiftManager_GetRelativePosition": "60f0aa0",
+        "MapModule_IsAreaUnlock": "0",
+        "SimpleSafeUInt16_get_Value": "0"
       },
       "hash": {
         "checksum": 6469164240778644427,

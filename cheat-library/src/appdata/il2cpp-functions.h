@@ -10,6 +10,8 @@ using namespace app;
 // Map hooks
 DO_APP_FUNC(0x014CF980, void, InLevelMapPageContext_OnMarkClicked, (InLevelMapPageContext* __this, MonoMapMark* mark, MethodInfo* method));
 DO_APP_FUNC(0x014E0420, void, InLevelMapPageContext_OnMapClicked, (InLevelMapPageContext* __this, Vector2 screenPos, MethodInfo* method));
+DO_APP_FUNC(0x0158AD40, bool, MapModule_IsAreaUnlock, (MBHLOBDPKEC* __this, uint32_t sceneID, uint32_t areaID, MethodInfo* method));
+DO_APP_FUNC(0x05036C50, uint16_t, SimpleSafeUInt16_get_Value, (void* __this, LAFKDOLNGNA rawValue, MethodInfo* method));
 
 
 // Map utility

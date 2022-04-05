@@ -5833,7 +5833,7 @@ namespace app {
         bool _unlocked;
         struct String* _alias;
         bool _groupLimit;
-        bool LKANGLOCKGI;
+        bool _isModelHidden;
     };
 
     // CEHHMPEGDKF
@@ -6015,7 +6015,7 @@ namespace app {
         bool isUnlocked;
         struct ConfigScenePoint* config;
         bool isGroupLimit;
-        bool ONLCMFPOCAA;
+        bool isModelHidden;
         uint32_t entityId;
         uint32_t level;
     };

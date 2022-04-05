@@ -243,8 +243,8 @@ namespace cheat::game
 
 	std::vector<WaypointInfo> GetUnlockedWaypoints(uint32_t targetSceneId)
 	{
-		auto singleton = GetSingleton(MBHLOBDPKEC);
-		if (singleton == nullptr)
+		auto mapModule = GetSingleton(MBHLOBDPKEC);
+		if (mapModule == nullptr)
 			return {};
 
 		if (targetSceneId == 0)
@@ -252,15 +252,19 @@ namespace cheat::game
 
 		auto result = std::vector<WaypointInfo>();
 
-		auto waypointGroups = ToUniDict(singleton->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
+		auto waypointGroups = ToUniDict(mapModule->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
 		for (const auto& [sceneId, waypoints] : waypointGroups->pairs())
 		{
 			if (sceneId != targetSceneId)
 				continue;
-
+			
 			for (const auto& [waypointId, waypoint] : waypoints->pairs())
 			{
-				if (waypoint.isUnlocked)
+				auto &config = waypoint.config->fields;
+				uint16_t areaId = app::SimpleSafeUInt16_get_Value(nullptr, config.areaIdRawNum, nullptr);
+				bool isAreaUnlocked = app::MapModule_IsAreaUnlock(mapModule, sceneId, areaId, nullptr);
+
+				if (waypoint.isUnlocked && isAreaUnlocked && !config._unlocked && !waypoint.isGroupLimit && !waypoint.isModelHidden)
 					result.push_back(WaypointInfo{ sceneId, waypointId, waypoint.config->fields._tranPos, (app::MapModule_ScenePointData*)&waypoint });
 			}
 		}

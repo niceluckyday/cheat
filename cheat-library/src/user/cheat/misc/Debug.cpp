@@ -111,6 +111,8 @@ namespace cheat::feature
             return;
         }
 
+        auto singleton = GetSingleton(MBHLOBDPKEC);
+
         for (const auto& [sceneId, waypoints] : waypointsGrops->pairs())
         {
             if (ImGui::TreeNode(("WTD " + std::to_string(sceneId)).c_str(), "Waypoint group id %d", sceneId))
@@ -121,6 +123,9 @@ namespace cheat::feature
                     {
                         ImGui::Text("IsGroupLimit: %s", waypoint.isGroupLimit ? "true" : "false");
                         ImGui::Text("IsUnlocked: %s", waypoint.isUnlocked ? "true" : "false");
+                        ImGui::Text("Level: %u", waypoint.level);
+                        ImGui::Text("EntityId: %u", waypoint.entityId);
+                        ImGui::Text("ModelHiden: %s", waypoint.isModelHidden ? "true" : "false");
 
                         if (waypoint.config != nullptr)
                         {
@@ -128,7 +133,12 @@ namespace cheat::feature
                             ImGui::Text("Waypoint type: %s", magic_enum::enum_name(location._type).data());
                             ImGui::Text("Trans position: %s", il2cppi_to_string(location._tranPos).c_str());
                             ImGui::Text("Object position: %s", il2cppi_to_string(location._pos).c_str());
-                            ImGui::Text("Is unlocked: %s", location._unlocked ? "true" : "false");
+                            ImGui::Text("_unlocked: %s", location._unlocked ? "true" : "false");
+                            ImGui::Text("_groupLimit: %s", location._groupLimit ? "true" : "false");
+                            uint16_t areaId = app::SimpleSafeUInt16_get_Value(nullptr, location.areaIdRawNum, nullptr);
+                            ImGui::Text("areaId: %u", areaId);
+                            ImGui::Text("areaUnlocked: %s", app::MapModule_IsAreaUnlock(singleton, sceneId, areaId, nullptr) ? "true" : "false");
+                            ImGui::Text("gadgetIdRawNum: %u", location.gadgetIdRawNum);
                         }
 
                         ImGui::TreePop();
