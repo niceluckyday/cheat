@@ -70,4 +70,8 @@ namespace cheat::game
 	static std::vector<WaypointInfo> GetUnlockedWaypoints(uint32_t targetId = 0);
 	uint32_t GetCurrentMapSceneID();
 	uint32_t GetCurrentPlayerSceneID();
+
+	app::GadgetEntity* GetGadget(uint32_t runtimeID);
+	app::GadgetEntity* GetGadget(app::BaseEntity* entity);
+	bool IsEntityGadget(app::BaseEntity* entity);
 }

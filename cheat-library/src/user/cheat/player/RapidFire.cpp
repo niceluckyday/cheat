@@ -98,11 +98,13 @@ namespace cheat::feature
 	// Raises when any entity do hit event.
 	// Just recall attack few times (regulating by combatProp)
 	// It's not tested well, so, I think, anticheat can detect it.
-	// When new information will be received, I update this comment.
 	static void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID, app::AttackResult* attackResult,
 		bool ignoreCheckCanBeHitInMP, MethodInfo* method)
 	{
-		if (__this->fields._._.entityRuntimeID != game::GetAvatarEntity()->fields._runtimeID_k__BackingField)
+		auto avatarID = game::GetAvatarRuntimeId();
+		auto attackerID = __this->fields._._.entityRuntimeID;
+		auto gadget = game::GetGadget(attackerID);
+		if (attackerID != avatarID && (gadget == nullptr || gadget->fields._ownerRuntimeID != avatarID))
 			return callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
 
 		RapidFire& rapidFire = RapidFire::GetInstance();

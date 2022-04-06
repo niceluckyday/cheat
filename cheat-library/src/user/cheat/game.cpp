@@ -40,6 +40,29 @@ namespace cheat::game
 		app::BaseEntity_SetAbsolutePosition(entity, position, true, nullptr);
 	}
 
+	app::GadgetEntity* GetGadget(uint32_t runtimeID)
+	{
+		return GetGadget(GetEntityByRuntimeId(runtimeID));
+	}
+
+	app::GadgetEntity* GetGadget(app::BaseEntity* entity)
+	{
+		if (entity == nullptr)
+			return nullptr;
+
+		if (!IsEntityGadget(entity))
+			return nullptr;
+		
+		return reinterpret_cast<app::GadgetEntity*>(entity);
+	}
+
+	bool IsEntityGadget(app::BaseEntity* entity)
+	{
+		return entity->fields.entityType == app::EntityType__Enum_1::Gadget ||
+			entity->fields.entityType == app::EntityType__Enum_1::Bullet ||
+			entity->fields.entityType == app::EntityType__Enum_1::Field;
+	}
+
 	app::BaseEntity* GetAvatarEntity()
 	{
 		auto entityManager = GetSingleton(EntityManager);

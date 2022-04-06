@@ -9273,6 +9273,35 @@ namespace app {
 		MonitorData* monitor;
 		struct MHCEDJLGNMG__Fields fields;
 	};
+
+	struct ANPOFFEGJHG__Fields {
+		struct BaseEntity__Fields _;
+		uint32_t groupId;
+		uint32_t markFlag;
+		uint32_t propOwnerRuntimeID;
+		bool hasSyncCreate;
+		bool _lifeByOwnerLife;
+		bool _registedLifeToOwner;
+		uint32_t _ownerRuntimeID;
+		struct Action* _ownerReadyAction;
+		uint32_t _originOwnerRuntimeID;
+		struct List_1_System_UInt32_* _childrenRuntimeIds;
+		struct List_1_System_String_* _tags;
+        /*
+		struct ANPOFFEGJHG_NGHFEJMFKFL EPLELPAMJBC;
+		bool KCCHJICIHOH;
+		struct CDIKPMFDALH* AALEGLLIIMC;
+		struct LIILPNJKBJI* CFNHGPAJECO;
+		bool NKJDGPLLBBD;
+	    */
+    };
+
+	struct GadgetEntity {
+		struct GadgetEntity__Class* klass;
+		MonitorData* monitor;
+		struct ANPOFFEGJHG__Fields fields;
+	};
+
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }
 #endif
