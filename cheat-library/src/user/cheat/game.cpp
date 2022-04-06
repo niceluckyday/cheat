@@ -236,7 +236,8 @@ namespace cheat::game
 				/*Anemoculus, Geoculus*/ "CrystalShell" ,
 				/*Crimson Agate*/ "Prop_Essence_01",
 				/*Electroculus*/ "ElectricCrystal",
-				/*Lumenspar*/ "CelestiaSplinter_01"
+				/*Lumenspar*/ "CelestiaSplinter_01",
+				/*Key Sigil*/ "RuneContent_04"
 				}
 			}
 		};

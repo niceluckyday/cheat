@@ -1,18 +1,6 @@
 # GenshinCheat
 Simple cheat for genshin with protection bypass.
 
-## Status
-Some funcitonal can work incorrect with version 2.6.
-In the nearest feature it will be fix.
-
-For now the following issues are known: 
-- `God mode` don't work (fixed)
-- `Map teleport` && `Oculi/Chest teleport` don't work (fixed)
-- `Mob vacuum` don't work (partially fixed)
-- `Dumb enemies` don't work (fixed)
-- `Kill aura` don't work (partially fixed)
-- `Infinite stamina` default mode not working. (With `Move sync packet replacement` work fine)
-
 ## Features
 - [X] Mhyprot bypass
 - [X] Check integrity bypass
