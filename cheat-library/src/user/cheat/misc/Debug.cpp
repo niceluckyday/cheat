@@ -431,6 +431,15 @@ namespace cheat::feature
 	void Debug::DrawMain()
 	{
 
+        ImGui::Text("Is any item active: %s", ImGui::IsAnyItemActive() ? "true" : "false");
+        ImGui::Text("Is any item focused: %s", ImGui::IsAnyItemFocused() ? "true" : "false");
+
+        ImGui::Button("Test");
+        auto hk = Hotkey();
+        int temp = 0;
+        InputHotkey("Test hotkey", &hk, false);
+        ImGui::InputInt("Test input", &temp);
+
         DrawMapManager();
 
 		if (ImGui::CollapsingHeader("Entity manager", ImGuiTreeNodeFlags_None))

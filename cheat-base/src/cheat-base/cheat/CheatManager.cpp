@@ -211,6 +211,33 @@ namespace cheat
 
 		ImGui::End();
 
+
+	}
+
+	bool ImGuiIsHotkeyDown(const Hotkey& hotkey)
+	{
+		short keys[] = {
+			hotkey.GetMKey(),
+			hotkey.GetAKey()
+		};
+
+		bool released = false;
+		for (size_t i = 0; i < std::size(keys); i++)
+		{
+			if (keys[i] == 0)
+				continue;
+
+			if (ImGui::IsKeyReleased(keys[i]))
+			{
+				released = true;
+				continue;
+			}
+			
+			if (!ImGui::IsKeyPressed(keys[i]))
+				return false;
+		}
+
+		return released;
 	}
 
 	void CheatManager::OnRender()
@@ -225,6 +252,10 @@ namespace cheat
 
 		if (settings.m_InfoShow)
 			DrawInfo();
+
+
+		if (ImGuiIsHotkeyDown(settings.m_MenuKey) && !ImGui::IsAnyItemActive())
+			ToggleMenuShow();
 	}
 
 	void CheatManager::CheckToggles(short key)
@@ -242,15 +273,9 @@ namespace cheat
 			}
 		}
 	}
-	void CheatManager::OnKeyUp(short key, bool& cancelled)
-	{
-		auto& settings = feature::Settings::GetInstance();
-		if (!settings.m_MenuKey.value().IsPressed(key))
-		{
-			CheckToggles(key);
-			return;
-		}
 
+	void CheatManager::ToggleMenuShow()
+	{
 		m_IsMenuShowed = !m_IsMenuShowed;
 		renderer::globals::IsInputBlocked = m_IsMenuShowed && m_IsBlockingInput;
 
@@ -262,6 +287,20 @@ namespace cheat
 		}
 		else if (!m_IsPrevCursorActive)
 			gameMisc->CursorSetVisibility(false);
+	}
+
+	void CheatManager::OnKeyUp(short key, bool& cancelled)
+	{
+		auto& settings = feature::Settings::GetInstance();
+		if (!settings.m_MenuKey.value().IsPressed(key))
+		{
+			CheckToggles(key);
+			return;
+		}
+
+		//if (!m_IsMenuShowed)
+		//	ToggleMenuShow();
+
 	}
 	
 	bool CheatManager::IsMenuShowed()

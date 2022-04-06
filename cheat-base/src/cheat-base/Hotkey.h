@@ -9,12 +9,12 @@ public:
     Hotkey();
     Hotkey(short mKey, short aKey);
 
-    bool IsPressed();
-    bool IsPressed(short keyDown);
+    bool IsPressed() const;
+    bool IsPressed(short keyDown) const;
 
-    bool IsEmpty();
-    short GetAKey();
-    short GetMKey();
+    bool IsEmpty() const;
+    short GetAKey() const;
+    short GetMKey() const;
 
     friend bool operator== (const Hotkey& c1, const Hotkey& c2) {
         return c1.mKey == c2.mKey && c1.aKey == c2.aKey;

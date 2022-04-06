@@ -55,6 +55,8 @@ namespace cheat
 
 		void PushFeature(Feature* feature);
 		void CheckToggles(short key);
+
+		void ToggleMenuShow();
 	};
 }
 

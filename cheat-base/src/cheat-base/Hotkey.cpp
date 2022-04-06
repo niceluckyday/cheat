@@ -21,7 +21,7 @@ Hotkey::operator std::string() const
     return std::string();
 }
 
-bool Hotkey::IsPressed() 
+bool Hotkey::IsPressed() const
 {
     if (IsEmpty())
         return false;
@@ -30,7 +30,7 @@ bool Hotkey::IsPressed()
         (aKey == 0 || GetKeyState(aKey) & 0x8000);
 }
 
-bool Hotkey::IsPressed(short keyDown)
+bool Hotkey::IsPressed(short keyDown) const
 {
     if (keyDown != mKey && keyDown != aKey)
         return false;
@@ -40,17 +40,17 @@ bool Hotkey::IsPressed(short keyDown)
     return (checkKey == 0 || GetKeyState(checkKey) & 0x8000);
 }
 
-bool Hotkey::IsEmpty() 
+bool Hotkey::IsEmpty() const
 {
     return mKey == 0 && aKey == 0;
 }
 
-short Hotkey::GetAKey() 
+short Hotkey::GetAKey() const
 {
     return aKey;
 }
 
-short Hotkey::GetMKey() 
+short Hotkey::GetMKey() const
 {
     return mKey;
 }
