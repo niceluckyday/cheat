@@ -23,6 +23,7 @@ namespace config::field
 		{
 			auto& value = *base::valuePtr();
 			io >> value;
+			*base::prevValue = value;
 		}
 	};
 }

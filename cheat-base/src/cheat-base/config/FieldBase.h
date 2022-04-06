@@ -54,7 +54,7 @@ namespace config::field
 			return true;
 		}
 
-	private:
+	protected:
 		T* fieldValue;
 		T* prevValue;
 	};
