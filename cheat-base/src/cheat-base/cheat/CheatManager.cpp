@@ -278,15 +278,6 @@ namespace cheat
 	{
 		m_IsMenuShowed = !m_IsMenuShowed;
 		renderer::globals::IsInputBlocked = m_IsMenuShowed && m_IsBlockingInput;
-
-		if (m_IsMenuShowed)
-		{
-			m_IsPrevCursorActive = gameMisc->CursorGetVisibility();
-			if (!m_IsPrevCursorActive)
-				gameMisc->CursorSetVisibility(true);
-		}
-		else if (!m_IsPrevCursorActive)
-			gameMisc->CursorSetVisibility(false);
 	}
 
 	void CheatManager::OnKeyUp(short key, bool& cancelled)
@@ -297,6 +288,16 @@ namespace cheat
 			CheckToggles(key);
 			return;
 		}
+
+		if (!m_IsMenuShowed)
+		{
+			m_IsPrevCursorActive = gameMisc->CursorGetVisibility();
+			if (!m_IsPrevCursorActive)
+				gameMisc->CursorSetVisibility(true);
+
+		}
+		else if (!m_IsPrevCursorActive)
+			gameMisc->CursorSetVisibility(false);
 
 		//if (!m_IsMenuShowed)
 		//	ToggleMenuShow();
