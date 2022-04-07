@@ -12,6 +12,7 @@ namespace cheat
 	namespace events 
 	{
 		TCancelableEvent<short> KeyUpEvent{};
+		TEvent<> WndProcEvent{};
 	}
 
 	void CheatManager::Init(LPBYTE pFontData, DWORD dFontDataSize, IGameMisc* gameMisc)
@@ -19,6 +20,7 @@ namespace cheat
 		this->gameMisc = gameMisc;
 		renderer::events::RenderEvent += MY_METHOD_HANDLER(CheatManager::OnRender);
 		cheat::events::KeyUpEvent += MY_METHOD_HANDLER(CheatManager::OnKeyUp);
+		cheat::events::WndProcEvent += MY_METHOD_HANDLER(CheatManager::OnWndProc);
 
 		renderer::Init(pFontData, dFontDataSize);
 	}
@@ -274,10 +276,12 @@ namespace cheat
 		}
 	}
 
+	bool menuToggled = false;
 	void CheatManager::ToggleMenuShow()
 	{
 		m_IsMenuShowed = !m_IsMenuShowed;
 		renderer::globals::IsInputBlocked = m_IsMenuShowed && m_IsBlockingInput;
+		menuToggled = true;
 	}
 
 	void CheatManager::OnKeyUp(short key, bool& cancelled)
@@ -288,8 +292,16 @@ namespace cheat
 			CheckToggles(key);
 			return;
 		}
+	}
+	
+	void CheatManager::OnWndProc()
+	{
+		if (!menuToggled)
+			return;
 
-		if (!m_IsMenuShowed)
+		menuToggled = false;
+
+		if (m_IsMenuShowed)
 		{
 			m_IsPrevCursorActive = gameMisc->CursorGetVisibility();
 			if (!m_IsPrevCursorActive)
@@ -298,12 +310,8 @@ namespace cheat
 		}
 		else if (!m_IsPrevCursorActive)
 			gameMisc->CursorSetVisibility(false);
-
-		//if (!m_IsMenuShowed)
-		//	ToggleMenuShow();
-
 	}
-	
+
 	bool CheatManager::IsMenuShowed()
 	{
 		auto& cheatManager = CheatManager::GetInstance();

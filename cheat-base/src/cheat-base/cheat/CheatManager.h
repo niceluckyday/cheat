@@ -14,6 +14,7 @@ namespace cheat
 	namespace events
 	{
 		extern TCancelableEvent<short> KeyUpEvent;
+		extern TEvent<> WndProcEvent;
 	}
 
 	class CheatManager
@@ -31,6 +32,7 @@ namespace cheat
 		void SetModuleOrder(std::vector<std::string> moduleOrder);
 
 		void OnKeyUp(short key, bool& cancelled);
+		void OnWndProc();
 		void OnRender();
 
 		void Init(LPBYTE pFontData, DWORD dFontDataSize, IGameMisc* gameMisc);

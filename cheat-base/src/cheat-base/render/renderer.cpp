@@ -101,6 +101,8 @@ namespace renderer
 
 		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
 
+		cheat::events::WndProcEvent();
+
 		bool canceled = false;
 		if (uMsg == WM_KEYUP)
 			canceled = !cheat::events::KeyUpEvent(wParam);
