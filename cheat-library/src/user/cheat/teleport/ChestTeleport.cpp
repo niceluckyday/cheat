@@ -133,7 +133,8 @@ namespace cheat::feature
 		if (entityName.find("TreasureBox") != std::string::npos)
 			return ChestTeleport::ItemType::Chest;
 
-		if (entityName.find("Search") != std::string::npos)
+		if (entityName.find("Search") != std::string::npos ||
+			entityName.find("JunkChest") != std::string::npos)
 			return ChestTeleport::ItemType::Investigate;
 
 		if (entityName.find("BookPage") != std::string::npos)

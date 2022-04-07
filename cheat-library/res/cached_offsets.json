@@ -180,7 +180,6 @@
     "AvatarPropDictionary_SetItem__MethodInfo": "b2cfd70",
     "BaseEntity_GetBaseCombat__MethodInfo": "b2db248",
     "BaseEntity_GetMoveComponent_1__MethodInfo": "b2bbb98",
-    "BaseComponent_GetPlugin_ChestPlugin__MethodInfo": "0",
     "CreateCrashEvent__MethodInfo": "b381cf8",
     "Singleton_1_EntityManager__get_Instance__MethodInfo": "b2b2a80",
     "Singleton_1_EventManager__get_Instance__MethodInfo": "b2b3818",
