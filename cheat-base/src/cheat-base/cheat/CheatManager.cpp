@@ -30,7 +30,7 @@ namespace cheat
 		if (m_ModuleOrder.size() == 0)
 			return;
 
-		static std::string* current = &m_ModuleOrder[0];
+		static std::string* current = &m_ModuleOrder[m_SelectedSection];
 
 		ImGui::SetNextWindowSize(ImVec2(600, 300), ImGuiCond_FirstUseEver);
 
@@ -49,15 +49,21 @@ namespace cheat
 
 		if (ImGui::BeginListBox("##listbox 2", ImVec2(175, -FLT_MIN)))
 		{
+			size_t index = 0;
 			for (auto& moduleName : m_ModuleOrder)
 			{
+				
 				const bool is_selected = (current == &moduleName);
 				if (ImGui::Selectable(moduleName.c_str(), is_selected))
+				{
 					current = &moduleName;
+					*m_SelectedSection.valuePtr() = index;
+					m_SelectedSection.Check();
+				}
 
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
-
+				index++;
 			}
 			ImGui::EndListBox();
 		}

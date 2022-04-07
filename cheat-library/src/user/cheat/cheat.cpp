@@ -70,6 +70,14 @@ namespace cheat
 			});
 #undef FEAT_INST
 
+		manager.SetModuleOrder({
+			"Player",
+			"World",
+			"Teleport",
+			"Settings",
+			"Debug"
+			});
+
 		LPBYTE pFontData = nullptr;
 		DWORD dFontSize = 0;
 		if (!util::GetResourceMemory(hModule, IDR_RCDATA1, pFontData, dFontSize))

@@ -1,6 +1,7 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
 #include <cheat-base/cheat/IGameMisc.h>
+#include <cheat-base/config/Config.h>
 #include <cheat-base/Event.h>
 
 #include <vector>
@@ -38,6 +39,9 @@ namespace cheat
 		void Init(LPBYTE pFontData, DWORD dFontDataSize, IGameMisc* gameMisc);
 
 	private:
+
+		config::field::BaseField<int> m_SelectedSection;
+
 		std::vector<Feature*> m_Features;
 		std::vector<std::string> m_ModuleOrder;
 		std::map<std::string, std::map<std::string, std::vector<Feature*>>> m_FeatureMap;
@@ -47,7 +51,9 @@ namespace cheat
 		bool m_IsBlockingInput;
 		bool m_IsPrevCursorActive;
 
-		CheatManager() : m_IsBlockingInput(true), m_IsMenuShowed(false), m_IsPrevCursorActive(false), gameMisc(nullptr) {}
+		CheatManager() : m_IsBlockingInput(true), m_IsMenuShowed(false), m_IsPrevCursorActive(false), gameMisc(nullptr),
+			NF(m_SelectedSection, "", "General", 0)
+		{}
 
 		void DrawMenu();
 		void DrawMenuSection(const std::string& sectionName, std::vector<Feature*>& features);
