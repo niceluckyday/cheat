@@ -227,7 +227,7 @@ powershell -nop -c "&amp; {sleep 15}"</Command>
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>"$(OutDir)injector.exe"
-powershell -nop -c "&amp; {sleep 15}"</Command>
+powershell -nop -c "&amp; {sleep 30}"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

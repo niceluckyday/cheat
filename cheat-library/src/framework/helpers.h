@@ -96,7 +96,8 @@ struct UniList
 
     std::vector<T> vec()
     {
-        auto result = std::vector<T>(size);
+        auto result = std::vector<T>();
+        result.reserve(size);
         for (auto i = begin(); i < end(); i++)
             result.push_back(*i);
         return result;

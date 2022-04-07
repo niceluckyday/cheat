@@ -56,6 +56,11 @@ namespace cheat::game
 		return reinterpret_cast<app::GadgetEntity*>(entity);
 	}
 
+	std::string GetEntityName(app::BaseEntity* entity)
+	{
+		return il2cppi_to_string(app::BaseEntity_ToStringRelease(entity, nullptr));
+	}
+
 	bool IsEntityGadget(app::BaseEntity* entity)
 	{
 		return entity->fields.entityType == app::EntityType__Enum_1::Gadget ||

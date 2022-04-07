@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include <helpers.h>
 #include <il2cpp-appdata.h>
 
 namespace cheat::game
@@ -37,6 +38,8 @@ namespace cheat::game
 	app::Vector3 GetAbsolutePosition(app::BaseEntity* entity);
 	void SetAbsolutePosition(app::BaseEntity* entity, app::Vector3 position);
 	app::Vector3 GetAvatarAbsolutePosition();
+
+	std::string GetEntityName(app::BaseEntity* entity);
 
 	app::BaseEntity* GetAvatarEntity();
 	uint32_t GetAvatarRuntimeId();
@@ -74,4 +77,49 @@ namespace cheat::game
 	app::GadgetEntity* GetGadget(uint32_t runtimeID);
 	app::GadgetEntity* GetGadget(app::BaseEntity* entity);
 	bool IsEntityGadget(app::BaseEntity* entity);
+
+	template<class T>
+	T* GetLCPlugin(app::BaseComponentPlugin* plugin, void* pClass)
+	{
+		if (plugin == nullptr || plugin->klass == nullptr || plugin->klass != pClass)
+			return nullptr;
+
+		return reinterpret_cast<T*>(plugin);
+	}
+
+	template<class T>
+	T* GetLCPlugin(app::BaseComponent* component, void* pClass)
+	{
+		if (component == nullptr || component->fields._pluginList == nullptr)
+			return nullptr;
+
+		auto componentList = ToUniList(component->fields._pluginList, app::BaseComponentPlugin*);
+		for (auto& plugin : *componentList)
+		{
+			T* value = GetLCPlugin<T>(plugin, pClass);
+			if (value != nullptr)
+				return value;
+		}
+		return nullptr;
+	}
+
+	template<class T>
+	T* GetLCPlugin(app::BaseEntity* entity, void* pClass)
+	{
+		if (entity == nullptr)
+			return nullptr;
+
+		auto logicComponentsRaw = app::BaseEntity_GetAllLogicComponents(entity, nullptr);
+		auto logicComponents = ToUniList(logicComponentsRaw, app::BaseComponent*);
+		if (logicComponents == nullptr)
+			return nullptr;
+
+		for (auto& component : *logicComponents)
+		{
+			T* value = GetLCPlugin<T>(component, pClass);
+			if (value != nullptr)
+				return value;
+		}
+		return nullptr;
+	}
 }

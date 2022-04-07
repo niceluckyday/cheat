@@ -6263,20 +6263,27 @@ namespace app {
         PROP_IS_AUTO_UNLOCK_SPECIFIC_EQUIP = 0x0000273c,
     };
 
-    struct __declspec(align(8)) BaseComponentPlugin__Fields {
-        struct BaseComponent* owner;
-        bool isInited;
-        bool hasTick;
-        bool hasLateTick;
-        struct Int32__Array* _selfOnEventIDsCache;
-        bool _isSelfOnEventIDsCached;
-        struct Int32__Array* _selfOnEventResolvedIDsCache;
-        bool _isSelfOnEventResolvedIDsCached;
-        struct Int32__Array* _selfListenEventIDsCache;
-        bool _isSelfListenEventIDsCached;
-        bool _enabled;
-        bool _hasEnabledInited;
-    };
+	struct __declspec(align(8)) BaseComponentPlugin__Fields {
+		struct BaseComponent* owner;
+		bool isInited;
+		bool hasTick;
+		bool hasLateTick;
+		struct Int32__Array* _selfOnEventIDsCache;
+		bool _isSelfOnEventIDsCached;
+		struct Int32__Array* _selfOnEventResolvedIDsCache;
+		bool _isSelfOnEventResolvedIDsCached;
+		struct Int32__Array* _selfListenEventIDsCache;
+		bool _isSelfListenEventIDsCached;
+		bool _enabled;
+		bool _hasEnabledInited;
+		bool _listenEventValid_k__BackingField;
+	};
+
+	struct BaseComponentPlugin {
+		Il2CppClass* klass;
+		MonitorData* monitor;
+		struct BaseComponentPlugin__Fields fields;
+	};
 
     struct BKFGGJFIIKC__Fields {
         struct BaseComponentPlugin__Fields _;
@@ -6284,11 +6291,11 @@ namespace app {
         float AFKPOKMADHA;
     };
 
-    struct BKFGGJFIIKC {
-        void* klass;
-        MonitorData* monitor;
-        struct BKFGGJFIIKC__Fields fields;
-    };
+	struct BKFGGJFIIKC {
+		void* klass;
+		MonitorData* monitor;
+		struct BKFGGJFIIKC__Fields fields;
+	};
 
     struct __declspec(align(8)) List_1_AJKACNNKJGG___Fields {
         struct AJKACNNKJGG__Array* _items;
@@ -9301,6 +9308,234 @@ namespace app {
 		MonitorData* monitor;
 		struct ANPOFFEGJHG__Fields fields;
 	};
+
+	struct BaseComponent__Array {
+		struct BaseComponent__Array__Class* klass;
+		MonitorData* monitor;
+		Il2CppArrayBounds* bounds;
+		il2cpp_array_size_t max_length;
+		struct BaseComponent* vector[32];
+	};
+
+    struct LCChestPlugin__Class {
+        Il2CppClass_0 _0;
+    };
+
+	struct BaseComponent__Class {
+		Il2CppClass_0 _0;
+		Il2CppRuntimeInterfaceOffsetPair* interfaceOffsets;
+		struct BaseComponent__StaticFields* static_fields;
+		const Il2CppRGCTXData* rgctx_data;
+		Il2CppClass_1 _1;
+		// struct BaseComponent__VTable vtable;
+	};
+
+
+	struct BaseComponent {
+		struct BaseComponent__Class* klass;
+		MonitorData* monitor;
+		struct BaseComponent__Fields fields;
+	};
+
+	struct __declspec(align(8)) List_1_MoleMole_BaseComponent___Fields {
+		struct BaseComponent__Array* _items;
+		int32_t _size;
+		int32_t _version;
+	};
+
+	struct List_1_MoleMole_BaseComponent_ {
+		struct List_1_MoleMole_BaseComponent___Class* klass;
+		MonitorData* monitor;
+		struct List_1_MoleMole_BaseComponent___Fields fields;
+	};
+
+	enum class HOILKKLDNMA_LFAKNILHEEN__Enum : int32_t {
+		None = 0x00000000,
+		TrifleItem = 0x0000000c,
+		GatherGadget = 0x0000000d,
+		Worktop = 0x0000000e,
+		ClientGadget = 0x0000000f,
+		Weather = 0x00000011,
+		AbilityGadget = 0x00000012,
+		StatueGadget = 0x00000013,
+		BossChest = 0x00000014,
+		BlossomChest = 0x00000029,
+		MpPlayReward = 0x0000002a,
+		GeneralReward = 0x0000002b,
+		OfferingInfo = 0x0000002c,
+		FoundationInfo = 0x0000002d,
+		VehicleInfo = 0x0000002e,
+		ShellInfo = 0x0000002f,
+		ScreenInfo = 0x00000030,
+		FishPoolInfo = 0x0000003b,
+		CustomGadgetTreeInfo = 0x0000003c,
+		RoguelikeGadgetInfo = 0x0000003d,
+	};
+
+	struct WeeklyBossResinDiscountInfoStruct {
+		uint32_t discountNum;
+		uint32_t discountNumLimit;
+		uint32_t resinCost;
+		uint32_t originalResinCost;
+	};
+
+
+	struct GadgetDataItem_CBGKCHACFPE {
+		uint32_t resinCost;
+		uint32_t configId;
+		uint32_t lifeTime;
+		uint32_t blossomRefreshType;
+		uint32_t blossomRefreshId;
+		struct List_1_System_UInt32_* authorisedUIDList;
+		struct List_1_System_UInt32_* openableUID;
+		HOILKKLDNMA_LFAKNILHEEN__Enum type;
+		struct WeeklyBossResinDiscountInfoStruct weeklyBossResinDiscountInfo;
+	};
+
+	struct Nullable_1_MoleMole_GadgetDataItem_CBGKCHACFPE_ {
+		struct GadgetDataItem_CBGKCHACFPE value;
+		bool has_value;
+	};
+
+	enum class GadgetState__Enum : int32_t {
+		Default = 0x00000000,
+		GatherDrop = 0x00000001,
+		ChestLocked = 0x00000065,
+		ChestOpened = 0x00000066,
+		ChestTrap = 0x00000067,
+		ChestBramble = 0x00000068,
+		ChestFrozen = 0x00000069,
+		ChestRock = 0x0000006a,
+		GearStart = 0x000000c9,
+		GearStop = 0x000000ca,
+		GearAction1 = 0x000000cb,
+		GearAction2 = 0x000000cc,
+		CrystalResonate1 = 0x0000012d,
+		CrystalResonate2 = 0x0000012e,
+		CrystalExplode = 0x0000012f,
+		CrystalDrain = 0x00000130,
+		StatueActive = 0x00000191,
+		Action01 = 0x00000385,
+		Action02 = 0x00000386,
+		Action03 = 0x00000387,
+	};
+
+	enum class AGGAOKGNDPF__Enum : int32_t {
+		GadgetBornNone = 0x00000000,
+		GadgetBornInAir = 0x00000001,
+		GadgetBornPlayer = 0x00000002,
+		GadgetBornMonsterHit = 0x00000003,
+		GadgetBornMonsterDie = 0x00000004,
+		GadgetBornGadget = 0x00000005,
+		GadgetBornGround = 0x00000006
+	};
+
+	struct __declspec(align(8)) AALJCABGFEP__Fields {
+		uint32_t _entityId_k__BackingField;
+		struct Dictionary_2_KFEENBPGJJA_JMOFLAAALOE_* _cacheNormalPropValueDic;
+		struct Dictionary_2_KFEENBPGJJA_IPEPPEAIJEC_* _cacheFightPropValueDic;
+		bool _isToBeRemoved;
+		bool _unCacheEntity;
+		int32_t climateType;
+		uint32_t climateAreaID;
+	};
+
+	struct LCIKPOFEIAP_IOJMGCFMHAN {
+		struct DNPMEDDBDLJ* GLJPNCEBHIO;
+	};
+
+	struct Nullable_1_LCIKPOFEIAP_IOJMGCFMHAN_ {
+		struct LCIKPOFEIAP_IOJMGCFMHAN value;
+		bool has_value;
+	};
+
+	struct LCIKPOFEIAP__Fields {
+		struct AALJCABGFEP__Fields _;
+		uint32_t configId;
+		uint32_t mapInstId;
+		uint32_t groupId;
+		uint32_t markFlag;
+		AGGAOKGNDPF__Enum bornType;
+		struct DFMGHHMLIJK* item;
+		uint32_t gatherItemId;
+		bool isForbitGuest;
+		bool isShowCutscene;
+        uint32_t gadgetState;
+        bool isEnableInteract;
+        uint32_t authorityPeerId;
+		struct LHANLGFNKOH* platformInfo;
+		uint32_t interactId;
+		bool isOpenedStatue;
+		struct NKLKOKAKOJB* entityClientData;
+		uint32_t mpPlayId;
+		uint32_t draftId;
+		uint32_t chainID;
+		struct List_1_System_UInt32_* optionList;
+		struct List_1_System_UInt32_* interactUids;
+		struct Nullable_1_MoleMole_GadgetDataItem_CBGKCHACFPE_ _openData;
+		struct Nullable_1_LCIKPOFEIAP_IOJMGCFMHAN_ _foundationData;
+		uint32_t liveId;
+		uint32_t vodInteeId;
+		struct UInt64__Array* _avatarsInVehicle;
+		uint32_t ownerUid;
+		uint32_t VEHICLE_SEAT_MAX;
+		float cur_stamina;
+		struct BIMFGAMJHFJ* fishPoolInfo;
+		uint32_t roguelikeCellId;
+		uint32_t roguelikeCellType;
+		uint32_t roguelikeCellState;
+	};
+
+	struct GadgetDataItem {
+		struct GadgetDataItem__Class* klass;
+		MonitorData* monitor;
+		struct LCIKPOFEIAP__Fields fields;
+	};
+
+	struct OMBJBEDFEJP__Fields {
+		struct LCBase__Fields _;
+		struct ConfigGadgetMisc* config;
+        GadgetState__Enum curGadgetState;
+		struct GadgetDataItem* _dataItem;
+		struct LCPose* _lcPos;
+		struct LCChestPlugin* _chestPlugin;
+	};
+
+	struct LCGadgetMisc {
+		struct LCGadgetMisc__Class* klass;
+		MonitorData* monitor;
+		struct OMBJBEDFEJP__Fields fields;
+	};
+
+	struct __declspec(align(8)) ConfigChest__Fields {
+		bool _bornLockedByAbility;
+		struct String* _openEffect;
+		bool _triggerOpenChestVo;
+	};
+
+	struct ConfigChest {
+		struct ConfigChest__Class* klass;
+		MonitorData* monitor;
+		struct ConfigChest__Fields fields;
+	};
+
+	struct LCChestPlugin__Fields {
+		struct BaseComponentPlugin__Fields _;
+		struct ConfigChest* config;
+		struct LCGadgetMisc* _owner;
+		bool _marked;
+		bool _isLockByAbility;
+		struct LevelGadget* _levelGadget;
+		struct Nullable_1_MoleMole_GadgetDataItem_CBGKCHACFPE_ _bossChestData;
+		struct EntityTimerReceiver* _inteeActiveTimer;
+	};
+
+	struct LCChestPlugin {
+		struct INNLBCONIIK__Class* klass;
+		MonitorData* monitor;
+		struct LCChestPlugin__Fields fields;
+	};
+
 
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }

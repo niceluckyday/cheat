@@ -22,6 +22,9 @@ void HelpMarker(const char* desc);
 bool InputHotkey(const char* label, Hotkey* hotkey, bool clearable);
 bool InputPath(const char* label, std::filesystem::path* buffer, bool onlyDirectories = false, const char* filter = nullptr);
 
+// Thanks to https://gist.github.com/dougbinks/ef0962ef6ebe2cadae76c4e9f0586c69
+void AddUnderLine(ImColor col_);
+void TextURL(const char* name_, const char* URL_, bool SameLineBefore_, bool SameLineAfter_);
 
 void BeginGroupPanel(const char* name, const ImVec2& size);
 void EndGroupPanel();

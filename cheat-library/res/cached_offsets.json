@@ -180,6 +180,7 @@
     "AvatarPropDictionary_SetItem__MethodInfo": "b2cfd70",
     "BaseEntity_GetBaseCombat__MethodInfo": "b2db248",
     "BaseEntity_GetMoveComponent_1__MethodInfo": "b2bbb98",
+    "BaseComponent_GetPlugin_ChestPlugin__MethodInfo": "0",
     "CreateCrashEvent__MethodInfo": "b381cf8",
     "Singleton_1_EntityManager__get_Instance__MethodInfo": "b2b2a80",
     "Singleton_1_EventManager__get_Instance__MethodInfo": "b2b3818",
@@ -229,6 +230,7 @@
         "BaseEntity_SetAbsolutePosition": "1645b20",
         "BaseEntity_SetRelativePosition": "1659210",
         "BaseEntity_ToStringRelease": "164dc50",
+        "BaseEntity_GetAllLogicComponents": "0",
         "CreateCrashEvent": "31adf70",
         "Cursor_get_visible": "7445000",
         "Cursor_set_lockState": "7445050",
@@ -314,6 +316,7 @@
     "Byte": "b224e28",
     "GameManager": "b3117b8",
     "Int32": "b38ff20",
+    "LCChestPlugin": "0",
     "Singleton_1_EntityManager_": "b308870",
     "Singleton_1_EventManager_": "b309120",
     "Singleton_1_InteractionManager_": "b30bd10",
@@ -322,6 +325,6 @@
     "Singleton_1_MBHLOBDPKEC_": "b3442d8",
     "Singleton_1_UIManager_1_": "b2f8038",
     "Singleton_1_PlayerModule_": "0",
-    "Singleton_1_MapManager_":  "0"
+    "Singleton_1_MapManager_": "0"
   }
 }

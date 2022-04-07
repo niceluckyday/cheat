@@ -1,17 +1,20 @@
 #include "pch-il2cpp.h"
 #include "Debug.h"
 
+#include <cheat/events.h>
 #include <cheat/teleport/MapTeleport.h>
 #include <cheat/game.h>
-
+#include <misc/cpp/imgui_stdlib.h>
 #include <helpers.h>
 
 namespace cheat::feature 
 {
     static bool ActorAbilityPlugin_OnEvent_Hook(void* __this, app::BaseEvent* e, MethodInfo* method);
+    void OnGameUpdate();
 
 	Debug::Debug() : Feature()
 	{
+        events::GameUpdateEvent += FREE_METHOD_HANDLER(OnGameUpdate);
 		HookManager::install(app::ActorAbilityPlugin_OnEvent, ActorAbilityPlugin_OnEvent_Hook);
 		// HookManager::install(app::LuaShellManager_ReportLuaShellResult, LuaShellManager_ReportLuaShellResult_Hook);
 		// HookManager::install(app::LuaShellManager_DoString, LuaShellManager_DoString_Hook);
@@ -24,7 +27,7 @@ namespace cheat::feature
 
 	const FeatureGUIInfo& Debug::GetGUIInfo() const
 	{
-		static const FeatureGUIInfo info{ "", "Debug", false };
+		static const FeatureGUIInfo info{ "DebugInfo", "Debug", false };
 		return info;
 	}
 
@@ -178,7 +181,7 @@ namespace cheat::feature
         ImGui::Text("Entity type: %s", magic_enum::enum_name(fields.entityType).data());
         ImGui::Text("Entity shared position: %s", il2cppi_to_string(fields._sharedPosition).c_str());
         ImGui::Text("Entity config id: %d", fields._configID_k__BackingField);
-        ImGui::Text("Entity name: %s", il2cppi_to_string(app::BaseEntity_ToStringRelease(entity, nullptr)).c_str());
+        ImGui::Text("Entity name: %s", game::GetEntityName(entity));
 
         if (entity->fields.jsonConfig != nullptr && entity->fields.jsonConfig->fields._entityTags != nullptr)
         {
@@ -263,7 +266,7 @@ namespace cheat::feature
                 if (checkOnlyShells && !game::IsEntityCrystalShell(entity))
                     continue;
 
-                if (useObjectNameFilter && il2cppi_to_string(app::BaseEntity_ToStringRelease(entity, nullptr)).find(objectNameFilter) == -1)
+                if (useObjectNameFilter && game::GetEntityName(entity).find(objectNameFilter) == -1)
                     continue;
 
                 if (ImGui::TreeNode(&entity, "Entity 0x%p; Dist %.3fm", entity, game::GetDistToAvatar(entity)))
@@ -428,19 +431,116 @@ namespace cheat::feature
 		ImGui::InputInt("Map scene id", &temp);
     }
 
+    void DrawImGuiFocusTest()
+    {
+		ImGui::Text("Is any item active: %s", ImGui::IsAnyItemActive() ? "true" : "false");
+		ImGui::Text("Is any item focused: %s", ImGui::IsAnyItemFocused() ? "true" : "false");
+
+		ImGui::Button("Test");
+		auto hk = Hotkey();
+		int temp = 0;
+		InputHotkey("Test hotkey", &hk, false);
+		ImGui::InputInt("Test input", &temp);
+    }
+
+    std::map<std::string, std::string> chestNames;
+    std::unordered_set<std::string> notWrittenChests;
+    bool showNotWritten = false;
+    void OnGameUpdate()
+    {
+        if (!showNotWritten)
+            return;
+
+        notWrittenChests.clear();
+        for (auto& entity : game::FindEntities(game::GetFilterChest()))
+        {
+            auto entityName = game::GetEntityName(entity);
+            if (chestNames.count(entityName) == 0)
+                notWrittenChests.insert(entityName);
+        }
+    }
+
+    void DrawChestPlugin()
+    {
+        static std::map<std::string, std::string> tempNames;
+
+        ImGui::Checkbox("Show not written", &showNotWritten);
+        for (auto& entity : game::FindEntities(game::GetFilterChest()))
+        {
+            auto entityName = game::GetEntityName(entity);
+            if (showNotWritten && chestNames.count(entityName) > 0)
+                continue;
+
+            auto logicComponents = ToUniList(app::BaseEntity_GetAllLogicComponents(entity, nullptr), app::BaseComponent*);
+            if (logicComponents == nullptr)
+                continue;
+
+            app::LCChestPlugin* chestPlugin = game::GetLCPlugin<app::LCChestPlugin>(entity, *app::LCChestPlugin__TypeInfo);
+
+            if (chestPlugin == nullptr)
+                continue;
+
+            if (!ImGui::TreeNode(entity, "Chest 0x%p, Distance: %f", entity, game::GetDistToAvatar(entity)))
+                continue;
+
+            auto& pluginData = chestPlugin->fields;
+            auto& owner = pluginData._owner->fields;
+            auto& ownerData = owner._dataItem->fields;
+            app::GadgetState__Enum chestState = static_cast<app::GadgetState__Enum>(ownerData.gadgetState);
+            ImGui::Text("Is ability locked: %s", pluginData._isLockByAbility ? "true" : "false");
+            ImGui::Text("State: %s", magic_enum::enum_name(chestState).data());
+            
+            bool added = chestNames.count(entityName) > 0;
+
+            if (tempNames.count(entityName) == 0)
+                tempNames[entityName] = added ? chestNames[entityName] : std::string();
+
+            auto& tempName = tempNames[entityName];
+            ImGui::PushID(entity);
+
+            ImGui::Text("Name: %s", entityName.c_str());
+            ImGui::InputText("Friendly name", &tempName);
+
+            if (ImGui::Button(added ? "Update" : "Add"))
+                chestNames[entityName] = tempName;
+
+            if (ImGui::Button("Teleport"))
+            {
+                auto& mapTeleport = MapTeleport::GetInstance();
+                mapTeleport.TeleportTo(game::GetAbsolutePosition(entity));
+            }
+
+            ImGui::PopID();
+
+            ImGui::TreePop();
+        }
+
+        if (ImGui::TreeNode("Chest dictionary"))
+        {
+            std::stringstream text;
+            text << "{\n";
+            for (auto& [rawName, friendlyName] : chestNames)
+            {
+                text << "\t\"" << friendlyName << "\" : \"" << rawName << "\",\n";
+            }
+            text << "}";
+            std::string textStr = text.str();
+            ImGui::InputTextMultiline("Dict", &textStr);
+            ImGui::TreePop();
+        }
+		
+	}
+
 	void Debug::DrawMain()
 	{
+		if (ImGui::CollapsingHeader("Chest plugin", ImGuiTreeNodeFlags_None))
+			DrawChestPlugin();
 
-        ImGui::Text("Is any item active: %s", ImGui::IsAnyItemActive() ? "true" : "false");
-        ImGui::Text("Is any item focused: %s", ImGui::IsAnyItemFocused() ? "true" : "false");
+		if (ImGui::CollapsingHeader("Imgui focus test", ImGuiTreeNodeFlags_None))
+            DrawImGuiFocusTest();
 
-        ImGui::Button("Test");
-        auto hk = Hotkey();
-        int temp = 0;
-        InputHotkey("Test hotkey", &hk, false);
-        ImGui::InputInt("Test input", &temp);
-
-        DrawMapManager();
+		if (ImGui::CollapsingHeader("Scene id info", ImGuiTreeNodeFlags_None))
+            DrawMapManager();
 
 		if (ImGui::CollapsingHeader("Entity manager", ImGuiTreeNodeFlags_None))
 			DrawEntitiesData();
@@ -454,5 +554,19 @@ namespace cheat::feature
 		if (ImGui::CollapsingHeader("Map manager", ImGuiTreeNodeFlags_None))
 			DrawManagerData();
 	}
+
+	bool Debug::NeedInfoDraw() const
+	{
+        return showNotWritten && notWrittenChests.size() > 0;
+	}
+
+	void Debug::DrawInfo()
+	{
+        for (auto& name : notWrittenChests)
+        {
+            ImGui::Text("%s", name.c_str());
+        }
+	}
+
 }
 

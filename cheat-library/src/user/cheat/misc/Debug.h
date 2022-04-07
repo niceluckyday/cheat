@@ -16,8 +16,8 @@ namespace cheat::feature
 		virtual bool NeedStatusDraw() const override { return false; };
 		void DrawStatus() override {};
 
-		virtual bool NeedInfoDraw() const override { return false; };
-		void DrawInfo() override {};
+		virtual bool NeedInfoDraw() const override;
+		void DrawInfo() override;
 	
 	private:
 		Debug();

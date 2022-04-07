@@ -146,6 +146,7 @@ DO_APP_FUNC(0x01515110, Vector3,       BaseEntity_GetUp,               (BaseEnti
 DO_APP_FUNC(0x0152ABB0, bool,          BaseEntity_IsActive,            (BaseEntity* __this, MethodInfo* method));
 DO_APP_FUNC(0x0153AA10, Rigidbody*,    BaseEntity_GetRigidbody,        (BaseEntity* __this, MethodInfo* method));
 DO_APP_FUNC(0x04564740, VCBaseMove*,   BaseEntity_GetMoveComponent_1,  (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x01659D20, List_1_MoleMole_BaseComponent_*, BaseEntity_GetAllLogicComponents, (BaseEntity* __this, MethodInfo* method));
 // v 2.6
 // DO_APP_FUNC(0x01667880, List_1_System_UInt32_*, BaseEntity_GetChildrenRuntimeIds, (BaseEntity* __this, MethodInfo* method));
 

@@ -23,13 +23,18 @@ namespace cheat::feature
 
 		DrawFilterOptions();
 
+		DrawItems();
+    }
+
+	void ItemTeleportBase::DrawItems()
+	{
 		auto nodeName = util::string_format("%s list", name.c_str());
 		if (ImGui::TreeNode(nodeName.c_str()))
 		{
-			DrawEntities(filter);
+			DrawEntities();
 			ImGui::TreePop();
 		}
-    }
+	}
 
 	bool ItemTeleportBase::NeedInfoDraw() const
 {
@@ -38,7 +43,7 @@ namespace cheat::feature
 
 	void ItemTeleportBase::DrawInfo()
 	{
-		DrawNearestEntityInfo(name.c_str(), filter);
+		DrawNearestEntityInfo();
 	}
 
 	void ItemTeleportBase::OnKeyUp(short key, bool& cancelled)
@@ -57,20 +62,25 @@ namespace cheat::feature
 		}
 	}
 
-	void ItemTeleportBase::DrawNearestEntityInfo(const char* prefix, game::FilterFunc filter)
+	void ItemTeleportBase::DrawEntityInfo(app::BaseEntity* entity)
 	{
-		auto nearestEntity = game::FindNearestEntity(filter);
-		if (nearestEntity == nullptr)
+		if (entity == nullptr)
 		{
-			ImGui::Text(prefix); ImGui::SameLine();
+			ImGui::Text(name.c_str()); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1.0f, 0.1f, 0.1f, 1.0f), "not found");
 			return;
 		}
-		ImGui::Text(prefix); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.1f, 1.0f, 0.1f, 1.0f), "%.3fm", game::GetDistToAvatar(nearestEntity));
+		ImGui::Text(name.c_str()); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.1f, 1.0f, 0.1f, 1.0f), "%.3fm", game::GetDistToAvatar(entity));
 	}
 
-	void ItemTeleportBase::DrawEntities(const game::FilterFunc& filter)
+	void ItemTeleportBase::DrawNearestEntityInfo()
+	{
+		auto nearestEntity = game::FindNearestEntity(filter);
+		DrawEntityInfo(nearestEntity);
+	}
+
+	void ItemTeleportBase::DrawEntities()
 	{
 		auto entities = game::FindEntities(filter);
 		if (entities.size() == 0)
@@ -91,5 +101,8 @@ namespace cheat::feature
 			}
 		}
 	}
+
+
+
 }
 
