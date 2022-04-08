@@ -225,13 +225,25 @@ namespace cheat::feature
 	{
 		if (taskInfo.currentStage == 1)
 		{
+			app::Vector3 originPosition = position;
 			position = taskInfo.targetPosition;
 			LOG_DEBUG("Stage 3. Changing avatar entity position.");
 
 			if (taskInfo.needHeightCalculation)
 			{
 				auto relativePos = app::WorldShiftManager_GetRelativePosition(nullptr, position, nullptr);
-				auto groundHeight = app::Miscs_CalcCurrentGroundWaterHeight(nullptr, relativePos.x, relativePos.z, nullptr);
+				float groundHeight;
+				switch (taskInfo.sceneId)
+				{
+				// Underground mines has tunnel structure, so we need to calculate height from waypoint height to prevent tp above world.
+				case 6: // Underground mines scene id, if it was changed, please create issue
+					groundHeight = app::Miscs_CalcCurrentGroundHeight_1(nullptr, relativePos.x, relativePos.z, originPosition.y, 100, 
+						app::Miscs_GetSceneGroundLayerMask(nullptr, nullptr), nullptr);
+					break;
+				default:
+					groundHeight = app::Miscs_CalcCurrentGroundWaterHeight(nullptr, relativePos.x, relativePos.z, nullptr);
+					break;
+				}
 				if (groundHeight > 0 && position.y != groundHeight)
 				{
 					position.y = groundHeight + 5;

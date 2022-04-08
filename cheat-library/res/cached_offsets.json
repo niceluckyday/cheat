@@ -276,6 +276,7 @@
         "Miscs_CalcCurrentGroundNorm": "15dd370",
         "Miscs_CalcCurrentGroundWaterHeight": "15dd910",
         "Miscs_CheckTargetAttackable": "15e1c90",
+        "Miscs_GetSceneGroundLayerMask": "0",
         "Miscs_GenLevelPos_1": "15e91a0",
         "Miscs_GenWorldPos": "15e9b40",
         "MonoInLevelMapPage_get_mapBackground": "4339d00",

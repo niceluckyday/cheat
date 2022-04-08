@@ -110,6 +110,7 @@ DO_APP_FUNC(0x014021F0, float,   Miscs_CalcCurrentGroundHeight_1,    (void* __th
 DO_APP_FUNC(0x014026D0, Vector3, Miscs_CalcCurrentGroundNorm,        (void* __this, Vector3 pos, MethodInfo* method));
 DO_APP_FUNC(0x0140F770, Vector3, Miscs_GenWorldPos,                  (void* __this, Vector2 levelMapPos, MethodInfo* method));
 DO_APP_FUNC(0x0140EE70, Vector2, Miscs_GenLevelPos_1,                (void* __this, Vector3 worldPos, MethodInfo* method));
+DO_APP_FUNC(0x01601D90, int32_t, Miscs_GetSceneGroundLayerMask,      (void* __this, MethodInfo* method));
 
 DO_APP_FUNC(0x069A58A0, Vector3, WorldShiftManager_GetRelativePosition, (void* __this, Vector3 pos, MethodInfo* method));
 DO_APP_FUNC(0x069A55E0, Vector3, WorldShiftManager_GetAbsolutePosition, (void* __this, Vector3 pos, MethodInfo* method));

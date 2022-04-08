@@ -289,6 +289,9 @@ namespace cheat::game
 			
 			for (const auto& [waypointId, waypoint] : waypoints->pairs())
 			{
+				if (waypoint.config == nullptr)
+					continue;
+
 				auto &config = waypoint.config->fields;
 				uint16_t areaId = app::SimpleSafeUInt16_get_Value(nullptr, config.areaIdRawNum, nullptr);
 				bool isAreaUnlocked = app::MapModule_IsAreaUnlock(mapModule, sceneId, areaId, nullptr);
