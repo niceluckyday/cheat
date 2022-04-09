@@ -158,19 +158,15 @@ namespace cheat::feature
 	static void InLevelMapPageContext_OnMapClicked_Hook(app::InLevelMapPageContext* __this, app::Vector2 screenPos, MethodInfo* method)
 	{
 		MapTeleport& mapTeleport = MapTeleport::GetInstance();
-		LOG_DEBUG("Map clicked");
 
 		if (!mapTeleport.m_Enabled || !mapTeleport.m_Key.value().IsPressed())
 			return callOrigin(InLevelMapPageContext_OnMapClicked_Hook, __this, screenPos, method);
-
-		LOG_DEBUG("Map start finding location");
 
 		app::Vector2 mapPosition{};
 		bool mapPosResult = ScreenToMapPosition(__this, screenPos, &mapPosition);
 		if (!mapPosResult)
 			return;
 
-		LOG_DEBUG("Calling teleport");
 		mapTeleport.TeleportTo(mapPosition);
 	}
 
