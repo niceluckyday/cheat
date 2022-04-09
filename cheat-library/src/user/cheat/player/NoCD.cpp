@@ -2,6 +2,7 @@
 #include "NoCD.h"
 
 #include <helpers.h>
+#include <fmt/chrono.h>
 
 namespace cheat::feature 
 {
@@ -10,6 +11,8 @@ namespace cheat::feature
 	static bool LCAvatarCombat_IsSkillInCD_1_Hook(void* __this, void* skillInfo, MethodInfo* method);
 	static void ActorAbilityPlugin_AddDynamicFloatWithRange_Hook(void* __this, app::String* key, float value, float minValue, float maxValue,
 		bool forceDoAtRemote, MethodInfo* method);
+
+	static std::list<std::string> abilityLog;
 
     NoCD::NoCD() : Feature(),
         NF(m_Ability,    "Ability CD",  "NoCD", false),
@@ -35,6 +38,28 @@ namespace cheat::feature
 		ConfigWidget(m_InstantBow, "Disable cooldown of bow charge.");
 		ConfigWidget(m_Ability, "Disable skills cooldown.");
 		ConfigWidget(m_Sprint, "Disable use sprint delay.");
+
+		ImGui::Text("If instant bow charge doesn't work:");
+		TextURL("Check issue on github.", "https://github.com/CallowBlack/genshin-cheat/issues/47", false, false);
+		if (ImGui::TreeNode("Ability log [DEBUG]"))
+		{
+			if (ImGui::Button("Copy to clipboard"))
+			{
+				ImGui::LogToClipboard();
+
+				ImGui::LogText("Ability log:\n");
+
+				for (auto& logEntry : abilityLog)
+					ImGui::LogText("%s\n", logEntry.c_str());
+
+				ImGui::LogFinish();
+			}
+
+			for (std::string& logEntry : abilityLog)
+				ImGui::Text(logEntry.c_str());
+
+			ImGui::TreePop();
+		}
     }
 
     bool NoCD::NeedStatusDraw() const
@@ -92,8 +117,16 @@ namespace cheat::feature
 	static void ActorAbilityPlugin_AddDynamicFloatWithRange_Hook(void* __this, app::String* key, float value, float minValue, float maxValue,
 		bool forceDoAtRemote, MethodInfo* method)
 	{
+		std::time_t t = std::time(nullptr);
+		auto logEntry = fmt::format("{:%H:%M:%S} | Key: {} value {}.", fmt::localtime(t), il2cppi_to_string(key), value);
+		abilityLog.push_front(logEntry);
+		if (abilityLog.size() > 50)
+			abilityLog.pop_back();
+
 		NoCD& noCD = NoCD::GetInstance();
-		if (noCD.m_InstantBow)
+		// This function is calling not only for bows, so if don't put key filter it cause various game mechanic bugs.
+		// For now only "_Enchanted_Time" found for bow charging, maybe there are more. Need to continue research.
+		if (noCD.m_InstantBow && il2cppi_to_string(key) == "_Enchanted_Time")
 			value = maxValue;
 		callOrigin(ActorAbilityPlugin_AddDynamicFloatWithRange_Hook, __this, key, value, minValue, maxValue, forceDoAtRemote, method);
 	}
