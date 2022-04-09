@@ -414,10 +414,8 @@ namespace cheat::feature
 		if (unknowns.empty())
 			return;
 
-		ImGui::TextColored(ImColor(255, 165, 0, 255), "Wow, you found unknowns chest names. Means this chest items have no filter yet.\n"
-			"Please create issue (if anyone created it before) with copied text, it'll help improve functionality.");
-
-		TextURL("Create issue", "https://github.com/CallowBlack/genshin-cheat/issues/new", false, false);
+		ImGui::TextColored(ImColor(255, 165, 0, 255), "Wow, you found unknowns chest names. Means this chest items have no filter yet.");
+		TextURL("Please check issue on github with information about it.", "https://github.com/CallowBlack/genshin-cheat/issues/48", false, false);
 		
 		if (ImGui::Button("Copy to clipboard"))
 		{
@@ -426,7 +424,7 @@ namespace cheat::feature
 			ImGui::LogText("Unknown names:\n");
 			
 			for (auto& entity : unknowns)
-				ImGui::LogText("%s\n", game::GetEntityName(entity).c_str());
+				ImGui::LogText("%s; position: %s\n", game::GetEntityName(entity).c_str(), il2cppi_to_string(game::GetRelativePosition(entity)).c_str());
 			
 			ImGui::LogFinish();
 		}
