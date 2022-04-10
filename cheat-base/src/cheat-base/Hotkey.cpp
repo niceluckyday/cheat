@@ -1,105 +1,257 @@
 #include <pch.h>
 #include "Hotkey.h"
 
-Hotkey::Hotkey() : Hotkey(0, 0) {}
+#define IM_VK_KEYPAD_ENTER      (VK_RETURN + 256)
 
-Hotkey::Hotkey(short mKey, short aKey) : mKey(mKey), aKey(aKey) {}
+static ImGuiKey LegacyToInput(short key)
+{
+	switch (key)
+	{
+	case VK_TAB: return ImGuiKey_Tab;
+	case VK_LEFT: return ImGuiKey_LeftArrow;
+	case VK_RIGHT: return ImGuiKey_RightArrow;
+	case VK_UP: return ImGuiKey_UpArrow;
+	case VK_DOWN: return ImGuiKey_DownArrow;
+	case VK_PRIOR: return ImGuiKey_PageUp;
+	case VK_NEXT: return ImGuiKey_PageDown;
+	case VK_HOME: return ImGuiKey_Home;
+	case VK_END: return ImGuiKey_End;
+	case VK_INSERT: return ImGuiKey_Insert;
+	case VK_DELETE: return ImGuiKey_Delete;
+	case VK_BACK: return ImGuiKey_Backspace;
+	case VK_SPACE: return ImGuiKey_Space;
+	case VK_RETURN: return ImGuiKey_Enter;
+	case VK_ESCAPE: return ImGuiKey_Escape;
+	case VK_OEM_7: return ImGuiKey_Apostrophe;
+	case VK_OEM_COMMA: return ImGuiKey_Comma;
+	case VK_OEM_MINUS: return ImGuiKey_Minus;
+	case VK_OEM_PERIOD: return ImGuiKey_Period;
+	case VK_OEM_2: return ImGuiKey_Slash;
+	case VK_OEM_1: return ImGuiKey_Semicolon;
+	case VK_OEM_PLUS: return ImGuiKey_Equal;
+	case VK_OEM_4: return ImGuiKey_LeftBracket;
+	case VK_OEM_5: return ImGuiKey_Backslash;
+	case VK_OEM_6: return ImGuiKey_RightBracket;
+	case VK_OEM_3: return ImGuiKey_GraveAccent;
+	case VK_CAPITAL: return ImGuiKey_CapsLock;
+	case VK_SCROLL: return ImGuiKey_ScrollLock;
+	case VK_NUMLOCK: return ImGuiKey_NumLock;
+	case VK_SNAPSHOT: return ImGuiKey_PrintScreen;
+	case VK_PAUSE: return ImGuiKey_Pause;
+	case VK_NUMPAD0: return ImGuiKey_Keypad0;
+	case VK_NUMPAD1: return ImGuiKey_Keypad1;
+	case VK_NUMPAD2: return ImGuiKey_Keypad2;
+	case VK_NUMPAD3: return ImGuiKey_Keypad3;
+	case VK_NUMPAD4: return ImGuiKey_Keypad4;
+	case VK_NUMPAD5: return ImGuiKey_Keypad5;
+	case VK_NUMPAD6: return ImGuiKey_Keypad6;
+	case VK_NUMPAD7: return ImGuiKey_Keypad7;
+	case VK_NUMPAD8: return ImGuiKey_Keypad8;
+	case VK_NUMPAD9: return ImGuiKey_Keypad9;
+	case VK_DECIMAL: return ImGuiKey_KeypadDecimal;
+	case VK_DIVIDE: return ImGuiKey_KeypadDivide;
+	case VK_MULTIPLY: return ImGuiKey_KeypadMultiply;
+	case VK_SUBTRACT: return ImGuiKey_KeypadSubtract;
+	case VK_ADD: return ImGuiKey_KeypadAdd;
+	case IM_VK_KEYPAD_ENTER: return ImGuiKey_KeypadEnter;
+	case VK_LSHIFT: return ImGuiKey_LeftShift;
+	case VK_LCONTROL: return ImGuiKey_LeftCtrl;
+	case VK_LMENU: return ImGuiKey_LeftAlt;
+	case VK_LWIN: return ImGuiKey_LeftSuper;
+	case VK_RSHIFT: return ImGuiKey_RightShift;
+	case VK_RCONTROL: return ImGuiKey_RightCtrl;
+	case VK_RMENU: return ImGuiKey_RightAlt;
+	case VK_RWIN: return ImGuiKey_RightSuper;
+	case VK_APPS: return ImGuiKey_Menu;
+	case '0': return ImGuiKey_0;
+	case '1': return ImGuiKey_1;
+	case '2': return ImGuiKey_2;
+	case '3': return ImGuiKey_3;
+	case '4': return ImGuiKey_4;
+	case '5': return ImGuiKey_5;
+	case '6': return ImGuiKey_6;
+	case '7': return ImGuiKey_7;
+	case '8': return ImGuiKey_8;
+	case '9': return ImGuiKey_9;
+	case 'A': return ImGuiKey_A;
+	case 'B': return ImGuiKey_B;
+	case 'C': return ImGuiKey_C;
+	case 'D': return ImGuiKey_D;
+	case 'E': return ImGuiKey_E;
+	case 'F': return ImGuiKey_F;
+	case 'G': return ImGuiKey_G;
+	case 'H': return ImGuiKey_H;
+	case 'I': return ImGuiKey_I;
+	case 'J': return ImGuiKey_J;
+	case 'K': return ImGuiKey_K;
+	case 'L': return ImGuiKey_L;
+	case 'M': return ImGuiKey_M;
+	case 'N': return ImGuiKey_N;
+	case 'O': return ImGuiKey_O;
+	case 'P': return ImGuiKey_P;
+	case 'Q': return ImGuiKey_Q;
+	case 'R': return ImGuiKey_R;
+	case 'S': return ImGuiKey_S;
+	case 'T': return ImGuiKey_T;
+	case 'U': return ImGuiKey_U;
+	case 'V': return ImGuiKey_V;
+	case 'W': return ImGuiKey_W;
+	case 'X': return ImGuiKey_X;
+	case 'Y': return ImGuiKey_Y;
+	case 'Z': return ImGuiKey_Z;
+	case VK_F1: return ImGuiKey_F1;
+	case VK_F2: return ImGuiKey_F2;
+	case VK_F3: return ImGuiKey_F3;
+	case VK_F4: return ImGuiKey_F4;
+	case VK_F5: return ImGuiKey_F5;
+	case VK_F6: return ImGuiKey_F6;
+	case VK_F7: return ImGuiKey_F7;
+	case VK_F8: return ImGuiKey_F8;
+	case VK_F9: return ImGuiKey_F9;
+	case VK_F10: return ImGuiKey_F10;
+	case VK_F11: return ImGuiKey_F11;
+	case VK_F12: return ImGuiKey_F12;
+	default: return ImGuiKey_None;
+	}
+}
+
+static short InputToLegacy(ImGuiKey inputkey)
+{
+	auto& io = ImGui::GetIO();
+	return io.KeyMap[inputkey];
+}
+
+Hotkey::Hotkey()
+{
+
+}
+
+Hotkey::Hotkey(std::vector<short> legacyKeys)
+{
+    for (short legacyKey : legacyKeys)
+    {
+        this->keys.insert(legacyKey);
+    }
+}
+
+Hotkey::Hotkey(short key)
+{
+    this->keys.insert(key);
+}
+
+std::string GetKeyName(short key)
+{
+    if (key > 5)
+        return ImGui::GetKeyName(key);
+    
+    switch (key)
+    {
+    case ImGuiMouseButton_Left:
+        return "LMB";
+    case ImGuiMouseButton_Right:
+        return "RMB";
+    case ImGuiMouseButton_Middle:
+        return "MMB";
+    case 4:
+        return "Mouse X1";
+    case 5:
+        return "Mouse X2";
+    }
+
+    return "Unknown";
+}
 
 Hotkey::operator std::string() const 
 {
-    auto mKeyName = GetKeyName(mKey);
-    auto cKeyName = GetKeyName(aKey);
-    if (cKeyName.size() > 0 && mKeyName.size() > 0) {
-        return cKeyName + " + " + mKeyName;
+    if (IsEmpty())
+        return "None";
+
+    std::stringstream hotkeyNameStream;
+
+    for (auto it = keys.begin(); it != keys.end(); it++)
+    {
+        if (it != keys.begin())
+            hotkeyNameStream << " + ";
+
+        hotkeyNameStream << GetKeyName(LegacyToInput(*it));
     }
-    else if (cKeyName.size() > 0) {
-        return cKeyName;
-    }
-    else if (mKeyName.size() > 0) {
-        return mKeyName;
-    }
-    return std::string();
+    return hotkeyNameStream.str();
 }
 
 bool Hotkey::IsPressed() const
 {
-    if (IsEmpty())
-        return false;
+	for (short key : keys)
+	{
+		if (!ImGui::IsKeyDown(key))
+			return false;
+	}
 
-    return (mKey == 0 || GetKeyState(mKey) & 0x8000) &&
-        (aKey == 0 || GetKeyState(aKey) & 0x8000);
+	return true;
 }
 
-bool Hotkey::IsPressed(short keyDown) const
+bool Hotkey::IsPressed(short legacyKey) const
 {
-    if (keyDown != mKey && keyDown != aKey)
+    if (keys.count(legacyKey) == 0)
         return false;
 
-    auto checkKey = keyDown == mKey ? aKey : mKey;
+    std::unordered_set<short> keysClone = keys;
+    keysClone.erase(legacyKey);
 
-    return (checkKey == 0 || GetKeyState(checkKey) & 0x8000);
+    for (short key : keysClone)
+    {
+        if (!ImGui::IsKeyDown(key))
+            return false;
+    }
+
+    return true;
+}
+
+bool Hotkey::IsReleased() const
+{
+	bool released = false;
+	for (short key : keys)
+	{
+		if (ImGui::IsKeyReleased(key))
+		{
+			released = true;
+			continue;
+		}
+
+		if (!ImGui::IsKeyPressed(key))
+			return false;
+	}
+
+	return released;
 }
 
 bool Hotkey::IsEmpty() const
 {
-    return mKey == 0 && aKey == 0;
+    return keys.size() == 0;
 }
 
-short Hotkey::GetAKey() const
+std::vector<short> Hotkey::GetKeys()
 {
-    return aKey;
-}
-
-short Hotkey::GetMKey() const
-{
-    return mKey;
+    return std::vector<short>(keys.begin(), keys.end());
 }
 
 Hotkey Hotkey::GetPressedHotkey()
 {
-    short mKey = 0;
-    short cKey = 0;
-    for (short k = 0x10; k < 0x15; k++) {
-        if (GetKeyState(k) & 0x8000)
-        {
-            cKey = k;
-            break;
-        }
-    }
+    Hotkey hotkey{};
 
-    static int mkeyRanges[5][2] = {
-        { 0x20, 0x20 },
-        { 0x22, 0x2E },
-        { 0x30, 0x39 },
-        { 0x41, 0x5A },
-        { 0x60, 0x87 }
-    };
+    auto& io = ImGui::GetIO();
 
-    for (short r = 0; r < 5; r++) {
-        auto range = mkeyRanges[r];
-        for (short k = range[0]; k < range[1] + 1; k++) {
-            if (GetKeyState(k) & 0x8000)
-            {
-                mKey = k;
-                break;
-            }
-        }
-        if (mKey > 0)
-            break;
-    }
-
-    return Hotkey(mKey, cKey);
-}
-
-std::string Hotkey::GetKeyName(int keyId) 
-{
-    CHAR name[128];
-    UINT scanCode = MapVirtualKeyA(keyId, MAPVK_VK_TO_VSC);
-    LONG lParamValue = (scanCode << 16);
-    int result = GetKeyNameTextA(lParamValue, name, 128);
-    if (result > 0)
+    for (ImGuiKey i = ImGuiKey_NamedKey_BEGIN; i < ImGuiKey_NamedKey_END - 4; i++)
     {
-        return std::string(name);
+        bool isKeyDown = io.KeysDown[i];
+        if (isKeyDown)
+            hotkey.keys.insert(InputToLegacy(i));
     }
-    return std::string();
+
+    for (ImGuiKey i = 0; i < ImGuiMouseButton_COUNT; i++)
+    {
+        bool isMouseButtonDown = io.MouseDown[i];
+        if (isMouseButtonDown)
+            hotkey.keys.insert(InputToLegacy(i));
+    }
+    return hotkey;
 }

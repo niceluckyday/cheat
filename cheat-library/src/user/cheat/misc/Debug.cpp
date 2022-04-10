@@ -533,6 +533,8 @@ namespace cheat::feature
 
 	void Debug::DrawMain()
 	{
+        static Hotkey testKey = Hotkey({VK_F1});
+        InputHotkey("Test hotkey 2", &testKey, true);
 		if (ImGui::CollapsingHeader("Chest plugin", ImGuiTreeNodeFlags_None))
 			DrawChestPlugin();
 

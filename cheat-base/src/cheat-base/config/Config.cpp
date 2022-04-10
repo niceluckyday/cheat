@@ -3,6 +3,8 @@
 
 namespace config 
 {
+	constexpr long configVersion = 1;
+
 	static bool changed = false;
 	static std::string filename;
 	static CSimpleIni ini;
@@ -10,6 +12,7 @@ namespace config
 	static std::vector<ConfigEntry*> fields{};
 	static std::vector<field::ToggleField*> toggleFields{};
 	static void OnFieldChanged(ConfigEntry* entry);
+
 
 	void Init(const std::string configFile)
 	{
@@ -19,6 +22,10 @@ namespace config
 		if (status < 0)
 			LOG_ERROR("Failed to load config file.");
 
+		if (ini.GetLongValue("General", "ConfigVersion", 1) != configVersion)
+			ini.Reset();
+
+		ini.SetLongValue("General", "ConfigVersion", configVersion);
 	}
 
 	void Save()

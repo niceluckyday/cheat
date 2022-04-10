@@ -222,32 +222,6 @@ namespace cheat
 
 	}
 
-	bool ImGuiIsHotkeyDown(const Hotkey& hotkey)
-	{
-		short keys[] = {
-			hotkey.GetMKey(),
-			hotkey.GetAKey()
-		};
-
-		bool released = false;
-		for (size_t i = 0; i < std::size(keys); i++)
-		{
-			if (keys[i] == 0)
-				continue;
-
-			if (ImGui::IsKeyReleased(keys[i]))
-			{
-				released = true;
-				continue;
-			}
-			
-			if (!ImGui::IsKeyPressed(keys[i]))
-				return false;
-		}
-
-		return released;
-	}
-
 	void CheatManager::OnRender()
 	{
 		auto& settings = feature::Settings::GetInstance();
@@ -261,8 +235,7 @@ namespace cheat
 		if (settings.m_InfoShow)
 			DrawInfo();
 
-
-		if (ImGuiIsHotkeyDown(settings.m_MenuKey) && !ImGui::IsAnyItemActive())
+		if (settings.m_MenuKey.value().IsReleased() && !ImGui::IsAnyItemActive())
 			ToggleMenuShow();
 	}
 

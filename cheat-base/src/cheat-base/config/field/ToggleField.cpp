@@ -7,7 +7,7 @@
 namespace config::field
 {
 	ToggleField::ToggleField(const std::string friendlyName, const std::string name, const std::string section, bool defaultValue)
-		: ToggleField(friendlyName, name, section, defaultValue, Hotkey(0, 0)) { }
+		: ToggleField(friendlyName, name, section, defaultValue, Hotkey()) { }
 
 	ToggleField::ToggleField(const std::string friendlyName, const std::string name, const std::string section, bool defaultValue, 
 		Hotkey defaultHotkey) :

@@ -1,27 +1,40 @@
 #pragma once
 
 #include <string>
+#include <unordered_set>
 
 class Hotkey 
 {
 public:
 
     Hotkey();
-    Hotkey(short mKey, short aKey);
+    Hotkey(short key);
+    Hotkey(std::vector<short> keys);
 
     bool IsPressed() const;
     bool IsPressed(short keyDown) const;
+    bool IsReleased() const;
 
     bool IsEmpty() const;
-    short GetAKey() const;
-    short GetMKey() const;
+
+    std::vector<short> GetKeys();
 
     friend bool operator== (const Hotkey& c1, const Hotkey& c2) {
-        return c1.mKey == c2.mKey && c1.aKey == c2.aKey;
+        return c1.keys == c2.keys;
     }
 
     friend bool operator!= (const Hotkey & c1, const Hotkey & c2){
         return !(c1 == c2);
+    }
+
+    friend bool operator-(const Hotkey& c1, const Hotkey& c2)
+    {
+		for (short key : c1.keys)
+		{
+            if (c2.keys.count(key) == 0)
+                return true;
+		}
+        return false;
     }
 
     operator std::string() const;
@@ -29,11 +42,5 @@ public:
     static Hotkey GetPressedHotkey();
 
 private:
-    // Main key can be 0-9, A-Z, Any Numpad, F1-F27, Space
-    short mKey;
-
-    // Additional key can be Shift, CapsLock, Ctrl, Alt
-    short aKey;
-
-    static std::string GetKeyName(int keyId);
+    std::unordered_set<short> keys;
 };

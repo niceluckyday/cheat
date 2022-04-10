@@ -15,7 +15,6 @@ namespace cheat::feature
         NF(m_AttackDelay,  "Attack delay time (in ms)", "KillAura", 100),
         NF(m_RepeatDelay,  "Repeat delay time (in ms)", "KillAura", 1000)
     { 
-		*m_Enabled = false;
 		events::GameUpdateEvent += MY_METHOD_HANDLER(KillAura::OnGameUpdate);
 	}
 

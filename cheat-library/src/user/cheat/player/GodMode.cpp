@@ -10,7 +10,7 @@ namespace cheat::feature
     static void VCHumanoidMove_NotifyLandVelocity_Hook(app::VCHumanoidMove* __this, app::Vector3 velocity, float reachMaxDownVelocityTime, MethodInfo* method);
 
     GodMode::GodMode() : Feature(),
-        NFF(m_Enabled, "God mode", "GodModeEnabled", "Player", false)
+        NFF(m_Enabled, "God mode", "m_GodMode", "Player", false)
     {
 		// HookManager::install(app::LCBaseCombat_FireBeingHitEvent, LCBaseCombat_FireBeingHitEvent_Hook);
 		HookManager::install(app::VCHumanoidMove_NotifyLandVelocity, VCHumanoidMove_NotifyLandVelocity_Hook);

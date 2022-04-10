@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include <filesystem>
 #include <cheat-base/config/Config.h>
+#include <cheat-base/Hotkey.h>
 
 bool ConfigWidget(const char* label, config::field::BaseField<bool>& field, const char* desc = nullptr);
 bool ConfigWidget(const char* label, config::field::BaseField<int>& field, int step = 1, int start = 0, int end = 0, const char* desc = nullptr);
@@ -28,3 +29,8 @@ void TextURL(const char* name_, const char* URL_, bool SameLineBefore_, bool Sam
 
 void BeginGroupPanel(const char* name, const ImVec2& size);
 void EndGroupPanel();
+
+namespace ImGui
+{
+	bool HotkeyWidget(const char* label, Hotkey& hotkey, const ImVec2& size = ImVec2(0, 0));
+}

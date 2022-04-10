@@ -17,10 +17,10 @@ namespace cheat::feature
 	static void Entity_SetPosition_Hook(app::BaseEntity* __this, app::Vector3 position, bool someBool, MethodInfo* method);
 
     MapTeleport::MapTeleport() : Feature(),
-        NF(m_Enabled, "Enabled", "MapTeleport", false),
+        NF(m_Enabled, "Map teleport", "MapTeleport", false),
 		NF(m_DetectHeight, "Auto height detect", "MapTeleport", true),
 		NF(m_DefaultHeight, "Default teleport height", "MapTeleport", 300.0f),
-		NF(m_Key, "Teleport key", "MapTeleport", Hotkey('T', 0))
+		NF(m_Key, "Teleport key", "MapTeleport", Hotkey('T'))
     {
 		// Map touch
 		HookManager::install(app::InLevelMapPageContext_OnMarkClicked, InLevelMapPageContext_OnMarkClicked_Hook);
@@ -47,7 +47,8 @@ namespace cheat::feature
 
     void MapTeleport::DrawMain()
     {
-		ConfigWidget(m_Enabled,
+		ConfigWidget("Enabled",
+			m_Enabled,
 			"Enable teleportation to mark functionality.\n" \
 			"Usage: \n" \
 			"\t1. Open map.\n" \

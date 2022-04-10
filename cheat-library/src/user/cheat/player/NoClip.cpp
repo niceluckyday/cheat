@@ -90,22 +90,22 @@ namespace cheat::feature
 		auto relativeEntity = m_CameraRelative ? cameraEntity : avatarEntity;
 
 		app::Vector3 dir = {};
-		if (Hotkey('W', 0).IsPressed())
+		if (Hotkey('W').IsPressed())
 			dir = dir + app::BaseEntity_GetForward(relativeEntity, nullptr);
 
-		if (Hotkey('S', 0).IsPressed())
+		if (Hotkey('S').IsPressed())
 			dir = dir - app::BaseEntity_GetForward(relativeEntity, nullptr);
 
-		if (Hotkey('D', 0).IsPressed())
+		if (Hotkey('D').IsPressed())
 			dir = dir + app::BaseEntity_GetRight(relativeEntity, nullptr);
 
-		if (Hotkey('A', 0).IsPressed())
+		if (Hotkey('A').IsPressed())
 			dir = dir - app::BaseEntity_GetRight(relativeEntity, nullptr);
 
-		if (Hotkey(VK_SPACE, 0).IsPressed())
+		if (Hotkey(VK_SPACE).IsPressed())
 			dir = dir + app::BaseEntity_GetUp(avatarEntity, nullptr);
 
-		if (Hotkey(VK_SHIFT, 0).IsPressed())
+		if (Hotkey(VK_SHIFT).IsPressed())
 			dir = dir - app::BaseEntity_GetUp(avatarEntity, nullptr);
 
 		app::Vector3 prevPos = game::GetRelativePosition(avatarEntity);

@@ -6,7 +6,7 @@
 namespace cheat::feature 
 {
     Settings::Settings() : Feature(),
-        NF(m_MenuKey,    "Show cheat menu key", "General", Hotkey(VK_F1, 0)),
+        NF(m_MenuKey,    "Show cheat menu key", "General", Hotkey(VK_F1)),
 		
 		NF(m_StatusMove, "Move status window", "General", true),
 		NF(m_StatusShow, "Show status window", "General", true),

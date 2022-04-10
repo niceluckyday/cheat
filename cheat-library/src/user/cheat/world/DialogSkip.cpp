@@ -8,7 +8,7 @@ namespace cheat::feature
     static void InLevelCutScenePageContext_UpdateView_Hook(app::InLevelCutScenePageContext* __this, MethodInfo* method);
 
     DialogSkip::DialogSkip() : Feature(),
-        NFF(m_Enabled, "Auto talk", "m_AutoTalkEnabled", "World", false)
+        NF(m_Enabled, "Auto talk", "AutoTalk", false)
     {
         HookManager::install(app::InLevelCutScenePageContext_UpdateView, InLevelCutScenePageContext_UpdateView_Hook);
     }

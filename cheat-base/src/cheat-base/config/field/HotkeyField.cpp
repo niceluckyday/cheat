@@ -3,14 +3,28 @@
 
 void config::field::HotkeyField::Write(std::ostream& io)
 {
-	io << value().GetMKey() << " " << value().GetAKey();
+	auto keys = value().GetKeys();
+	for (auto it = keys.begin(); it != keys.end(); it++)
+	{
+		if (it != keys.begin())
+			io << " ";
+		io << *it;
+	}
+		
 }
 
 void config::field::HotkeyField::Read(std::istream& io)
 {
-	short mKey = 0;
-	short aKey = 0;
-	io >> mKey >> aKey;
-	*valuePtr() = Hotkey(mKey, aKey);
+	size_t keysSize = 0;
+	std::vector<short> keys;
+
+	short key;
+	while (io >> key)
+	{
+		LOG_DEBUG("Key: %d", key);
+		keys.push_back(key);
+	}
+
+	*valuePtr() = Hotkey(keys);
 	*prevValue = value();
 }

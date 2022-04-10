@@ -8,7 +8,7 @@ namespace cheat::feature
     static void VCMonsterAIController_TryDoSkill_Hook(void* __this, uint32_t skillID, MethodInfo* method);
 
     DumbEnemies::DumbEnemies() : Feature(),
-        NFF(m_Enabled, "Dumb enemies", "m_DumbEnemiesEnabled", "World", false)
+        NF(m_Enabled, "Dumb enemies", "DumbEnemies", false)
     {
 		HookManager::install(app::VCMonsterAIController_TryDoSkill, VCMonsterAIController_TryDoSkill_Hook);
     }
