@@ -41,7 +41,7 @@ void Run(HMODULE* phModule)
 	}
 	else
 	{
-		LOG_CRIT("Failed to initialize metadata. Please contact with developers about this problem");
+		LOG_CRIT("Failed to initialize metadata. Please contact the developers about this problem");
 		return;
 	}
 
@@ -52,9 +52,9 @@ void Run(HMODULE* phModule)
 
 	cheat::Init(*phModule);
 
-    LOG_DEBUG("Config path is %s", configPath.c_str());
-    LOG_DEBUG("UserAssembly.dll at 0x%p", il2cppi_get_base_address());
-    LOG_DEBUG("UnityPlayer.dll  at 0x%p", il2cppi_get_unity_address());
+    LOG_DEBUG("Config path is at %s", configPath.c_str());
+    LOG_DEBUG("UserAssembly.dll is at 0x%p", il2cppi_get_base_address());
+    LOG_DEBUG("UnityPlayer.dll is at 0x%p", il2cppi_get_unity_address());
 }
 
 bool InitMetadata(HMODULE hModule)
@@ -64,7 +64,7 @@ bool InitMetadata(HMODULE hModule)
 	DWORD signaturesSize = 0;
 	if (!util::GetResourceMemory(hModule, IDR_RCDATA2, pSignaturesData, signaturesSize))
 	{
-		LOG_LAST_ERROR("Failed load signatures resource.");
+		LOG_LAST_ERROR("Failed to load signatures resource.");
 		return false;
 	}
 
@@ -75,7 +75,7 @@ bool InitMetadata(HMODULE hModule)
 	DWORD cachedOffsetsSize = 0;
 	if (!util::GetResourceMemory(hModule, IDR_RCDATA3, pCachedOffsetsData, cachedOffsetsSize))
 	{
-		LOG_LAST_ERROR("Failed load cached offsets resource.");
+		LOG_LAST_ERROR("Failed to load cached offsets resource.");
 		return false;
 	}
 	std::string cachedOffsets = std::string((char*)pCachedOffsetsData, cachedOffsetsSize);
@@ -96,7 +96,7 @@ bool StubTerminateProcess()
     HMODULE hKernelBase = GetModuleHandle("kernelbase.dll");
     if (hKernelBase == NULL)
     {
-        LOG_LAST_ERROR("Getting kernelbase.dll handle failed.");
+        LOG_LAST_ERROR("Failed to get the kernelbase.dll handle.");
         return false;
     }
 

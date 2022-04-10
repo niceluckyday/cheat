@@ -45,7 +45,7 @@ namespace cheat::feature
 
     void cheat::feature::ChestTeleport::DrawFilterOptions()
     {
-        ConfigWidget(m_ShowInfo, "Showing short info about nearest chest to info window.");
+		ConfigWidget(m_ShowInfo, "Show short info about nearest chest to the info window.");
 
 		if (ImGui::TreeNode("Filters"))
 		{

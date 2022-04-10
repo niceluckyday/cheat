@@ -28,12 +28,12 @@ namespace cheat::feature
     void MobVacuum::DrawMain()
     {
         ConfigWidget("Enabled", m_Enabled, "Enables mob vacuum.\n\
-            Mob in specified radius will be moved front of player in specified distance.");
-        ConfigWidget(m_Instantly, "Move performs m_Instantly.");
-        ConfigWidget(m_Speed, 0.1f, 1.0f, 15.0f, "If 'Instantly' not checked, regulate speed of move.");
-        ConfigWidget(m_Radius, 1, 5, 150, "Radius of mob vacuum work area.");
-        ConfigWidget(m_Distance, 0.1f, 0.5f, 10.0f, "Distance beetwen player and monster to move.");
-        ConfigWidget(m_OnlyTarget, "Mob vacuum will be work only on entity targeted at the player.");
+            Mobs within the specified radius will move to the specified distance in front of the player.");
+        ConfigWidget(m_Instantly, "Vacuum the Enemies Instanly.");
+        ConfigWidget(m_Speed, 0.1f, 1.0f, 15.0f, "If 'Instantly' not checked, mob will be moved in balanced specified speed.");
+        ConfigWidget(m_Radius, 1, 5, 150, "Radius of Mob Vacuum.");
+        ConfigWidget(m_Distance, 0.1f, 0.5f, 10.0f, "Distance between the player and the monster.");
+        ConfigWidget(m_OnlyTarget, "Mob vacuum will only work on entities that target the player.");
     }
 
     bool MobVacuum::NeedStatusDraw() const

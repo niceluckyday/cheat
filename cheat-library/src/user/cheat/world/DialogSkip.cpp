@@ -21,7 +21,7 @@ namespace cheat::feature
 
     void DialogSkip::DrawMain()
     {
-        ConfigWidget(m_Enabled, "Automatic continue dialog. Don't skip talk momently.");
+        ConfigWidget(m_Enabled, "Automatically continue the dialog.");
     }
 
     bool DialogSkip::NeedStatusDraw() const

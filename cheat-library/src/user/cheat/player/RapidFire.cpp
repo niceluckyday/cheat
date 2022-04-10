@@ -31,11 +31,11 @@ namespace cheat::feature
             So not recommend to you that in your main account.");
 
 		ConfigWidget(m_Multiplier, 1, 2, 1000, "Rapid fire multiply count.\n\
-            For example: 100 means that whey you hit enemy, attack duplicates 100 times.\n\
-            Be aware, big value can produce lags.");
+            Each hit is multiplied by the multiplier.\n\
+            Note that large values may cause some lag.");
 
-		ConfigWidget(m_OnePunch, "Calculate count of attack repeat to kill entity by one attack.\n\
-            Due to that damage calculate on server side, that can be calculated incorrect count of attacks.");
+		ConfigWidget(m_OnePunch, "Calculate how many attacks needed to kill an enemy.\n\
+            Since the damage is calculated from the server, The calculation may not be on-point.");
     }
 
     bool RapidFire::NeedStatusDraw() const
