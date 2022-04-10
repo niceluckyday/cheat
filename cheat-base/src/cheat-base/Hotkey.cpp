@@ -111,6 +111,11 @@ static ImGuiKey LegacyToInput(short key)
 	case VK_F10: return ImGuiKey_F10;
 	case VK_F11: return ImGuiKey_F11;
 	case VK_F12: return ImGuiKey_F12;
+	case VK_LBUTTON: return ImGuiMouseButton_Left;
+	case VK_RBUTTON: return ImGuiMouseButton_Right;
+	case VK_MBUTTON: return ImGuiMouseButton_Middle;
+	case VK_XBUTTON1: return 3;
+	case VK_XBUTTON2: return 4;
 	default: return ImGuiKey_None;
 	}
 }
@@ -118,7 +123,61 @@ static ImGuiKey LegacyToInput(short key)
 static short InputToLegacy(ImGuiKey inputkey)
 {
 	auto& io = ImGui::GetIO();
-	return io.KeyMap[inputkey];
+	if (inputkey > 4)
+		return io.KeyMap[inputkey];
+
+	switch (inputkey)
+	{
+	case ImGuiMouseButton_Left:
+		return VK_LBUTTON;
+	case ImGuiMouseButton_Right:
+		return VK_RBUTTON;
+	case ImGuiMouseButton_Middle:
+		return VK_MBUTTON;
+	case 3:
+		return VK_XBUTTON1;
+	case 4:
+		return VK_XBUTTON2;
+	}
+
+	LOG_CRIT("Failed to find legacy input");
+	return -1;
+}
+
+static bool IsKeyDown(ImGuiKey key)
+{
+	if (key > 6)
+		return ImGui::IsKeyDown(key);
+	
+	switch (key)
+	{
+	case 1:
+	case 2:
+		return ImGui::IsMouseDown(key - 1);
+	case 4:
+	case 5:
+	case 6:
+		return ImGui::IsMouseDown(key - 2);
+	}
+	return false;
+}
+
+static bool IsKeyReleased(ImGuiKey key)
+{
+	if (key > 6)
+		return ImGui::IsKeyReleased(key);
+
+	switch (key)
+	{
+	case 1:
+	case 2:
+		return ImGui::IsMouseReleased(key - 1);
+	case 4:
+	case 5:
+	case 6:
+		return ImGui::IsMouseReleased(key - 2);
+	}
+	return false;
 }
 
 Hotkey::Hotkey()
@@ -152,9 +211,9 @@ std::string GetKeyName(short key)
         return "RMB";
     case ImGuiMouseButton_Middle:
         return "MMB";
-    case 4:
+    case 3:
         return "Mouse X1";
-    case 5:
+    case 4:
         return "Mouse X2";
     }
 
@@ -182,7 +241,7 @@ bool Hotkey::IsPressed() const
 {
 	for (short key : keys)
 	{
-		if (!ImGui::IsKeyDown(key))
+		if (!IsKeyDown(key))
 			return false;
 	}
 
@@ -199,7 +258,8 @@ bool Hotkey::IsPressed(short legacyKey) const
 
     for (short key : keysClone)
     {
-        if (!ImGui::IsKeyDown(key))
+		bool result = IsKeyDown(key);
+        if (!result)
             return false;
     }
 
@@ -211,13 +271,13 @@ bool Hotkey::IsReleased() const
 	bool released = false;
 	for (short key : keys)
 	{
-		if (ImGui::IsKeyReleased(key))
+		if (IsKeyReleased(key))
 		{
 			released = true;
 			continue;
 		}
 
-		if (!ImGui::IsKeyPressed(key))
+		if (!IsKeyDown(key))
 			return false;
 	}
 

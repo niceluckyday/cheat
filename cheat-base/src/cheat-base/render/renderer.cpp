@@ -103,9 +103,34 @@ namespace renderer
 
 		cheat::events::WndProcEvent();
 
+		short key;
+		bool keyUpEvent = true;
+		switch (uMsg)
+		{
+		case WM_LBUTTONUP:
+			key = VK_LBUTTON;
+			break;
+		case WM_RBUTTONUP:
+			key = VK_RBUTTON;
+			break;
+		case WM_MBUTTONUP:
+			key = VK_MBUTTON;
+			break;
+		case WM_XBUTTONUP:
+			key = GET_XBUTTON_WPARAM(wParam);
+			break;
+		case WM_KEYUP:
+			key = wParam;
+			break;
+		default:
+			keyUpEvent = false;
+			break;
+		}
+
 		bool canceled = false;
-		if (uMsg == WM_KEYUP)
-			canceled = !cheat::events::KeyUpEvent(wParam);
+		if (keyUpEvent)
+			canceled = !cheat::events::KeyUpEvent(key);
+
 
 		if (globals::IsInputBlocked || canceled)
 			return true;
