@@ -14,8 +14,8 @@ namespace cheat::feature
     AutoLoot::AutoLoot() : Feature(),
         NF(m_Enabled,        "Auto loot",          "AutoLoot", false),
         NF(m_DelayTime,      "Delay time (in ms)", "AutoLoot", 150),
-        NF(m_UseCustomRange, "Use custom range",   "AutoLoot", false),
-        NF(m_CustomRange,    "Custom range",       "AutoLoot", 5.0f),
+        NF(m_UseCustomRange, "Use custom pickup range",   "AutoLoot", false),
+        NF(m_CustomRange,    "Pickup Range",       "AutoLoot", 5.0f),
 		toBeLootedItems(), nextLootTime(0)
     {
 		// Auto loot
@@ -34,13 +34,13 @@ namespace cheat::feature
 
     void AutoLoot::DrawMain()
     {
-		ConfigWidget("Enabled", m_Enabled, "Automatic loot dropped items.\n\
-            Note: Use custom range or decreasing delay time can be unsafe.");
-		ConfigWidget(m_DelayTime, 1, 0, 1000, "Delay (in milliseconds) beetwen looting items.\n\
-            Value under 200ms can be unsafe.");
-		ConfigWidget(m_UseCustomRange, "Enabling custom looting range.\n\
-            Use this feature not recommended, it can be easily detected by server.");
-		ConfigWidget(m_CustomRange, 0.1f, 0.5f, 60.0f, "Custom looting range. It's applying only if use custom range enabled.");
+		ConfigWidget("Enabled", m_Enabled, "loots dropped items.\n\
+            Note: custom range and decreasing delay time are high-risk features. Expect a ban.");
+		ConfigWidget(m_DelayTime, 1, 0, 1000, "Delay (in ms) beetwen looting items.\n\
+            Values under 200ms are unsafe.");
+		ConfigWidget(m_UseCustomRange, "Enable Pickup Range.\n\
+            Using this feature is not recommended, as it is easily detected by the server.");
+		ConfigWidget(m_CustomRange, 0.1f, 0.5f, 60.0f, "Pickup range.");
     }
 
     bool AutoLoot::NeedStatusDraw() const

@@ -21,7 +21,8 @@ namespace cheat::feature
 
     void DumbEnemies::DrawMain()
     {
-        ConfigWidget(m_Enabled, "Enemies don't react to player.");
+        ConfigWidget(m_Enabled, "Enemies don't attack the player. \n"
+            "May not work with some Enemies.");
     }
 
     bool DumbEnemies::NeedStatusDraw() const
