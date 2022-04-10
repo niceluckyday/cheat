@@ -29,9 +29,9 @@ namespace cheat::feature
     {
 		ConfigWidget("Enabled", m_Enabled, "Enables infinite stamina option.");
 		ConfigWidget(m_PacketReplacement,
-			"This mode prevent send to server packets with stamina cost actions,\n" \
-            "like (swim, climb, sprint and so on).\n" \
-            "NOTE. This is can be more safe than standard method. But it is not well tested.");
+			"This mode prevents sending server packets with stamina cost actions,\n" \
+            "(etc. swim, climb, sprint..).\n" \
+            "NOTE. This is may be more safe than the standard method. More testing is needed.");
     }
 
     bool InfiniteStamina::NeedStatusDraw() const

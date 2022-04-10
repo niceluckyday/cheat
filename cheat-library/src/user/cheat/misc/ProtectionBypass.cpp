@@ -30,9 +30,9 @@ namespace cheat::feature
 		// if (m_Enabled) {
 			LOG_TRACE("Trying to close mhyprot handle.");
 			if (util::CloseHandleByName(L"\\Device\\mhyprot2"))
-				LOG_INFO("Mhyprot2 handle successfuly closed. Happy hacking ^)");
+				LOG_INFO("The Mhyprot2 handle was successfully closed. Happy hacking!");
 			else
-				LOG_ERROR("Failed closing mhyprot2 handle. Maybe dev updated anti-cheat.");
+				LOG_ERROR("Failed to close mhyprot2 handle. Report this Issue and describe it.");
 		//}
 
 		LOG_DEBUG("Initialized");
@@ -47,9 +47,7 @@ namespace cheat::feature
     void ProtectionBypass::DrawMain()
     {
 		ConfigWidget(m_Enabled, 
-			"Closing handle of mhyprot2.sys driver. (Changes will take effect after next launch)\n" \
-            "It allows reading / writing process memory from another process.\n" \
-            "For example, this allows Cheat engine read process.");
+			"Close mhyprot2 handle (The changes will take effect after the next launch");
     }
 
     ProtectionBypass& ProtectionBypass::GetInstance()

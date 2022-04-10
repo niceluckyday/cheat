@@ -34,7 +34,7 @@ namespace cheat::feature
 		ConfigWidget(m_Speed, 0.1f, 2, 100, "No clip move speed.\n"\
             "It's not recommended to set value above 5.");
 		
-        ConfigWidget(m_CameraRelative, "Move performing relative to camera direction. Not to avatar.");
+        ConfigWidget(m_CameraRelative, "Move performing relative to camera direction. Not avatar facing direction.");
     }
 
     bool NoClip::NeedStatusDraw() const

@@ -36,7 +36,7 @@ namespace cheat::feature
     void NoCD::DrawMain()
     {
 		ConfigWidget(m_InstantBow, "Disable cooldown of bow charge.");
-		ConfigWidget(m_Ability, "Disable skills cooldown.");
+		ConfigWidget(m_Ability, "Disable Elemental Skills and Ultimate cooldowns.");
 		ConfigWidget(m_Sprint, "Disable use sprint delay.");
 
 		ImGui::Text("If instant bow charge doesn't work:");

@@ -17,9 +17,9 @@ namespace cheat::feature
 	static void Entity_SetPosition_Hook(app::BaseEntity* __this, app::Vector3 position, bool someBool, MethodInfo* method);
 
     MapTeleport::MapTeleport() : Feature(),
-        NF(m_Enabled, "Enabled", "MapTeleport", false),
-		NF(m_DetectHeight, "Auto height detect", "MapTeleport", true),
-		NF(m_DefaultHeight, "Default teleport height", "MapTeleport", 300.0f),
+        NF(m_Enabled, "Map Teleport", "MapTeleport", false),
+		NF(m_DetectHeight, "Automatic Height Detection", "MapTeleport", true),
+		NF(m_DefaultHeight, "Default Y teleport height", "MapTeleport", 300.0f),
 		NF(m_Key, "Teleport key", "MapTeleport", Hotkey('T', 0))
     {
 		// Map touch
@@ -51,7 +51,7 @@ namespace cheat::feature
 			"Enable teleportation to mark functionality.\n" \
 			"Usage: \n" \
 			"\t1. Open map.\n" \
-			"\t2. Click LMB to any place on map with pressed [Teleport key].\n" \
+			"\t2. Hold [Teleport key] and click with the LMB anywhere in the map.\n" \
 			"\tDone. You have been teleported to selected location."
 		);
 
@@ -59,10 +59,11 @@ namespace cheat::feature
 			ImGui::BeginDisabled();
 
 		ConfigWidget(m_DefaultHeight, 1.0F, 200.0F, 800.0F,
-			"If cheat cannot get ground height of target location, it will teleport you to specified here height.");
+			"If cheat cannot get ground height of target location, it will teleport you to the height specified here.\n" \
+			"It is reccomended to have this value be at least as high as a mountain Otherwise, you may fall through the ground.");
 
 		ConfigWidget(m_Key, true,
-			"Key which you need have pressed while clicking to target location.");
+			"Key which you have held while clicking at the target location.");
 
 		if (!m_Enabled)
 			ImGui::EndDisabled();
@@ -99,7 +100,7 @@ namespace cheat::feature
 
 		if (nearestWaypoint.data == nullptr)
 		{
-			LOG_ERROR("Stage 0. Failed to find nearest unlocked waypoint. Maybe you didn't unlock anyone or scene don't have waypoints.");
+			LOG_ERROR("Stage 0. Failed to find the nearest unlocked waypoint. Maybe you haven't unlocked anyone or the scene has no waypoints.");
 			return;
 		}
 		else
@@ -198,7 +199,7 @@ namespace cheat::feature
 	{
 		if (!needTransByServer && taskInfo.currentStage == 2)
 		{
-			LOG_DEBUG("Stage 1. Distance <60m. Performing fast tp.");
+			LOG_DEBUG("Stage 1. Distance is less than 60m. Performing fast tp.");
 			taskInfo.currentStage = 0;
 		}
 	}
