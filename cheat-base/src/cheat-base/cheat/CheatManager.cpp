@@ -184,7 +184,6 @@ namespace cheat
 			return;
 		}
 
-
 		for (auto& moduleName : m_ModuleOrder)
 		{
 			auto& sections = m_FeatureMap[moduleName];
@@ -218,7 +217,6 @@ namespace cheat
 		}
 
 		ImGui::End();
-
 
 	}
 

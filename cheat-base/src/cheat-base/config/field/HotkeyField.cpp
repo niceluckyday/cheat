@@ -20,10 +20,7 @@ void config::field::HotkeyField::Read(std::istream& io)
 
 	short key;
 	while (io >> key)
-	{
-		LOG_DEBUG("Key: %d", key);
 		keys.push_back(key);
-	}
 
 	*valuePtr() = Hotkey(keys);
 	*prevValue = value();
