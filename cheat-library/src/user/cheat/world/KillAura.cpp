@@ -2,6 +2,7 @@
 #include "KillAura.h"
 
 #include <helpers.h>
+#include <algorithm>
 
 #include <cheat/events.h>
 #include <cheat/game.h>
@@ -73,6 +74,10 @@ namespace cheat::feature
 
 		for (const auto& monster : game::FindEntities(game::GetMonsterFilter()))
 		{
+			
+			if (monster == nullptr || !app::BaseEntity_IsActive(monster, nullptr))
+				continue;
+
 			auto monsterID = monster->fields._runtimeID_k__BackingField;
 
 			if (attackSet.count(monsterID) > 0)
@@ -111,6 +116,19 @@ namespace cheat::feature
 
 		auto monster = attackQueue.front();
 		attackQueue.pop();
+
+		if (monster == nullptr || !app::BaseEntity_IsActive(monster, nullptr))
+		{
+			// If monster entity isn't active means that it was unloaded (it happen when player teleport or moving fast)
+			// And we don't have way to get id
+			// So better to clear all queue, to prevent memory leak
+			// This happen rarely, so don't give any performance issues
+			std::queue<app::BaseEntity*> empty;
+			std::swap(attackQueue, empty);
+
+			attackSet.clear();
+			return;
+		}
 
 		auto monsterID = monster->fields._runtimeID_k__BackingField;
 		attackSet.erase(monsterID);
