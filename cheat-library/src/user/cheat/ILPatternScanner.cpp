@@ -199,7 +199,7 @@ uintptr_t ILPatternScanner::SearchTypeInfo(const std::string& typeName)
 	else
 		LOG_DEBUG("TypeInfo '%s' was found at UserAssembly.dll + 0x%p.", typeName.c_str(), address - monoBase);
 
-	m_TypeInfoCache[typeName] = address - monoBase;
+	m_TypeInfoCache[typeName] = address == 0 ? 0 : address - monoBase;
 	m_CacheChanged = true;
 	return address;
 }
@@ -233,7 +233,7 @@ uintptr_t ILPatternScanner::SearchMethodInfo(const std::string& methodName)
 	else
 		LOG_DEBUG("MethodInfo '%s' was found at UserAssembly.dll + 0x%p.", methodName.c_str(), address - monoBase);
 
-	m_MethodInfoCache[methodName] = address - monoBase;
+	m_MethodInfoCache[methodName] = address == 0 ? 0 : address - monoBase;
 	m_CacheChanged = true;
 	return address;
 }

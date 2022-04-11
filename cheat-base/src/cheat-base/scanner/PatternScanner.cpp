@@ -396,6 +396,7 @@ uintptr_t PatternScanner::Search(const std::string& moduleName, const std::strin
 	if (m_ModulePatterns.count(moduleName) > 0 && m_ModulePatterns[moduleName].count(name) > 0)
 		return Search(moduleName, name, m_ModulePatterns[moduleName][name]);
 
+	AddOffset(moduleName, name, 0);
 	return 0;
 }
 
@@ -423,7 +424,7 @@ uintptr_t PatternScanner::Search(const std::string& moduleName, const std::strin
 	}
 
 	uintptr_t address = counter.GetMax();
-	AddOffset(moduleName, name, address - moduleBase);
+	AddOffset(moduleName, name, address == 0 ? 0 : address - moduleBase);
 	return address;
 }
 
