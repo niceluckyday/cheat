@@ -105,7 +105,7 @@ namespace cheat::feature
 		if (Hotkey(VK_SPACE).IsPressed())
 			dir = dir + app::BaseEntity_GetUp(avatarEntity, nullptr);
 
-		if (Hotkey(VK_SHIFT).IsPressed())
+		if (Hotkey(ImGuiKey_ModShift).IsPressed())
 			dir = dir - app::BaseEntity_GetUp(avatarEntity, nullptr);
 
 		app::Vector3 prevPos = game::GetRelativePosition(avatarEntity);
