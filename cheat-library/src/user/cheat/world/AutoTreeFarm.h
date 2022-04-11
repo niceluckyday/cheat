@@ -11,6 +11,7 @@ namespace cheat::feature
 		config::field::ToggleField m_Enabled;
 		config::field::BaseField<int> m_AttackDelay;
 		config::field::BaseField<int> m_RepeatDelay;
+		config::field::BaseField<int> m_AttackPerTree;
 		config::field::BaseField<float> m_Range;
 
 		static AutoTreeFarm& GetInstance();

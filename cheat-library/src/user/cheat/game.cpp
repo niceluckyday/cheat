@@ -90,12 +90,19 @@ namespace cheat::game
 
 	app::Vector3 GetAvatarAbsolutePosition()
 	{
-		return app::BaseEntity_GetAbsolutePosition(GetAvatarEntity(), nullptr);
+		auto avatarEntity = GetAvatarEntity();
+		if (avatarEntity == nullptr)
+			return { 0, 0, 0 };
+
+		return app::BaseEntity_GetAbsolutePosition(avatarEntity, nullptr);
 	}
 
 	app::Vector3 GetAvatarRelativePosition()
 	{
-		return app::BaseEntity_GetRelativePosition(GetAvatarEntity(), nullptr);
+		auto avatarEntity = GetAvatarEntity();
+		if (avatarEntity == nullptr)
+			return { 0, 0, 0 };
+		return app::BaseEntity_GetRelativePosition(avatarEntity, nullptr);
 	}
 
 	void SetAvatarRelativePosition(app::Vector3 position)

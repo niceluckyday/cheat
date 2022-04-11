@@ -10,10 +10,11 @@
 namespace cheat::feature 
 {
     AutoTreeFarm::AutoTreeFarm() : Feature(),
-        NF(m_Enabled,      "Auto tree farm",            "AutoTreeFarm", false),
-		NF(m_AttackDelay,  "Attack delay",              "AutoTreeFarm", 150),
-		NF(m_RepeatDelay,  "Repeat delay",              "AutoTreeFarm", 500),
-        NF(m_Range,        "Range",                     "AutoTreeFarm", 15.0f)
+        NF(m_Enabled,      "Auto tree farm",  "AutoTreeFarm", false),
+		NF(m_AttackDelay,  "Attack delay",    "AutoTreeFarm", 150),
+		NF(m_RepeatDelay,  "Repeat delay",    "AutoTreeFarm", 500),
+		NF(m_AttackPerTree,"Attack per tree", "AutoTreeFarm", 5),
+        NF(m_Range,        "Range",           "AutoTreeFarm", 15.0f)
     { 
 		events::GameUpdateEvent += MY_METHOD_HANDLER(AutoTreeFarm::OnGameUpdate);
 	}
@@ -32,6 +33,12 @@ namespace cheat::feature
 		ConfigWidget("Enabled", m_Enabled, "Automatically attack trees in range.");
 		ConfigWidget(m_AttackDelay, 1, 0, 1000, "Delay before next tree attack.");
 		ConfigWidget(m_RepeatDelay, 1, 500, 1000, "Delay before next attack same tree.");
+
+		ConfigWidget(m_AttackPerTree, 1, 0, 100, "Counts of attack to one tree.\n" 
+			"It needs to avoid unnecessary attacks to empty tree.\n" 
+			"Note:   0 - Unlimited\n"
+			"Note.2: Memorized trees' attacks reset after game restart."
+		);
 
 		ImGui::TextColored(ImColor(255, 165, 0, 255), "In current version range limited ~15m.");
 		ConfigWidget(m_Range, 0.1f, 1.0f, 15.0f);
@@ -77,8 +84,38 @@ namespace cheat::feature
 		return trees;
 	}
 
+
+	struct Vector3d
+	{
+		float x, y, z;
+
+		Vector3d(const app::Vector3& v)
+		{
+			x = v.x;
+			y = v.y;
+			z = v.z;
+		}
+
+		bool operator==(const Vector3d& b) const
+		{
+			return x == b.x && y == b.y && z == b.z;
+		}
+	};
+
+	struct hash_fn
+	{
+		std::size_t operator() (const Vector3d& vector) const
+		{
+			return std::hash<float>()(vector.x) ^ std::hash<float>()(vector.y) ^ std::hash<float>()(vector.z);
+		}
+	};
+
+
+
 	void AutoTreeFarm::OnGameUpdate()
 	{
+		static std::unordered_map<Vector3d, uint32_t, hash_fn> s_AttackCountMap;
+
 		static std::queue<app::SceneTreeObject*> s_AttackQueue;
 		static std::unordered_set<app::SceneTreeObject*> s_AttackQueueSet;
 		static uint64_t s_LastAttackTimestamp = 0;
@@ -127,10 +164,24 @@ namespace cheat::feature
 			if (!app::ScenePropManager_GetTreeTypeByPattern(scenePropManager, pattern, &treeType, nullptr))
 				continue;
 
+			if (m_AttackPerTree > 0)
+			{
+				if (s_AttackCountMap.count(position) == 0)
+					s_AttackCountMap[position] = 0;
+
+				auto& attackCount = s_AttackCountMap[position];
+				attackCount++;
+				if (attackCount > m_AttackPerTree)
+					continue;
+			}
+
 			tree->fields._lastTreeDropTimeStamp = timestamp;
 			app::NetworkManager_1_RequestHitTreeDropNotify(networkManager, position, position, treeType, nullptr);
 			break;
 		}
+
+		if (s_AttackCountMap.size() > 1000)
+			s_AttackCountMap.clear();
 	}
 }
 
