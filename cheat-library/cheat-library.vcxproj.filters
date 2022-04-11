@@ -138,6 +138,9 @@
     <ClInclude Include="src\user\cheat\world\AutoTreeFarm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\user\cheat\world\AutoOreDestroy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="res\Ruda-Bold.ttf" />
@@ -240,6 +243,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\cheat\world\AutoTreeFarm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\world\AutoOreDestroy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

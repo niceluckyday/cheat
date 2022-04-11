@@ -305,7 +305,8 @@
         "SimpleSafeUInt16_get_Value": "0",
         "ScenePropManager_GetTreeTypeByPattern": "0",
         "NetworkManager_1_RequestHitTreeDropNotify": "0",
-        "GetTimestamp": "0"
+        "GetTimestamp": "0",
+        "LCAbilityElement_ReduceModifierDurability": "0"
       },
       "hash": {
         "checksum": 6469164240778644427,

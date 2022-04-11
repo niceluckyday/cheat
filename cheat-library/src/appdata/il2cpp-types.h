@@ -7587,7 +7587,7 @@ namespace app {
 		bool preTick;
 		int32_t order;
 		struct ComponentManager* _componentManager;
-		struct CCAMDLAOBAA* _entity;
+		struct BaseEntity* _entity;
 		bool _isToBeRemoved;
 		bool _enabled;
 		bool hasTick;
@@ -9672,6 +9672,59 @@ namespace app {
 		TREE_TYPE_ACER = 0x0000000a,
 		TREE_TYPE_CRYPTOMERIA = 0x0000000b,
 		TREE_TYPE_OTOGI = 0x0000000c,
+	};
+
+	struct Tuple_4_MoleMole_ActorModifier_System_Single_MoleMole_IElementDurability_System_Single_ {
+		struct ActorModifier* item1;
+		float item2;
+		struct IElementDurability* item3;
+		float item4;
+	};
+
+	struct Tuple_4_MoleMole_ActorModifier_System_Single_MoleMole_IElementDurability_System_Single___Boxed {
+		struct Tuple_4_MoleMole_ActorModifier_System_Single_MoleMole_IElementDurability_System_Single___Class* klass;
+		MonitorData* monitor;
+		struct Tuple_4_MoleMole_ActorModifier_System_Single_MoleMole_IElementDurability_System_Single_ fields;
+	};
+
+	struct Nullable_1_UniRx_Tuple_4_ {
+		struct Tuple_4_MoleMole_ActorModifier_System_Single_MoleMole_IElementDurability_System_Single_ value;
+		bool has_value;
+	};
+
+	struct IDPLOHKAJML__Fields {
+		struct LCBase__Fields _;
+		struct Dictionary_2_System_Int32_List_1_MLAAELGDIJH_* _elementModifierMap;
+		struct Action* _act;
+		struct List_1_System_Nullable_1_* _modifierDurabilities;
+		struct List_1_UniRx_Tuple_3__1* _elemAccuDurabilities;
+		struct OJGKFFDAGON* _levelAbilityCom;
+		struct OJGKFFDAGON* _selfLCAbility;
+		struct KMALPDEBPFP* _lcAbilityState;
+		struct DGLICFPOFBE* _vcBillboard;
+		float _purgeRate;
+		float _purgeIncement;
+		bool _ignorePurgeRate;
+		struct EDDKNGCGJFI* _grassScenePlugin;
+		struct EADDBDCPBMJ* _waterScenePlugin;
+		struct EBLDCCEGAOF* _bushScenePlugin;
+		struct BDFMIJCPDIC* _shakeInterval;
+		bool _showReactionText;
+		struct String* elementDecrateGroup;
+		bool BHDLGGOBAME;
+		bool AKLPKDONCJH;
+		struct Func_2_MLAAELGDIJH_Boolean_* NEMHEFJLFEA;
+		struct Action_3_GLPNBMKEPPD_CCAMDLAOBAA_Nullable_1_UnityEngine_Vector3_* FDHMHGFNCFD;
+		struct Action_3_GLPNBMKEPPD_CCAMDLAOBAA_Nullable_1_UnityEngine_Vector3_* NIHADNAGOND;
+		struct Vector3 elementReactionPos;
+		bool triggerFrozenBroken;
+		float _lastCrystallizeTime;
+	};
+
+	struct LCAbilityElement {
+		struct LCAbilityElement__Class* klass;
+		MonitorData* monitor;
+		struct IDPLOHKAJML__Fields fields;
 	};
 
 #if !defined(_GHIDRA_) && !defined(_IDA_)

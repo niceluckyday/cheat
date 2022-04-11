@@ -171,6 +171,11 @@ DO_APP_FUNC(0x03511760, bool, ScenePropManager_GetTreeTypeByPattern, (ScenePropM
 DO_APP_FUNC(0x01997D90, void, NetworkManager_1_RequestHitTreeDropNotify, (NetworkManager_1* __this, Vector3 position, Vector3 hitPostion, ECGLPBEEEAA__Enum treeType, MethodInfo* method));
 DO_APP_FUNC(0x0332CD30, uint64_t, GetTimestamp, (void* __this, MethodInfo* method));
 
+
+// Thanks to @Ryujun
+DO_APP_FUNC(0x019C5D50, void, LCAbilityElement_ReduceModifierDurability, (LCAbilityElement* __this, int32_t modifierDurabilityIndex, float reduceDurability, Nullable_1_Single_ deltaTime, MethodInfo* method));
+
+
 // Singletons
 DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));
 DO_APP_FUNC_METHODINFO(0x0B20F1E8, Singleton_1_MBHLOBDPKEC__get_Instance__MethodInfo);

@@ -37,6 +37,7 @@ namespace cheat::feature
 		return instance;
 	}
 
+
     // Raise when player start game log in (after press a door)
     // Contains information about player system and game integrity
     static void SendInfo_Hook(app::NetworkManager_1* __this, app::GKOJAICIOPA* info, MethodInfo* method)
@@ -285,6 +286,12 @@ namespace cheat::feature
                     {
                         game::SetRelativePosition(entity, { 0, 0, 0 });
                     }
+
+					ImGui::SameLine();
+					if (ImGui::Button("Teleport to me"))
+					{
+                        game::SetRelativePosition(entity, game::GetAvatarRelativePosition());
+					}
 
                     DrawEntity(entity);
                     ImGui::TreePop();
