@@ -32,7 +32,7 @@ namespace cheat::feature
 		
 		ConfigWidget("Enabled", m_Enabled, "Automatically attack trees in range.");
 		ConfigWidget(m_AttackDelay, 1, 0, 1000, "Delay before next tree attack.");
-		ConfigWidget(m_RepeatDelay, 1, 500, 1000, "Delay before next attack same tree.");
+		ConfigWidget(m_RepeatDelay, 1, 500, 1000, "Delay before next attack same tree. <500 not work.");
 
 		ConfigWidget(m_AttackPerTree, 1, 0, 100, "Counts of attack to one tree.\n" 
 			"It needs to avoid unnecessary attacks to empty tree.\n" 
@@ -51,7 +51,7 @@ namespace cheat::feature
 
     void AutoTreeFarm::DrawStatus() 
     { 
-        ImGui::Text("Auto tree farm [%dms]", m_RepeatDelay.value());
+        ImGui::Text("Tree farm [%dms]", m_RepeatDelay.value());
     }
 
     AutoTreeFarm& AutoTreeFarm::GetInstance()

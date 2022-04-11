@@ -40,7 +40,7 @@ namespace cheat::feature
 
     void AutoOreDestroy::DrawStatus() 
     { 
-        ImGui::Text("Auto ore destroy [%0.3fm]", m_Range.value());
+        ImGui::Text("Ore destroy [%0.1fm]", m_Range.value());
     }
 
     AutoOreDestroy& AutoOreDestroy::GetInstance()
@@ -49,8 +49,16 @@ namespace cheat::feature
         return instance;
     }
 
+	// Thanks to @RyujinZX
+	// Every ore has ability element component
+	// Durability of ability element is a ore health
+	// Every tick ability element check reducing durability, for ore in calm state `reduceDurability` equals 0, means HP don't change
+	// We need just change this value to current durability or above to destroy ore
+	// This function also can work with some types of shields (TODO: improve killaura with this function)
 	static void LCAbilityElement_ReduceModifierDurability_Hook(app::LCAbilityElement* __this, int32_t modifierDurabilityIndex, float reduceDurability, app::Nullable_1_Single_ deltaTime, MethodInfo* method)
 	{
+		// Ore filter
+		// Callow: I don't found any different way to find ores
 		static const game::SimpleEntityFilter oreFilter = {
 			{true, app::EntityType__Enum_1::GatherObject},
 			{true, {
@@ -74,6 +82,7 @@ namespace cheat::feature
 			autoOreDestroy.m_Range > game::GetDistToAvatar(entity) && 
 			game::IsEntityFilterValid(entity, oreFilter))
 		{
+			// This value always above any ore durability
 			reduceDurability = 1000;
 		}
 		callOrigin(LCAbilityElement_ReduceModifierDurability_Hook, __this, modifierDurabilityIndex, reduceDurability, deltaTime, method);
