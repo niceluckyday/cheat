@@ -20,6 +20,8 @@ namespace cheat::feature::sniffer
 
 	void SnifferWindow::OnPacketIO(const PacketInfo& info)
 	{
+		const std::lock_guard<std::mutex> lock(m_CapturePacketLock);
+
 		if (m_SortValue == SortValue::Time)
 		{
 			m_CapturedPackets.push_back(info);
@@ -102,6 +104,8 @@ namespace cheat::feature::sniffer
 
 	void SnifferWindow::Draw()
 	{
+
+		const std::lock_guard<std::mutex> lock(m_CapturePacketLock);
 
 		if (!ImGui::Begin("Packet sniffer", m_Show))
 			return;

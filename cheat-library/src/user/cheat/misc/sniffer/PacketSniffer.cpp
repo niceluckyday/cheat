@@ -115,7 +115,7 @@ namespace cheat::feature
 
 			auto combatJsonString = m_ProtoManager.GetJson(id, bodyBytes);
 			if (!combatJsonString)
-				return;
+				continue;
 
 			if (id != 347)
 			{
@@ -132,7 +132,7 @@ namespace cheat::feature
 
 				sniffer::PacketInfo packetInfo = sniffer::PacketInfo(newPacketData);
 				sniffer::SnifferWindow::GetInstance().OnPacketIO(packetInfo);
-				return;
+				continue;
 			}
 
 			auto combatJsonObject = nlohmann::json::parse(*combatJsonString);

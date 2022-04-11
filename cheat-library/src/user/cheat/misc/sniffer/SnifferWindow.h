@@ -99,6 +99,7 @@ namespace cheat::feature::sniffer
 		std::list<sniffer::PacketInfo> m_CapturedPackets;
 		std::list<sniffer::PacketInfo> m_CachedPackets;
 
+		std::mutex m_CapturePacketLock;
 
 		FilterGroup m_FilterGroup;
 
