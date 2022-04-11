@@ -46,6 +46,7 @@
     <ClInclude Include="src\user\cheat\teleport\MapTeleport.h" />
     <ClInclude Include="src\user\cheat\teleport\OculiTeleport.h" />
     <ClInclude Include="src\user\cheat\world\AutoLoot.h" />
+    <ClInclude Include="src\user\cheat\world\AutoTreeFarm.h" />
     <ClInclude Include="src\user\cheat\world\DialogSkip.h" />
     <ClInclude Include="src\user\cheat\world\DumbEnemies.h" />
     <ClInclude Include="src\user\cheat\world\KillAura.h" />
@@ -89,6 +90,7 @@
     <ClCompile Include="src\user\cheat\teleport\MapTeleport.cpp" />
     <ClCompile Include="src\user\cheat\teleport\OculiTeleport.cpp" />
     <ClCompile Include="src\user\cheat\world\AutoLoot.cpp" />
+    <ClCompile Include="src\user\cheat\world\AutoTreeFarm.cpp" />
     <ClCompile Include="src\user\cheat\world\DialogSkip.cpp" />
     <ClCompile Include="src\user\cheat\world\DumbEnemies.cpp" />
     <ClCompile Include="src\user\cheat\world\KillAura.cpp" />

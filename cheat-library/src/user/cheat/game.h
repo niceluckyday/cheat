@@ -45,6 +45,7 @@ namespace cheat::game
 	uint32_t GetAvatarRuntimeId();
 	bool IsAvatarEntity(app::BaseEntity* entity);
 	void SetAvatarRelativePosition(app::Vector3 position);
+	float GetDistToAvatar(app::Vector3 relPos);
 	float GetDistToAvatar(app::BaseEntity* entity);
 	app::CameraEntity* GetMainCameraEntity();
 
@@ -79,12 +80,19 @@ namespace cheat::game
 	bool IsEntityGadget(app::BaseEntity* entity);
 
 	template<class T>
-	T* GetLCPlugin(app::BaseComponentPlugin* plugin, void* pClass)
+	T* CastTo(void* pObject, void* pClass)
 	{
-		if (plugin == nullptr || plugin->klass == nullptr || plugin->klass != pClass)
+		auto object = reinterpret_cast<app::Object*>(pObject);
+		if (object == nullptr || object->klass == nullptr || object->klass != pClass)
 			return nullptr;
 
-		return reinterpret_cast<T*>(plugin);
+		return reinterpret_cast<T*>(object);
+	}
+
+	template<class T>
+	T* GetLCPlugin(app::BaseComponentPlugin* plugin, void* pClass)
+	{
+		return CastTo<T>(plugin, pClass);
 	}
 
 	template<class T>

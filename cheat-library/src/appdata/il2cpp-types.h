@@ -9536,6 +9536,143 @@ namespace app {
 		struct LCChestPlugin__Fields fields;
 	};
 
+	struct __declspec(align(8)) FKHDAEKGMKC__Fields
+	{
+		struct ScenePropEffectConfigs* _scenePropEffectConfigs;
+		uint32_t _scenePropEffectConfigsHandle;
+		struct SceneChairConfigs* _sceneChairConfigs;
+		uint32_t _sceneChairConfigsHandle;
+		struct SceneBushConfigs* _sceneBushConfigs;
+		uint32_t _sceneBushConfigsHandle;
+		struct SceneTreeConfigs* _sceneTreeConfigs;
+		uint32_t _sceneTreeConfigsHandle;
+		struct SceneStoneTintConfigs* IJAJFDDPIBF;
+		uint32_t MPGIOKCAEDG;
+		struct Dictionary_2_System_Int32_IIJMGCIOIAP_* _treeBushCollection;
+		struct List_1_NAKCOANCOHK_* _treeBushList;
+		struct Dictionary_2_System_Int32_UnityEngine_Vector3_* _treeBushId2Pos;
+		struct Vector3 _rangeQueryLen;
+		struct Dictionary_2_System_Int32_NAKCOANCOHK_* _scenePropDict;
+		struct Dictionary_2_System_Int32_ECGLPBEEEAA_* _treeTypeDict;
+		struct List_1_MoleMole_MonoEnviroLight_* _pointLights;
+		struct List_1_MoleMole_MonoEnviroCityLight_* _cityLights;
+		struct Vector3 _lastSectorPos;
+		struct FKHDAEKGMKC_DEGEMNHILIP__Array* _treeLeafInfos;
+		int32_t _treeLeafNum;
+		struct MaterialPropertyBlock* _mpb;
+		struct Camera* _mainCam;
+		struct List_1_UnityEngine_Material_* _leafDitherMaterials;
+		struct Dictionary_2_System_Int32_UnityEngine_Vector3__1* _shakeAnims;
+		struct List_1_NAKCOANCOHK_* _playingScenePropShakes;
+		struct List_1_JNFKAAAPLGE_* _chairs;
+		struct GameObject* iceBlockRoot;
+		struct GameObject* _surfaceMeshObjectRoot;
+		struct GameObject* _tileMeshObjectRoot;
+	};
+
+	struct ScenePropManager
+	{
+		struct FKHDAEKGMKC__Class* klass;
+		MonitorData* monitor;
+		struct FKHDAEKGMKC__Fields fields;
+	};
+
+
+	enum class ScenePropType__Enum : int32_t {
+		None = 0x00000000,
+		Tree = 0x00000001,
+		Bush = 0x00000002,
+		Stone = 0x00000003,
+		TreeLeaf = 0x00000004,
+		EnviroLight = 0x00000005,
+		RoomLight = 0x00000006,
+		Chair = 0x00000007,
+		EnviroCityLight = 0x00000008,
+		Count = 0x00000009,
+	};
+
+
+	struct Bounds {
+		struct Vector3 m_Center;
+		struct Vector3 m_Extents;
+	};
+	struct __declspec(align(8)) BaseScenePropObject__Fields {
+		uint32_t patternNameHash;
+		uint32_t effectPatternNameHash;
+		struct GameObject* mainObj;
+		int32_t instanceId;
+		ScenePropType__Enum sceneType;
+	};
+
+	struct BaseCombatScenePropObject__Fields {
+		struct BaseScenePropObject__Fields _;
+		struct Bounds realBounds;
+		uint32_t entityId;
+		struct Vector3__Array* _anims;
+		struct Vector3 originalPos;
+		float _playTime;
+		bool _isFinish;
+		bool _die;
+	};
+
+	struct JDJGACCAFAA__Fields
+	{
+		struct BaseCombatScenePropObject__Fields _;
+		struct SceneTreeConfig* _config;
+		uint64_t _lastTreeDropTimeStamp;
+		uint64_t _lastHitEffectTimeStamp;
+	};
+    
+    struct SceneTreeObject__Class
+    { };
+
+	struct SceneTreeObject
+	{
+		struct JDJGACCAFAA__Class* klass;
+		MonitorData* monitor;
+		struct JDJGACCAFAA__Fields fields;
+	};
+
+	struct __declspec(align(8)) ScenePropBaseConfig__Fields {
+		struct String* scenePropPatternName;
+	};
+
+	struct ScenePropCombatBaseConfig__Fields {
+		struct ScenePropBaseConfig__Fields _;
+		struct Bounds triggerBounds;
+		float shakeScale;
+	};
+
+	struct SceneTreeConfig__Fields {
+		struct ScenePropCombatBaseConfig__Fields _;
+		uint32_t configId;
+		bool canDropItem;
+		struct Vector3 dropOffsetPos;
+		struct String* hitEffectName;
+		uint64_t hitEffectCooldown;
+	};
+
+	struct SceneTreeConfig {
+		struct SceneTreeConfig__Class* klass;
+		MonitorData* monitor;
+		struct SceneTreeConfig__Fields fields;
+	};
+
+	enum class ECGLPBEEEAA__Enum : int32_t 
+    {
+		TREE_TYPE_BIRCH = 0x00000001,
+		TREE_TYPE_MAPLE = 0x00000002,
+		TREE_TYPE_PINE = 0x00000003,
+		TREE_TYPE_POPULUS_EUPHRATICA = 0x00000004,
+		TREE_TYPE_BAMBOO = 0x00000005,
+		TREE_TYPE_ENERGY_WOOD = 0x00000006,
+		TREE_TYPE_CYPRESS = 0x00000007,
+		TREE_TYPE_FIRTREE = 0x00000008,
+		TREE_TYPE_CERASUS = 0x00000009,
+		TREE_TYPE_ACER = 0x0000000a,
+		TREE_TYPE_CRYPTOMERIA = 0x0000000b,
+		TREE_TYPE_OTOGI = 0x0000000c,
+	};
 
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }

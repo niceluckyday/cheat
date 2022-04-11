@@ -103,10 +103,15 @@ namespace cheat::game
 		SetRelativePosition(GetAvatarEntity(), position);
 	}
 
+	float GetDistToAvatar(app::Vector3 relPos)
+	{
+		auto dist = app::Vector3_Distance(nullptr, GetAvatarRelativePosition(), relPos, nullptr);
+		return dist;
+	}
+
 	float GetDistToAvatar(app::BaseEntity* entity)
 	{
-		auto dist = app::Vector3_Distance(nullptr, GetAvatarRelativePosition(), GetRelativePosition(entity), nullptr);
-		return dist;
+		return GetDistToAvatar(GetRelativePosition(entity));
 	}
 
 	bool IsEntityFilterValid(app::BaseEntity* entity, const SimpleEntityFilter& filter)

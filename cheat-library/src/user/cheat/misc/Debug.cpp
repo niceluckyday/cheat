@@ -181,7 +181,7 @@ namespace cheat::feature
         ImGui::Text("Entity type: %s", magic_enum::enum_name(fields.entityType).data());
         ImGui::Text("Entity shared position: %s", il2cppi_to_string(fields._sharedPosition).c_str());
         ImGui::Text("Entity config id: %d", fields._configID_k__BackingField);
-        ImGui::Text("Entity name: %s", game::GetEntityName(entity));
+        ImGui::Text("Entity name: %s", game::GetEntityName(entity).c_str());
 
         if (entity->fields.jsonConfig != nullptr && entity->fields.jsonConfig->fields._entityTags != nullptr)
         {
@@ -278,6 +278,12 @@ namespace cheat::feature
 
                         auto& mapTeleport = MapTeleport::GetInstance();
                         mapTeleport.TeleportTo(apos);
+                    }
+                    
+                    ImGui::SameLine();
+                    if (ImGui::Button("Teleport to void"))
+                    {
+                        game::SetRelativePosition(entity, { 0, 0, 0 });
                     }
 
                     DrawEntity(entity);
@@ -531,10 +537,49 @@ namespace cheat::feature
 		
 	}
 
+    void DrawScenePropManager()
+    {
+        auto scenePropManager = GetSingleton(ScenePropManager);
+        if (scenePropManager == nullptr)
+        {
+            ImGui::Text("Scene prop manager not loaded.");
+            return;
+        }
+
+        auto scenePropDict = ToUniDict(scenePropManager->fields._scenePropDict, int32_t, app::Object*);
+        if (scenePropDict == nullptr)
+        {
+            ImGui::Text("Scene prop dict is nullptr.");
+            return;
+        }
+
+        ImGui::Text("Prop count: %d", scenePropDict->count);
+        
+        for (auto& [id, propObject] : scenePropDict->pairs())
+        {
+            auto tree = game::CastTo<app::SceneTreeObject>(propObject, *app::SceneTreeObject__TypeInfo);
+            if (tree == nullptr)
+                continue;
+
+            auto pos = tree->fields._.realBounds.m_Center;
+            auto config = tree->fields._config->fields;
+
+            auto pattern = config._._.scenePropPatternName;
+            app::ECGLPBEEEAA__Enum value;
+            bool result = app::ScenePropManager_GetTreeTypeByPattern(scenePropManager, pattern, &value, nullptr);
+            if (!result)
+                continue;
+
+            ImGui::Text("Tree at %s, type: %s, distance %0.3f", il2cppi_to_string(pos).c_str(), magic_enum::enum_name(value).data(),
+                game::GetDistToAvatar(app::WorldShiftManager_GetRelativePosition(nullptr, pos, nullptr)));
+        }
+    }
+
 	void Debug::DrawMain()
 	{
-        static Hotkey testKey = Hotkey({VK_F1});
-        InputHotkey("Test hotkey 2", &testKey, true);
+        if (ImGui::CollapsingHeader("ScenePropManager"))
+            DrawScenePropManager();
+
 		if (ImGui::CollapsingHeader("Chest plugin", ImGuiTreeNodeFlags_None))
 			DrawChestPlugin();
 

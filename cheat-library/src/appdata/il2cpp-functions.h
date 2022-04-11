@@ -166,6 +166,11 @@ DO_APP_FUNC(0x07496F70, float, Time_get_deltaTime, (void* __this, MethodInfo* me
 
 DO_APP_FUNC(0x01F14D00, void, HumanoidMoveFSM_LateTick, (void* __this, float deltaTime, MethodInfo* method));
 
+DO_APP_FUNC(0x03511760, bool, ScenePropManager_GetTreeTypeByPattern, (ScenePropManager* __this, String* pattern, ECGLPBEEEAA__Enum* treeType, MethodInfo* method));
+
+DO_APP_FUNC(0x01997D90, void, NetworkManager_1_RequestHitTreeDropNotify, (NetworkManager_1* __this, Vector3 position, Vector3 hitPostion, ECGLPBEEEAA__Enum treeType, MethodInfo* method));
+DO_APP_FUNC(0x0332CD30, uint64_t, GetTimestamp, (void* __this, MethodInfo* method));
+
 // Singletons
 DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));
 DO_APP_FUNC_METHODINFO(0x0B20F1E8, Singleton_1_MBHLOBDPKEC__get_Instance__MethodInfo);
@@ -176,6 +181,9 @@ DO_APP_FUNC_METHODINFO(0x0B23BCF0, Singleton_1_MessageInfo__get_Instance__Method
 DO_APP_FUNC_METHODINFO(0x0B18C3C0, Singleton_1_UIManager_1__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B20B748, Singleton_1_ItemModule__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B2648E0, Singleton_1_EventManager__get_Instance__MethodInfo);
+
 // 2.6
 DO_APP_FUNC_METHODINFO(0x0B2EC728, Singleton_1_PlayerModule__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B2FD3D0, Singleton_1_MapManager__get_Instance__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B321D50, Singleton_1_ScenePropManager__get_Instance__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B3A9738, Singleton_1_NetworkManager_1__get_Instance__MethodInfo);

@@ -25,6 +25,7 @@
 #include <cheat/world/DumbEnemies.h>
 #include <cheat/world/KillAura.h>
 #include <cheat/world/MobVacuum.h>
+#include <cheat/world/AutoTreeFarm.h>
 
 #include <cheat/teleport/ChestTeleport.h>
 #include <cheat/teleport/MapTeleport.h>
@@ -59,6 +60,7 @@ namespace cheat
 			FEAT_INST(RapidFire),
 
 			FEAT_INST(AutoLoot),
+			FEAT_INST(AutoTreeFarm),
 			FEAT_INST(DialogSkip),
 			FEAT_INST(DumbEnemies),
 			FEAT_INST(KillAura),
@@ -74,6 +76,7 @@ namespace cheat
 			"Player",
 			"World",
 			"Teleport",
+			"Hotkeys",
 			"Settings",
 			"Debug"
 			});

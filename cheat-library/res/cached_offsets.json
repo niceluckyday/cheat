@@ -190,7 +190,9 @@
     "Singleton_1_MessageInfo__get_Instance__MethodInfo": "b37c078",
     "Singleton_1_UIManager_1__get_Instance__MethodInfo": "b29f2d8",
     "Singleton_1_PlayerModule__get_Instance__MethodInfo": "0",
-    "Singleton_1_MapManager__get_Instance__MethodInfo": "0"
+    "Singleton_1_MapManager__get_Instance__MethodInfo": "0",
+    "Singleton_1_NetworkManager_1__get_Instance__MethodInfo": "0",
+    "Singleton_1_ScenePropManager__get_Instance__MethodInfo":  "0"
   },
   "moduleInfo": {
     "UnityPlayer.dll": {
@@ -300,7 +302,10 @@
         "WorldShiftManager_GetAbsolutePosition": "60f0810",
         "WorldShiftManager_GetRelativePosition": "60f0aa0",
         "MapModule_IsAreaUnlock": "0",
-        "SimpleSafeUInt16_get_Value": "0"
+        "SimpleSafeUInt16_get_Value": "0",
+        "ScenePropManager_GetTreeTypeByPattern": "0",
+        "NetworkManager_1_RequestHitTreeDropNotify": "0",
+        "GetTimestamp": "0"
       },
       "hash": {
         "checksum": 6469164240778644427,
@@ -317,6 +322,7 @@
     "GameManager": "b3117b8",
     "Int32": "b38ff20",
     "LCChestPlugin": "0",
+    "SceneTreeObject": "0",
     "Singleton_1_EntityManager_": "b308870",
     "Singleton_1_EventManager_": "b309120",
     "Singleton_1_InteractionManager_": "b30bd10",
@@ -325,6 +331,8 @@
     "Singleton_1_MBHLOBDPKEC_": "b3442d8",
     "Singleton_1_UIManager_1_": "b2f8038",
     "Singleton_1_PlayerModule_": "0",
-    "Singleton_1_MapManager_": "0"
+    "Singleton_1_MapManager_": "0",
+    "Singleton_1_ScenePropManager_": "0",
+    "Singleton_1_NetworkManager_1_": "0"
   }
 }
