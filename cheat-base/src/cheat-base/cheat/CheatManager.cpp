@@ -25,6 +25,16 @@ namespace cheat
 		renderer::Init(pFontData, dFontDataSize);
 	}
 
+	void CheatManager::DrawExternal()
+	{
+		for (auto& feature : m_Features)
+		{
+			ImGui::PushID(&feature);
+			feature->DrawExternal();
+			ImGui::PopID();
+		}
+	}
+
 	void CheatManager::DrawMenu()
 	{
 		if (m_ModuleOrder.size() == 0)
@@ -220,9 +230,12 @@ namespace cheat
 
 	}
 
+
 	void CheatManager::OnRender()
 	{
 		auto& settings = feature::Settings::GetInstance();
+
+		DrawExternal();
 
 		if (m_IsMenuShowed)
 			DrawMenu();
@@ -246,8 +259,8 @@ namespace cheat
 		{
 			if (field->GetHotkeyField().value().IsPressed(key))
 			{
-				bool* value = *field;
-				*value = !*value;
+				bool& value = *field->valuePtr();
+				value = !value;
 				field->Check();
 			}
 		}

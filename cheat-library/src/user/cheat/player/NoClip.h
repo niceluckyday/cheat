@@ -22,9 +22,6 @@ namespace cheat::feature
 		virtual bool NeedStatusDraw() const override;
 		void DrawStatus() override;
 
-		virtual bool NeedInfoDraw() const override { return false; };
-		void DrawInfo() override {};
-
 		void OnGameUpdate();
 		void OnMoveSync(uint32_t entityId, app::MotionInfo* syncInfo);
 	private:

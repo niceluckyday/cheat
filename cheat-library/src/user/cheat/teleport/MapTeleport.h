@@ -34,12 +34,6 @@ namespace cheat::feature
 
 		const FeatureGUIInfo& GetGUIInfo() const override;
 		void DrawMain() override;
-
-		virtual bool NeedStatusDraw() const override { return false; };
-		void DrawStatus() override {};
-
-		virtual bool NeedInfoDraw() const override { return false; };
-		void DrawInfo() override {};
 		
 	private:
 		struct TeleportTaskInfo

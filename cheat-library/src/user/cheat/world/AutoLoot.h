@@ -22,9 +22,6 @@ namespace cheat::feature
 		virtual bool NeedStatusDraw() const override;
 		void DrawStatus() override;
 
-		virtual bool NeedInfoDraw() const override { return false; };
-		void DrawInfo() override {};
-
 		bool OnCreateButton(app::BaseEntity* entity);
 		void OnGameUpdate();
 		void OnCheckIsInPosition(bool& result, app::BaseEntity* entity);

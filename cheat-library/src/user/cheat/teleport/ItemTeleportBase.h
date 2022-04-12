@@ -18,9 +18,6 @@ namespace cheat::feature
 		virtual void DrawItems();
 		virtual void DrawFilterOptions() { };
 
-		bool NeedStatusDraw() const final { return false; };
-		void DrawStatus() final {};
-
 		virtual bool NeedInfoDraw() const;
 		virtual void DrawInfo() override;
 

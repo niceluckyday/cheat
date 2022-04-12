@@ -141,6 +141,27 @@
     <ClInclude Include="src\user\cheat\world\AutoOreDestroy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\user\cheat\esp\ESP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\esp\data\ESPFilterField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\esp\data\ESPFilterEntry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\esp\ESPSectionBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\esp\filter\ESPChest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\esp\IEntityFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\esp\filter\SimpleFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="res\Ruda-Bold.ttf" />
@@ -246,6 +267,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\cheat\world\AutoOreDestroy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\esp\ESP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\esp\data\ESPFilterField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\esp\data\ESPFilterEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\esp\ESPSectionBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\esp\filter\ESPChest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\esp\filter\SimpleFilter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

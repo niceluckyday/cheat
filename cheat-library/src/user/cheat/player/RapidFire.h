@@ -21,9 +21,6 @@ namespace cheat::feature
 
 		virtual bool NeedStatusDraw() const override;
 		void DrawStatus() override;
-
-		virtual bool NeedInfoDraw() const override { return false; };
-		void DrawInfo() override {};
 	
 		int GetAttackCount(app::LCBaseCombat* combat, uint32_t targetID, app::AttackResult* attackResult);
 	private:

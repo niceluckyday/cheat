@@ -111,6 +111,9 @@ DO_APP_FUNC(0x014026D0, Vector3, Miscs_CalcCurrentGroundNorm,        (void* __th
 DO_APP_FUNC(0x0140F770, Vector3, Miscs_GenWorldPos,                  (void* __this, Vector2 levelMapPos, MethodInfo* method));
 DO_APP_FUNC(0x0140EE70, Vector2, Miscs_GenLevelPos_1,                (void* __this, Vector3 worldPos, MethodInfo* method));
 DO_APP_FUNC(0x01601D90, int32_t, Miscs_GetSceneGroundLayerMask,      (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x015F6C40, Collider*, Miscs_GetColliderFromGameObjectByLayer, (void* __this, GameObject* gameObject, int32_t layer, MethodInfo* method));
+DO_APP_FUNC(0x015F67D0, int32_t, Miscs_GetCameraLayerMask, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x015F6920, int32_t, Miscs_GetCharacterLayerMask, (void* __this, MethodInfo* method));
 
 DO_APP_FUNC(0x069A58A0, Vector3, WorldShiftManager_GetRelativePosition, (void* __this, Vector3 pos, MethodInfo* method));
 DO_APP_FUNC(0x069A55E0, Vector3, WorldShiftManager_GetAbsolutePosition, (void* __this, Vector3 pos, MethodInfo* method));
@@ -150,6 +153,7 @@ DO_APP_FUNC(0x04564740, VCBaseMove*,   BaseEntity_GetMoveComponent_1,  (BaseEnti
 DO_APP_FUNC(0x01659D20, List_1_MoleMole_BaseComponent_*, BaseEntity_GetAllLogicComponents, (BaseEntity* __this, MethodInfo* method));
 // v 2.6
 // DO_APP_FUNC(0x01667880, List_1_System_UInt32_*, BaseEntity_GetChildrenRuntimeIds, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x0163DCF0, GameObject*, BaseEntity_get_gameObject, (BaseEntity* __this, MethodInfo* method));
 
 DO_APP_FUNC_METHODINFO(0x0B25D518,     BaseEntity_GetMoveComponent_1__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B19B338,     BaseEntity_GetBaseCombat__MethodInfo);
@@ -158,6 +162,13 @@ DO_APP_FUNC(0x01E9F520, BaseEntity*,   EntityManager_GetCurrentAvatar,    (Entit
 DO_APP_FUNC(0x01EBAB90, CameraEntity*, EntityManager_GetMainCameraEntity, (EntityManager* __this, MethodInfo* method));
 DO_APP_FUNC(0x01EA44F0, BaseEntity*,   EntityManager_GetValidEntity,      (EntityManager* __this, uint32_t runtimeID, MethodInfo* method));
 DO_APP_FUNC(0x01E9F090, List_1_MoleMole_BaseEntity_*, EntityManager_GetEntities, (EntityManager* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x0570D9B0, Collider__Array*, GameObject_GetComponentsInChildren_12, (GameObject* __this, MethodInfo* method));
+DO_APP_FUNC_METHODINFO(0x0B38C6C0, GameObject_GetComponentsInChildren_12__MethodInfo);
+
+DO_APP_FUNC(0x05D07B50, Bounds, Utils_1_GetBounds, (void* __this, GameObject* go, MethodInfo* method));
+DO_APP_FUNC(0x07438F00, bool, Behaviour_get_enabled, (Behaviour* __this, MethodInfo* method));
+DO_APP_FUNC(0x07438F50, bool, Behaviour_get_isActiveAndEnabled, (Behaviour* __this, MethodInfo* method));
 
 DO_APP_FUNC(0x084045B0, void, Rigidbody_set_detectCollisions, (Rigidbody* __this, bool value, MethodInfo* method));
 DO_APP_FUNC(0x08404790, void, Rigidbody_set_isKinematic,      (Rigidbody* __this, bool value, MethodInfo* method));
@@ -171,8 +182,17 @@ DO_APP_FUNC(0x03511760, bool, ScenePropManager_GetTreeTypeByPattern, (ScenePropM
 DO_APP_FUNC(0x01997D90, void, NetworkManager_1_RequestHitTreeDropNotify, (NetworkManager_1* __this, Vector3 position, Vector3 hitPostion, ECGLPBEEEAA__Enum treeType, MethodInfo* method));
 DO_APP_FUNC(0x0332CD30, uint64_t, GetTimestamp, (void* __this, MethodInfo* method));
 
+DO_APP_FUNC(0x0743D0A0, app::Vector3, Camera_WorldToScreenPoint, (app::Camera* __this, app::Vector3 position, MethodInfo* method));
+DO_APP_FUNC(0x0743DBF0, Camera*, Camera_get_main, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x0743D920, Camera*, Camera_get_current, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x0743DF30, int32_t, Camera_get_pixelWidth, (Camera* __this, MethodInfo* method));
+DO_APP_FUNC(0x0743DE60, int32_t, Camera_get_pixelHeight, (Camera* __this, MethodInfo* method));
 
-// Thanks to @Ryujun
+DO_APP_FUNC(0x073C9A50, int32_t, Screen_get_width, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x073C98F0, int32_t, Screen_get_height, (void* __this, MethodInfo* method));
+
+
+// Thanks to @RyujinZX
 DO_APP_FUNC(0x019C5D50, void, LCAbilityElement_ReduceModifierDurability, (LCAbilityElement* __this, int32_t modifierDurabilityIndex, float reduceDurability, Nullable_1_Single_ deltaTime, MethodInfo* method));
 
 

@@ -20,9 +20,6 @@ namespace cheat::feature
 
 		virtual bool NeedStatusDraw() const override;
 		void DrawStatus() override;
-
-		virtual bool NeedInfoDraw() const override { return false; };
-		void DrawInfo() override {};
 	
 		bool OnPropertySet(app::PropType__Enum propType);
 		void OnMoveSync(uint32_t entityId, app::MotionInfo* syncInfo);

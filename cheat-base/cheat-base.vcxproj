@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClInclude Include="framework\framework.h" />
     <ClInclude Include="framework\pch.h" />
+    <ClInclude Include="src\cheat-base\config\field\EnumField.h" />
     <ClInclude Include="src\cheat-base\Hotkey.h" />
     <ClInclude Include="src\cheat-base\scanner\PatternScanner.h" />
     <ClInclude Include="src\cheat-base\cheat\CheatManager.h" />

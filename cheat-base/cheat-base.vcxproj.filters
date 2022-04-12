@@ -165,6 +165,9 @@
     <ClInclude Include="src\cheat-base\Hotkey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\cheat-base\config\field\EnumField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\cheat-base\util.cpp">

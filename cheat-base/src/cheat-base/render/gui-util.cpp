@@ -68,6 +68,7 @@ bool InputPath(const char* label, std::filesystem::path* buffer, bool folder, co
     return changed;
 }
 
+
 #define ShowDesc(msg) if (desc != nullptr) { ImGui::SameLine(); HelpMarker(msg); }
 
 struct ActiveInfo 
@@ -79,7 +80,7 @@ struct ActiveInfo
 static ActiveInfo prev;
 static ActiveInfo current;
 
-static bool IsValueChanged(void* valuePtr, bool result) 
+bool IsValueChanged(void* valuePtr, bool result) 
 {
     if (ImGui::IsItemActivated()) {
         prev = current;
@@ -100,6 +101,12 @@ static bool IsValueChanged(void* valuePtr, bool result)
     return result;
 }
 
+
+float CalcWidth(const std::string_view& view)
+{
+	ImGuiContext& g = *GImGui;
+	return ImGui::CalcTextSize(view.data()).x + g.Style.FramePadding.x * 2.0f + 25.0f;
+}
 
 bool ConfigWidget(const char* label, config::field::BaseField<bool>& field, const char* desc)
 {

@@ -22,11 +22,13 @@ namespace cheat
 		
 		virtual void DrawMain() = 0;
 
-		virtual bool NeedStatusDraw() const = 0;
-		virtual void DrawStatus() = 0;
+		virtual bool NeedStatusDraw() const { return false; };
+		virtual void DrawStatus() { };
 		
-		virtual bool NeedInfoDraw() const = 0;
-		virtual void DrawInfo() = 0;
+		virtual bool NeedInfoDraw() const { return false; };
+		virtual void DrawInfo() { };
+
+		virtual void DrawExternal() { };
 	
 	protected:
 		Feature() { };

@@ -348,4 +348,146 @@ namespace cheat::game
 
 		return mapManager->fields.mapSceneID;
 	}
+
+	namespace chest
+	{
+		ItemType GetItemType(const std::string& entityName)
+		{
+			if (entityName.find("TreasureBox") != std::string::npos)
+				return ItemType::Chest;
+
+			if (entityName.find("Search") != std::string::npos ||
+				entityName.find("JunkChest") != std::string::npos)
+				return ItemType::Investigate;
+
+			if (entityName.find("BookPage") != std::string::npos)
+				return ItemType::BookPage;
+
+			if (entityName.find("BGM") != std::string::npos)
+				return ItemType::BGM;
+
+			return ItemType::None;
+		}
+
+		ChestRarity GetChestRarity(const std::string& entityName)
+		{
+			auto rarityIdPos = entityName.find('0');
+			if (rarityIdPos == std::string::npos)
+				return ChestRarity::Unknown;
+
+			int rarityId = entityName[rarityIdPos + 1] - 48;
+			switch (rarityId)
+			{
+			case 1:
+				return ChestRarity::Common;
+			case 2:
+				return ChestRarity::Exquisite;
+			case 4:
+				return ChestRarity::Precious;
+			case 5:
+				return ChestRarity::Luxurious;
+			case 6:
+				return ChestRarity::Remarkable;
+			default:
+				return ChestRarity::Unknown;
+			}
+		}
+
+		ChestState GetChestState(app::BaseEntity* entity)
+		{
+			auto chestPlugin = game::GetLCPlugin<app::LCChestPlugin>(entity, *app::LCChestPlugin__TypeInfo);
+			if (chestPlugin == nullptr ||
+				chestPlugin->fields._owner == nullptr ||
+				chestPlugin->fields._owner->fields._dataItem == nullptr)
+				return ChestState::Invalid;
+
+			auto state = static_cast<app::GadgetState__Enum>(chestPlugin->fields._owner->fields._dataItem->fields.gadgetState);
+			switch (state)
+			{
+			case app::GadgetState__Enum::ChestLocked:
+				return ChestState::Locked;
+			case app::GadgetState__Enum::ChestRock:
+				return ChestState::InRock;
+			case app::GadgetState__Enum::ChestFrozen:
+				return ChestState::Frozen;
+			case app::GadgetState__Enum::ChestBramble:
+				return ChestState::Bramble;
+			case app::GadgetState__Enum::ChestTrap:
+				return ChestState::Trap;
+			case app::GadgetState__Enum::ChestOpened:
+				return ChestState::Invalid;
+			default:
+				return ChestState::None;
+			}
+		}
+
+		ImColor GetChestColor(ItemType itemType, ChestRarity rarity)
+		{
+			switch (itemType)
+			{
+			case ItemType::Chest:
+			{
+				switch (rarity)
+				{
+				case ChestRarity::Common:
+					return ImColor(255, 255, 255);
+				case ChestRarity::Exquisite:
+					return ImColor(0, 218, 255);
+				case ChestRarity::Precious:
+					return ImColor(231, 112, 255);
+				case ChestRarity::Luxurious:
+					return ImColor(246, 255, 0);
+				case ChestRarity::Remarkable:
+					return ImColor(255, 137, 0);
+				case ChestRarity::Unknown:
+				default:
+					return ImColor(72, 72, 72);
+				}
+			}
+			case ItemType::Investigate:
+			case ItemType::BookPage:
+			case ItemType::BGM:
+				return ImColor(104, 146, 163);
+			case ItemType::None:
+			default:
+				return ImColor(72, 72, 72);
+			}
+		}
+
+		std::string GetChestMinName(ItemType itemType, ChestRarity rarity)
+		{
+			switch (itemType)
+			{
+			case ItemType::Chest:
+			{
+				switch (rarity)
+				{
+				case ChestRarity::Common:
+					return "CR1";
+				case ChestRarity::Exquisite:
+					return "CR2";
+				case ChestRarity::Precious:
+					return "CR3";
+				case ChestRarity::Luxurious:
+					return "CR4";
+				case ChestRarity::Remarkable:
+					return "CR5";
+				case ChestRarity::Unknown:
+				default:
+					return "UNK";
+				}
+			}
+			case ItemType::Investigate:
+				return "INV";
+			case ItemType::BookPage:
+				return "BPG";
+			case ItemType::BGM:
+				return "BGM";
+			case ItemType::None:
+			default:
+				return "UNK";
+			}
+		}
+
+	}
 }

@@ -55,6 +55,8 @@ namespace cheat
 			NF(m_SelectedSection, "", "General", 0)
 		{}
 
+		void DrawExternal();
+
 		void DrawMenu();
 		void DrawMenuSection(const std::string& sectionName, std::vector<Feature*>& features);
 

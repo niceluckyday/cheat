@@ -3848,8 +3848,8 @@ namespace app {
         EnviroArea = 0x00000007,
         Equip = 0x00000008,
         MonsterEquip = 0x00000009,
-        Grass = 0x0000000a,
-        Level = 0x0000000b,
+		Grass = 0x0000000a,
+		Level = 0x0000000b,
         NPC = 0x0000000c,
         TransPointFirst = 0x0000000d,
         TransPointFirstGadget = 0x0000000e,
@@ -9727,6 +9727,45 @@ namespace app {
 		struct IDPLOHKAJML__Fields fields;
 	};
 
+	struct Camera__Fields {
+		struct Behaviour__Fields _;
+	};
+
+	struct Camera {
+		struct Camera__Class* klass;
+		MonitorData* monitor;
+		struct Camera__Fields fields;
+	};
+
+	struct Resolution {
+		int32_t m_Width;
+		int32_t m_Height;
+		int32_t m_RefreshRate;
+	};
+
+	struct Collider__Array {
+		struct Collider__Array__Class* klass;
+		MonitorData* monitor;
+		Il2CppArrayBounds* bounds;
+		il2cpp_array_size_t max_length;
+		struct Collider* vector[32];
+	};
+
+	struct Collider__Fields {
+		struct Component_1__Fields _;
+	};
+
+	struct Collider {
+		struct Collider__Class* klass;
+		MonitorData* monitor;
+		struct Collider__Fields fields;
+	};
+
+	struct Behaviour {
+		struct Behaviour__Class* klass;
+		MonitorData* monitor;
+		struct Behaviour__Fields fields;
+	};
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }
 #endif

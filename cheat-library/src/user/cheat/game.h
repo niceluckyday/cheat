@@ -79,6 +79,44 @@ namespace cheat::game
 	app::GadgetEntity* GetGadget(app::BaseEntity* entity);
 	bool IsEntityGadget(app::BaseEntity* entity);
 
+	namespace chest
+	{
+		enum class ItemType
+		{
+			None,
+			Chest,
+			Investigate,
+			BookPage,
+			BGM
+		};
+
+		enum class ChestState
+		{
+			Invalid,
+			None,
+			Locked,
+			InRock,
+			Frozen,
+			Bramble,
+			Trap
+		};
+
+		enum class ChestRarity
+		{
+			Unknown,
+			Common,
+			Exquisite,
+			Precious,
+			Luxurious,
+			Remarkable
+		};
+
+		ItemType GetItemType(const std::string& entityName);
+		ChestRarity GetChestRarity(const std::string& entityName);
+		ChestState GetChestState(app::BaseEntity* entity);
+		ImColor GetChestColor(ItemType itemType, ChestRarity rarity = ChestRarity::Unknown);
+		std::string GetChestMinName(ItemType itemType, ChestRarity rarity = ChestRarity::Unknown);
+	}
 	template<class T>
 	T* CastTo(void* pObject, void* pClass)
 	{

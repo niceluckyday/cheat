@@ -60,48 +60,6 @@ namespace cheat::feature::sniffer
 #undef min
 #undef max
 
-	static float CalcWidth(const std::string_view& view)
-	{
-		ImGuiContext& g = *GImGui;
-		return ImGui::CalcTextSize(view.data()).x + g.Style.FramePadding.x * 2.0f + 25.0f;
-	}
-
-	template <typename T>
-	static float GetMaxEnumWidth()
-	{
-		constexpr auto names = magic_enum::enum_names<T>();
-		auto maxComboName = std::max_element(names.begin(), names.end(),
-			[](const auto& a, const auto& b) { return CalcWidth(a) < CalcWidth(b); });
-		return CalcWidth(*maxComboName);
-	}
-
-	template <typename T>
-	static bool ComboEnum(const char* label, T* currentValue)
-	{
-		auto name = magic_enum::enum_name(*currentValue);
-		auto& current = *currentValue;
-		bool result = false;
-		static auto width = GetMaxEnumWidth<T>();
-
-		ImGui::SetNextItemWidth(width);
-		if (ImGui::BeginCombo(label, name.data()))
-		{
-			for (auto& entry : magic_enum::enum_entries<T>())
-			{
-				bool is_selected = (name == entry.second);
-				if (ImGui::Selectable(entry.second.data(), is_selected))
-				{
-					current = entry.first;
-					result = true;
-				}
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndCombo();
-		}
-		return result;
-	}
-
 	void SnifferWindow::Draw()
 	{
 

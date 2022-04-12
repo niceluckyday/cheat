@@ -31,6 +31,10 @@
 #include <cheat/teleport/ChestTeleport.h>
 #include <cheat/teleport/MapTeleport.h>
 #include <cheat/teleport/OculiTeleport.h>
+
+#include <cheat/esp/ESP.h>
+#include <cheat/esp/filter/ESPChest.h>
+
 #include <cheat/ILPatternScanner.h>
 
 namespace cheat 
@@ -70,7 +74,11 @@ namespace cheat
 
 			FEAT_INST(ChestTeleport),
 			FEAT_INST(OculiTeleport),
-			FEAT_INST(MapTeleport)
+			FEAT_INST(MapTeleport),
+
+			FEAT_INST(ESP),
+			FEAT_INST(esp::ESPChest)
+
 			});
 #undef FEAT_INST
 

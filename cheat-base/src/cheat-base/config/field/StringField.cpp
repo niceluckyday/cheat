@@ -14,7 +14,6 @@ namespace config::field
 	void StringField::Read(std::istream& io)
 	{
 		*valuePtr() = std::string(std::istreambuf_iterator<char>(io), {});
-		*prevValue = value();
 	}
 }
 

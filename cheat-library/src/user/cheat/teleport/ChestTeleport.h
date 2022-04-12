@@ -42,36 +42,6 @@ namespace cheat::feature
 			Invalid
 		};
 
-		enum class ItemType
-		{
-			None,
-			Chest,
-			Investigate,
-			BookPage,
-			BGM
-		};
-
-		enum class ChestState
-		{
-			Invalid,
-			None,
-			Locked,
-			InRock,
-			Frozen,
-			Bramble,
-			Trap
-		};
-
-		enum class ChestRarity
-		{
-			Unknown,
-			Common,
-			Exquisite,
-			Precious,
-			Luxurious,
-			Remarkable
-		};
-
 		FilterStatus FilterChest(app::BaseEntity* entity);
 
 		void DrawItems() final;

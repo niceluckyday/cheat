@@ -7,26 +7,22 @@ namespace config::field
 	class FieldBase : public ConfigEntry
 	{
 	public:
+		// Quite interesting shit with pointer value, seems like memory leak (and it is)
+		//   but implied that it will use rarely and have one instance
 		FieldBase(const std::string friendlyName, const std::string name, const std::string section, T defaultValue)
 			: ConfigEntry(friendlyName, name, section),
-			fieldValue(new T(defaultValue)), prevValue(new T(defaultValue))
+			fieldPtr(new T(defaultValue))
 		{
-		}
-
-		~FieldBase()
-		{
-			delete fieldValue;
-			delete prevValue;
 		}
 
 		T value() const
 		{
-			return *fieldValue;
+			return *fieldPtr;
 		}
 
 		T* valuePtr() const
 		{
-			return fieldValue;
+			return fieldPtr;
 		}
 
 		operator T() const {
@@ -39,23 +35,17 @@ namespace config::field
 
 		void operator=(const T& other)
 		{
-			*fieldValue = other;
-			*prevValue = other;
+			*fieldPtr = other;
 			ChangedEvent(this);
 		}
 
 		virtual bool Check()
 		{
-			if (*prevValue == *fieldValue)
-				return false;
-
-			*prevValue = *fieldValue;
 			ChangedEvent(this);
 			return true;
 		}
 
 	protected:
-		T* fieldValue;
-		T* prevValue;
+		T* fieldPtr;
 	};
 }

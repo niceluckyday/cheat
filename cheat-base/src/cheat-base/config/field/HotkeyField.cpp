@@ -23,5 +23,4 @@ void config::field::HotkeyField::Read(std::istream& io)
 		keys.push_back(key);
 
 	*valuePtr() = Hotkey(keys);
-	*prevValue = value();
 }

@@ -127,147 +127,6 @@ namespace cheat::feature
 		return instance;
 	}
 
-
-	ChestTeleport::ItemType GetItemType(const std::string& entityName)
-	{
-		if (entityName.find("TreasureBox") != std::string::npos)
-			return ChestTeleport::ItemType::Chest;
-
-		if (entityName.find("Search") != std::string::npos ||
-			entityName.find("JunkChest") != std::string::npos)
-			return ChestTeleport::ItemType::Investigate;
-
-		if (entityName.find("BookPage") != std::string::npos)
-			return ChestTeleport::ItemType::BookPage;
-
-		if (entityName.find("BGM") != std::string::npos)
-			return ChestTeleport::ItemType::BGM;
-
-		return ChestTeleport::ItemType::None;
-	}
-
-	ChestTeleport::ChestRarity GetChestRarity(const std::string& entityName)
-	{
-		auto rarityIdPos = entityName.find('0');
-		if (rarityIdPos == std::string::npos)
-			return ChestTeleport::ChestRarity::Unknown;
-
-		int rarityId = entityName[rarityIdPos + 1] - 48;
-		switch (rarityId)
-		{
-		case 1:
-			return ChestTeleport::ChestRarity::Common;
-		case 2:
-			return ChestTeleport::ChestRarity::Exquisite;
-		case 4:
-			return ChestTeleport::ChestRarity::Precious;
-		case 5:
-			return ChestTeleport::ChestRarity::Luxurious;
-		case 6:
-			return ChestTeleport::ChestRarity::Remarkable;
-		default:
-			return ChestTeleport::ChestRarity::Unknown;
-		}
-	}
-
-	ChestTeleport::ChestState GetChestState(app::BaseEntity* entity)
-	{
-		auto chestPlugin = game::GetLCPlugin<app::LCChestPlugin>(entity, *app::LCChestPlugin__TypeInfo);
-		if (chestPlugin == nullptr ||
-			chestPlugin->fields._owner == nullptr ||
-			chestPlugin->fields._owner->fields._dataItem == nullptr)
-			return ChestTeleport::ChestState::Invalid;
-
-		auto state = static_cast<app::GadgetState__Enum>(chestPlugin->fields._owner->fields._dataItem->fields.gadgetState);
-		switch (state)
-		{
-		case app::GadgetState__Enum::ChestLocked:
-			return ChestTeleport::ChestState::Locked;
-		case app::GadgetState__Enum::ChestRock:
-			return ChestTeleport::ChestState::InRock;
-		case app::GadgetState__Enum::ChestFrozen:
-			return ChestTeleport::ChestState::Frozen;
-		case app::GadgetState__Enum::ChestBramble:
-			return ChestTeleport::ChestState::Bramble;
-		case app::GadgetState__Enum::ChestTrap:
-			return ChestTeleport::ChestState::Trap;
-		case app::GadgetState__Enum::ChestOpened:
-			return ChestTeleport::ChestState::Invalid;
-		default:
-			return ChestTeleport::ChestState::None;
-		}
-	}
-
-	ImColor GetChestColor(ChestTeleport::ItemType itemType,
-		ChestTeleport::ChestRarity rarity = ChestTeleport::ChestRarity::Unknown)
-	{
-		switch (itemType)
-		{
-		case ChestTeleport::ItemType::Chest:
-		{
-			switch (rarity)
-			{
-			case ChestTeleport::ChestRarity::Common:
-				return ImColor(255, 255, 255);
-			case ChestTeleport::ChestRarity::Exquisite:
-				return ImColor(0, 218, 255);
-			case ChestTeleport::ChestRarity::Precious:
-				return ImColor(231, 112, 255);
-			case ChestTeleport::ChestRarity::Luxurious:
-				return ImColor(246, 255, 0);
-			case ChestTeleport::ChestRarity::Remarkable:
-				return ImColor(255, 137, 0);
-			case ChestTeleport::ChestRarity::Unknown:
-			default:
-				return ImColor(72, 72, 72);
-			}
-		}
-		case ChestTeleport::ItemType::Investigate:
-		case ChestTeleport::ItemType::BookPage:
-		case ChestTeleport::ItemType::BGM:
-			return ImColor(104, 146, 163);
-		case ChestTeleport::ItemType::None:
-		default:
-			return ImColor(72, 72, 72);
-		}
-	}
-
-	std::string GetChestMinName(ChestTeleport::ItemType itemType,
-		ChestTeleport::ChestRarity rarity = ChestTeleport::ChestRarity::Unknown)
-	{
-		switch (itemType)
-		{
-		case ChestTeleport::ItemType::Chest:
-		{
-			switch (rarity)
-			{
-			case ChestTeleport::ChestRarity::Common:
-				return "CR1";
-			case ChestTeleport::ChestRarity::Exquisite:
-				return "CR2";
-			case ChestTeleport::ChestRarity::Precious:
-				return "CR3";
-			case ChestTeleport::ChestRarity::Luxurious:
-				return "CR4";
-			case ChestTeleport::ChestRarity::Remarkable:
-				return "CR5";
-			case ChestTeleport::ChestRarity::Unknown:
-			default:
-				return "UNK";
-			}
-		}
-		case ChestTeleport::ItemType::Investigate:
-			return "INV";
-		case ChestTeleport::ItemType::BookPage:
-			return "BPG";
-		case ChestTeleport::ItemType::BGM:
-			return "BGM";
-		case ChestTeleport::ItemType::None:
-		default:
-			return "UNK";
-		}
-	}
-
 	cheat::feature::ChestTeleport::FilterStatus ChestTeleport::FilterChest(app::BaseEntity* entity)
 	{
 		if (!game::IsEntityFilterValid(entity, game::GetFilterChest()))
@@ -275,50 +134,50 @@ namespace cheat::feature
 
 		auto entityName = game::GetEntityName(entity);
 
-		auto itemType = GetItemType(entityName);
+		auto itemType = game::chest::GetItemType(entityName);
 		switch (itemType)
 		{
-		case cheat::feature::ChestTeleport::ItemType::Chest:
+		case game::chest::ItemType::Chest:
 		{
 			if (!m_FilterChest)
 				return FilterStatus::Invalid;
 			
-			auto chestRarity = GetChestRarity(entityName);
-			if (chestRarity == ChestRarity::Unknown)
+			auto chestRarity = game::chest::GetChestRarity(entityName);
+			if (chestRarity == game::chest::ChestRarity::Unknown)
 				return FilterStatus::Unknown;
 			
-			bool rarityValid = (chestRarity == ChestRarity::Common && m_FilterChestCommon) ||
-				(chestRarity == ChestRarity::Exquisite  && m_FilterChestExquisite) ||
-				(chestRarity == ChestRarity::Precious   && m_FilterChestPrecious) ||
-				(chestRarity == ChestRarity::Luxurious  && m_FilterChestLuxurious) ||
-				(chestRarity == ChestRarity::Remarkable && m_FilterChestRemarkable);
+			bool rarityValid = (chestRarity == game::chest::ChestRarity::Common && m_FilterChestCommon) ||
+				(chestRarity == game::chest::ChestRarity::Exquisite  && m_FilterChestExquisite) ||
+				(chestRarity == game::chest::ChestRarity::Precious   && m_FilterChestPrecious) ||
+				(chestRarity == game::chest::ChestRarity::Luxurious  && m_FilterChestLuxurious) ||
+				(chestRarity == game::chest::ChestRarity::Remarkable && m_FilterChestRemarkable);
 
 			if (!rarityValid)
 				return FilterStatus::Invalid;
 
-			auto chestState = GetChestState(entity);
-			if (chestState == ChestState::Invalid)
+			auto chestState = game::chest::GetChestState(entity);
+			if (chestState == game::chest::ChestState::Invalid)
 				return FilterStatus::Invalid;
 
-			bool chestStateValid = chestState == ChestState::None ||
-				(chestState == ChestState::Locked  && m_FilterChestLocked) ||
-				(chestState == ChestState::InRock  && m_FilterChestInRock) ||
-				(chestState == ChestState::Frozen  && m_FilterChestFrozen) ||
-				(chestState == ChestState::Bramble && m_FilterChestBramble) ||
-				(chestState == ChestState::Trap    && m_FilterChestTrap);
+			bool chestStateValid = chestState == game::chest::ChestState::None ||
+				(chestState == game::chest::ChestState::Locked  && m_FilterChestLocked) ||
+				(chestState == game::chest::ChestState::InRock  && m_FilterChestInRock) ||
+				(chestState == game::chest::ChestState::Frozen  && m_FilterChestFrozen) ||
+				(chestState == game::chest::ChestState::Bramble && m_FilterChestBramble) ||
+				(chestState == game::chest::ChestState::Trap    && m_FilterChestTrap);
 
 			if (!chestStateValid)
 				return FilterStatus::Invalid;
 
 			return FilterStatus::Valid;
 		}
-		case cheat::feature::ChestTeleport::ItemType::Investigate:
+		case game::chest::ItemType::Investigate:
 			return m_FilterInvestigates ? FilterStatus::Valid : FilterStatus::Invalid;
-		case cheat::feature::ChestTeleport::ItemType::BookPage:
+		case game::chest::ItemType::BookPage:
 			return m_FilterBookPage ? FilterStatus::Valid : FilterStatus::Invalid;
-		case cheat::feature::ChestTeleport::ItemType::BGM:
+		case game::chest::ItemType::BGM:
 			return m_FilterBGM ? FilterStatus::Valid : FilterStatus::Invalid;
-		case cheat::feature::ChestTeleport::ItemType::None:
+		case game::chest::ItemType::None:
 		default:
 			return FilterStatus::Unknown;
 		}
@@ -346,19 +205,19 @@ namespace cheat::feature
 		ImGui::SameLine();
 
 		auto entityName = game::GetEntityName(entity);
-		auto itemType = GetItemType(entityName);
+		auto itemType = game::chest::GetItemType(entityName);
 		
-		if (itemType == ChestTeleport::ItemType::Chest)
+		if (itemType == game::chest::ItemType::Chest)
 		{
-			auto chestRarity = GetChestRarity(entityName);
-			auto color = GetChestColor(itemType, chestRarity);
-			auto minName = GetChestMinName(itemType, chestRarity);
+			auto chestRarity = game::chest::GetChestRarity(entityName);
+			auto color = game::chest::GetChestColor(itemType, chestRarity);
+			auto minName = game::chest::GetChestMinName(itemType, chestRarity);
 			ImGui::TextColored(color, "%s", minName.c_str());
 		}
 		else
 		{
-			auto color = GetChestColor(itemType);
-			auto minName = GetChestMinName(itemType);
+			auto color = game::chest::GetChestColor(itemType);
+			auto minName = game::chest::GetChestMinName(itemType);
 			ImGui::TextColored(color, "%s", minName.c_str());
 		}
 	}
@@ -375,13 +234,13 @@ namespace cheat::feature
 		{
 			ImGui::PushID(entity);
 			auto entityName = game::GetEntityName(entity);
-			auto itemType = GetItemType(entityName);
+			auto itemType = game::chest::GetItemType(entityName);
 			
 			ImGui::TableNextColumn();
-			if (itemType == ItemType::Chest)
+			if (itemType == game::chest::ItemType::Chest)
 			{
-				auto chestRarity = GetChestRarity(entityName);
-				auto chestState = GetChestState(entity);
+				auto chestRarity = game::chest::GetChestRarity(entityName);
+				auto chestState = game::chest::GetChestState(entity);
 				auto color = GetChestColor(itemType, chestRarity);
 				ImGui::TextColored(color, "%s [%s] [%s] at %0.3fm", 
 					magic_enum::enum_name(itemType).data(),
