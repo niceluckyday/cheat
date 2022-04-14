@@ -11,11 +11,11 @@ namespace cheat::feature
 	static void HumanoidMoveFSM_LateTick_Hook(void* __this, float deltaTime, MethodInfo* method);
 
     NoClip::NoClip() : Feature(),
-        NF(m_Enabled,        "No clip",            "NoClip", false),
-        NF(m_Speed,          "Speed",              "NoClip", 5.5f),
-        NF(m_CameraRelative, "Relative to camera", "NoClip", true),
-		NF(m_OverrideSpeed,  "Override speed",     "NoClip", false),
-		NF(m_OverrideSpeedValue, "Override speed value", "NoClip", 1.0f)
+        NF(m_Enabled,            "No clip",              "NoClip", false),
+        NF(m_Speed,              "Speed",                "NoClip", 5.5f),
+        NF(m_CameraRelative,     "Relative to camera",   "NoClip", true),
+		NF(m_SneakSpeedEnabled,  "Sneak speed enabled",  "NoClip", false),
+		NF(m_SneakSpeedValue,    "Sneak speed",          "NoClip", 1.0f)
     {
 		HookManager::install(app::HumanoidMoveFSM_LateTick, HumanoidMoveFSM_LateTick_Hook);
 
@@ -34,11 +34,14 @@ namespace cheat::feature
 		ConfigWidget("Enabled", m_Enabled, "Enables no clip.\n" \
             "For move use ('W', 'A', 'S', 'D', 'Space', 'Shift')");
 
-		ConfigWidget(m_Speed, 0.1f, 2, 100, "No clip move speed.\n"\
+		ConfigWidget(m_Speed, 0.1f, 2.0f, 100.0f, "No clip move speed.\n"\
             "It's not recommended to set value above 5.");
 		
         ConfigWidget(m_CameraRelative, "Move performing relative to camera direction. Not avatar facing direction.");
-		ConfigWidget(m_OverrideSpeed, "Override move speed with value. Pressing LeftCtrl will make you move faster/slower depending on the value you set.");
+		
+		ConfigWidget("", m_SneakSpeedEnabled); ImGui::SameLine();
+		ConfigWidget(m_SneakSpeedValue, 0.1f, 2.0f, 100.0f,
+			"Override move speed with value.\nPressing LeftCtrl will make you move faster/slower depending on the value you set.");
     }
 
     bool NoClip::NeedStatusDraw() const
@@ -95,9 +98,9 @@ namespace cheat::feature
 		auto cameraEntity = (app::BaseEntity*)manager.mainCamera();
 		auto relativeEntity = m_CameraRelative ? cameraEntity : avatarEntity->raw();
 
-		float temp_speed = m_Speed.value();
-		if (Hotkey(VK_LCONTROL).IsPressed())
-			temp_speed = m_OverrideSpeedValue.value(); 
+		float speed = m_Speed.value();
+		if (m_SneakSpeedEnabled && Hotkey(VK_LCONTROL).IsPressed())
+			speed = m_SneakSpeedValue.value(); 
 
 		app::Vector3 dir = {};
 		if (Hotkey('W').IsPressed())
@@ -124,7 +127,7 @@ namespace cheat::feature
 
 		float deltaTime = app::Time_get_deltaTime(nullptr, nullptr);
 
-		app::Vector3 newPos = prevPos + dir * temp_speed * deltaTime;
+		app::Vector3 newPos = prevPos + dir * speed * deltaTime;
 		avatarEntity->setRelativePosition(newPos);
 	}
 
