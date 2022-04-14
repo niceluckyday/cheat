@@ -13,7 +13,9 @@ namespace cheat::feature
     NoClip::NoClip() : Feature(),
         NF(m_Enabled,        "No clip",            "NoClip", false),
         NF(m_Speed,          "Speed",              "NoClip", 5.5f),
-        NF(m_CameraRelative, "Relative to camera", "NoClip", true)
+        NF(m_CameraRelative, "Relative to camera", "NoClip", true),
+		NF(m_OverrideSpeed,  "Override speed",     "NoClip", false),
+		NF(m_OverrideSpeedValue, "Override speed value", "NoClip", 1.0f)
     {
 		HookManager::install(app::HumanoidMoveFSM_LateTick, HumanoidMoveFSM_LateTick_Hook);
 
@@ -36,6 +38,7 @@ namespace cheat::feature
             "It's not recommended to set value above 5.");
 		
         ConfigWidget(m_CameraRelative, "Move performing relative to camera direction. Not avatar facing direction.");
+		ConfigWidget(m_OverrideSpeed, "Override move speed with value. Pressing LeftCtrl will make you move faster/slower depending on the value you set.");
     }
 
     bool NoClip::NeedStatusDraw() const
@@ -92,6 +95,10 @@ namespace cheat::feature
 		auto cameraEntity = (app::BaseEntity*)manager.mainCamera();
 		auto relativeEntity = m_CameraRelative ? cameraEntity : avatarEntity->raw();
 
+		float temp_speed = m_Speed.value();
+		if (Hotkey(VK_LCONTROL).IsPressed())
+			temp_speed = m_OverrideSpeedValue.value(); 
+
 		app::Vector3 dir = {};
 		if (Hotkey('W').IsPressed())
 			dir = dir + app::BaseEntity_GetForward(relativeEntity, nullptr);
@@ -117,7 +124,7 @@ namespace cheat::feature
 
 		float deltaTime = app::Time_get_deltaTime(nullptr, nullptr);
 
-		app::Vector3 newPos = prevPos + dir * m_Speed * deltaTime;
+		app::Vector3 newPos = prevPos + dir * temp_speed * deltaTime;
 		avatarEntity->setRelativePosition(newPos);
 	}
 
