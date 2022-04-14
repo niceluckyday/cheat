@@ -38,6 +38,7 @@ namespace cheat::feature
             "It's not recommended to set value above 5.");
 		
         ConfigWidget(m_CameraRelative, "Move performing relative to camera direction. Not avatar facing direction.");
+		ConfigWidget(m_OverrideSpeed, "Override move speed with value. Pressing LeftCtrl will make you move faster/slower depending on the value you set.");
     }
 
     bool NoClip::NeedStatusDraw() const
