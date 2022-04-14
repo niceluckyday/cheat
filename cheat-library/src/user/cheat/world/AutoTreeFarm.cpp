@@ -5,7 +5,8 @@
 #include <algorithm>
 
 #include <cheat/events.h>
-#include <cheat/game.h>
+#include <cheat/game/util.h>
+#include <cheat/game/EntityManager.h>
 
 namespace cheat::feature 
 {
@@ -100,6 +101,7 @@ namespace cheat::feature
 		{
 			return x == b.x && y == b.y && z == b.z;
 		}
+
 	};
 
 	struct hash_fn
@@ -124,6 +126,7 @@ namespace cheat::feature
 		if (!m_Enabled || s_LastAttackTimestamp + m_AttackDelay > timestamp)
 			return;
 
+		auto& manager = game::EntityManager::instance();
 		auto scenePropManager = GetSingleton(ScenePropManager);
 		auto networkManager = GetSingleton(NetworkManager_1);
 		if (networkManager == nullptr || scenePropManager == nullptr)
@@ -139,7 +142,7 @@ namespace cheat::feature
 				continue;
 
 			auto position = tree->fields._.realBounds.m_Center;
-			if (game::GetDistToAvatar(app::WorldShiftManager_GetRelativePosition(nullptr, position, nullptr)) > m_Range)
+			if (manager.avatar()->distance(app::WorldShiftManager_GetRelativePosition(nullptr, position, nullptr)) > m_Range)
 				continue;
 
 			s_AttackQueueSet.insert(tree);
@@ -156,7 +159,7 @@ namespace cheat::feature
 				continue;
 
 			auto position = tree->fields._.realBounds.m_Center;
-			if (game::GetDistToAvatar(app::WorldShiftManager_GetRelativePosition(nullptr, position, nullptr)) > m_Range)
+			if (manager.avatar()->distance(app::WorldShiftManager_GetRelativePosition(nullptr, position, nullptr)) > m_Range)
 				continue;
 
 			app::ECGLPBEEEAA__Enum treeType;

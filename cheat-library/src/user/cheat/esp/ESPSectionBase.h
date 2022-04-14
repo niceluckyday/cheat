@@ -2,10 +2,9 @@
 
 #include <cheat-base/cheat/Feature.h>
 
-#include <cheat/esp/data/ESPFilterField.h>
-#include <cheat/esp/IEntityFilter.h>
-
-#include <cheat/game.h>
+#include <cheat/esp/data/ESPItemField.h>
+#include <cheat/game/IEntityFilter.h>
+#include <cheat/game/CacheFilterExecutor.h>
 
 namespace cheat::feature::esp
 {
@@ -19,19 +18,17 @@ namespace cheat::feature::esp
 
 	protected:
 		ESPSectionBase(std::string filterName);
-		void AddFilter(const std::string& name, IEntityFilter* filter);
+		void AddFilter(const std::string& name, game::IEntityFilter* filter);
 
 	private:
-		std::vector<std::pair<config::field::ESPFilterField*, IEntityFilter*>> m_Filters;
+		std::vector<std::pair<config::field::ESPItemField*, game::IEntityFilter*>> m_Filters;
 		std::string m_Name;
+		game::CacheFilterExecutor m_FilterExecutor;
 
-		void DrawFilterField(config::field::ESPFilterField& field);
+		void DrawFilterField(config::field::ESPItemField& field);
 
 		void OnKeyUp(short key, bool& cancelled);
 
-		void DrawBox(app::BaseEntity* entity, const ImColor& color);
-		void DrawRect(app::BaseEntity* entity, const ImColor& color);
-		void DrawLine(app::BaseEntity* entity, const ImColor& color);
 	};
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "ItemTeleportBase.h"
 
+#include <cheat/game/Chest.h>
 namespace cheat::feature 
 {
 
@@ -35,6 +36,13 @@ namespace cheat::feature
 		const FeatureGUIInfo& GetGUIInfo() const final;
 		virtual void DrawFilterOptions() final;
 
+		void DrawItems() final;
+		
+		bool NeedInfoDraw() const final;
+		void DrawInfo() final;
+
+		bool IsValid(game::Entity* entity) const override;
+
 		enum class FilterStatus
 		{
 			Unknown,
@@ -42,13 +50,7 @@ namespace cheat::feature
 			Invalid
 		};
 
-		FilterStatus FilterChest(app::BaseEntity* entity);
-
-		void DrawItems() final;
-		
-		bool NeedInfoDraw() const final;
-		void DrawInfo() final;
-
+		FilterStatus FilterChest(game::Chest* entity) const;
 	private:
 
 		void DrawChests();

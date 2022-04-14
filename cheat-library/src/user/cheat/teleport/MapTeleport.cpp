@@ -3,7 +3,8 @@
 
 #include <helpers.h>
 #include <cheat/events.h>
-#include <cheat/game.h>
+#include <cheat/game/EntityManager.h>
+#include <cheat/game/util.h>
 
 namespace cheat::feature 
 {
@@ -287,7 +288,8 @@ namespace cheat::feature
 
 	static void Entity_SetPosition_Hook(app::BaseEntity* __this, app::Vector3 position, bool someBool, MethodInfo* method)
 	{
-		if (game::IsAvatarEntity(__this))
+		auto& manager = game::EntityManager::instance();
+		if (manager.avatar()->raw() == __this)
 		{
 			MapTeleport& mapTeleport = MapTeleport::GetInstance();
 			mapTeleport.OnSetAvatarPosition(position);

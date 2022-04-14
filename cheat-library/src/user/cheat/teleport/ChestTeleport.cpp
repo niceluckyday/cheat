@@ -2,26 +2,15 @@
 #include "ChestTeleport.h"
 
 #include <helpers.h>
-#include <cheat/game.h>
+#include <cheat/game/EntityManager.h>
+#include <cheat/game/Chest.h>
+#include <cheat/game/util.h>
 #include <cheat/teleport/MapTeleport.h>
 
 namespace cheat::feature 
 {
-    static bool ChestFilter(app::BaseEntity* entity) 
-    {
-		auto& chestTp = ChestTeleport::GetInstance();
-		auto filterResult = chestTp.FilterChest(entity);
-        return filterResult == ChestTeleport::FilterStatus::Valid ||
-			(filterResult == ChestTeleport::FilterStatus::Unknown && chestTp.m_FilterUnknown);
-    }
 
-	static bool ChestUnknownFilter(app::BaseEntity* entity)
-	{
-		auto& chestTp = ChestTeleport::GetInstance();
-		return chestTp.FilterChest(entity) == ChestTeleport::FilterStatus::Unknown;
-	}
-
-    ChestTeleport::ChestTeleport() : ItemTeleportBase("ChestTeleport", "Chest", ChestFilter),
+    ChestTeleport::ChestTeleport() : ItemTeleportBase("ChestTeleport", "Chest"),
         NF(m_FilterChestLocked    , "Locked",       "ChestTeleport", true),
 		NF(m_FilterChestInRock    , "In rock",      "ChestTeleport", true),
 		NF(m_FilterChestFrozen    , "Frozen",       "ChestTeleport", true),
@@ -127,57 +116,63 @@ namespace cheat::feature
 		return instance;
 	}
 
-	cheat::feature::ChestTeleport::FilterStatus ChestTeleport::FilterChest(app::BaseEntity* entity)
+	bool ChestTeleport::IsValid(game::Entity* entity) const
 	{
-		if (!game::IsEntityFilterValid(entity, game::GetFilterChest()))
-			return FilterStatus::Invalid;
+		if (!entity->isChest())
+			return false;
 
-		auto entityName = game::GetEntityName(entity);
+		auto chest = reinterpret_cast<game::Chest*>(entity);
+		auto filterResult = FilterChest(chest);
+		return filterResult == ChestTeleport::FilterStatus::Valid ||
+			(filterResult == ChestTeleport::FilterStatus::Unknown && m_FilterUnknown);
+	}
 
-		auto itemType = game::chest::GetItemType(entityName);
+	cheat::feature::ChestTeleport::FilterStatus ChestTeleport::FilterChest(game::Chest* entity) const
+	{
+		auto itemType = entity->itemType();
 		switch (itemType)
 		{
-		case game::chest::ItemType::Chest:
+		case game::Chest::ItemType::Chest:
 		{
 			if (!m_FilterChest)
 				return FilterStatus::Invalid;
 			
-			auto chestRarity = game::chest::GetChestRarity(entityName);
-			if (chestRarity == game::chest::ChestRarity::Unknown)
+			auto chestRarity = entity->chestRarity();
+			if (chestRarity == game::Chest::ChestRarity::Unknown)
 				return FilterStatus::Unknown;
 			
-			bool rarityValid = (chestRarity == game::chest::ChestRarity::Common && m_FilterChestCommon) ||
-				(chestRarity == game::chest::ChestRarity::Exquisite  && m_FilterChestExquisite) ||
-				(chestRarity == game::chest::ChestRarity::Precious   && m_FilterChestPrecious) ||
-				(chestRarity == game::chest::ChestRarity::Luxurious  && m_FilterChestLuxurious) ||
-				(chestRarity == game::chest::ChestRarity::Remarkable && m_FilterChestRemarkable);
+			bool rarityValid = (chestRarity == game::Chest::ChestRarity::Common && m_FilterChestCommon) ||
+				(chestRarity == game::Chest::ChestRarity::Exquisite  && m_FilterChestExquisite) ||
+				(chestRarity == game::Chest::ChestRarity::Precious   && m_FilterChestPrecious) ||
+				(chestRarity == game::Chest::ChestRarity::Luxurious  && m_FilterChestLuxurious) ||
+				(chestRarity == game::Chest::ChestRarity::Remarkable && m_FilterChestRemarkable);
 
 			if (!rarityValid)
 				return FilterStatus::Invalid;
 
-			auto chestState = game::chest::GetChestState(entity);
-			if (chestState == game::chest::ChestState::Invalid)
+			auto chestState = entity->chestState();
+			if (chestState == game::Chest::ChestState::Invalid)
 				return FilterStatus::Invalid;
 
-			bool chestStateValid = chestState == game::chest::ChestState::None ||
-				(chestState == game::chest::ChestState::Locked  && m_FilterChestLocked) ||
-				(chestState == game::chest::ChestState::InRock  && m_FilterChestInRock) ||
-				(chestState == game::chest::ChestState::Frozen  && m_FilterChestFrozen) ||
-				(chestState == game::chest::ChestState::Bramble && m_FilterChestBramble) ||
-				(chestState == game::chest::ChestState::Trap    && m_FilterChestTrap);
+			bool chestStateValid = chestState == game::Chest::ChestState::None ||
+				(chestState == game::Chest::ChestState::Locked  && m_FilterChestLocked) ||
+				(chestState == game::Chest::ChestState::InRock  && m_FilterChestInRock) ||
+				(chestState == game::Chest::ChestState::Frozen  && m_FilterChestFrozen) ||
+				(chestState == game::Chest::ChestState::Bramble && m_FilterChestBramble) ||
+				(chestState == game::Chest::ChestState::Trap    && m_FilterChestTrap);
 
 			if (!chestStateValid)
 				return FilterStatus::Invalid;
 
 			return FilterStatus::Valid;
 		}
-		case game::chest::ItemType::Investigate:
+		case game::Chest::ItemType::Investigate:
 			return m_FilterInvestigates ? FilterStatus::Valid : FilterStatus::Invalid;
-		case game::chest::ItemType::BookPage:
+		case game::Chest::ItemType::BookPage:
 			return m_FilterBookPage ? FilterStatus::Valid : FilterStatus::Invalid;
-		case game::chest::ItemType::BGM:
+		case game::Chest::ItemType::BGM:
 			return m_FilterBGM ? FilterStatus::Valid : FilterStatus::Invalid;
-		case game::chest::ItemType::None:
+		case game::Chest::ItemType::None:
 		default:
 			return FilterStatus::Unknown;
 		}
@@ -198,60 +193,44 @@ namespace cheat::feature
 
 	void ChestTeleport::DrawInfo()
 	{
-		auto entity = game::FindNearestEntity(ChestFilter);
+		auto entity = game::FindNearestEntity(*this);
+		auto chest = reinterpret_cast<game::Chest*>(entity);
+
 		DrawEntityInfo(entity);
 		if (entity == nullptr)
 			return;
 		ImGui::SameLine();
 
-		auto entityName = game::GetEntityName(entity);
-		auto itemType = game::chest::GetItemType(entityName);
-		
-		if (itemType == game::chest::ItemType::Chest)
-		{
-			auto chestRarity = game::chest::GetChestRarity(entityName);
-			auto color = game::chest::GetChestColor(itemType, chestRarity);
-			auto minName = game::chest::GetChestMinName(itemType, chestRarity);
-			ImGui::TextColored(color, "%s", minName.c_str());
-		}
-		else
-		{
-			auto color = game::chest::GetChestColor(itemType);
-			auto minName = game::chest::GetChestMinName(itemType);
-			ImGui::TextColored(color, "%s", minName.c_str());
-		}
+		ImGui::TextColored(chest->chestColor(), "%s", chest->minName());
 	}
 
 	void ChestTeleport::DrawChests()
-	{
-		auto chests = game::FindEntities(ChestFilter);
-		
+	{	
 		if (!ImGui::TreeNode("Items"))
 			return;
 
+		auto& manager = game::EntityManager::instance();
+		auto entities = manager.entities(*this);
+
 		ImGui::BeginTable("ChestsTable", 2);
-		for (auto& entity : chests)
+		for (auto& entity : entities)
 		{
 			ImGui::PushID(entity);
-			auto entityName = game::GetEntityName(entity);
-			auto itemType = game::chest::GetItemType(entityName);
-			
+			auto chest = reinterpret_cast<game::Chest*>(entity);
+
 			ImGui::TableNextColumn();
-			if (itemType == game::chest::ItemType::Chest)
+			if (chest->itemType() == game::Chest::ItemType::Chest)
 			{
-				auto chestRarity = game::chest::GetChestRarity(entityName);
-				auto chestState = game::chest::GetChestState(entity);
-				auto color = GetChestColor(itemType, chestRarity);
-				ImGui::TextColored(color, "%s [%s] [%s] at %0.3fm", 
-					magic_enum::enum_name(itemType).data(),
-					magic_enum::enum_name(chestRarity).data(),
-					magic_enum::enum_name(chestState).data(),
-					game::GetDistToAvatar(entity));
+				ImGui::TextColored(chest->chestColor(), "%s [%s] [%s] at %0.3fm", 
+					magic_enum::enum_name(chest->itemType()).data(),
+					magic_enum::enum_name(chest->chestRarity()).data(),
+					magic_enum::enum_name(chest->chestState()).data(),
+					manager.avatar()->distance(entity));
 			}
 			else
 			{
-				auto color = GetChestColor(itemType);
-				ImGui::TextColored(color, "%s at %0.3fm", magic_enum::enum_name(itemType).data(), game::GetDistToAvatar(entity));
+				ImGui::TextColored(chest->chestColor(), "%s at %0.3fm", magic_enum::enum_name(chest->itemType()).data(), 
+					manager.avatar()->distance(entity));
 			}
 
 			ImGui::TableNextColumn();
@@ -259,7 +238,7 @@ namespace cheat::feature
 			if (ImGui::Button("Teleport"))
 			{
 				auto& mapTeleport = MapTeleport::GetInstance();
-				mapTeleport.TeleportTo(game::GetAbsolutePosition(entity));
+				mapTeleport.TeleportTo(chest->absolutePosition());
 			}
 			ImGui::PopID();
 		}
@@ -267,9 +246,20 @@ namespace cheat::feature
 		ImGui::TreePop();
 	}
 
+	static bool ChestUnknownFilter(game::Entity* entity)
+	{
+		if (!entity->isChest())
+			return false;
+
+		auto chest = reinterpret_cast<game::Chest*>(entity);
+		auto& chestTp = ChestTeleport::GetInstance();
+		return chestTp.FilterChest(chest) == ChestTeleport::FilterStatus::Unknown;
+	}
+
 	void ChestTeleport::DrawUnknowns()
 	{
-		auto unknowns = game::FindEntities(ChestUnknownFilter);
+		auto& manager = game::EntityManager::instance();
+		auto unknowns = manager.entities(ChestUnknownFilter);
 		if (unknowns.empty())
 			return;
 
@@ -283,7 +273,8 @@ namespace cheat::feature
 			ImGui::LogText("Unknown names:\n");
 			
 			for (auto& entity : unknowns)
-				ImGui::LogText("%s; position: %s\n", game::GetEntityName(entity).c_str(), il2cppi_to_string(game::GetRelativePosition(entity)).c_str());
+				ImGui::LogText("%s; position: %s; scene: %u\n", entity->name().c_str(), 
+					il2cppi_to_string(entity->relativePosition()).c_str(), game::GetCurrentPlayerSceneID());
 			
 			ImGui::LogFinish();
 		}
@@ -298,13 +289,13 @@ namespace cheat::feature
 			ImGui::PushID(entity);
 			
 			ImGui::TableNextColumn();
-			ImGui::Text("%s. Dist %0.3f", game::GetEntityName(entity).c_str(), game::GetDistToAvatar(entity));
+			ImGui::Text("%s. Dist %0.3f", entity->name().c_str(), manager.avatar()->distance(entity));
 			
 			ImGui::TableNextColumn();
 			if (ImGui::Button("TP"))
 			{
 				auto& mapTeleport = MapTeleport::GetInstance();
-				mapTeleport.TeleportTo(game::GetAbsolutePosition(entity));
+				mapTeleport.TeleportTo(entity->absolutePosition());
 			}
 
 			ImGui::PopID();
@@ -312,6 +303,8 @@ namespace cheat::feature
 		ImGui::EndTable();
 		ImGui::TreePop();
 	}
+
+
 
 }
 

@@ -11,11 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\user\cheat\esp\filter\SimpleFilter.h" />
-    <ClInclude Include="src\user\cheat\esp\IEntityFilter.h" />
-    <ClInclude Include="src\user\cheat\esp\filter\ESPChest.h" />
+    <ClInclude Include="src\user\cheat\game\Chest.h" />
+    <ClInclude Include="src\user\cheat\game\Entity.h" />
+    <ClInclude Include="src\user\cheat\game\CacheFilterExecutor.h" />
+    <ClInclude Include="src\user\cheat\game\EntityManager.h" />
+    <ClInclude Include="src\user\cheat\esp\ESPRender.h" />
+    <ClInclude Include="src\user\cheat\esp\section\ESPChest.h" />
     <ClInclude Include="src\user\cheat\esp\ESPSectionBase.h" />
-    <ClInclude Include="src\user\cheat\esp\data\ESPFilterEntry.h" />
+    <ClInclude Include="src\user\cheat\esp\data\ESPItem.h" />
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="src\appdata\il2cpp-api-functions-ptr.h" />
     <ClInclude Include="src\appdata\il2cpp-api-functions.h" />
@@ -31,7 +34,9 @@
     <ClInclude Include="src\user\cheat\cheat.h" />
     <ClInclude Include="src\user\cheat\esp\ESP.h" />
     <ClInclude Include="src\user\cheat\events.h" />
-    <ClInclude Include="src\user\cheat\game.h" />
+    <ClInclude Include="src\user\cheat\game\IEntityFilter.h" />
+    <ClInclude Include="src\user\cheat\game\SimpleFilter.h" />
+    <ClInclude Include="src\user\cheat\game\util.h" />
     <ClInclude Include="src\user\cheat\GenshinMisc.h" />
     <ClInclude Include="src\user\cheat\ILPatternScanner.h" />
     <ClInclude Include="src\user\cheat\misc\Debug.h" />
@@ -58,17 +63,21 @@
     <ClInclude Include="src\user\cheat\world\DumbEnemies.h" />
     <ClInclude Include="src\user\cheat\world\KillAura.h" />
     <ClInclude Include="src\user\cheat\world\MobVacuum.h" />
-    <ClInclude Include="src\user\cheat\esp\data\ESPFilterField.h" />
+    <ClInclude Include="src\user\cheat\esp\data\ESPItemField.h" />
     <ClInclude Include="src\user\main.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="res\Ruda-Bold.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\user\cheat\esp\filter\SimpleFilter.cpp" />
-    <ClCompile Include="src\user\cheat\esp\filter\ESPChest.cpp" />
+    <ClCompile Include="src\user\cheat\game\Chest.cpp" />
+    <ClCompile Include="src\user\cheat\game\Entity.cpp" />
+    <ClCompile Include="src\user\cheat\game\CacheFilterExecutor.cpp" />
+    <ClCompile Include="src\user\cheat\game\EntityManager.cpp" />
+    <ClCompile Include="src\user\cheat\esp\ESPRender.cpp" />
+    <ClCompile Include="src\user\cheat\esp\section\ESPChest.cpp" />
     <ClCompile Include="src\user\cheat\esp\ESPSectionBase.cpp" />
-    <ClCompile Include="src\user\cheat\esp\data\ESPFilterEntry.cpp" />
+    <ClCompile Include="src\user\cheat\esp\data\ESPItem.cpp" />
     <ClCompile Include="src\framework\dllmain.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -82,7 +91,8 @@
     <ClCompile Include="src\user\cheat\cheat.cpp" />
     <ClCompile Include="src\user\cheat\esp\ESP.cpp" />
     <ClCompile Include="src\user\cheat\events.cpp" />
-    <ClCompile Include="src\user\cheat\game.cpp" />
+    <ClCompile Include="src\user\cheat\game\SimpleFilter.cpp" />
+    <ClCompile Include="src\user\cheat\game\util.cpp" />
     <ClCompile Include="src\user\cheat\GenshinMisc.cpp" />
     <ClCompile Include="src\user\cheat\ILPatternScanner.cpp" />
     <ClCompile Include="src\user\cheat\misc\Debug.cpp" />
@@ -109,7 +119,7 @@
     <ClCompile Include="src\user\cheat\world\DumbEnemies.cpp" />
     <ClCompile Include="src\user\cheat\world\KillAura.cpp" />
     <ClCompile Include="src\user\cheat\world\MobVacuum.cpp" />
-    <ClCompile Include="src\user\cheat\esp\data\ESPFilterField.cpp" />
+    <ClCompile Include="src\user\cheat\esp\data\ESPItemField.cpp" />
     <ClCompile Include="src\user\main.cpp" />
   </ItemGroup>
   <PropertyGroup>
@@ -244,7 +254,7 @@ powershell -nop -c "&amp; {sleep 15}"</Command>
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>"$(OutDir)injector.exe"
-powershell -nop -c "&amp; {sleep 30}"</Command>
+powershell -nop -c "&amp; {sleep 15}"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

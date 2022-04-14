@@ -3,7 +3,8 @@
 
 #include <helpers.h>
 #include <cheat/events.h>
-#include <cheat/game.h>
+#include <cheat/game/EntityManager.h>
+#include <cheat/game/util.h>
 
 namespace cheat::feature 
 {
@@ -59,13 +60,15 @@ namespace cheat::feature
 	{
 		static bool isApplied = false;
 
+		auto& manager = game::EntityManager::instance();
+		
 		if (!m_Enabled && isApplied)
 		{
-			auto avatarEntity = game::GetAvatarEntity();
-			if (avatarEntity == nullptr || !app::BaseEntity_IsActive(avatarEntity, nullptr))
+			auto avatarEntity = manager.avatar();
+			if (avatarEntity->raw() == nullptr || !app::BaseEntity_IsActive(avatarEntity->raw(), nullptr))
 				return;
 
-			auto rigidBody = app::BaseEntity_GetRigidbody(avatarEntity, nullptr);
+			auto rigidBody = app::BaseEntity_GetRigidbody(avatarEntity->raw(), nullptr);
 			app::Rigidbody_set_detectCollisions(rigidBody, true, nullptr);
 			isApplied = false;
 		}
@@ -75,19 +78,19 @@ namespace cheat::feature
 
 		isApplied = true;
 
-		auto avatarEntity = game::GetAvatarEntity();
-		if (avatarEntity == nullptr || !app::BaseEntity_IsActive(avatarEntity, nullptr))
+		auto avatarEntity = manager.avatar();
+		if (avatarEntity->raw() == nullptr || !app::BaseEntity_IsActive(avatarEntity->raw(), nullptr))
 			return;
 
-		auto baseMove = app::BaseEntity_GetMoveComponent_1(avatarEntity, *app::BaseEntity_GetMoveComponent_1__MethodInfo);
+		auto baseMove = app::BaseEntity_GetMoveComponent_1(avatarEntity->raw(), *app::BaseEntity_GetMoveComponent_1__MethodInfo);
 		if (baseMove == nullptr)
 			return;
 
-		auto rigidBody = app::BaseEntity_GetRigidbody(avatarEntity, nullptr);
+		auto rigidBody = app::BaseEntity_GetRigidbody(avatarEntity->raw(), nullptr);
 		app::Rigidbody_set_detectCollisions(rigidBody, false, nullptr);
 
-		auto cameraEntity = (app::BaseEntity*)game::GetMainCameraEntity();
-		auto relativeEntity = m_CameraRelative ? cameraEntity : avatarEntity;
+		auto cameraEntity = (app::BaseEntity*)manager.mainCamera();
+		auto relativeEntity = m_CameraRelative ? cameraEntity : avatarEntity->raw();
 
 		app::Vector3 dir = {};
 		if (Hotkey('W').IsPressed())
@@ -103,19 +106,19 @@ namespace cheat::feature
 			dir = dir - app::BaseEntity_GetRight(relativeEntity, nullptr);
 
 		if (Hotkey(VK_SPACE).IsPressed())
-			dir = dir + app::BaseEntity_GetUp(avatarEntity, nullptr);
+			dir = dir + app::BaseEntity_GetUp(avatarEntity->raw(), nullptr);
 
 		if (Hotkey(ImGuiKey_ModShift).IsPressed())
-			dir = dir - app::BaseEntity_GetUp(avatarEntity, nullptr);
+			dir = dir - app::BaseEntity_GetUp(avatarEntity->raw(), nullptr);
 
-		app::Vector3 prevPos = game::GetRelativePosition(avatarEntity);
+		app::Vector3 prevPos = avatarEntity->relativePosition();
 		if (IsVectorZero(prevPos))
 			return;
 
 		float deltaTime = app::Time_get_deltaTime(nullptr, nullptr);
 
 		app::Vector3 newPos = prevPos + dir * m_Speed * deltaTime;
-		game::SetRelativePosition(avatarEntity, newPos);
+		avatarEntity->setRelativePosition(newPos);
 	}
 
 	// Fixing player sync packets when no clip
@@ -130,16 +133,16 @@ namespace cheat::feature
 			return;
 		}
 
-		if (game::GetAvatarRuntimeId() != entityId)
+		auto& manager = game::EntityManager::instance();
+		if (manager.avatar()->runtimeID() != entityId)
 			return;
 
-		auto avatarEntity = game::GetAvatarEntity();
+		auto avatarEntity = manager.avatar();
 		if (avatarEntity == nullptr)
 			return;
 
-		auto avatarPosition = app::BaseEntity_GetAbsolutePosition(avatarEntity, nullptr);
+		auto avatarPosition = avatarEntity->absolutePosition();
 		auto currentTime = util::GetCurrentTimeMillisec();
-
 		if (prevSyncTime > 0)
 		{
 			auto posDiff = avatarPosition - prevPosition;

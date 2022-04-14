@@ -1,18 +1,18 @@
 #include <pch-il2cpp.h>
-#include "ESPFilterField.h"
+#include "ESPItemField.h"
 
 #include <cheat-base/util.h>
 #include <cheat-base/config/Config.h>
 
 namespace config::field
 {
-	ESPFilterField::ESPFilterField(const std::string friendlyName, const std::string name, const std::string section) :
-		FieldBase<cheat::feature::esp::ESPFilterEntry>(friendlyName, name, section,
-			cheat::feature::esp::ESPFilterEntry(name, ImColor(120, 120, 120, 255), Hotkey(), name + ".png"))
+	ESPItemField::ESPItemField(const std::string friendlyName, const std::string name, const std::string section) :
+		FieldBase<cheat::feature::esp::ESPItem>(friendlyName, name, section,
+			cheat::feature::esp::ESPItem(name, ImColor(120, 120, 120, 255), Hotkey(), name + ".png"))
 	{
 	}
 
-	void ESPFilterField::Write(std::ostream& io)
+	void ESPItemField::Write(std::ostream& io)
 	{
 		io << value().m_Enabled << " ";
 
@@ -25,7 +25,7 @@ namespace config::field
 		}
 	}
 
-	void ESPFilterField::Read(std::istream& io)
+	void ESPItemField::Read(std::istream& io)
 	{
 		io >> valuePtr()->m_Enabled;
 

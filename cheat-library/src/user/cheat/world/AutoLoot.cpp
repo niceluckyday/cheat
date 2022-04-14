@@ -3,7 +3,7 @@
 
 #include <helpers.h>
 #include <cheat/events.h>
-#include <cheat/game.h>
+#include <cheat/game/EntityManager.h>
 
 namespace cheat::feature 
 {
@@ -109,9 +109,8 @@ namespace cheat::feature
 	{
 		if (m_Enabled && m_UseCustomRange)
 		{
-			auto avatarPos = game::GetAvatarRelativePosition();
-			auto entityPos = game::GetRelativePosition(entity);
-			result = app::Vector3_Distance(nullptr, avatarPos, entityPos, nullptr) < m_CustomRange;
+			auto& manager = game::EntityManager::instance();
+			result = manager.avatar()->distance(entity) < m_CustomRange;
 		}
 	}
 

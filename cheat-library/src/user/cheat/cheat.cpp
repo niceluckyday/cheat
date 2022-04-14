@@ -33,7 +33,7 @@
 #include <cheat/teleport/OculiTeleport.h>
 
 #include <cheat/esp/ESP.h>
-#include <cheat/esp/filter/ESPChest.h>
+#include <cheat/esp/section/ESPChest.h>
 
 #include <cheat/ILPatternScanner.h>
 

@@ -3,7 +3,7 @@
 
 #include <helpers.h>
 #include <cheat/events.h>
-#include <cheat/game.h>
+#include <cheat/game/EntityManager.h>
 
 namespace cheat::feature 
 {
@@ -70,7 +70,9 @@ namespace cheat::feature
 	void InfiniteStamina::OnMoveSync(uint32_t entityId, app::MotionInfo* syncInfo)
 	{
 		static bool afterDash = false;
-		if (game::GetAvatarRuntimeId() != entityId)
+
+		auto& manager = game::EntityManager::instance();
+		if (manager.avatar()->runtimeID() != entityId)
 			return;
 
 		// LOG_DEBUG("Movement packet: %s", magic_enum::enum_name(syncInfo->fields.motionState).data());

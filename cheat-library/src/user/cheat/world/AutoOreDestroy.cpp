@@ -5,7 +5,8 @@
 #include <algorithm>
 
 #include <cheat/events.h>
-#include <cheat/game.h>
+#include <cheat/game/SimpleFilter.h>
+#include <cheat/game/EntityManager.h>
 
 namespace cheat::feature 
 {
@@ -58,10 +59,10 @@ namespace cheat::feature
 	static void LCAbilityElement_ReduceModifierDurability_Hook(app::LCAbilityElement* __this, int32_t modifierDurabilityIndex, float reduceDurability, app::Nullable_1_Single_ deltaTime, MethodInfo* method)
 	{
 		// Ore filter
-		// Callow: I don't found any different way to find ores
-		static const game::SimpleEntityFilter oreFilter = {
-			{true, app::EntityType__Enum_1::GatherObject},
-			{true, {
+		// Callow: I didn't found any different way to find ores
+		static const game::SimpleFilter oreFilter = {
+			app::EntityType__Enum_1::GatherObject,
+			{
 				"Crystalizedmarrow",
 				"Thundercrystal",
 				"OreNightBerth",
@@ -72,15 +73,15 @@ namespace cheat::feature
 				"OreElectricRock",
 				"OreStone",
 				"AncientOre"
-				}
 			}
 		};
 
+		auto& manager = game::EntityManager::instance();
 		auto& autoOreDestroy = AutoOreDestroy::GetInstance();
 		auto entity = __this->fields._._._entity;
 		if (autoOreDestroy.m_Enabled && 
-			autoOreDestroy.m_Range > game::GetDistToAvatar(entity) && 
-			game::IsEntityFilterValid(entity, oreFilter))
+			autoOreDestroy.m_Range > manager.avatar()->distance(entity) &&
+			oreFilter.IsValid(manager.entity(entity)))
 		{
 			// This value always above any ore durability
 			reduceDurability = 1000;

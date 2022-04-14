@@ -9,6 +9,9 @@ namespace cheat::feature
 	public:
 		static OculiTeleport& GetInstance();
 		const FeatureGUIInfo& GetGUIInfo() const override;
+
+		bool IsValid(game::Entity* entity) const override;
+
 	private:
 		OculiTeleport();
 	};

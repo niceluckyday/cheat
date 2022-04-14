@@ -1,10 +1,12 @@
 #include "pch-il2cpp.h"
 #include "Debug.h"
 
+#include <misc/cpp/imgui_stdlib.h>
+
 #include <cheat/events.h>
 #include <cheat/teleport/MapTeleport.h>
-#include <cheat/game.h>
-#include <misc/cpp/imgui_stdlib.h>
+#include <cheat/game/EntityManager.h>
+#include <cheat/game/util.h>
 #include <helpers.h>
 
 namespace cheat::feature 
@@ -171,30 +173,15 @@ namespace cheat::feature
         }
     }
 
-    void DrawEntity(struct app::BaseEntity* entity)
+    void DrawEntity(game::Entity* entity)
     {
         if (entity == nullptr)
         {
             ImGui::Text("Entity doesn't exist.");
             return;
         }
-        auto fields = entity->fields;
-        ImGui::Text("Entity type: %s", magic_enum::enum_name(fields.entityType).data());
-        ImGui::Text("Entity shared position: %s", il2cppi_to_string(fields._sharedPosition).c_str());
-        ImGui::Text("Entity config id: %d", fields._configID_k__BackingField);
-        ImGui::Text("Entity name: %s", game::GetEntityName(entity).c_str());
-
-        if (entity->fields.jsonConfig != nullptr && entity->fields.jsonConfig->fields._entityTags != nullptr)
-        {
-            auto tagsArray = ToUniArray(entity->fields.jsonConfig->fields._entityTags->fields.KNOAKPHDIIK, app::String*);
-            if (tagsArray->length() > 0)
-            {
-                ImGui::Text("Entity tags:");
-                for (auto& tag : *tagsArray) {
-                    ImGui::Text("%s", il2cppi_to_string(tag).c_str());
-                }
-            }
-        }
+        ImGui::Text("Entity type: %s", magic_enum::enum_name(entity->type()).data());
+        ImGui::Text("Entity name: %s", entity->name());
     }
 
     static void DrawEntitiesData()
@@ -212,15 +199,10 @@ namespace cheat::feature
 
         static bool checkOnlyShells = false;
 
-        auto entityManager = GetSingleton(EntityManager);
-        if (entityManager == nullptr)
-            return;
+        auto& manager = game::EntityManager::instance();
+        auto entities = manager.entities();
 
-        auto entities = ToUniList(entityManager->fields._entities, app::BaseEntity*);
-        if (entities == nullptr)
-            return;
-
-        ImGui::Text("Entity count %d", entities->size);
+        ImGui::Text("Entity count %d", entities.size());
 
         ImGui::Checkbox("## Enable object name filter", &useObjectNameFilter); ImGui::SameLine();
         if (!useObjectNameFilter)
@@ -257,41 +239,35 @@ namespace cheat::feature
 
         if (ImGui::TreeNode("Entity list"))
         {
-            for (const auto& entity : *entities) {
+
+            for (const auto& entity : entities) {
                 if (entity == nullptr)
                     continue;
 
-                if (!typeFilters[(int)entity->fields.entityType])
+                if (!typeFilters[(int)entity->type()])
                     continue;
 
-                if (checkOnlyShells && !game::IsEntityCrystalShell(entity))
+                if (checkOnlyShells && !game::GetFilterCrystalShell().IsValid(entity))
                     continue;
 
-                if (useObjectNameFilter && game::GetEntityName(entity).find(objectNameFilter) == -1)
+                if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
                     continue;
 
-                if (ImGui::TreeNode(&entity, "Entity 0x%p; Dist %.3fm", entity, game::GetDistToAvatar(entity)))
+                if (ImGui::TreeNode(&entity, "Entity 0x%p; Dist %.3fm", entity, manager.avatar()->distance(entity)))
                 {
                     if (ImGui::Button("Teleport"))
                     {
-                        auto rpos = game::GetRelativePosition(entity);
-                        auto apos = app::WorldShiftManager_GetAbsolutePosition(nullptr, rpos, nullptr);
-
                         auto& mapTeleport = MapTeleport::GetInstance();
-                        mapTeleport.TeleportTo(apos);
+                        mapTeleport.TeleportTo(entity->absolutePosition());
                     }
                     
                     ImGui::SameLine();
                     if (ImGui::Button("Teleport to void"))
-                    {
-                        game::SetRelativePosition(entity, { 0, 0, 0 });
-                    }
+                        entity->setRelativePosition({ 0, 0, 0 });
 
 					ImGui::SameLine();
 					if (ImGui::Button("Teleport to me"))
-					{
-                        game::SetRelativePosition(entity, game::GetAvatarRelativePosition());
-					}
+                        entity->setRelativePosition(manager.avatar()->relativePosition());
 
                     DrawEntity(entity);
                     ImGui::TreePop();
@@ -464,10 +440,12 @@ namespace cheat::feature
         if (!showNotWritten)
             return;
 
+        auto& entityManager = game::EntityManager::instance();
+
         notWrittenChests.clear();
-        for (auto& entity : game::FindEntities(game::GetFilterChest()))
+        for (auto& entity : entityManager.entities(game::GetFilterChest()))
         {
-            auto entityName = game::GetEntityName(entity);
+            auto& entityName = entity->name();
             if (chestNames.count(entityName) == 0)
                 notWrittenChests.insert(entityName);
         }
@@ -477,23 +455,24 @@ namespace cheat::feature
     {
         static std::map<std::string, std::string> tempNames;
 
+        auto& entityManager = game::EntityManager::instance();
         ImGui::Checkbox("Show not written", &showNotWritten);
-        for (auto& entity : game::FindEntities(game::GetFilterChest()))
+        for (auto& entity : entityManager.entities(game::GetFilterChest()))
         {
-            auto entityName = game::GetEntityName(entity);
+            auto& entityName = entity->name();
             if (showNotWritten && chestNames.count(entityName) > 0)
                 continue;
 
-            auto logicComponents = ToUniList(app::BaseEntity_GetAllLogicComponents(entity, nullptr), app::BaseComponent*);
+            auto logicComponents = ToUniList(app::BaseEntity_GetAllLogicComponents(entity->raw(), nullptr), app::BaseComponent*);
             if (logicComponents == nullptr)
                 continue;
 
-            app::LCChestPlugin* chestPlugin = game::GetLCPlugin<app::LCChestPlugin>(entity, *app::LCChestPlugin__TypeInfo);
+            app::LCChestPlugin* chestPlugin = game::GetLCPlugin<app::LCChestPlugin>(entity->raw(), *app::LCChestPlugin__TypeInfo);
 
             if (chestPlugin == nullptr)
                 continue;
 
-            if (!ImGui::TreeNode(entity, "Chest 0x%p, Distance: %f", entity, game::GetDistToAvatar(entity)))
+            if (!ImGui::TreeNode(entity, "Chest 0x%p, Distance: %f", entity, entityManager.avatar()->distance(entity)))
                 continue;
 
             auto& pluginData = chestPlugin->fields;
@@ -520,7 +499,7 @@ namespace cheat::feature
             if (ImGui::Button("Teleport"))
             {
                 auto& mapTeleport = MapTeleport::GetInstance();
-                mapTeleport.TeleportTo(game::GetAbsolutePosition(entity));
+                mapTeleport.TeleportTo(entity->absolutePosition());
             }
 
             ImGui::PopID();
@@ -562,6 +541,7 @@ namespace cheat::feature
 
         ImGui::Text("Prop count: %d", scenePropDict->count);
         
+        auto& manager = game::EntityManager::instance();
         for (auto& [id, propObject] : scenePropDict->pairs())
         {
             auto tree = game::CastTo<app::SceneTreeObject>(propObject, *app::SceneTreeObject__TypeInfo);
@@ -578,7 +558,7 @@ namespace cheat::feature
                 continue;
 
             ImGui::Text("Tree at %s, type: %s, distance %0.3f", il2cppi_to_string(pos).c_str(), magic_enum::enum_name(value).data(),
-                game::GetDistToAvatar(app::WorldShiftManager_GetRelativePosition(nullptr, pos, nullptr)));
+                manager.avatar()->distance(app::WorldShiftManager_GetRelativePosition(nullptr, pos, nullptr)));
         }
     }
 

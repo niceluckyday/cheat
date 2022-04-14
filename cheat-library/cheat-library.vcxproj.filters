@@ -117,9 +117,6 @@
     <ClInclude Include="src\user\cheat\events.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\cheat\game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\user\cheat\GenshinMisc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -144,22 +141,40 @@
     <ClInclude Include="src\user\cheat\esp\ESP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\cheat\esp\data\ESPFilterField.h">
+    <ClInclude Include="src\user\cheat\esp\data\ESPItemField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\cheat\esp\data\ESPFilterEntry.h">
+    <ClInclude Include="src\user\cheat\esp\data\ESPItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\user\cheat\esp\ESPSectionBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\cheat\esp\filter\ESPChest.h">
+    <ClInclude Include="src\user\cheat\esp\section\ESPChest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\cheat\esp\IEntityFilter.h">
+    <ClInclude Include="src\user\cheat\esp\ESPRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\cheat\esp\filter\SimpleFilter.h">
+    <ClInclude Include="src\user\cheat\game\Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\game\Chest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\game\EntityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\game\CacheFilterExecutor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\game\IEntityFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\game\SimpleFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\game\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -248,9 +263,6 @@
     <ClCompile Include="src\user\cheat\events.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\user\cheat\GenshinMisc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -272,19 +284,37 @@
     <ClCompile Include="src\user\cheat\esp\ESP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\esp\data\ESPFilterField.cpp">
+    <ClCompile Include="src\user\cheat\esp\data\ESPItemField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\esp\data\ESPFilterEntry.cpp">
+    <ClCompile Include="src\user\cheat\esp\data\ESPItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\cheat\esp\ESPSectionBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\esp\filter\ESPChest.cpp">
+    <ClCompile Include="src\user\cheat\esp\section\ESPChest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\esp\filter\SimpleFilter.cpp">
+    <ClCompile Include="src\user\cheat\esp\ESPRender.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\game\Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\game\Chest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\game\EntityManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\game\CacheFilterExecutor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\game\SimpleFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\game\util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

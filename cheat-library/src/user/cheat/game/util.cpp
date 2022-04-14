@@ -1,0 +1,150 @@
+#include <pch-il2cpp.h>
+#include "util.h"
+
+#include <helpers.h>
+#include "EntityManager.h"
+
+namespace cheat::game
+{
+	std::vector<WaypointInfo> GetUnlockedWaypoints(uint32_t targetSceneId)
+	{
+		auto mapModule = GetSingleton(MBHLOBDPKEC);
+		if (mapModule == nullptr)
+			return {};
+
+		if (targetSceneId == 0)
+			targetSceneId = GetCurrentPlayerSceneID();
+
+		auto result = std::vector<WaypointInfo>();
+
+		auto waypointGroups = ToUniDict(mapModule->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
+		for (const auto& [sceneId, waypoints] : waypointGroups->pairs())
+		{
+			if (sceneId != targetSceneId)
+				continue;
+
+			for (const auto& [waypointId, waypoint] : waypoints->pairs())
+			{
+				if (waypoint.config == nullptr)
+					continue;
+
+				auto& config = waypoint.config->fields;
+				uint16_t areaId = app::SimpleSafeUInt16_get_Value(nullptr, config.areaIdRawNum, nullptr);
+				bool isAreaUnlocked = app::MapModule_IsAreaUnlock(mapModule, sceneId, areaId, nullptr);
+
+				if (waypoint.isUnlocked && isAreaUnlocked && !config._unlocked && !waypoint.isGroupLimit && !waypoint.isModelHidden)
+					result.push_back(WaypointInfo{ sceneId, waypointId, waypoint.config->fields._tranPos, (app::MapModule_ScenePointData*)&waypoint });
+			}
+		}
+		return result;
+	}
+
+	// Finding nearest unlocked waypoint to the position
+	WaypointInfo FindNearestWaypoint(app::Vector3& position, uint32_t targetSceneId)
+	{
+		float minDistance = -1;
+		WaypointInfo result{};
+		for (const auto& info : GetUnlockedWaypoints(targetSceneId)) {
+			float distance = app::Vector3_Distance(nullptr, position, info.position, nullptr);
+			if (minDistance < 0 || distance < minDistance)
+			{
+				minDistance = distance;
+				result = info;
+			}
+		}
+		return result;
+	}
+
+	uint32_t GetCurrentPlayerSceneID()
+	{
+		auto playerModule = GetSingleton(PlayerModule);
+		if (playerModule == nullptr)
+			return 0;
+
+		return playerModule->fields.curSceneID;
+	}
+
+	uint32_t GetCurrentMapSceneID()
+	{
+		auto mapManager = GetSingleton(MapManager);
+		if (mapManager == nullptr)
+			return 0;
+
+		return mapManager->fields.mapSceneID;
+	}
+
+	app::GadgetEntity* GetGadget(uint32_t runtimeID)
+	{
+		auto& manager = EntityManager::instance();
+		return GetGadget(manager.entity(runtimeID));
+	}
+
+	app::GadgetEntity* GetGadget(app::BaseEntity* entity)
+	{
+		if (entity == nullptr)
+			return nullptr;
+
+		auto ent = Entity(entity);
+		if (!ent.isGadget())
+			return nullptr;
+
+		return reinterpret_cast<app::GadgetEntity*>(entity);
+	}
+
+	app::GadgetEntity* GetGadget(Entity* entity)
+	{
+		if (entity == nullptr || !entity->isGadget())
+			return nullptr;
+		
+		return reinterpret_cast<app::GadgetEntity*>(entity);
+	}
+
+	const SimpleFilter& GetFilterCrystalShell()
+	{
+		static const SimpleFilter crystallShellFilter {
+			app::EntityType__Enum_1::GatherObject,
+			{
+				/*Anemoculus, Geoculus*/ "CrystalShell" ,
+				/*Crimson Agate*/ "Prop_Essence_01",
+				/*Electroculus*/ "ElectricCrystal",
+				/*Lumenspar*/ "CelestiaSplinter_01",
+				/*Key Sigil*/ "RuneContent_04"
+			}
+		};
+		return crystallShellFilter;
+	}
+
+	const SimpleFilter& GetFilterChest()
+	{
+		static const SimpleFilter filter = {
+			app::EntityType__Enum_1::Chest
+		};
+		return filter;
+	}
+
+	const SimpleFilter& GetMonsterFilter()
+	{
+		static const SimpleFilter filter = {
+			app::EntityType__Enum_1::Monster
+		};
+		return filter;
+	}
+
+
+	game::Entity* FindNearestEntity(const IEntityFilter& filter)
+	{
+		auto& manager = game::EntityManager::instance();
+		auto entities = manager.entities(filter);
+		return FindNearestEntity(entities);
+	}
+
+	game::Entity* FindNearestEntity(std::vector<game::Entity*>& entities)
+	{
+		if (entities.size() == 0)
+			return nullptr;
+
+		auto avatar = game::EntityManager::instance().avatar();
+		return *std::min_element(entities.begin(), entities.end(),
+			[avatar](game::Entity* a, game::Entity* b) { return avatar->distance(a) < avatar->distance(b); });
+	}
+}

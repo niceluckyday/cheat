@@ -2,16 +2,11 @@
 #include "OculiTeleport.h"
 
 #include <helpers.h>
-#include <cheat/game.h>
+#include <cheat/game/util.h>
 
 namespace cheat::feature 
 {
-    static bool OculiFilter(app::BaseEntity* entity) 
-    {
-        return game::IsEntityFilterValid(entity, game::GetFilterCrystalShell());
-    }
-
-    OculiTeleport::OculiTeleport() : ItemTeleportBase("OculiTeleport", "Oculi", OculiFilter)
+    OculiTeleport::OculiTeleport() : ItemTeleportBase("OculiTeleport", "Oculi")
     { }
 
 	const FeatureGUIInfo& OculiTeleport::GetGUIInfo() const
@@ -25,5 +20,11 @@ namespace cheat::feature
 		static OculiTeleport instance;
 		return instance;
 	}
+
+	bool OculiTeleport::IsValid(game::Entity* entity) const
+	{
+		return game::GetFilterCrystalShell().IsValid(entity);
+	}
+
 }
 

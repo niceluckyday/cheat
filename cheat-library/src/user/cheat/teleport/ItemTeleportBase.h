@@ -2,12 +2,12 @@
 #include <cheat-base/cheat/Feature.h>
 #include <cheat-base/config/Config.h>
 
-#include <cheat/game.h>
+#include <cheat/game/IEntityFilter.h>
 
 namespace cheat::feature 
 {
 
-	class ItemTeleportBase : public Feature
+	class ItemTeleportBase : public Feature, public game::IEntityFilter
     {
 	public:
 		config::field::HotkeyField m_Key;
@@ -24,9 +24,9 @@ namespace cheat::feature
 		void OnKeyUp(short key, bool& cancelled);
 	
 	protected:
-		ItemTeleportBase(const std::string& section, const std::string& name, game::FilterFunc filter);
+		ItemTeleportBase(const std::string& section, const std::string& name);
 		
-		void DrawEntityInfo(app::BaseEntity* entity);
+		void DrawEntityInfo(game::Entity* entity);
 
 	private:
 		void DrawEntities();
@@ -34,7 +34,6 @@ namespace cheat::feature
 		
 		std::string section;
 		std::string name;
-		game::FilterFunc filter;
 	};
 }
 

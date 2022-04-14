@@ -5,7 +5,6 @@
 #include <algorithm>
 
 #include <cheat/events.h>
-#include <cheat/game.h>
 
 namespace cheat::feature 
 {
@@ -29,7 +28,7 @@ namespace cheat::feature
 
     const FeatureGUIInfo& ESP::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ "General", "ESP", true };
+        static const FeatureGUIInfo info { "-General", "ESP", true };
         return info;
     }
 

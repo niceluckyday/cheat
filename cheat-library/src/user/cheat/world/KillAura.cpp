@@ -5,7 +5,8 @@
 #include <algorithm>
 
 #include <cheat/events.h>
-#include <cheat/game.h>
+#include <cheat/game/EntityManager.h>
+#include <cheat/game/util.h>
 
 namespace cheat::feature 
 {
@@ -72,13 +73,11 @@ namespace cheat::feature
 		if (currentTime < nextAttackTime)
 			return;
 
-		for (const auto& monster : game::FindEntities(game::GetMonsterFilter()))
-		{
-			
-			if (monster == nullptr || !app::BaseEntity_IsActive(monster, nullptr))
-				continue;
+		auto& manager = game::EntityManager::instance();
 
-			auto monsterID = monster->fields._runtimeID_k__BackingField;
+		for (const auto& monster : manager.entities(game::GetMonsterFilter()))
+		{
+			auto monsterID = monster->runtimeID();
 
 			if (attackSet.count(monsterID) > 0)
 				continue;
@@ -86,7 +85,7 @@ namespace cheat::feature
 			if (monsterRepeatTimeMap.count(monsterID) > 0 && monsterRepeatTimeMap[monsterID] > currentTime)
 				continue;
 
-			auto combat = app::BaseEntity_GetBaseCombat(monster, *app::BaseEntity_GetBaseCombat__MethodInfo);
+			auto combat = app::BaseEntity_GetBaseCombat(monster->raw(), *app::BaseEntity_GetBaseCombat__MethodInfo);
 			if (combat == nullptr)
 				continue;
 
@@ -101,13 +100,13 @@ namespace cheat::feature
 			if (maxHP < 10 || HP < 2 || isLockHp || isInvincible)
 				continue;
 
-			if (m_OnlyTargeted && combat->fields._attackTarget.runtimeID != game::GetAvatarRuntimeId())
+			if (m_OnlyTargeted && combat->fields._attackTarget.runtimeID != manager.avatar()->runtimeID())
 				continue;
 
-			if (game::GetDistToAvatar(monster) > m_Range)
+			if (manager.avatar()->distance(monster) > m_Range)
 				continue;
 
-			attackQueue.push(monster);
+			attackQueue.push(monster->raw());
 			attackSet.insert(monsterID);
 		}
 

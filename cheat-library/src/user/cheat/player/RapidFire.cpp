@@ -2,8 +2,8 @@
 #include "RapidFire.h"
 
 #include <helpers.h>
-#include <cheat/game.h>
-
+#include <cheat/game/EntityManager.h>
+#include <cheat/game/util.h>
 namespace cheat::feature 
 {
 	static void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID, app::AttackResult* attackResult,
@@ -62,12 +62,13 @@ namespace cheat::feature
 	{
 		if (attackDamage == 0)
 			return m_Multiplier;
-
-		auto targetEntity = game::GetEntityByRuntimeId(targetID);
+		
+		auto& manager = game::EntityManager::instance();
+		auto targetEntity = manager.entity(targetID);
 		if (targetEntity == nullptr)
 			return m_Multiplier;
 
-		auto baseCombat = app::BaseEntity_GetBaseCombat(targetEntity, *app::BaseEntity_GetBaseCombat__MethodInfo);
+		auto baseCombat = app::BaseEntity_GetBaseCombat(targetEntity->raw(), *app::BaseEntity_GetBaseCombat__MethodInfo);
 		if (baseCombat == nullptr)
 			return m_Multiplier;
 
@@ -82,14 +83,15 @@ namespace cheat::feature
 		if (!m_Enabled)
 			return 1;
 
+		auto& manager = game::EntityManager::instance();
 		int countOfAttacks = m_Multiplier;
 		if (m_OnePunch)
 		{
-			auto targetEntity = game::GetEntityByRuntimeId(targetID);
-			auto baseCombat = app::BaseEntity_GetBaseCombat(targetEntity, *app::BaseEntity_GetBaseCombat__MethodInfo);
+			auto targetEntity = manager.entity(targetID);
+			auto baseCombat = app::BaseEntity_GetBaseCombat(targetEntity->raw(), *app::BaseEntity_GetBaseCombat__MethodInfo);
 			app::Formula_CalcAttackResult(targetEntity, combat->fields._combatProperty_k__BackingField,
 				baseCombat->fields._combatProperty_k__BackingField,
-				attackResult, game::GetAvatarEntity(), targetEntity, nullptr);
+				attackResult, manager.avatar()->raw(), targetEntity->raw(), nullptr);
 			countOfAttacks = CalcCountToKill(attackResult->fields.damage, targetID);
 		}
 		return countOfAttacks;
@@ -101,7 +103,9 @@ namespace cheat::feature
 	static void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID, app::AttackResult* attackResult,
 		bool ignoreCheckCanBeHitInMP, MethodInfo* method)
 	{
-		auto avatarID = game::GetAvatarRuntimeId();
+		auto& manager = game::EntityManager::instance();
+
+		auto avatarID = manager.avatar()->runtimeID();
 		auto attackerID = __this->fields._._.entityRuntimeID;
 		auto gadget = game::GetGadget(attackerID);
 		if (attackerID != avatarID && (gadget == nullptr || gadget->fields._ownerRuntimeID != avatarID))

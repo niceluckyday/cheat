@@ -192,8 +192,7 @@
     "Singleton_1_PlayerModule__get_Instance__MethodInfo": "0",
     "Singleton_1_MapManager__get_Instance__MethodInfo": "0",
     "Singleton_1_NetworkManager_1__get_Instance__MethodInfo": "0",
-    "Singleton_1_ScenePropManager__get_Instance__MethodInfo": "0",
-    "GameObject_GetComponentsInChildren_12__MethodInfo": "0"
+    "Singleton_1_ScenePropManager__get_Instance__MethodInfo": "0"
   },
   "moduleInfo": {
     "UnityPlayer.dll": {
@@ -312,17 +311,15 @@
         "Screen_get_height": "0",
         "Screen_get_width": "0",
         "Camera_get_main": "0",
-        "Camera_get_current": "0",
         "Camera_get_pixelWidth": "0",
         "Camera_get_pixelHeight": "0",
-        "Miscs_GetColliderFromGameObjectByLayer": "0",
-        "Miscs_GetCameraLayerMask": "0",
-        "Miscs_GetCharacterLayerMask": "0",
         "BaseEntity_get_gameObject": "0",
-        "GameObject_GetComponentsInChildren_12": "0",
         "Utils_1_GetBounds": "0",
-        "Behaviour_get_enabled": "0",
-        "Behaviour_get_isActiveAndEnabled": "0"
+        "Behaviour_get_isActiveAndEnabled": "0",
+        "LoadingManager_IsLoaded": "0",
+        "EntityManager_RemoveEntity": "0",
+        "EntityManager_IsCachedEntity": "0",
+        "BaseEntity_get_rootGameObject": "0"
       },
       "hash": {
         "checksum": 6469164240778644427,

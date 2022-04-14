@@ -2,6 +2,8 @@
 #include <cheat-base/cheat/Feature.h>
 #include <cheat-base/config/Config.h>
 
+#include <cheat/game/Entity.h>
+
 #include <il2cpp-appdata.h>
 
 namespace cheat::feature 
@@ -29,7 +31,7 @@ namespace cheat::feature
 	private:
 		MobVacuum();
 
-		bool IsEntityForVac(app::BaseEntity* entity);
+		bool IsEntityForVac(game::Entity* entity);
 		void OnMoveSync(uint32_t entityId, app::MotionInfo* syncInfo);
 		app::Vector3 CalcMobVacTargetPos();
 	};
