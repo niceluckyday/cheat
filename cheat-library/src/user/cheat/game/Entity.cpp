@@ -62,7 +62,7 @@ namespace cheat::game
 	float Entity::distance(Entity* entity)
 	{
 		if (entity == nullptr)
-			return 0;
+			return 1000;
 
 		return distance(entity->relativePosition());
 	}

@@ -187,6 +187,17 @@ bool ConfigWidget(const char* label, config::field::BaseField<std::filesystem::p
     return result;
 }
 
+bool ConfigWidget(const char* label, config::field::ColorField& field, const char* desc /*= nullptr*/)
+{
+    bool result = ImGui::ColorEdit4(label, reinterpret_cast<float*>(field.valuePtr()));
+    if (IsValueChanged(field.valuePtr(), result))
+        field.Check();
+
+    ShowDesc(desc);
+
+    return result;
+}
+
 bool ConfigWidget(config::field::BaseField<bool>& field, const char* desc)
 {
     return ConfigWidget(field.GetFriendlyName().c_str(), field, desc);
@@ -215,6 +226,11 @@ bool ConfigWidget(config::field::BaseField<std::string>& field, const char* desc
 bool ConfigWidget(config::field::BaseField<std::filesystem::path>& field, bool folder, const char* filter, const char* desc)
 {
     return ConfigWidget(field.GetFriendlyName().c_str(), field, folder, filter, desc);
+}
+
+bool ConfigWidget(config::field::ColorField& field, const char* desc /*= nullptr*/)
+{
+    return ConfigWidget(field.GetFriendlyName().c_str(), field, desc);
 }
 
 #undef ShowDesc

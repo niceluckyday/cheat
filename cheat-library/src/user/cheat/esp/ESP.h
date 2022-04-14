@@ -24,9 +24,10 @@ namespace cheat::feature
 		config::field::BaseField<bool> m_DrawDistance;
 		config::field::BaseField<bool> m_DrawName;
 
-		config::field::BaseField<float> m_MinWorldSize;
-		config::field::BaseField<float> m_MinScreenSize;
+		config::field::BaseField<float> m_FontSize;
+		config::field::ColorField m_FontColor;
 
+		config::field::BaseField<float> m_MinSize;
 		config::field::BaseField<float> m_Range;
 
 		static ESP& GetInstance();

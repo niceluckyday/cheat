@@ -92,6 +92,9 @@ namespace cheat::feature::esp
 
 		for (auto& entity : entityManager.entities())
 		{
+			if (entityManager.avatar()->distance(entity) > esp.m_Range)
+				continue;
+
 			for (auto& [field, filter] : m_Filters)
 			{
 				auto& entry = *field->valuePtr();

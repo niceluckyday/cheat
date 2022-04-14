@@ -14,6 +14,7 @@ namespace cheat::feature::esp::render
 {
 	static app::Camera* s_Camera = nullptr;
 	static ImVec2 s_ResolutionScale = ImVec2(0, 0);
+	static ImVec2 s_ScreenResolution = ImVec2(0, 0);
 	static ImVec2 s_AvatarPosition = ImVec2(0, 0);
 
 // Adding delaying helps to improve performance
@@ -68,6 +69,9 @@ namespace cheat::feature::esp::render
 		if (screenHeight == pixelHeight && screenWidth == pixelWidth)
 			return;
 
+		s_ScreenResolution.x = screenWidth;
+		s_ScreenResolution.y = screenHeight;
+
 		s_ResolutionScale.x = static_cast<float>(screenWidth) / static_cast<float>(pixelWidth);
 		s_ResolutionScale.y = static_cast<float>(screenHeight) / static_cast<float>(pixelHeight);
 	}
@@ -94,7 +98,7 @@ namespace cheat::feature::esp::render
 		float xMin, xMax;
 		float yMin, yMax;
 
-		bool empty()
+		bool empty() const
 		{
 			return xMin == 0 && xMax == 0 && yMin == 0 && yMax == 0;
 		}
@@ -134,15 +138,15 @@ namespace cheat::feature::esp::render
 		if (gameObject == nullptr)
 		{
 			auto entityPosition = entity->relativePosition();
-			bounds = { entityPosition, { esp.m_MinWorldSize, esp.m_MinWorldSize, esp.m_MinWorldSize } };
+			bounds = { entityPosition, { esp.m_MinSize, esp.m_MinSize, esp.m_MinSize } };
 		}
 		else
 		{
 			bounds = app::Utils_1_GetBounds(nullptr, gameObject, nullptr);
-			if (bounds.m_Extents.x < esp.m_MinWorldSize &&
-				bounds.m_Extents.y < esp.m_MinWorldSize &&
-				bounds.m_Extents.z < esp.m_MinWorldSize)
-				bounds.m_Extents = { esp.m_MinWorldSize, esp.m_MinWorldSize, esp.m_MinWorldSize };
+			if (bounds.m_Extents.x < esp.m_MinSize &&
+				bounds.m_Extents.y < esp.m_MinSize &&
+				bounds.m_Extents.z < esp.m_MinSize)
+				bounds.m_Extents = { esp.m_MinSize, esp.m_MinSize, esp.m_MinSize };
 		}
 
 		auto min = bounds.m_Center - bounds.m_Extents;
@@ -208,23 +212,25 @@ namespace cheat::feature::esp::render
 
 	}
 
-	static Rect GetEntityScreenRect(game::Entity* entity)
+	static Rect GetEntityScreenRect(const BoxScreen& box, bool scalling = true)
 	{
-		auto box = GetEntityScreenBox(entity);
-		if (!box)
-			return {};
-
 		Rect boxRect{};
 
-		boxRect.xMin = std::min({ box->lowerTopLeft.x, box->lowerTopRight.x, box->lowerBottomLeft.x, box->lowerBottomRight.x,
-			box->upperTopLeft.x, box->upperTopRight.x, box->upperBottomRight.x, box->upperBottomLeft.x });
-		boxRect.xMax = std::max({ box->lowerTopLeft.x, box->lowerTopRight.x, box->lowerBottomLeft.x, box->lowerBottomRight.x,
-			box->upperTopLeft.x, box->upperTopRight.x, box->upperBottomRight.x, box->upperBottomLeft.x });
+		boxRect.xMin = std::min({ box.lowerTopLeft.x, box.lowerTopRight.x, box.lowerBottomLeft.x, box.lowerBottomRight.x,
+			box.upperTopLeft.x, box.upperTopRight.x, box.upperBottomRight.x, box.upperBottomLeft.x });
+		boxRect.xMax = std::max({ box.lowerTopLeft.x, box.lowerTopRight.x, box.lowerBottomLeft.x, box.lowerBottomRight.x,
+			box.upperTopLeft.x, box.upperTopRight.x, box.upperBottomRight.x, box.upperBottomLeft.x });
 
-		boxRect.yMin = std::max({ box->lowerTopLeft.y, box->lowerTopRight.y, box->lowerBottomLeft.y, box->lowerBottomRight.y,
-			box->upperTopLeft.y, box->upperTopRight.y, box->upperBottomRight.y, box->upperBottomLeft.y });
-		boxRect.yMax = std::min({ box->lowerTopLeft.y, box->lowerTopRight.y, box->lowerBottomLeft.y, box->lowerBottomRight.y,
-			box->upperTopLeft.y, box->upperTopRight.y, box->upperBottomRight.y, box->upperBottomLeft.y });
+		boxRect.yMin = std::max({ box.lowerTopLeft.y, box.lowerTopRight.y, box.lowerBottomLeft.y, box.lowerBottomRight.y,
+			box.upperTopLeft.y, box.upperTopRight.y, box.upperBottomRight.y, box.upperBottomLeft.y });
+		boxRect.yMax = std::min({ box.lowerTopLeft.y, box.lowerTopRight.y, box.lowerBottomLeft.y, box.lowerBottomRight.y,
+			box.upperTopLeft.y, box.upperTopRight.y, box.upperBottomRight.y, box.upperBottomLeft.y });
+
+		if (!scalling)
+		{
+			std::swap(boxRect.yMin, boxRect.yMax);
+			return boxRect;
+		}
 
 		if (s_ResolutionScale.x != 0)
 		{
@@ -251,9 +257,21 @@ namespace cheat::feature::esp::render
 		draw->AddLine(p4, p1, col);
 	}
 
-	static ImVec2 DrawRect(game::Entity* entity, const ImColor& color)
+	static bool HasCenter(const Rect& rect)
 	{
-		auto entityRect = GetEntityScreenRect(entity);
+		ImVec2 centerPoint = ImVec2(s_ScreenResolution.x / 2, s_ScreenResolution.y / 2);
+
+		return rect.xMin < centerPoint.x&& centerPoint.x < rect.xMax &&
+			rect.yMin < centerPoint.y&& centerPoint.y < rect.yMax;
+	}
+
+	static Rect DrawRect(game::Entity* entity, const ImColor& color)
+	{
+		auto box = GetEntityScreenBox(entity);
+		if (!box)
+			return {};
+
+		auto entityRect = GetEntityScreenRect(*box);
 		if (entityRect.empty())
 			return {};
 
@@ -270,11 +288,11 @@ namespace cheat::feature::esp::render
 		}
 		draw->AddRect(pMin, pMax, color);
 
-		return {};
+		return entityRect;
 	}
 
 	// Callow: This way to drawing is slower than native
-	static ImVec2 DrawBox(game::Entity* entity, const ImColor& color)
+	static Rect DrawBox(game::Entity* entity, const ImColor& color)
 	{
 		auto box = GetEntityScreenBox(entity);
 		if (!box)
@@ -320,7 +338,8 @@ namespace cheat::feature::esp::render
 		draw->AddLine(box->lowerTopRight, box->upperTopRight, color);
 		draw->AddLine(box->lowerBottomRight, box->upperBottomRight, color);
 
-		return { 0, 0 };
+		auto rect = GetEntityScreenRect(*box, false);
+		return rect;
 	}
 
 	static void UpdateAvatarPosition()
@@ -331,34 +350,78 @@ namespace cheat::feature::esp::render
 		s_AvatarPosition = ImVec2(avatarPos.x, avatarPos.y);
 	}
 
-	static void DrawLine(game::Entity* entity, const ImColor& color)
+	static std::optional<ImVec2> GetEntityScreenPos(game::Entity* entity)
 	{
 		auto targetPos = WorldToScreenPosScalled(entity->relativePosition());
 		if (targetPos.z < 1)
+			return {};
+
+		return ImVec2(targetPos.x, targetPos.y);
+	}
+
+	static void DrawLine(game::Entity* entity, const ImColor& color)
+	{
+		auto screenPos = GetEntityScreenPos(entity);
+		if (!screenPos)
 			return;
 
 		auto draw = ImGui::GetBackgroundDrawList();
-		draw->AddLine(s_AvatarPosition, *reinterpret_cast<ImVec2*>(&targetPos), color);
+		draw->AddLine(s_AvatarPosition, *screenPos, color);
 	}
 
-	void DrawEntity(const std::string& name, game::Entity* entity, const ImColor& color)
+	static void DrawName(const Rect& boxRect, game::Entity* entity, const std::string& name)
+	{
+		auto& esp = ESP::GetInstance();
+		auto& manager = game::EntityManager::instance();
+
+		ImVec2 namePosition;
+		if (!boxRect.empty())
+			namePosition = { boxRect.xMin, boxRect.yMin - esp.m_FontSize };
+		else
+		{
+			auto screenPos = GetEntityScreenPos(entity);
+			if (!screenPos)
+				return;
+			namePosition = *screenPos;
+		}
+		
+		std::string text;
+		if (esp.m_DrawName && esp.m_DrawDistance)
+			text = fmt::format("{} | {:.1f}m", name, manager.avatar()->distance(entity));
+		else if (esp.m_DrawDistance)
+			text = fmt::format("{:.1f}m", manager.avatar()->distance(entity));
+		else
+			text = name;
+
+		auto draw = ImGui::GetBackgroundDrawList();
+		draw->AddText(NULL, esp.m_FontSize, namePosition, esp.m_FontColor.value(), text.c_str());
+	}
+
+	bool DrawEntity(const std::string& name, game::Entity* entity, const ImColor& color)
 	{
 		auto& esp = ESP::GetInstance();
 
+		Rect rect;
 		switch (esp.m_DrawBoxMode)
 		{
 		case ESP::DrawMode::Box:
-			DrawBox(entity, color);
+			rect = DrawBox(entity, color);
 			break;
 		case ESP::DrawMode::Rectangle:
-			DrawRect(entity, color);
+			rect = DrawRect(entity, color);
 			break;
 		default:
+			rect = {};
 			break;
 		}
 
 		if (esp.m_DrawLine)
 			DrawLine(entity, color);
+
+		if (esp.m_DrawName)
+			DrawName(rect, entity, name);
+
+		return HasCenter(rect);
 	}
 
 	void PrepareFrame()

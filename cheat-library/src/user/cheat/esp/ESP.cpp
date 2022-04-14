@@ -19,9 +19,10 @@ namespace cheat::feature
         NF(m_DrawDistance, "Draw distance", "ESP", false),
         NF(m_DrawName, "Draw name", "ESP", false),
 
-		NF(m_MinScreenSize, "Min on screen size", "ESP", 0.0f),
-        NF(m_MinWorldSize, "Min in world size", "ESP", 0.5f),
+        NF(m_FontSize, "Font size", "ESP", 12.0f),
+        NF(m_FontColor, "Font color", "ESP", ImColor(255, 255, 255)),
 
+        NF(m_MinSize, "Min in world size", "ESP", 0.5f),
 		NF(m_Range, "Range", "ESP", 100.0f)
     { 
 	}
@@ -47,10 +48,10 @@ namespace cheat::feature
         ConfigWidget(m_DrawDistance, "Draw distance about object.");
 
         ImGui::Spacing();
-        ConfigWidget(m_MinScreenSize, 0.05f, 0.0f, 200.0f, "Minimal object size on screen.\n"
-            "If object placing too far, you can set here on screen size below which it will not fall.");
+        ConfigWidget(m_FontSize, 0.05f, 1.0f, 100.0f, "Font size of name or distance.");
+        ConfigWidget(m_FontColor, "Color of name or distance text font.");
 
-        ConfigWidget(m_MinWorldSize, 0.05f, 0.1f, 200.0f, "Minimal object size in world.\n"
+        ConfigWidget(m_MinSize, 0.05f, 0.1f, 200.0f, "Minimal object size in world.\n"
             "Some entities have not bounds or bounds is too small, this parameter help set minimal size of this type object.");
     }
 

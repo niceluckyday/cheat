@@ -181,7 +181,7 @@ namespace cheat::feature
             return;
         }
         ImGui::Text("Entity type: %s", magic_enum::enum_name(entity->type()).data());
-        ImGui::Text("Entity name: %s", entity->name());
+        ImGui::Text("Entity name: %s", entity->name().c_str());
     }
 
     static void DrawEntitiesData()
@@ -253,7 +253,8 @@ namespace cheat::feature
                 if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
                     continue;
 
-                if (ImGui::TreeNode(&entity, "Entity 0x%p; Dist %.3fm", entity, manager.avatar()->distance(entity)))
+                uintptr_t id = entity->runtimeID();
+                if (ImGui::TreeNode(reinterpret_cast<void*>(id), "Entity 0x%p : %u; Dist %.3fm", entity, entity->runtimeID(), manager.avatar()->distance(entity)))
                 {
                     if (ImGui::Button("Teleport"))
                     {
@@ -562,8 +563,28 @@ namespace cheat::feature
         }
     }
 
+    static bool filtersIsLoaded = false;
+    static std::map<std::string, game::SimpleFilter> simpleFilters;
+    static const std::string filename = "picked_filters.json";
+
+    void FilterItemPickerLoad()
+    {
+        //config::field::BaseField<float> 
+    }
+
+    void DrawFilterItemPicker()
+    {
+        if (!filtersIsLoaded)
+        {
+
+        }
+    }
+
 	void Debug::DrawMain()
 	{
+        if (ImGui::CollapsingHeader("Filter item picker"))
+            DrawFilterItemPicker();
+        
         if (ImGui::CollapsingHeader("ScenePropManager"))
             DrawScenePropManager();
 

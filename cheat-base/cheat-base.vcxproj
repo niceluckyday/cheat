@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClInclude Include="framework\framework.h" />
     <ClInclude Include="framework\pch.h" />
+    <ClInclude Include="src\cheat-base\config\field\ColorField.h" />
     <ClInclude Include="src\cheat-base\config\field\EnumField.h" />
     <ClInclude Include="src\cheat-base\Hotkey.h" />
     <ClInclude Include="src\cheat-base\scanner\PatternScanner.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="vendor\simpleIni\SimpleIni.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\cheat-base\config\field\ColorField.cpp" />
     <ClCompile Include="src\cheat-base\Hotkey.cpp" />
     <ClCompile Include="src\cheat-base\scanner\PatternScanner.cpp" />
     <ClCompile Include="src\cheat-base\cheat\CheatManager.cpp" />

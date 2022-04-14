@@ -5,6 +5,7 @@
 #include <cheat-base/config/Config.h>
 #include <cheat-base/Hotkey.h>
 #include <cheat-base/config/field/EnumField.h>
+#include <cheat-base/config/field/ColorField.h>
 
 bool ConfigWidget(const char* label, config::field::BaseField<bool>& field, const char* desc = nullptr);
 bool ConfigWidget(const char* label, config::field::BaseField<int>& field, int step = 1, int start = 0, int end = 0, const char* desc = nullptr);
@@ -12,6 +13,7 @@ bool ConfigWidget(const char* label, config::field::BaseField<float>& field, flo
 bool ConfigWidget(const char* label, config::field::HotkeyField& field, bool clearable = true, const char* desc = nullptr);
 bool ConfigWidget(const char* label, config::field::BaseField<std::string>& field, const char* desc = nullptr);
 bool ConfigWidget(const char* label, config::field::BaseField<std::filesystem::path>& field, bool onlyDirectories = false, const char* filter = nullptr, const char* desc = nullptr);
+bool ConfigWidget(const char* label, config::field::ColorField& field, const char* desc = nullptr);
 
 bool ConfigWidget(config::field::BaseField<bool>& field, const char* desc = nullptr);
 bool ConfigWidget(config::field::BaseField<int>& field, int step = 1, int start = 0, int end = 0, const char* desc = nullptr);
@@ -19,6 +21,7 @@ bool ConfigWidget(config::field::BaseField<float>& field, float step = 1.0F, flo
 bool ConfigWidget(config::field::HotkeyField& field, bool clearable = true, const char* desc = nullptr);
 bool ConfigWidget(config::field::BaseField<std::string>& field, const char* desc = nullptr);
 bool ConfigWidget(config::field::BaseField<std::filesystem::path>& field, bool onlyDirectories = false, const char* filter = nullptr, const char* desc = nullptr);
+bool ConfigWidget(config::field::ColorField& field, const char* desc = nullptr);
 
 void HelpMarker(const char* desc);
 
