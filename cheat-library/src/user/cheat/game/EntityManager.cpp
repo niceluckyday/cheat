@@ -87,9 +87,11 @@ namespace cheat::game
 		if (entityManager == nullptr)
 			return s_EmptyEntity;
 
-		auto avatarEntity = app::EntityManager_GetCurrentAvatar(entityManager, nullptr);
-		auto ent = entity(avatarEntity);
-		return ent;
+		auto avatarRaw = app::EntityManager_GetCurrentAvatar(entityManager, nullptr);
+		if (m_AvatarEntity.raw() != avatarRaw)
+			m_AvatarEntity = Entity(avatarRaw);
+
+		return &m_AvatarEntity;
 	}
 
 	bool EntityManager_RemoveEntity_Hook(app::EntityManager* __this, app::BaseEntity* entity, uint32_t specifiedRuntimeID, MethodInfo* method)
@@ -114,7 +116,7 @@ namespace cheat::game
 		m_EntityCache.erase(rawEntity);
 	}
 
-	EntityManager::EntityManager()
+	EntityManager::EntityManager() : m_AvatarEntity(nullptr)
 	{
 		HookManager::install(app::EntityManager_RemoveEntity, EntityManager_RemoveEntity_Hook);
 	}

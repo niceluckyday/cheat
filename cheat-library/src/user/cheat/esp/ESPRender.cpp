@@ -5,77 +5,91 @@
 #include "imgui_internal.h"
 
 #include <helpers.h>
+#include <cheat/game/EntityManager.h>
+#include <sys/timeb.h>
 
 #include "ESP.h"
 
 namespace cheat::feature::esp::render
 {
+	static app::Camera* s_Camera = nullptr;
+	static ImVec2 s_ResolutionScale = ImVec2(0, 0);
+	static ImVec2 s_AvatarPosition = ImVec2(0, 0);
 
-	app::Camera* GetMainCamera()
+// Adding delaying helps to improve performance
+#define UPDATE_DELAY(delay) static ULONGLONG s_LastUpdate = 0;\
+                            ULONGLONG currentTime = GetTickCount();\
+                            if (s_LastUpdate + delay > currentTime)\
+                                return;\
+                            s_LastUpdate = currentTime;
+
+
+	static void UpdateMainCamera()
 	{
+		UPDATE_DELAY(1000);
+
+		s_Camera = nullptr;
+
 		auto camera = app::Camera_get_main(nullptr, nullptr);
 		if (camera == nullptr)
-			return nullptr;
+			return;
 
 		if (!app::Behaviour_get_isActiveAndEnabled(reinterpret_cast<app::Behaviour*>(camera), nullptr))
-			return nullptr;
+			return;
 
 		auto loadingManager = GetSingleton(LoadingManager);
 		if (loadingManager == nullptr || !app::LoadingManager_IsLoaded(loadingManager, nullptr))
-			return nullptr;
+			return;
 
-		return camera;
+		s_Camera = camera;
 	}
 
-	std::optional<app::Vector3> GetResolutionScale()
+	static void UpdateResolutionScale()
 	{
-		auto camera = GetMainCamera();
-		if (camera == nullptr)
-			return {};
+		UPDATE_DELAY(1000);
 
-		auto pixelWidth = app::Camera_get_pixelWidth(camera, nullptr);
-		auto pixelHeight = app::Camera_get_pixelHeight(camera, nullptr);
+		s_ResolutionScale = { 0, 0 };
+
+		if (s_Camera == nullptr)
+			return;
+
+		auto pixelWidth = app::Camera_get_pixelWidth(s_Camera, nullptr);
+		auto pixelHeight = app::Camera_get_pixelHeight(s_Camera, nullptr);
 
 		if (pixelWidth == 0 || pixelHeight == 0)
-			return {};
+			return;
 
 		auto screenWidth = app::Screen_get_width(nullptr, nullptr);
 		auto screenHeight = app::Screen_get_height(nullptr, nullptr);
 
 		if (screenWidth == 0 || screenHeight == 0)
-			return {};
+			return;
 
 		if (screenHeight == pixelHeight && screenWidth == pixelWidth)
-			return {};
+			return;
 
-		app::Vector3 resolutionScale;
-		resolutionScale.x = static_cast<float>(screenWidth) / static_cast<float>(pixelWidth);
-		resolutionScale.y = static_cast<float>(screenHeight) / static_cast<float>(pixelHeight);
-		resolutionScale.z = 1;
-
-		return resolutionScale;
+		s_ResolutionScale.x = static_cast<float>(screenWidth) / static_cast<float>(pixelWidth);
+		s_ResolutionScale.y = static_cast<float>(screenHeight) / static_cast<float>(pixelHeight);
 	}
 
-	app::Vector3 WorldToScreenPosScalled(const app::Vector3& relPosition)
+	static app::Vector3 WorldToScreenPosScalled(const app::Vector3& relPosition)
 	{
-		auto camera = GetMainCamera();
-		if (camera == nullptr)
+		if (s_Camera == nullptr)
 			return {};
 
-		auto screenPos = app::Camera_WorldToScreenPoint(camera, relPosition, nullptr);
-		auto resolutionScale = GetResolutionScale();
+		auto screenPos = app::Camera_WorldToScreenPoint(s_Camera, relPosition, nullptr);
 
-		if (resolutionScale)
+		if (s_ResolutionScale.x != 0)
 		{
-			screenPos.x *= resolutionScale->x;
-			screenPos.y *= resolutionScale->y;
+			screenPos.x *= s_ResolutionScale.x;
+			screenPos.y *= s_ResolutionScale.y;
 		}
 
 		screenPos.y = app::Screen_get_height(nullptr, nullptr) - screenPos.y;
 		return screenPos;
 	}
 
-	struct Rect
+	static struct Rect
 	{
 		float xMin, xMax;
 		float yMin, yMax;
@@ -86,7 +100,7 @@ namespace cheat::feature::esp::render
 		}
 	};
 
-	struct BoxScreen
+	static struct BoxScreen
 	{
 		ImVec2 lowerTopLeft;
 		ImVec2 lowerTopRight;
@@ -102,15 +116,14 @@ namespace cheat::feature::esp::render
 #undef min
 #undef max
 
-	ImVec2 FromVec3(const app::Vector3& vec3)
+	static ImVec2 FromVec3(const app::Vector3& vec3)
 	{
 		return { vec3.x, vec3.y };
 	}
 
-	std::optional<BoxScreen> GetEntityScreenBox(game::Entity* entity)
+	static std::optional<BoxScreen> GetEntityScreenBox(game::Entity* entity)
 	{
-		auto camera = GetMainCamera();
-		if (camera == nullptr)
+		if (s_Camera == nullptr)
 			return {};
 
 		auto& esp = ESP::GetInstance();
@@ -137,7 +150,7 @@ namespace cheat::feature::esp::render
 
 		BoxScreen box;
 		app::Vector3 temp;
-#define BOX_FIELD_SET(field, px, py, pz) temp = app::Camera_WorldToScreenPoint(camera, { px, py, pz }, nullptr);\
+#define BOX_FIELD_SET(field, px, py, pz) temp = app::Camera_WorldToScreenPoint(s_Camera, { px, py, pz }, nullptr);\
 			if (temp.z < 1) return {};\
 			box.##field = FromVec3(temp);
 
@@ -156,14 +169,12 @@ namespace cheat::feature::esp::render
 		return box;
 	}
 
-	void ScaleBoxScreen(BoxScreen& boxScreen)
+	static void ScaleBoxScreen(BoxScreen& boxScreen)
 	{
-		auto resolutionScale = GetResolutionScale();
-
-		if (resolutionScale)
+		if (s_ResolutionScale.x != 0)
 		{
 
-#define SCALE_FIELD(field) boxScreen.##field##.x *= resolutionScale->x; boxScreen.##field##.y *= resolutionScale->y
+#define SCALE_FIELD(field) boxScreen.##field##.x *= s_ResolutionScale.x; boxScreen.##field##.y *= s_ResolutionScale.y
 
 			SCALE_FIELD(lowerTopLeft);
 			SCALE_FIELD(lowerTopRight);
@@ -197,7 +208,7 @@ namespace cheat::feature::esp::render
 
 	}
 
-	Rect GetEntityScreenRect(game::Entity* entity)
+	static Rect GetEntityScreenRect(game::Entity* entity)
 	{
 		auto box = GetEntityScreenBox(entity);
 		if (!box)
@@ -215,14 +226,13 @@ namespace cheat::feature::esp::render
 		boxRect.yMax = std::min({ box->lowerTopLeft.y, box->lowerTopRight.y, box->lowerBottomLeft.y, box->lowerBottomRight.y,
 			box->upperTopLeft.y, box->upperTopRight.y, box->upperBottomRight.y, box->upperBottomLeft.y });
 
-		auto resolutionScale = GetResolutionScale();
-		if (resolutionScale)
+		if (s_ResolutionScale.x != 0)
 		{
-			boxRect.xMin *= resolutionScale->x;
-			boxRect.xMax *= resolutionScale->x;
+			boxRect.xMin *= s_ResolutionScale.x;
+			boxRect.xMax *= s_ResolutionScale.x;
 
-			boxRect.yMin *= resolutionScale->y;
-			boxRect.yMax *= resolutionScale->y;
+			boxRect.yMin *= s_ResolutionScale.y;
+			boxRect.yMax *= s_ResolutionScale.y;
 		}
 
 		auto screenHeight = app::Screen_get_height(nullptr, nullptr);
@@ -231,7 +241,7 @@ namespace cheat::feature::esp::render
 		return boxRect;
 	}
 
-	void DrawQuadLines(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, ImU32 col)
+	static void DrawQuadLines(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, ImU32 col)
 	{
 		auto draw = ImGui::GetBackgroundDrawList();
 
@@ -241,7 +251,7 @@ namespace cheat::feature::esp::render
 		draw->AddLine(p4, p1, col);
 	}
 
-	ImVec2 DrawRect(game::Entity* entity, const ImColor& color)
+	static ImVec2 DrawRect(game::Entity* entity, const ImColor& color)
 	{
 		auto entityRect = GetEntityScreenRect(entity);
 		if (entityRect.empty())
@@ -264,7 +274,7 @@ namespace cheat::feature::esp::render
 	}
 
 	// Callow: This way to drawing is slower than native
-	ImVec2 DrawBox(game::Entity* entity, const ImColor& color)
+	static ImVec2 DrawBox(game::Entity* entity, const ImColor& color)
 	{
 		auto box = GetEntityScreenBox(entity);
 		if (!box)
@@ -313,9 +323,22 @@ namespace cheat::feature::esp::render
 		return { 0, 0 };
 	}
 
-	void DrawLine(game::Entity* entity, const ImColor& color)
+	static void UpdateAvatarPosition()
 	{
+		auto& manager = game::EntityManager::instance();
+		auto avatarPos = WorldToScreenPosScalled(manager.avatar()->relativePosition());
 
+		s_AvatarPosition = ImVec2(avatarPos.x, avatarPos.y);
+	}
+
+	static void DrawLine(game::Entity* entity, const ImColor& color)
+	{
+		auto targetPos = WorldToScreenPosScalled(entity->relativePosition());
+		if (targetPos.z < 1)
+			return;
+
+		auto draw = ImGui::GetBackgroundDrawList();
+		draw->AddLine(s_AvatarPosition, *reinterpret_cast<ImVec2*>(&targetPos), color);
 	}
 
 	void DrawEntity(const std::string& name, game::Entity* entity, const ImColor& color)
@@ -338,4 +361,13 @@ namespace cheat::feature::esp::render
 			DrawLine(entity, color);
 	}
 
+	void PrepareFrame()
+	{
+		UpdateMainCamera();
+		UpdateResolutionScale();
+
+		auto& esp = ESP::GetInstance();
+		if (esp.m_DrawLine)
+			UpdateAvatarPosition();
+	}
 }

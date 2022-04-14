@@ -85,6 +85,8 @@ namespace cheat::feature::esp
 		auto& esp = ESP::GetInstance();
 		if (!esp.m_Enabled)
 			return;
+		
+		render::PrepareFrame();
 
 		auto& entityManager = game::EntityManager::instance();
 

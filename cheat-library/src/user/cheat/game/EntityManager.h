@@ -43,6 +43,8 @@ namespace cheat::game
 		std::mutex m_EntityCacheLock;
 		std::map<app::BaseEntity*, std::pair<Entity*, uint32_t>> m_EntityCache;
 
+		Entity m_AvatarEntity;
+
 		inline static Entity* s_EmptyEntity = new Entity(nullptr);
 	};
 }
