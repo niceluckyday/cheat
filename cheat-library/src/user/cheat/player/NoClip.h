@@ -13,7 +13,8 @@ namespace cheat::feature
 		config::field::ToggleField m_Enabled;
 		config::field::BaseField<float> m_Speed;
 		config::field::BaseField<bool> m_CameraRelative;
-
+		config::field::BaseField<bool> m_OverrideSpeed;
+		config::field::BaseField<bool> m_OverrideSpeedValue;
 		static NoClip& GetInstance();
 
 		const FeatureGUIInfo& GetGUIInfo() const override;

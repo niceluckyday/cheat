@@ -13,7 +13,9 @@ namespace cheat::feature
     NoClip::NoClip() : Feature(),
         NF(m_Enabled,        "No clip",            "NoClip", false),
         NF(m_Speed,          "Speed",              "NoClip", 5.5f),
-        NF(m_CameraRelative, "Relative to camera", "NoClip", true)
+        NF(m_CameraRelative, "Relative to camera", "NoClip", true),
+		NF(m_OverrideSpeed,  "Override speed",     "NoClip", false),
+		NF(m_OverrideSpeedValue, "Override speed value", "NoClip", 1.0f)
     {
 		HookManager::install(app::HumanoidMoveFSM_LateTick, HumanoidMoveFSM_LateTick_Hook);
 
@@ -91,6 +93,10 @@ namespace cheat::feature
 
 		auto cameraEntity = (app::BaseEntity*)manager.mainCamera();
 		auto relativeEntity = m_CameraRelative ? cameraEntity : avatarEntity->raw();
+
+		float temp_speed = m_Speed.value();
+		if (Hotkey(VK_LCONTROL).IsPressed())
+			temp_speed = m_OverrideSpeedValue.value();
 
 		app::Vector3 dir = {};
 		if (Hotkey('W').IsPressed())
