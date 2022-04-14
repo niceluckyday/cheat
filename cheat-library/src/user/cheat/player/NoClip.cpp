@@ -96,7 +96,7 @@ namespace cheat::feature
 
 		float temp_speed = m_Speed.value();
 		if (Hotkey(VK_LCONTROL).IsPressed())
-			temp_speed = m_OverrideSpeedValue.value();
+			temp_speed = m_OverrideSpeedValue.value(); 
 
 		app::Vector3 dir = {};
 		if (Hotkey('W').IsPressed())
