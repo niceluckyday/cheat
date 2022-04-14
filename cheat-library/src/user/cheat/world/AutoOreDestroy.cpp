@@ -68,6 +68,7 @@ namespace cheat::feature
 				"OreNightBerth",
 				"OreCrystal",
 				"ElementRock",
+				"OreMagicCrystal",
 				"OreMetal",
 				"OreMoonMeteor",
 				"OreElectricRock",
