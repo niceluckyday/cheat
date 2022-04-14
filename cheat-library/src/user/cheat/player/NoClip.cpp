@@ -124,7 +124,7 @@ namespace cheat::feature
 
 		float deltaTime = app::Time_get_deltaTime(nullptr, nullptr);
 
-		app::Vector3 newPos = prevPos + dir * m_Speed * deltaTime;
+		app::Vector3 newPos = prevPos + dir * temp_speed * deltaTime;
 		avatarEntity->setRelativePosition(newPos);
 	}
 
