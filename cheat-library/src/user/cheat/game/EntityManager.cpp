@@ -107,7 +107,9 @@ namespace cheat::game
 		if (m_EntityCache.count(rawEntity) == 0)
 			return;
 
-		entityDestroyEvent(m_EntityCache[rawEntity]);
+		entityDestroyEvent(m_EntityCache[rawEntity].first);
+
+		delete m_EntityCache[rawEntity].first;
 
 		m_EntityCache.erase(rawEntity);
 	}
@@ -124,7 +126,15 @@ namespace cheat::game
 
 		std::lock_guard<std::mutex> lock(m_EntityCacheLock);
 		if (m_EntityCache.count(rawEntity) > 0)
-			return m_EntityCache[rawEntity];
+		{
+			auto& entry = m_EntityCache[rawEntity];
+			if (rawEntity->fields._runtimeID_k__BackingField == entry.second)
+				return entry.first;
+
+			delete m_EntityCache[rawEntity].first;
+
+			entityDestroyEvent(entry.first);
+		}
 
 		if (app::BaseEntity_get_rootGameObject(rawEntity, nullptr) == nullptr)
 			return s_EmptyEntity;
@@ -136,7 +146,7 @@ namespace cheat::game
 			ent = new Chest(rawEntity);
 		}
 
-		m_EntityCache[rawEntity] = ent;
+		m_EntityCache[rawEntity] = { ent, ent->runtimeID() };
 		return ent;
 	}
 
