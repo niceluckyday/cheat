@@ -220,7 +220,7 @@ namespace cheat::feature
 
         ImGui::Checkbox("Show only oculi", &checkOnlyShells);
 
-        if (ImGui::TreeNode("Type filter"))
+        if (ImGui::TreeNode("Type Filter"))
         {
             if (ImGui::Button("Select all"))
                 std::fill_n(typeFilters, 0x63, true);
@@ -244,40 +244,50 @@ namespace cheat::feature
             ImGui::TreePop();
         }
 
-        if (ImGui::TreeNode("Entity list"))
+        if (ImGui::TreeNode("Entity List"))
         {
-
-            for (const auto& entity : entities) {
-                if (entity == nullptr)
+            auto entries = magic_enum::enum_entries<app::EntityType__Enum_1>();
+            for (const auto& [value, name] : entries)
+            {
+                if (!typeFilters[int(value)])
                     continue;
 
-                if (!typeFilters[(int)entity->type()])
-                    continue;
-
-                if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
-                    continue;
-
-                if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
-                    continue;
-
-                uintptr_t id = entity->runtimeID();
-                if (ImGui::TreeNode(reinterpret_cast<void*>(id), "Entity 0x%p : %u; Dist %.3fm", entity, entity->runtimeID(), manager.avatar()->distance(entity)))
+                if (ImGui::TreeNode(name.data()))
                 {
-                    if (ImGui::Button("Teleport"))
-                    {
-                        auto& mapTeleport = MapTeleport::GetInstance();
-                        mapTeleport.TeleportTo(entity->absolutePosition());
+                    for (const auto& entity : entities) {
+                        if (entity == nullptr)
+                            continue;
+
+                        if (!typeFilters[(int)entity->type()])
+                            continue;
+
+                        if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
+                            continue;
+
+                        if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
+                            continue;
+
+                        uintptr_t id = entity->runtimeID();
+                        if (ImGui::TreeNode(reinterpret_cast<void*>(id), "Entity 0x%p : %u; Dist %.3fm", entity, entity->runtimeID(), manager.avatar()->distance(entity)))
+                        {
+                            if (ImGui::Button("Teleport"))
+                            {
+                                auto& mapTeleport = MapTeleport::GetInstance();
+                                mapTeleport.TeleportTo(entity->absolutePosition());
+                            }
+
+                            ImGui::SameLine();
+                            if (ImGui::Button("Teleport to void"))
+                                entity->setRelativePosition({ 0, 0, 0 });
+
+                            ImGui::SameLine();
+                            if (ImGui::Button("Teleport to me"))
+                                entity->setRelativePosition(manager.avatar()->relativePosition());
+
+                            DrawEntity(entity);
+                            ImGui::TreePop();
+                        }
                     }
-                    
-                    ImGui::SameLine();
-                    if (ImGui::Button("Teleport to void"))
-                        entity->setRelativePosition({ 0, 0, 0 });
-
-					ImGui::SameLine();
-					if (ImGui::Button("Teleport to me"))
-                        entity->setRelativePosition(manager.avatar()->relativePosition());
-
-                    DrawEntity(entity);
                     ImGui::TreePop();
                 }
             }
