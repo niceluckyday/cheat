@@ -205,6 +205,7 @@ namespace cheat::feature
         static char objectNameFilter[128] = {};
 
         static bool checkOnlyShells = false;
+        static bool showEmptyTypes = false;
 
         auto& manager = game::EntityManager::instance();
         auto entities = manager.entities();
@@ -218,6 +219,7 @@ namespace cheat::feature
         if (!useObjectNameFilter)
             ImGui::EndDisabled();
 
+        ImGui::Checkbox("Show empty types", &showEmptyTypes);
         ImGui::Checkbox("Show only oculi", &checkOnlyShells);
 
         if (ImGui::TreeNode("Type Filter"))
@@ -252,9 +254,13 @@ namespace cheat::feature
                 if (!typeFilters[int(currentType)])
                     continue;
 
+                auto filteredEntities = manager.entities(game::SimpleFilter(currentType));
+                if (!showEmptyTypes && filteredEntities.size() == 0)
+                    continue;
+
                 if (ImGui::TreeNode(typeName.data()))
                 {
-                    for (const auto& entity : entities) {
+                    for (const auto& entity : filteredEntities) {
                         if (entity == nullptr)
                             continue;
 
