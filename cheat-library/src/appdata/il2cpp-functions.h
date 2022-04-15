@@ -187,7 +187,6 @@ DO_APP_FUNC(0x017F43F0, bool, LoadingManager_IsLoaded, (LoadingManager* __this, 
 DO_APP_FUNC(0x0155A580, bool, EntityManager_RemoveEntity, (EntityManager* __this, BaseEntity* entity, uint32_t specifiedRuntimeID, MethodInfo* method));
 DO_APP_FUNC(0x0154F520, bool, EntityManager_IsCachedEntity, (EntityManager* __this, BaseEntity* entity, MethodInfo* method));
 DO_APP_FUNC(0x013B9810, GameObject*, BaseEntity_get_rootGameObject, (BaseEntity* __this, MethodInfo* method));
-
 // Thanks to @RyujinZX
 DO_APP_FUNC(0x019C5D50, void, LCAbilityElement_ReduceModifierDurability, (LCAbilityElement* __this, int32_t modifierDurabilityIndex, float reduceDurability, Nullable_1_Single_ deltaTime, MethodInfo* method));
 

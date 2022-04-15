@@ -5,6 +5,7 @@
 #include <cheat/events.h>
 #include <cheat/game/EntityManager.h>
 #include <cheat/game/util.h>
+#include <cheat-base/render/renderer.h>
 
 namespace cheat::feature 
 {
@@ -71,10 +72,10 @@ namespace cheat::feature
 		if (!m_Enabled && isApplied)
 		{
 			auto avatarEntity = manager.avatar();
-			if (avatarEntity->raw() == nullptr || !app::BaseEntity_IsActive(avatarEntity->raw(), nullptr))
+			auto rigidBody = avatarEntity->rigidbody();
+			if (rigidBody == nullptr)
 				return;
 
-			auto rigidBody = app::BaseEntity_GetRigidbody(avatarEntity->raw(), nullptr);
 			app::Rigidbody_set_detectCollisions(rigidBody, true, nullptr);
 			isApplied = false;
 		}
@@ -85,18 +86,21 @@ namespace cheat::feature
 		isApplied = true;
 
 		auto avatarEntity = manager.avatar();
-		if (avatarEntity->raw() == nullptr || !app::BaseEntity_IsActive(avatarEntity->raw(), nullptr))
-			return;
-
-		auto baseMove = app::BaseEntity_GetMoveComponent_1(avatarEntity->raw(), *app::BaseEntity_GetMoveComponent_1__MethodInfo);
+		auto baseMove = avatarEntity->moveComponent();
 		if (baseMove == nullptr)
 			return;
 
-		auto rigidBody = app::BaseEntity_GetRigidbody(avatarEntity->raw(), nullptr);
+		if (renderer::globals::IsInputBlocked)
+			return;
+
+		auto rigidBody = avatarEntity->rigidbody();
+		if (rigidBody == nullptr)
+			return;
+
 		app::Rigidbody_set_detectCollisions(rigidBody, false, nullptr);
 
-		auto cameraEntity = (app::BaseEntity*)manager.mainCamera();
-		auto relativeEntity = m_CameraRelative ? cameraEntity : avatarEntity->raw();
+		auto cameraEntity = game::Entity(reinterpret_cast<app::BaseEntity*>(manager.mainCamera()));
+		auto relativeEntity = m_CameraRelative ? &cameraEntity : avatarEntity;
 
 		float speed = m_Speed.value();
 		if (m_SneakSpeedEnabled && Hotkey(VK_LCONTROL).IsPressed())
@@ -104,22 +108,22 @@ namespace cheat::feature
 
 		app::Vector3 dir = {};
 		if (Hotkey('W').IsPressed())
-			dir = dir + app::BaseEntity_GetForward(relativeEntity, nullptr);
+			dir = dir + relativeEntity->forward();
 
 		if (Hotkey('S').IsPressed())
-			dir = dir - app::BaseEntity_GetForward(relativeEntity, nullptr);
+			dir = dir + relativeEntity->back();
 
 		if (Hotkey('D').IsPressed())
-			dir = dir + app::BaseEntity_GetRight(relativeEntity, nullptr);
+			dir = dir + relativeEntity->right();
 
 		if (Hotkey('A').IsPressed())
-			dir = dir - app::BaseEntity_GetRight(relativeEntity, nullptr);
+			dir = dir + relativeEntity->left();
 
 		if (Hotkey(VK_SPACE).IsPressed())
-			dir = dir + app::BaseEntity_GetUp(avatarEntity->raw(), nullptr);
+			dir = dir + relativeEntity->up();
 
 		if (Hotkey(ImGuiKey_ModShift).IsPressed())
-			dir = dir - app::BaseEntity_GetUp(avatarEntity->raw(), nullptr);
+			dir = dir + relativeEntity->down();
 
 		app::Vector3 prevPos = avatarEntity->relativePosition();
 		if (IsVectorZero(prevPos))

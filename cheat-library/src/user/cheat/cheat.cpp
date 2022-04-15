@@ -33,7 +33,6 @@
 #include <cheat/teleport/OculiTeleport.h>
 
 #include <cheat/esp/ESP.h>
-#include <cheat/esp/section/ESPChest.h>
 
 #include <cheat/ILPatternScanner.h>
 
@@ -76,8 +75,7 @@ namespace cheat
 			FEAT_INST(OculiTeleport),
 			FEAT_INST(MapTeleport),
 
-			FEAT_INST(ESP),
-			FEAT_INST(esp::ESPChest)
+			FEAT_INST(ESP)
 
 			});
 #undef FEAT_INST
@@ -86,6 +84,7 @@ namespace cheat
 			"Player",
 			"World",
 			"Teleport",
+			"ESP",
 			"Hotkeys",
 			"Settings",
 			"Debug"
@@ -101,7 +100,10 @@ namespace cheat
 
 	static void GameManager_Update_Hook(app::GameManager* __this, MethodInfo* method)
 	{
+		SAFE_BEGIN();
 		events::GameUpdateEvent();
+		SAFE_EEND();
+		
 		callOrigin(GameManager_Update_Hook, __this, method);
 	}
 

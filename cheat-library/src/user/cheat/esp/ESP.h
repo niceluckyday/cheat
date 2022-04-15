@@ -2,6 +2,10 @@
 #include <cheat-base/cheat/Feature.h>
 #include <cheat-base/config/Config.h>
 
+#include <cheat/esp/data/ESPItemField.h>
+#include <cheat/game/IEntityFilter.h>
+#include <cheat/game/CacheFilterExecutor.h>
+
 namespace cheat::feature 
 {
 
@@ -38,7 +42,24 @@ namespace cheat::feature
 		virtual bool NeedStatusDraw() const override;
 		void DrawStatus() override;
 
+		void DrawExternal() override;
+
 	private:
+		
+		using Filters = std::vector<std::pair<config::field::ESPItemField*, game::IEntityFilter*>>;
+		using Sections = std::map<std::string, Filters>;
+
+		Sections m_Sections;
+		game::CacheFilterExecutor m_FilterExecutor;
+
+		void InstallFilters();
+		void AddFilter(const std::string& section, const std::string& name, game::IEntityFilter* filter);
+		
+		void DrawSection(const std::string& section, const Filters& filters);
+		void DrawFilterField(config::field::ESPItemField& field);
+
+		void OnKeyUp(short key, bool& cancelled);
+
 		ESP();
 	};
 }

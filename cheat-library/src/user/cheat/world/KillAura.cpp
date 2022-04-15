@@ -7,6 +7,7 @@
 #include <cheat/events.h>
 #include <cheat/game/EntityManager.h>
 #include <cheat/game/util.h>
+#include <cheat/game/filters.h>
 
 namespace cheat::feature 
 {
@@ -52,6 +53,8 @@ namespace cheat::feature
         return instance;
     }
 
+	// Kill aura logic is just emulate monster fall crash, so simple but works.
+	// Note. No work on mob with shield, maybe update like auto ore destroy.
 	void KillAura::OnGameUpdate()
 	{
 		static std::default_random_engine generator;
@@ -59,13 +62,13 @@ namespace cheat::feature
 
 		static int64_t nextAttackTime = 0;
 		static std::map<uint32_t, int64_t> monsterRepeatTimeMap;
-		static std::queue<app::BaseEntity*> attackQueue;
+		static std::queue<game::Entity*> attackQueue;
 		static std::unordered_set<uint32_t> attackSet;
 
 		if (!m_Enabled)
 			return;
 
-		auto eventManager = GetSingleton(EventManager);
+		auto eventManager = GET_SINGLETON(EventManager);
 		if (eventManager == nullptr || *app::CreateCrashEvent__MethodInfo == nullptr)
 			return;
 
@@ -75,7 +78,7 @@ namespace cheat::feature
 
 		auto& manager = game::EntityManager::instance();
 
-		for (const auto& monster : manager.entities(game::GetMonsterFilter()))
+		for (const auto& monster : manager.entities(game::filters::combined::Monsters))
 		{
 			auto monsterID = monster->runtimeID();
 
@@ -85,7 +88,7 @@ namespace cheat::feature
 			if (monsterRepeatTimeMap.count(monsterID) > 0 && monsterRepeatTimeMap[monsterID] > currentTime)
 				continue;
 
-			auto combat = app::BaseEntity_GetBaseCombat(monster->raw(), *app::BaseEntity_GetBaseCombat__MethodInfo);
+			auto combat = monster->combat();
 			if (combat == nullptr)
 				continue;
 
@@ -106,7 +109,7 @@ namespace cheat::feature
 			if (manager.avatar()->distance(monster) > m_Range)
 				continue;
 
-			attackQueue.push(monster->raw());
+			attackQueue.push(monster);
 			attackSet.insert(monsterID);
 		}
 
@@ -116,34 +119,33 @@ namespace cheat::feature
 		auto monster = attackQueue.front();
 		attackQueue.pop();
 
-		if (monster == nullptr || !app::BaseEntity_IsActive(monster, nullptr))
+		if (!monster->isLoaded())
 		{
 			// If monster entity isn't active means that it was unloaded (it happen when player teleport or moving fast)
 			// And we don't have way to get id
 			// So better to clear all queue, to prevent memory leak
 			// This happen rarely, so don't give any performance issues
-			std::queue<app::BaseEntity*> empty;
+			std::queue<game::Entity*> empty;
 			std::swap(attackQueue, empty);
 
 			attackSet.clear();
 			return;
 		}
 
-		auto monsterID = monster->fields._runtimeID_k__BackingField;
-		attackSet.erase(monsterID);
+		attackSet.erase(monster->runtimeID());
 
-		auto combat = app::BaseEntity_GetBaseCombat(monster, *app::BaseEntity_GetBaseCombat__MethodInfo);
+		auto combat = monster->combat();
 		auto maxHP = app::SafeFloat_GetValue(nullptr, combat->fields._combatProperty_k__BackingField->fields.maxHP, nullptr);
 
 		auto crashEvt = app::CreateCrashEvent(nullptr, *app::CreateCrashEvent__MethodInfo);
-		app::EvtCrash_Init(crashEvt, monsterID, nullptr);
+		app::EvtCrash_Init(crashEvt, monster->runtimeID(), nullptr);
 		crashEvt->fields.maxHp = maxHP;
 		crashEvt->fields.velChange = 1000;
-		crashEvt->fields.hitPos = app::BaseEntity_GetAbsolutePosition(monster, nullptr);
+		crashEvt->fields.hitPos = monster->absolutePosition();
 
 		app::EventManager_FireEvent(eventManager, reinterpret_cast<app::BaseEvent*>(crashEvt), false, nullptr);
 
-		monsterRepeatTimeMap[monsterID] = currentTime + (int)m_RepeatDelay + distribution(generator);
+		monsterRepeatTimeMap[monster->runtimeID()] = currentTime + (int)m_RepeatDelay + distribution(generator);
 
 		nextAttackTime = currentTime + (int)m_AttackDelay + distribution(generator);
 	}

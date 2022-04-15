@@ -37,45 +37,36 @@ namespace cheat::game
 		if (!isLoaded())
 			return ChestState::None;
 
-		if (m_ChestState)
-			return *m_ChestState;
+		//if (m_ChestState)
+		//	return *m_ChestState;
 
-		auto chestPlugin = game::GetLCPlugin<app::LCChestPlugin>(raw(), *app::LCChestPlugin__TypeInfo);
+		auto chestPlugin = plugin<app::LCChestPlugin>(*app::LCChestPlugin__TypeInfo);
 		if (chestPlugin == nullptr ||
 			chestPlugin->fields._owner == nullptr ||
 			chestPlugin->fields._owner->fields._dataItem == nullptr)
 		{
-			m_ChestState = ChestState::Invalid;
-			return *m_ChestState;
+			// m_ChestState = ChestState::Invalid;
+			return ChestState::Invalid;
 		}
 		
 		auto state = static_cast<app::GadgetState__Enum>(chestPlugin->fields._owner->fields._dataItem->fields.gadgetState);
 		switch (state)
 		{
 		case app::GadgetState__Enum::ChestLocked:
-			m_ChestState = ChestState::Locked;
-			break;
+			return ChestState::Locked;
 		case app::GadgetState__Enum::ChestRock:
-			m_ChestState = ChestState::InRock;
-			break;
+			return ChestState::InRock;
 		case app::GadgetState__Enum::ChestFrozen:
-			m_ChestState = ChestState::Frozen;
-			break;
+			return ChestState::Frozen;
 		case app::GadgetState__Enum::ChestBramble:
-			m_ChestState = ChestState::Bramble;
-			break;
+			return ChestState::Bramble;
 		case app::GadgetState__Enum::ChestTrap:
-			m_ChestState = ChestState::Trap;
-			break;
+			return ChestState::Trap;
 		case app::GadgetState__Enum::ChestOpened:
-			m_ChestState = ChestState::Invalid;
-			break;
+			return ChestState::Invalid;
 		default:
-			m_ChestState = ChestState::None;
-			break;
+			return ChestState::None;
 		}
-
-		return *m_ChestState;
 	}
 
 	cheat::game::Chest::ChestRarity Chest::chestRarity()

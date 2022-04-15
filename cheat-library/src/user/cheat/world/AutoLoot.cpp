@@ -64,7 +64,7 @@ namespace cheat::feature
 		if (!m_Enabled)
 			return false;
 
-		auto itemModule = GetSingleton(ItemModule);
+		auto itemModule = GET_SINGLETON(ItemModule);
 		if (itemModule == nullptr)
 			return false;
 
@@ -85,7 +85,7 @@ namespace cheat::feature
 		if (currentTime < nextLootTime)
 			return;
 
-		auto entityManager = GetSingleton(EntityManager);
+		auto entityManager = GET_SINGLETON(EntityManager);
 		if (entityManager == nullptr)
 			return;
 
@@ -93,7 +93,7 @@ namespace cheat::feature
 		if (!entityId)
 			return;
 
-		auto itemModule = GetSingleton(ItemModule);
+		auto itemModule = GET_SINGLETON(ItemModule);
 		if (itemModule == nullptr)
 			return;
 

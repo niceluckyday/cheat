@@ -8,7 +8,7 @@ namespace cheat::game
 {
 	std::vector<WaypointInfo> GetUnlockedWaypoints(uint32_t targetSceneId)
 	{
-		auto mapModule = GetSingleton(MBHLOBDPKEC);
+		auto mapModule = GET_SINGLETON(MBHLOBDPKEC);
 		if (mapModule == nullptr)
 			return {};
 
@@ -17,7 +17,7 @@ namespace cheat::game
 
 		auto result = std::vector<WaypointInfo>();
 
-		auto waypointGroups = ToUniDict(mapModule->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
+		auto waypointGroups = TO_UNI_DICT(mapModule->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
 		for (const auto& [sceneId, waypoints] : waypointGroups->pairs())
 		{
 			if (sceneId != targetSceneId)
@@ -57,7 +57,7 @@ namespace cheat::game
 
 	uint32_t GetCurrentPlayerSceneID()
 	{
-		auto playerModule = GetSingleton(PlayerModule);
+		auto playerModule = GET_SINGLETON(PlayerModule);
 		if (playerModule == nullptr)
 			return 0;
 
@@ -66,7 +66,7 @@ namespace cheat::game
 
 	uint32_t GetCurrentMapSceneID()
 	{
-		auto mapManager = GetSingleton(MapManager);
+		auto mapManager = GET_SINGLETON(MapManager);
 		if (mapManager == nullptr)
 			return 0;
 
@@ -98,38 +98,6 @@ namespace cheat::game
 		
 		return reinterpret_cast<app::GadgetEntity*>(entity);
 	}
-
-	const SimpleFilter& GetFilterCrystalShell()
-	{
-		static const SimpleFilter crystallShellFilter {
-			app::EntityType__Enum_1::GatherObject,
-			{
-				/*Anemoculus, Geoculus*/ "CrystalShell" ,
-				/*Crimson Agate*/ "Prop_Essence_01",
-				/*Electroculus*/ "ElectricCrystal",
-				/*Lumenspar*/ "CelestiaSplinter_01",
-				/*Key Sigil*/ "RuneContent_04"
-			}
-		};
-		return crystallShellFilter;
-	}
-
-	const SimpleFilter& GetFilterChest()
-	{
-		static const SimpleFilter filter = {
-			app::EntityType__Enum_1::Chest
-		};
-		return filter;
-	}
-
-	const SimpleFilter& GetMonsterFilter()
-	{
-		static const SimpleFilter filter = {
-			app::EntityType__Enum_1::Monster
-		};
-		return filter;
-	}
-
 
 	game::Entity* FindNearestEntity(const IEntityFilter& filter)
 	{

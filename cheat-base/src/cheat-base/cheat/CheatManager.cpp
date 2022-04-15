@@ -252,7 +252,7 @@ namespace cheat
 
 	void CheatManager::CheckToggles(short key)
 	{
-		if (m_IsMenuShowed)
+		if (m_IsMenuShowed || renderer::globals::IsInputBlocked)
 			return;
 
 		for (auto& field : config::GetToggleFields())

@@ -2,7 +2,7 @@
 #include "OculiTeleport.h"
 
 #include <helpers.h>
-#include <cheat/game/util.h>
+#include <cheat/game/filters.h>
 
 namespace cheat::feature 
 {
@@ -23,7 +23,7 @@ namespace cheat::feature
 
 	bool OculiTeleport::IsValid(game::Entity* entity) const
 	{
-		return game::GetFilterCrystalShell().IsValid(entity);
+		return game::filters::combined::Oculies.IsValid(entity);
 	}
 
 }

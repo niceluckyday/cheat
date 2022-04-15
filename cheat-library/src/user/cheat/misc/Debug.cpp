@@ -2,13 +2,20 @@
 #include "Debug.h"
 
 #include <misc/cpp/imgui_stdlib.h>
+#include <filesystem>
+#include <fstream>
 
 #include <cheat/events.h>
 #include <cheat/teleport/MapTeleport.h>
 #include <cheat/game/EntityManager.h>
 #include <cheat/game/util.h>
+#include <cheat/game/filters.h>
+#include <cheat/esp/ESPRender.h>
+#include <cheat/game/CacheFilterExecutor.h>
+#include <cheat-base/render/renderer.h>
 #include <helpers.h>
 
+// This module is for debug purpose, and... well.. it's shit coded ^)
 namespace cheat::feature 
 {
     static bool ActorAbilityPlugin_OnEvent_Hook(void* __this, app::BaseEvent* e, MethodInfo* method);
@@ -117,7 +124,7 @@ namespace cheat::feature
             return;
         }
 
-        auto singleton = GetSingleton(MBHLOBDPKEC);
+        auto singleton = GET_SINGLETON(MBHLOBDPKEC);
 
         for (const auto& [sceneId, waypoints] : waypointsGrops->pairs())
         {
@@ -158,7 +165,7 @@ namespace cheat::feature
 
     void DrawManagerData()
     {
-        auto singleton = GetSingleton(MBHLOBDPKEC);
+        auto singleton = GET_SINGLETON(MBHLOBDPKEC);
         if (singleton == nullptr)
         {
             ImGui::Text("Manager not initialized.");
@@ -167,7 +174,7 @@ namespace cheat::feature
 
         if (ImGui::TreeNode("Waypoints"))
         {
-            auto waypoints = ToUniDict(singleton->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
+            auto waypoints = TO_UNI_DICT(singleton->fields._scenePointDics, uint32_t, UniDict<uint32_t COMMA app::MapModule_ScenePointData>*);
             DrawWaypoints(waypoints);
             ImGui::TreePop();
         }
@@ -247,7 +254,7 @@ namespace cheat::feature
                 if (!typeFilters[(int)entity->type()])
                     continue;
 
-                if (checkOnlyShells && !game::GetFilterCrystalShell().IsValid(entity))
+                if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
                     continue;
 
                 if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
@@ -302,7 +309,7 @@ namespace cheat::feature
 
     static void DrawInteractionManagerInfo()
     {
-        auto interactionManager = GetSingleton(InteractionManager);
+        auto interactionManager = GET_SINGLETON(InteractionManager);
         if (interactionManager == nullptr)
         {
             ImGui::Text("Manager not loaded.");
@@ -327,7 +334,7 @@ namespace cheat::feature
         DRAW_BOOL(interactionManager, _canShowAvatarEffectWhenTalkStart);
 
 
-        auto keyList = ToUniLinkList(interactionManager->fields._keyInterList, app::InterActionGrp*);
+        auto keyList = TO_UNI_LINK_LIST(interactionManager->fields._keyInterList, app::InterActionGrp*);
         if (keyList != nullptr && ImGui::TreeNode("KeyList"))
         {
             auto reminder = keyList->count;
@@ -344,7 +351,7 @@ namespace cheat::feature
 
                     if (item->fields._interActionList != nullptr && ImGui::TreeNode("Interactions"))
                     {
-                        auto interactions = ToUniList(item->fields._interActionList, app::BaseInterAction*);
+                        auto interactions = TO_UNI_LIST(item->fields._interActionList, app::BaseInterAction*);
                         for (auto& interaction : *interactions)
                         {
                             if (interaction == nullptr)
@@ -410,7 +417,7 @@ namespace cheat::feature
 
     void DrawMapManager()
     {
-		auto mapManager = GetSingleton(MapManager);
+		auto mapManager = GET_SINGLETON(MapManager);
         if (mapManager == nullptr)
             return;
 
@@ -444,7 +451,7 @@ namespace cheat::feature
         auto& entityManager = game::EntityManager::instance();
 
         notWrittenChests.clear();
-        for (auto& entity : entityManager.entities(game::GetFilterChest()))
+        for (auto& entity : entityManager.entities(game::filters::combined::Chests))
         {
             auto& entityName = entity->name();
             if (chestNames.count(entityName) == 0)
@@ -458,18 +465,13 @@ namespace cheat::feature
 
         auto& entityManager = game::EntityManager::instance();
         ImGui::Checkbox("Show not written", &showNotWritten);
-        for (auto& entity : entityManager.entities(game::GetFilterChest()))
+        for (auto& entity : entityManager.entities(game::filters::combined::Chests))
         {
             auto& entityName = entity->name();
             if (showNotWritten && chestNames.count(entityName) > 0)
                 continue;
 
-            auto logicComponents = ToUniList(app::BaseEntity_GetAllLogicComponents(entity->raw(), nullptr), app::BaseComponent*);
-            if (logicComponents == nullptr)
-                continue;
-
-            app::LCChestPlugin* chestPlugin = game::GetLCPlugin<app::LCChestPlugin>(entity->raw(), *app::LCChestPlugin__TypeInfo);
-
+            app::LCChestPlugin* chestPlugin = entity->plugin<app::LCChestPlugin>(*app::LCChestPlugin__TypeInfo);
             if (chestPlugin == nullptr)
                 continue;
 
@@ -526,14 +528,14 @@ namespace cheat::feature
 
     void DrawScenePropManager()
     {
-        auto scenePropManager = GetSingleton(ScenePropManager);
+        auto scenePropManager = GET_SINGLETON(ScenePropManager);
         if (scenePropManager == nullptr)
         {
             ImGui::Text("Scene prop manager not loaded.");
             return;
         }
 
-        auto scenePropDict = ToUniDict(scenePropManager->fields._scenePropDict, int32_t, app::Object*);
+        auto scenePropDict = TO_UNI_DICT(scenePropManager->fields._scenePropDict, int32_t, app::Object*);
         if (scenePropDict == nullptr)
         {
             ImGui::Text("Scene prop dict is nullptr.");
@@ -545,7 +547,7 @@ namespace cheat::feature
         auto& manager = game::EntityManager::instance();
         for (auto& [id, propObject] : scenePropDict->pairs())
         {
-            auto tree = game::CastTo<app::SceneTreeObject>(propObject, *app::SceneTreeObject__TypeInfo);
+            auto tree = CastTo<app::SceneTreeObject>(propObject, *app::SceneTreeObject__TypeInfo);
             if (tree == nullptr)
                 continue;
 
@@ -563,22 +565,225 @@ namespace cheat::feature
         }
     }
 
+    class ItemFilter : game::IEntityFilter
+    {
+    public:
+        ItemFilter() : ItemFilter(app::EntityType__Enum_1::None, "") 
+        {}
+
+        ItemFilter(app::EntityType__Enum_1 type, const std::string& name) : m_Type(type), m_Name(name)
+        {
+
+        }
+
+        bool IsValid(game::Entity* entity) const override
+        {
+            return entity->type() == m_Type && entity->name() == m_Name;
+        }
+
+        app::EntityType__Enum_1 m_Type;
+        std::string m_Name;
+    };
+
     static bool filtersIsLoaded = false;
-    static std::map<std::string, game::SimpleFilter> simpleFilters;
+    static std::map<std::string, ItemFilter> simpleFilters;
+    static std::vector<ItemFilter> removedItems;
+
     static const std::string filename = "picked_filters.json";
+    static bool filterItemPickerEnabled = false;
+
+    static ItemFilter tempFilter;
+    static std::string tempName;
+    static std::string tempSectionName;
+
+    static bool addingFilter;
+    static game::CacheFilterExecutor executor;
 
     void FilterItemPickerLoad()
     {
-        //config::field::BaseField<float> 
+        filtersIsLoaded = true;
+
+        std::ifstream fs(filename, std::ios::in);
+        if (!fs.is_open())
+            return;
+
+        nlohmann::json jRoot;
+        try {
+            jRoot =nlohmann::json::parse(fs);
+        }
+        catch (nlohmann::detail::parse_error& parseError)
+        {
+            LOG_ERROR("Failed to parse json");
+        }
+        
+        for (auto& [key, value] : jRoot["filters"].items())
+            simpleFilters[key] = ItemFilter(value["type"], value["name"]);
+
+		for (auto& value : jRoot["excluded"])
+            removedItems.push_back(ItemFilter(value["type"], value["name"]));
+    }
+
+    void FiltetItemPickerSave()
+    {
+        std::ofstream fs(filename, std::ios::out);
+        if (!fs.is_open())
+        {
+            LOG_ERROR("Failed to save changes.");
+            return;
+        }
+
+        nlohmann::json jRoot = {};
+        jRoot["filters"] = {};
+        for (auto& [key, value] : simpleFilters)
+        {
+            jRoot["filters"][key] = {};
+            jRoot["filters"][key]["name"] = value.m_Name;
+            jRoot["filters"][key]["type"] = value.m_Type;
+        }
+
+        jRoot["excluded"] = {};
+        for (auto& value : removedItems)
+        {
+            nlohmann::json item = {};
+            item["name"] = value.m_Name;
+            item["type"] = value.m_Type;
+
+            jRoot["excluded"].push_back(item);
+        }
+
+        fs << jRoot.dump(4);
+        fs.close();
     }
 
     void DrawFilterItemPicker()
     {
-        if (!filtersIsLoaded)
-        {
+        ImGui::Checkbox("Enable ## itemPicker", &filterItemPickerEnabled);
+        if (!filterItemPickerEnabled)
+            return;
 
+        if (!filtersIsLoaded)
+            FilterItemPickerLoad();
+
+        for (auto& [key, filter] : simpleFilters)
+        {
+            ImGui::PushID(key.c_str());
+            ImGui::PushItemWidth(250);
+
+            std::string keyText = key;
+            ImGui::InputText("## Name", &keyText);
+            ImGui::SameLine();
+
+			ImGui::InputText("## ItemName", &filter.m_Name);
+			ImGui::SameLine();
+            
+            std::string typeName = std::string(magic_enum::enum_name(filter.m_Type));
+			ImGui::InputText("## ItemType", &typeName);
+
+            ImGui::PopItemWidth();
+            ImGui::PopID();
         }
     }
+
+	void Debug::DrawExternal()
+	{
+        if (!filterItemPickerEnabled)
+            return;
+
+        auto& manager = game::EntityManager::instance();
+
+        game::Entity* selectedEntity = nullptr;
+        esp::render::PrepareFrame();
+
+        for (auto& entity : manager.entities())
+        {
+            bool unexplored = true;
+            for (auto& [_, filter] : simpleFilters)
+            {
+                if (executor.ApplyFilter(entity, reinterpret_cast<game::IEntityFilter*>(&filter)))
+                {
+                    unexplored = false;
+                    break;
+                }
+            }
+
+			for (auto& filter : removedItems)
+			{
+				if (executor.ApplyFilter(entity, reinterpret_cast<game::IEntityFilter*>(&filter)))
+				{
+					unexplored = false;
+					break;
+				}
+			}
+
+            if (!unexplored)
+                continue;
+
+            bool isSelected = esp::render::DrawEntity(entity->name(), entity, ImColor(255, 0, 0, 255));
+            if (isSelected && selectedEntity == nullptr)
+            {
+                esp::render::DrawEntity(entity->name(), entity, ImColor(0, 255, 0, 255));
+                selectedEntity = entity;
+            }
+        }
+
+
+        bool updated = false;
+
+        if (!addingFilter)
+        {
+            if (ImGui::IsKeyPressed(ImGuiKey_R, false) && ImGui::IsKeyDown(ImGuiKey_LeftCtrl))
+            {
+                if (removedItems.size() > 0)
+                {
+                    removedItems.pop_back();
+                    updated = true;
+                }
+            }
+			else if (selectedEntity != nullptr && ImGui::IsKeyPressed(ImGuiKey_R, false))
+			{
+			    removedItems.push_back(ItemFilter(selectedEntity->type(), selectedEntity->name()));
+			    updated = true;
+			}
+
+            if (selectedEntity != nullptr && ImGui::IsKeyPressed(ImGuiKey_T, false))
+            {
+                tempFilter = ItemFilter(selectedEntity->type(), selectedEntity->name());
+                addingFilter = true;
+                tempName = "";
+                renderer::globals::IsInputBlocked = true;
+            }
+        }
+
+        if (addingFilter)
+        {
+            ImGui::Begin("Input name", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+            ImGui::PushItemWidth(500);
+            ImGui::InputText("Section", &tempSectionName);
+			if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0))
+				ImGui::SetKeyboardFocusHere(0);
+            ImGui::InputText("Name", &tempName);
+            ImGui::PopItemWidth();
+            ImGui::End();
+
+            if (ImGui::IsKeyPressed(ImGuiKey_Enter, false))
+            {
+                simpleFilters[fmt::format("{}::{}", tempSectionName, tempName)] = tempFilter;
+                renderer::globals::IsInputBlocked = false;
+                addingFilter = false;
+                updated = true;
+            }
+
+			if (ImGui::IsKeyPressed(ImGuiKey_Escape, false))
+			{
+				renderer::globals::IsInputBlocked = false;
+				addingFilter = false;
+			}
+        }
+
+        if (updated)
+            FiltetItemPickerSave();
+	}
+
 
 	void Debug::DrawMain()
 	{
@@ -623,5 +828,6 @@ namespace cheat::feature
         }
 	}
 
-}
 
+
+}

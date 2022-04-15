@@ -38,7 +38,7 @@ namespace cheat::feature::esp::render
 		if (!app::Behaviour_get_isActiveAndEnabled(reinterpret_cast<app::Behaviour*>(camera), nullptr))
 			return;
 
-		auto loadingManager = GetSingleton(LoadingManager);
+		auto loadingManager = GET_SINGLETON(LoadingManager);
 		if (loadingManager == nullptr || !app::LoadingManager_IsLoaded(loadingManager, nullptr))
 			return;
 
@@ -125,29 +125,52 @@ namespace cheat::feature::esp::render
 		return { vec3.x, vec3.y };
 	}
 
+	static app::Bounds GetEntityMinBounds(game::Entity* entity, float minSize)
+	{
+		auto entityPosition = entity->relativePosition();
+		return { entityPosition, { minSize, minSize, minSize } };
+	}
+
+	static app::Bounds GetObjectBounds(game::Entity* entity)
+	{
+		auto& esp = ESP::GetInstance();
+		auto gameObject = entity->gameObject();
+		if (gameObject == nullptr)
+			return GetEntityMinBounds(entity, esp.m_MinSize);
+
+		SAFE_BEGIN();
+
+		// Sometimes occurs access violation in UnityPlayer.dll
+		// Callow: Have no idea what to do with it unless just catch exception
+		auto bounds = app::Utils_1_GetBounds(nullptr, gameObject, nullptr);
+		if (bounds.m_Extents.x < esp.m_MinSize &&
+			bounds.m_Extents.y < esp.m_MinSize &&
+			bounds.m_Extents.z < esp.m_MinSize)
+			bounds.m_Extents = { esp.m_MinSize, esp.m_MinSize, esp.m_MinSize };
+
+		auto min = bounds.m_Center - bounds.m_Extents;
+		auto max = bounds.m_Center + bounds.m_Extents;
+
+		// When monster or some another object in a far from player - they disappear
+		// And for some reason game object extends
+		if ((min.x == 0 || min.y == 0 || min.z == 0))
+			return GetEntityMinBounds(entity, 1);
+
+		return bounds;
+		
+		SAFE_ERROR();
+		
+		return GetEntityMinBounds(entity, esp.m_MinSize);
+		
+		SAFE_END();
+	}
+
 	static std::optional<BoxScreen> GetEntityScreenBox(game::Entity* entity)
 	{
 		if (s_Camera == nullptr)
 			return {};
 
-		auto& esp = ESP::GetInstance();
-
-		auto gameObject = app::BaseEntity_get_gameObject(entity->raw(), nullptr);
-
-		app::Bounds bounds;
-		if (gameObject == nullptr)
-		{
-			auto entityPosition = entity->relativePosition();
-			bounds = { entityPosition, { esp.m_MinSize, esp.m_MinSize, esp.m_MinSize } };
-		}
-		else
-		{
-			bounds = app::Utils_1_GetBounds(nullptr, gameObject, nullptr);
-			if (bounds.m_Extents.x < esp.m_MinSize &&
-				bounds.m_Extents.y < esp.m_MinSize &&
-				bounds.m_Extents.z < esp.m_MinSize)
-				bounds.m_Extents = { esp.m_MinSize, esp.m_MinSize, esp.m_MinSize };
-		}
+		app::Bounds bounds = GetObjectBounds(entity);
 
 		auto min = bounds.m_Center - bounds.m_Extents;
 		auto max = bounds.m_Center + bounds.m_Extents;

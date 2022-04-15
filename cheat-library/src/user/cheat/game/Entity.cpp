@@ -140,4 +140,90 @@ namespace cheat::game
 		return m_IsLoaded;
 	}
 
+	app::VCBaseMove* Entity::moveComponent()
+	{
+		if (!isLoaded())
+			return nullptr;
+
+		SAFE_BEGIN();
+		app::BaseEntity_GetMoveComponent_1(m_RawEntity, *app::BaseEntity_GetMoveComponent_1__MethodInfo);
+		SAFE_ERROR();
+		return nullptr;
+		SAFE_END();
+	}
+
+	app::LCBaseCombat* Entity::combat()
+	{
+		if (!isLoaded())
+			return nullptr;
+		
+		SAFE_BEGIN();
+		app::BaseEntity_GetBaseCombat(m_RawEntity, *app::BaseEntity_GetBaseCombat__MethodInfo);
+		SAFE_ERROR();
+		return nullptr;
+		SAFE_END();
+	}
+
+	app::Rigidbody* Entity::rigidbody()
+	{
+		if (!isLoaded())
+			return nullptr;
+
+		SAFE_BEGIN();
+		app::BaseEntity_GetRigidbody(m_RawEntity, nullptr);
+		SAFE_ERROR();
+		return nullptr;
+		SAFE_END();
+	}
+
+	app::GameObject* Entity::gameObject()
+	{
+		if (!isLoaded())
+			return nullptr;
+
+		SAFE_BEGIN();
+		app::BaseEntity_get_gameObject(m_RawEntity, nullptr);
+		SAFE_ERROR();
+		return nullptr;
+		SAFE_END();
+	}
+
+	app::Vector3 Entity::forward()
+	{
+		if (m_RawEntity == nullptr)
+			return {};
+
+		return app::BaseEntity_GetForward(m_RawEntity, nullptr);
+	}
+
+	app::Vector3 Entity::back()
+	{
+		return -forward();
+	}
+
+	app::Vector3 Entity::right()
+	{
+		if (m_RawEntity == nullptr)
+			return {};
+
+		return app::BaseEntity_GetRight(m_RawEntity, nullptr);
+	}
+
+	app::Vector3 Entity::left()
+	{
+		return -right();
+	}
+
+	app::Vector3 Entity::up()
+	{
+		if (m_RawEntity == nullptr)
+			return {};
+
+		return app::BaseEntity_GetUp(m_RawEntity, nullptr);
+	}
+
+	app::Vector3 Entity::down()
+	{
+		return -up();
+	}
 }

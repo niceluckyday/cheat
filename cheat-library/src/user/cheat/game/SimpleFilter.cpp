@@ -35,4 +35,10 @@ namespace cheat::game
 	{
 
 	}
+
+	SimpleFilter operator+(SimpleFilter lFilter, const SimpleFilter& rFilter)
+	{
+		lFilter.m_Names.insert(lFilter.m_Names.end(), rFilter.m_Names.begin(), rFilter.m_Names.end());
+		return lFilter;
+	}
 }

@@ -16,11 +16,11 @@ namespace cheat::game
 
 	std::vector<app::BaseEntity*> EntityManager::rawEntities()
 	{
-		auto entityManager = GetSingleton(EntityManager);
+		auto entityManager = GET_SINGLETON(EntityManager);
 		if (entityManager == nullptr)
 			return {};
 
-		auto entities = ToUniList(app::EntityManager_GetEntities(entityManager, nullptr), app::BaseEntity*);
+		auto entities = TO_UNI_LIST(app::EntityManager_GetEntities(entityManager, nullptr), app::BaseEntity*);
 		if (entities == nullptr)
 			return {};
 
@@ -73,7 +73,7 @@ namespace cheat::game
 
 	cheat::game::Entity* EntityManager::entity(uint32_t runtimeID)
 	{
-		auto entityManager = GetSingleton(EntityManager);
+		auto entityManager = GET_SINGLETON(EntityManager);
 		if (entityManager == nullptr)
 			return nullptr;
 
@@ -83,7 +83,7 @@ namespace cheat::game
 
 	cheat::game::Entity* EntityManager::avatar()
 	{
-		auto entityManager = GetSingleton(EntityManager);
+		auto entityManager = GET_SINGLETON(EntityManager);
 		if (entityManager == nullptr)
 			return s_EmptyEntity;
 
@@ -134,6 +134,7 @@ namespace cheat::game
 				return entry.first;
 
 			delete m_EntityCache[rawEntity].first;
+			m_EntityCache.erase(rawEntity);
 
 			entityDestroyEvent(entry.first);
 		}
@@ -154,7 +155,7 @@ namespace cheat::game
 
 	app::CameraEntity* EntityManager::mainCamera()
 	{
-		auto entityManager = GetSingleton(EntityManager);
+		auto entityManager = GET_SINGLETON(EntityManager);
 		if (entityManager == nullptr)
 			return nullptr;
 
