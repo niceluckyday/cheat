@@ -247,18 +247,18 @@ namespace cheat::feature
         if (ImGui::TreeNode("Entity List"))
         {
             auto entries = magic_enum::enum_entries<app::EntityType__Enum_1>();
-            for (const auto& [value, name] : entries)
+            for (const auto& [currentType, typeName] : entries)
             {
-                if (!typeFilters[int(value)])
+                if (!typeFilters[int(currentType)])
                     continue;
 
-                if (ImGui::TreeNode(name.data()))
+                if (ImGui::TreeNode(typeName.data()))
                 {
                     for (const auto& entity : entities) {
                         if (entity == nullptr)
                             continue;
 
-                        if (!typeFilters[(int)entity->type()])
+                        if (entity->type() != currentType)
                             continue;
 
                         if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
