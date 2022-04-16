@@ -13,17 +13,25 @@
 
 #include "il2cpp-metadata-version.h"
 
-#define IsSingletonLoaded(className) (*app::Singleton_1_## className ##___TypeInfo != nullptr && *app::Singleton_1_ ## className ## __get_Instance__MethodInfo != nullptr)
-#define DoInitializeClass(className, expr) (il2cpp_runtime_class_init(reinterpret_cast<Il2CppClass*>(*app::## className ##__TypeInfo)), expr)
-#define GetSingleton(tpname) IsSingletonLoaded(tpname) ? reinterpret_cast<app:: ## tpname ## *>(app::Singleton_GetInstance(nullptr, *app::Singleton_1_ ## tpname ## __get_Instance__MethodInfo)) : nullptr
-#define GetStaticFields(tpname) DoInitializeClass(tpname, (*app::## tpname ##__TypeInfo)->static_fields)
+#define IS_SINGLETON_LOADED(className) (*app::Singleton_1_## className ##___TypeInfo != nullptr && *app::Singleton_1_ ## className ## __get_Instance__MethodInfo != nullptr)
+#define GET_SINGLETON(tpname) IS_SINGLETON_LOADED(tpname) ? reinterpret_cast<app:: ## tpname ## *>(app::Singleton_GetInstance(nullptr, *app::Singleton_1_ ## tpname ## __get_Instance__MethodInfo)) : nullptr
+
+#define INIT_ILCPP_CLASS(className, expr) (il2cpp_runtime_class_init(reinterpret_cast<Il2CppClass*>(*app::## className ##__TypeInfo)), expr)
+#define GET_STATIC_FIELDS(tpname) INIT_ILCPP_CLASS(tpname, (*app::## tpname ##__TypeInfo)->static_fields)
+
+#define SAFE_BEGIN() __try {
+#define SAFE_ERROR() } __except (EXCEPTION_EXECUTE_HANDLER) { \
+LOG_ERROR("Exception 0x%08x. This error are wrapped, so it doesn't cause crash. But if it do, please open issue on github.", GetExceptionCode());
+
+#define SAFE_END() }
+#define SAFE_EEND() SAFE_ERROR(); SAFE_END();
 
 #define COMMA ,
-#define ToUniCollection(field, collection) reinterpret_cast<collection*>(field)
-#define ToUniArray(field, type) ToUniCollection(field, UniArray<type>)
-#define ToUniList(field, type) ToUniCollection(field, UniList<type>)
-#define ToUniLinkList(field, type) ToUniCollection(field, UniLinkList<type>)
-#define ToUniDict(field, keyType, valueType) ToUniCollection(field, UniDict<keyType COMMA valueType>)
+#define TO_UNI_COLLECTION(field, collection) reinterpret_cast<collection*>(field)
+#define TO_UNI_ARRAY(field, type) TO_UNI_COLLECTION(field, UniArray<type>)
+#define TO_UNI_LIST(field, type) TO_UNI_COLLECTION(field, UniList<type>)
+#define TO_UNI_LINK_LIST(field, type) TO_UNI_COLLECTION(field, UniLinkList<type>)
+#define TO_UNI_DICT(field, keyType, valueType) TO_UNI_COLLECTION(field, UniDict<keyType COMMA valueType>)
 
 template<class ElementT>
 struct UniLinkList;
@@ -150,6 +158,16 @@ struct __declspec(align(8)) UniDict {
         return pairs;
     }
 };
+
+template<class T>
+T* CastTo(void* pObject, void* pClass)
+{
+	auto object = reinterpret_cast<app::Object*>(pObject);
+	if (object == nullptr || object->klass == nullptr || object->klass != pClass)
+		return nullptr;
+
+	return reinterpret_cast<T*>(object);
+}
 
 inline app::Vector3 operator + (const app::Vector3& A, const app::Vector3& B)
 {

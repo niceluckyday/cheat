@@ -64,18 +64,18 @@ namespace cheat::feature
 
 	std::unordered_set<app::SceneTreeObject*> GetTreeSet()
 	{
-		auto scenePropManager = GetSingleton(ScenePropManager);
+		auto scenePropManager = GET_SINGLETON(ScenePropManager);
 		if (scenePropManager == nullptr)
 			return {};
 
-		auto scenePropDict = ToUniDict(scenePropManager->fields._scenePropDict, int32_t, app::Object*);
+		auto scenePropDict = TO_UNI_DICT(scenePropManager->fields._scenePropDict, int32_t, app::Object*);
 		if (scenePropDict == nullptr)
 			return {};
 
 		std::unordered_set<app::SceneTreeObject*> trees;
 		for (auto& [id, propObject] : scenePropDict->pairs())
 		{
-			auto tree = game::CastTo<app::SceneTreeObject>(propObject, *app::SceneTreeObject__TypeInfo);
+			auto tree = CastTo<app::SceneTreeObject>(propObject, *app::SceneTreeObject__TypeInfo);
 			if (tree == nullptr)
 				continue;
 
@@ -127,8 +127,8 @@ namespace cheat::feature
 			return;
 
 		auto& manager = game::EntityManager::instance();
-		auto scenePropManager = GetSingleton(ScenePropManager);
-		auto networkManager = GetSingleton(NetworkManager_1);
+		auto scenePropManager = GET_SINGLETON(ScenePropManager);
+		auto networkManager = GET_SINGLETON(NetworkManager_1);
 		if (networkManager == nullptr || scenePropManager == nullptr)
 			return;
 

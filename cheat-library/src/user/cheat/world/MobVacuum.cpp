@@ -5,6 +5,7 @@
 #include <cheat/events.h>
 #include <cheat/game/EntityManager.h>
 #include <cheat/game/util.h>
+#include <cheat/game/filters.h>
 
 namespace cheat::feature 
 {
@@ -57,13 +58,13 @@ namespace cheat::feature
     bool MobVacuum::IsEntityForVac(game::Entity* entity)
     {
 
-        if (!game::GetMonsterFilter().IsValid(entity))
+        if (!game::filters::combined::Monsters.IsValid(entity))
             return false;
 
         auto& manager = game::EntityManager::instance();
         if (m_OnlyTarget)
         {
-            auto monsterCombat = app::BaseEntity_GetBaseCombat(entity->raw(), *app::BaseEntity_GetBaseCombat__MethodInfo);
+            auto monsterCombat = entity->combat();
             if (monsterCombat == nullptr || monsterCombat->fields._attackTarget.runtimeID != manager.avatar()->runtimeID())
                 return false;
         }
@@ -80,9 +81,7 @@ namespace cheat::feature
         if (avatarEntity == nullptr)
             return {};
 
-        auto avatarRelPos = avatarEntity->relativePosition();
-        auto avatarForward = app::BaseEntity_GetForward(avatarEntity->raw(), nullptr);
-        return avatarRelPos + avatarForward * m_Distance;
+        return avatarEntity->relativePosition() + avatarEntity->forward() * m_Distance;
     }
 
     // Mob vacuum update function.
@@ -100,7 +99,7 @@ namespace cheat::feature
 
         auto& manager = game::EntityManager::instance();
         auto newPositions = new std::map<uint32_t, app::Vector3>();
-        for (const auto& monster : manager.entities(game::GetMonsterFilter()))
+        for (const auto& monster : manager.entities(game::filters::combined::Monsters))
         {
             if (!IsEntityForVac(monster))
                 continue;

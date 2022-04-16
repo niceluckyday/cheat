@@ -86,7 +86,7 @@ namespace cheat::feature
 		if (taskInfo.waitingThread)
 		{
 			taskInfo.waitingThread = false;
-			auto someSingleton = GetSingleton(LoadingManager);
+			auto someSingleton = GET_SINGLETON(LoadingManager);
 			app::LoadingManager_RequestSceneTransToPoint(someSingleton, taskInfo.sceneId, taskInfo.waypointId, nullptr, nullptr);
 		}
 	}
@@ -120,7 +120,7 @@ namespace cheat::feature
 		if (!mapBackground)
 			return false;
 
-		auto uimanager = GetSingleton(UIManager_1);
+		auto uimanager = GET_SINGLETON(UIManager_1);
 		if (uimanager == nullptr)
 			return false;
 

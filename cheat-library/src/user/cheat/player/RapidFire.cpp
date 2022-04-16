@@ -68,7 +68,7 @@ namespace cheat::feature
 		if (targetEntity == nullptr)
 			return m_Multiplier;
 
-		auto baseCombat = app::BaseEntity_GetBaseCombat(targetEntity->raw(), *app::BaseEntity_GetBaseCombat__MethodInfo);
+		auto baseCombat = targetEntity->combat();
 		if (baseCombat == nullptr)
 			return m_Multiplier;
 
@@ -88,7 +88,10 @@ namespace cheat::feature
 		if (m_OnePunch)
 		{
 			auto targetEntity = manager.entity(targetID);
-			auto baseCombat = app::BaseEntity_GetBaseCombat(targetEntity->raw(), *app::BaseEntity_GetBaseCombat__MethodInfo);
+			auto baseCombat = targetEntity->combat();
+			if (baseCombat == nullptr)
+				return 1;
+
 			app::Formula_CalcAttackResult(targetEntity, combat->fields._combatProperty_k__BackingField,
 				baseCombat->fields._combatProperty_k__BackingField,
 				attackResult, manager.avatar()->raw(), targetEntity->raw(), nullptr);
