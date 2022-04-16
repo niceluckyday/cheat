@@ -258,21 +258,31 @@ namespace cheat::feature
                 if (!showEmptyTypes && filteredEntities.size() == 0)
                     continue;
 
+                std::vector<cheat::game::Entity*> validEntities;
+                for (const auto& entity : filteredEntities)
+                {
+                    if (entity == nullptr)
+                        continue;
+
+                    if (entity->type() != currentType)
+                        continue;
+
+                    if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
+                        continue;
+
+                    if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
+                        continue;
+
+                    validEntities.push_back(entity);
+                }
+
+                if (validEntities.size() == 0)
+                    continue;
+
                 if (ImGui::TreeNode(typeName.data()))
                 {
-                    for (const auto& entity : filteredEntities) {
-                        if (entity == nullptr)
-                            continue;
-
-                        if (entity->type() != currentType)
-                            continue;
-
-                        if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
-                            continue;
-
-                        if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
-                            continue;
-
+                    for (const auto& entity : validEntities)
+                    {
                         uintptr_t id = entity->runtimeID();
                         if (ImGui::TreeNode(reinterpret_cast<void*>(id), "Entity 0x%p : %u; Dist %.3fm", entity, entity->runtimeID(), manager.avatar()->distance(entity)))
                         {
