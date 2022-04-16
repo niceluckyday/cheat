@@ -151,9 +151,9 @@ namespace util
         return selectedPath;
     }
 
-	bool GetResourceMemory(HINSTANCE hInstance, int resId, LPBYTE& pDest, DWORD& size)
+	bool LoadModuleResource(HINSTANCE hInstance, const char* name, const char* type, LPBYTE& pDest, DWORD& size)
 	{
-		HRSRC hResource = FindResource(hInstance, MAKEINTRESOURCE(resId), RT_RCDATA);
+		HRSRC hResource = FindResource(hInstance, name, type);
 		if (hResource) {
 			HGLOBAL hGlob = LoadResource(hInstance, hResource);
 			if (hGlob) {
@@ -166,6 +166,11 @@ namespace util
 		return false;
 	}
 
+	bool LoadModuleResource(HINSTANCE hInstance, int resId, const char* type, LPBYTE& pDest, DWORD& size)
+	{
+		return LoadModuleResource(hInstance, MAKEINTRESOURCE(resId), type, pDest, size);
+	}
+	
 	int64_t GetCurrentTimeMillisec()
 	{
 		return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();

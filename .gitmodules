@@ -16,3 +16,6 @@
 [submodule "cheat-library/vendor/json"]
 	path = cheat-base/vendor/json
 	url = https://github.com/nlohmann/json.git
+[submodule "cheat-base/vendor/stb"]
+	path = cheat-base/vendor/stb
+	url = https://github.com/nothings/stb.git

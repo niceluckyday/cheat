@@ -62,7 +62,7 @@ bool InitMetadata(HMODULE hModule)
 	// Getting signatures data from resources
 	LPBYTE pSignaturesData = nullptr;
 	DWORD signaturesSize = 0;
-	if (!util::GetResourceMemory(hModule, IDR_RCDATA2, pSignaturesData, signaturesSize))
+	if (!util::LoadModuleResource(hModule, IDR_RCDATA2, RT_RCDATA, pSignaturesData, signaturesSize))
 	{
 		LOG_LAST_ERROR("Failed to load signatures resource.");
 		return false;
@@ -73,7 +73,7 @@ bool InitMetadata(HMODULE hModule)
 	// Getting cached offsets
 	LPBYTE pCachedOffsetsData = nullptr;
 	DWORD cachedOffsetsSize = 0;
-	if (!util::GetResourceMemory(hModule, IDR_RCDATA3, pCachedOffsetsData, cachedOffsetsSize))
+	if (!util::LoadModuleResource(hModule, IDR_RCDATA3, RT_RCDATA, pCachedOffsetsData, cachedOffsetsSize))
 	{
 		LOG_LAST_ERROR("Failed to load cached offsets resource.");
 		return false;

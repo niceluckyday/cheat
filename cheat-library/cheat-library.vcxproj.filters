@@ -327,4 +327,12 @@
     <None Include="res\signatures.json" />
     <None Include="res\cached_offsets.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="icons\Anemoculus.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\icons\Anemoculus.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

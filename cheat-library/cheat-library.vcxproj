@@ -137,6 +137,10 @@
     <None Include="res\cached_offsets.json" />
     <None Include="res\signatures.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="icons\Anemoculus.png" />
+    <Image Include="res\icons\Anemoculus.png" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

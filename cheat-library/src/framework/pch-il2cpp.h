@@ -40,6 +40,7 @@
 #include <cheat-base/Patch.h>
 #include <cheat-base/Event.h>
 #include <cheat-base/render/gui-util.h>
+#include <cheat-base/render/ImageLoader.h>
 
 #include <imgui.h>
 

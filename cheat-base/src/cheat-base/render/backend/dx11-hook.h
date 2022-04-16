@@ -10,6 +10,9 @@ namespace backend
 {
 	void InitializeDX11Hooks();
 
+	// Thanks to https://github.com/ocornut/imgui/wiki/Image-Loading-and-Displaying-Examples#example-for-directx11-users
+	bool LoadTextureFromMemory(LPBYTE image_data, int image_width, int image_height, ID3D11ShaderResourceView** out_srv, int* out_width, int* out_height);
+
 	class DX11Events
 	{
 	public:
