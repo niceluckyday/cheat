@@ -8,20 +8,22 @@ namespace cheat::feature
     static void InLevelCutScenePageContext_UpdateView_Hook(app::InLevelCutScenePageContext* __this, MethodInfo* method);
 
     DialogSkip::DialogSkip() : Feature(),
-        NF(m_Enabled, "Auto talk", "AutoTalk", false)
+        NF(m_Enabled,               "Auto talk",                "AutoTalk", false),
+        NF(m_AutoSelectDialog,      "Auto select dialog",       "AutoTalk", true)
     {
         HookManager::install(app::InLevelCutScenePageContext_UpdateView, InLevelCutScenePageContext_UpdateView_Hook);
     }
 
     const FeatureGUIInfo& DialogSkip::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ "", "World", false };
+        static const FeatureGUIInfo info{ "Auto Talk", "World", true };
         return info;
     }
 
     void DialogSkip::DrawMain()
     {
         ConfigWidget(m_Enabled, "Automatically continue the dialog.");
+        ConfigWidget(m_AutoSelectDialog, "Automatically select dialogs.");
     }
 
     bool DialogSkip::NeedStatusDraw() const
@@ -31,7 +33,7 @@ namespace cheat::feature
 
     void DialogSkip::DrawStatus() 
     {
-        ImGui::Text("Auto talk");
+        ImGui::Text("Auto Talk: %s", m_AutoSelectDialog ? "Auto" : "Manual");
     }
 
     DialogSkip& DialogSkip::GetInstance()
@@ -52,14 +54,14 @@ namespace cheat::feature
 		if (talkDialog == nullptr)
 			return;
 
-		if (talkDialog->fields._inSelect)
+		if (talkDialog->fields._inSelect && m_AutoSelectDialog)
 		{
 			int32_t value = 0;
 			auto object = il2cpp_value_box((Il2CppClass*)*app::Int32__TypeInfo, &value);
 			auto notify = app::Notify_CreateNotify_1(nullptr, app::AJAPIFPNFKP__Enum::DialogSelectItemNotify, (app::Object*)object, nullptr);
 			app::TalkDialogContext_OnDialogSelectItem(talkDialog, &notify, nullptr);
 		}
-		else
+		else if (!talkDialog->fields._inSelect)
 			app::InLevelCutScenePageContext_OnFreeClick(context, nullptr);
     }
 
