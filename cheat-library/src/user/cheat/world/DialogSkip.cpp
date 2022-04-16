@@ -8,8 +8,8 @@ namespace cheat::feature
     static void InLevelCutScenePageContext_UpdateView_Hook(app::InLevelCutScenePageContext* __this, MethodInfo* method);
 
     DialogSkip::DialogSkip() : Feature(),
-        NF(m_Enabled, "Auto talk", "AutoTalk", false),
-        NF(m_AutoSelectDialog, "Auto select dialog", "AutoTalk", true),
+        NF(m_Enabled,               "Auto talk",                "AutoTalk", false),
+        NF(m_AutoSelectDialog,      "Auto select dialog",       "AutoTalk", true),
         NF(m_AutoSelectDialogIndex, "Auto select dialog index", "AutoTalk", 0)
     {
         HookManager::install(app::InLevelCutScenePageContext_UpdateView, InLevelCutScenePageContext_UpdateView_Hook);
@@ -24,8 +24,8 @@ namespace cheat::feature
     void DialogSkip::DrawMain()
     {
         ConfigWidget(m_Enabled, "Automatically continue the dialog.");
-        ConfigWidget(m_AutoSelectDialog, "Automatically Continue talk select dialogs.");
-        ConfigWidget(m_AutoSelectDialogIndex, 0, 0, 10, "which dialog index to select.");
+        ConfigWidget(m_AutoSelectDialog, "Automatically select dialogs.");
+        ConfigWidget(m_AutoSelectDialogIndex, 0, 0, 10, "Which dialog index to select.");
     }
 
     bool DialogSkip::NeedStatusDraw() const
@@ -35,7 +35,7 @@ namespace cheat::feature
 
     void DialogSkip::DrawStatus() 
     {
-        ImGui::Text("Auto talk [%s]", m_AutoSelectDialog ? "AutoSelect" : "Manual");
+        ImGui::Text("Auto Talk: %s, %d", m_AutoSelectDialog ? "Auto" : "Manual", m_AutoSelectDialogIndex.value()); 
     }
 
     DialogSkip& DialogSkip::GetInstance()
