@@ -30,6 +30,7 @@ namespace cheat::feature
 
 		config::field::BaseField<float> m_FontSize;
 		config::field::ColorField m_FontColor;
+		config::field::BaseField<bool> m_ApplyGlobalFontColor;
 
 		config::field::BaseField<float> m_MinSize;
 		config::field::BaseField<float> m_Range;
