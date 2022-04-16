@@ -392,7 +392,7 @@ namespace cheat::feature::esp::render
 		draw->AddLine(s_AvatarPosition, *screenPos, color);
 	}
 
-	static void DrawName(const Rect& boxRect, game::Entity* entity, const std::string& name)
+	static void DrawName(const Rect& boxRect, game::Entity* entity, const std::string& name, const ImColor& color)
 	{
 		auto& esp = ESP::GetInstance();
 		auto& manager = game::EntityManager::instance();
@@ -417,7 +417,7 @@ namespace cheat::feature::esp::render
 			text = name;
 
 		auto draw = ImGui::GetBackgroundDrawList();
-		draw->AddText(NULL, esp.m_FontSize, namePosition, esp.m_FontColor.value(), text.c_str());
+		draw->AddText(NULL, esp.m_FontSize, namePosition, color, text.c_str());
 	}
 
 	bool DrawEntity(const std::string& name, game::Entity* entity, const ImColor& color)
@@ -442,7 +442,12 @@ namespace cheat::feature::esp::render
 			DrawLine(entity, color);
 
 		if (esp.m_DrawName)
-			DrawName(rect, entity, name);
+		{
+			ImColor nameColor = color;
+			if (esp.m_ApplyGlobalFontColor)
+				nameColor = esp.m_FontColor;
+			DrawName(rect, entity, name, nameColor);
+		}
 
 		return HasCenter(rect);
 	}
