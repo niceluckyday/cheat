@@ -9,6 +9,8 @@ namespace cheat::feature
     {
 	public:
 		config::field::ToggleField m_Enabled;
+		config::field::ToggleField m_AutoSelectDialog;
+		config::field::BaseField<int> m_AutoSelectDialogIndex;
 
 		static DialogSkip& GetInstance();
 
