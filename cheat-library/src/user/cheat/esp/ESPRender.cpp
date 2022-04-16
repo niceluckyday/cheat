@@ -442,7 +442,12 @@ namespace cheat::feature::esp::render
 			DrawLine(entity, color);
 
 		if (esp.m_DrawName)
-			DrawName(rect, entity, name, color);
+		{
+			ImColor nameColor = color;
+			if (esp.m_ApplyGlobalFontColor)
+				nameColor = esp.m_FontColor;
+			DrawName(rect, entity, name, nameColor);
+		}
 
 		return HasCenter(rect);
 	}

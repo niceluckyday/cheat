@@ -185,8 +185,6 @@ namespace cheat::feature
 						continue;
 
 					ImColor entityColor = entry.m_Color;
-					if (m_ApplyGlobalFontColor)
-						entityColor = esp.m_FontColor;
 					esp::render::DrawEntity(entry.m_Name, entity, entityColor);
 					break;
 				}
