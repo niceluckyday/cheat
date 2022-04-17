@@ -106,11 +106,18 @@ namespace cheat::feature
 	static void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID, app::AttackResult* attackResult,
 		bool ignoreCheckCanBeHitInMP, MethodInfo* method)
 	{
+		SAFE_BEGIN();
 		auto& manager = game::EntityManager::instance();
 
 		auto avatarID = manager.avatar()->runtimeID();
 		auto attackerID = __this->fields._._.entityRuntimeID;
-		auto gadget = game::GetGadget(attackerID);
+		auto attackerEntity = manager.entity(attackerID, true);
+		auto gadget = game::GetGadget(attackerEntity);
+
+		//LOG_DEBUG("Entity: %u %u", attackerEntity->type(), attackerID);
+		delete attackerEntity;
+		//if (gadget)
+		//	LOG_DEBUG("Owner|Avatar: %u | %u", gadget->fields._ownerRuntimeID, avatarID);
 		if (attackerID != avatarID && (gadget == nullptr || gadget->fields._ownerRuntimeID != avatarID))
 			return callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
 
@@ -118,6 +125,9 @@ namespace cheat::feature
 		int attackCount = rapidFire.GetAttackCount(__this, targetID, attackResult);
 		for (int i = 0; i < attackCount; i++)
 			callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
+		SAFE_ERROR();
+		callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
+		SAFE_END();
 	}
 }
 

@@ -71,13 +71,16 @@ namespace cheat::game
 		return entityVector;
 	}
 
-	cheat::game::Entity* EntityManager::entity(uint32_t runtimeID)
+	cheat::game::Entity* EntityManager::entity(uint32_t runtimeID, bool unsafe)
 	{
 		auto entityManager = GET_SINGLETON(EntityManager);
 		if (entityManager == nullptr)
 			return nullptr;
 
 		auto rawEntity = app::EntityManager_GetValidEntity(entityManager, runtimeID, nullptr);
+		if (unsafe)
+			return new Entity(rawEntity);
+
 		return entity(rawEntity);
 	}
 
