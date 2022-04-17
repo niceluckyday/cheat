@@ -14,11 +14,11 @@ namespace cheat::game::filters
 
 	namespace chest
 	{
-		ChestFilter Common = ChestFilter(game::Chest::ChestRarity::Common);
-		ChestFilter Exquisite = ChestFilter(game::Chest::ChestRarity::Exquisite);
-		ChestFilter Precious = ChestFilter(game::Chest::ChestRarity::Precious);
-		ChestFilter Luxurious = ChestFilter(game::Chest::ChestRarity::Luxurious);
-		ChestFilter Remarkable = ChestFilter(game::Chest::ChestRarity::Remarkable);
+		ChestFilter CommonChest = ChestFilter(game::Chest::ChestRarity::Common);
+		ChestFilter ExquisiteChest = ChestFilter(game::Chest::ChestRarity::Exquisite);
+		ChestFilter PreciousChest = ChestFilter(game::Chest::ChestRarity::Precious);
+		ChestFilter LuxuriousChest = ChestFilter(game::Chest::ChestRarity::Luxurious);
+		ChestFilter RemarkableChest = ChestFilter(game::Chest::ChestRarity::Remarkable);
 
 		ChestFilter SLocked = ChestFilter(game::Chest::ChestState::Locked);
 		ChestFilter SInLock = ChestFilter(game::Chest::ChestState::InRock);
@@ -37,12 +37,12 @@ namespace cheat::game::filters
 		SimpleFilter Lumenspar = { app::EntityType__Enum_1::GatherObject, "CelestiaSplinter" };
 		SimpleFilter KeySigil = { app::EntityType__Enum_1::GatherObject, "RuneContent" };
 		SimpleFilter ShrineOfDepth = { app::EntityType__Enum_1::Gadget, "Temple" };
-		SimpleFilter TimeTrial = { app::EntityType__Enum_1::Field, "Challengestarter_" };
+		SimpleFilter TimeTrialChallenge = { app::EntityType__Enum_1::Field, "Challengestarter_" };
 	}
 
 	namespace guide
 	{
-		SimpleFilter Campfire = { app::EntityType__Enum_1::Gadget, "_FireBasin" };
+		SimpleFilter CampfireTorch = { app::EntityType__Enum_1::Gadget, "_FireBasin" };
 		SimpleFilter MysteriousCarvings = { app::EntityType__Enum_1::Gadget, "_ReginStatue" };
 		SimpleFilter PhaseGate = { app::EntityType__Enum_1::Field, "_TeleportHighway" };
 		SimpleFilter Pot = { app::EntityType__Enum_1::Gadget, "_Cooking_" };
@@ -94,7 +94,7 @@ namespace cheat::game::filters
 		SimpleFilter RuinGuard = { app::EntityType__Enum_1::Monster, "_Defender" };
 		SimpleFilter RuinHunter = { app::EntityType__Enum_1::Monster, "_Formathr" };
 		SimpleFilter RuinSentinel = { app::EntityType__Enum_1::Monster, std::vector<std::string> {"_Konungmathr", "_Apparatus" } };
-		SimpleFilter Shamanchurl = { app::EntityType__Enum_1::Monster, "_Shaman" };
+		SimpleFilter Samachurl = { app::EntityType__Enum_1::Monster, "_Shaman" };
 		SimpleFilter Slime = { app::EntityType__Enum_1::Monster, "_Slime" };
 		SimpleFilter Specter = { app::EntityType__Enum_1::Monster, "_Sylph" };
 		SimpleFilter TreasureHoarder = { app::EntityType__Enum_1::Monster, "_Thoarder" };
@@ -114,7 +114,7 @@ namespace cheat::game::filters
 		SimpleFilter Cecilia = { app::EntityType__Enum_1::GatherObject, "_Cecilia" };
 		SimpleFilter DandelionSeed = { app::EntityType__Enum_1::GatherObject, "_Plant_Dandelion" };
 		SimpleFilter Dendrobium = { app::EntityType__Enum_1::GatherObject, "_Blooddendrobe" };
-		SimpleFilter FlamingFlower = { app::EntityType__Enum_1::GatherObject, "_Flower_FireFlower" };
+		SimpleFilter FlamingFlowerStamen = { app::EntityType__Enum_1::GatherObject, "_Flower_FireFlower" };
 		SimpleFilter FluorescentFungus = { app::EntityType__Enum_1::GatherObject, "_Lampmushroom" };
 		SimpleFilter GlazeLily = { app::EntityType__Enum_1::GatherObject, "_GlazedLily" };
 		SimpleFilter Horsetail = { app::EntityType__Enum_1::GatherObject, "_HorseTail" };
@@ -123,7 +123,7 @@ namespace cheat::game::filters
 		SimpleFilter LotusHead = { app::EntityType__Enum_1::GatherObject, "_Lotus_Drop" };
 		SimpleFilter Matsutake = { app::EntityType__Enum_1::GatherObject, "_Food_Matsutake" };
 		SimpleFilter Mint = { app::EntityType__Enum_1::GatherObject, "_Plant_Mint" };
-		SimpleFilter MistFlower = { app::EntityType__Enum_1::GatherObject, "_Flower_IceFlower" };
+		SimpleFilter MistFlowerCorolla = { app::EntityType__Enum_1::GatherObject, "_Flower_IceFlower" };
 		SimpleFilter Mushroom = { app::EntityType__Enum_1::GatherObject, "_Plant_Mushroom" };
 		SimpleFilter NakuWeed = { app::EntityType__Enum_1::GatherObject, "_Howlgrass" };
 		SimpleFilter PhilanemoMushroom = { app::EntityType__Enum_1::GatherObject, "_WindmilHunter" };
@@ -163,8 +163,8 @@ namespace cheat::game::filters
 		SimpleFilter MistBubble = { app::EntityType__Enum_1::Platform, "_Suspiciousbubbles" };
 		SimpleFilter PirateHelm = { app::EntityType__Enum_1::Field, "_PirateHelm" };
 		SimpleFilter PressurePlate = { app::EntityType__Enum_1::Field, "Gear_Gravity" };
-		SimpleFilter SeelieLamp = { app::EntityType__Enum_1::Field, "Gear_SeeliaLamp" };
-		SimpleFilter Seelie = { app::EntityType__Enum_1::Platform, "Gear_Seelie" };
+		SimpleFilter SeelieLamp = { app::EntityType__Enum_1::Field,  };
+		SimpleFilter Seelie = { app::EntityType__Enum_1::Platform, std::vector<std::string> {"Gear_Seelie", "Gear_SeeliaLamp" } };
 		SimpleFilter SmallRockPile = { app::EntityType__Enum_1::Gadget, "_Property_Prop_RockFragment" };
 		SimpleFilter StormBarrier = { app::EntityType__Enum_1::Field, "_WindField_PushField" };
 		SimpleFilter SwordHilt = { app::EntityType__Enum_1::Field, "_WastedSword_" };

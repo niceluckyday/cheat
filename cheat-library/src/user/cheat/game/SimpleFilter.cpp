@@ -15,20 +15,14 @@ namespace cheat::game
 		if (m_Names.size() == 0)
 			return true;
 
-
-		bool found = false;
 		auto& name = entity->name();
 		for (auto& pattern : m_Names)
 		{
-			if (name.find(pattern) != -1) 
-			{
-				found = true;
-				break;
-			}
+			if (name.find(pattern) != -1)
+				return true;
 		}
 
-		if (!found)
-			return false;
+		return false;
 	}
 
 	SimpleFilter::SimpleFilter(app::EntityType__Enum_1 type, const std::vector<std::string>& names) : m_Names(names), m_Type(type)
