@@ -146,7 +146,7 @@ namespace cheat::game
 			return nullptr;
 
 		SAFE_BEGIN();
-		app::BaseEntity_GetMoveComponent_1(m_RawEntity, *app::BaseEntity_GetMoveComponent_1__MethodInfo);
+		return app::BaseEntity_GetMoveComponent_1(m_RawEntity, *app::BaseEntity_GetMoveComponent_1__MethodInfo);
 		SAFE_ERROR();
 		return nullptr;
 		SAFE_END();
@@ -158,7 +158,7 @@ namespace cheat::game
 			return nullptr;
 		
 		SAFE_BEGIN();
-		app::BaseEntity_GetBaseCombat(m_RawEntity, *app::BaseEntity_GetBaseCombat__MethodInfo);
+		return app::BaseEntity_GetBaseCombat(m_RawEntity, *app::BaseEntity_GetBaseCombat__MethodInfo);
 		SAFE_ERROR();
 		return nullptr;
 		SAFE_END();
@@ -170,7 +170,7 @@ namespace cheat::game
 			return nullptr;
 
 		SAFE_BEGIN();
-		app::BaseEntity_GetRigidbody(m_RawEntity, nullptr);
+		return app::BaseEntity_GetRigidbody(m_RawEntity, nullptr);
 		SAFE_ERROR();
 		return nullptr;
 		SAFE_END();
@@ -182,7 +182,7 @@ namespace cheat::game
 			return nullptr;
 
 		SAFE_BEGIN();
-		app::BaseEntity_get_gameObject(m_RawEntity, nullptr);
+		return app::BaseEntity_get_gameObject(m_RawEntity, nullptr);
 		SAFE_ERROR();
 		return nullptr;
 		SAFE_END();
