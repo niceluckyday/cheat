@@ -16,3 +16,6 @@
 [submodule "cheat-base/vendor/stb"]
 	path = cheat-base/vendor/stb
 	url = https://github.com/nothings/stb.git
+[submodule "cheat-base/vendor/imgui"]
+	path = cheat-base/vendor/imgui
+	url = https://github.com/CallowBlack/imgui-brightness-fix.git
