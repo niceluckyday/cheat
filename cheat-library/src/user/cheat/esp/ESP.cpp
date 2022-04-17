@@ -269,6 +269,7 @@ namespace cheat::feature
 			value = !value;
 			field.Check();
 			ImGui::FocusWindow(window);
+			memset(io.MouseDown, 0, sizeof(io.MouseDown));
 		}
 
 		const bool rmb_click = hovered && io.MouseClicked[ImGuiMouseButton_Right];
@@ -285,6 +286,7 @@ namespace cheat::feature
 			ImGui::OpenPopup("picker");
 			ImGui::SetNextWindowPos(g.LastItemData.Rect.GetBL() + ImVec2(0.0f, style.ItemSpacing.y));
 			opened_id = id;
+			memset(io.MouseDown, 0, sizeof(io.MouseDown));
 		}
 
 		if (ImGui::BeginPopup("picker"))
@@ -347,7 +349,7 @@ namespace cheat::feature
 
 		ImGui::SameLine();
 
-		return ;
+		return;
 	}
 
 	std::string SplitWords(const std::string& value)
@@ -504,6 +506,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(puzzle, PirateHelm);
 		ADD_FILTER_FIELD(puzzle, PressurePlate);
 		ADD_FILTER_FIELD(puzzle, Seelie);
+		ADD_FILTER_FIELD(puzzle, SeelieLamp);
 		ADD_FILTER_FIELD(puzzle, SmallRockPile);
 		ADD_FILTER_FIELD(puzzle, StormBarrier);
 		ADD_FILTER_FIELD(puzzle, SwordHilt);

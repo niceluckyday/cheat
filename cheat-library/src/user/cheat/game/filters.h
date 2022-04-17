@@ -166,6 +166,7 @@ namespace cheat::game::filters
 		extern SimpleFilter MistBubble;
 		extern SimpleFilter PirateHelm;
 		extern SimpleFilter PressurePlate;
+		extern SimpleFilter SeelieLamp;
 		extern SimpleFilter Seelie;
 		extern SimpleFilter SmallRockPile;
 		extern SimpleFilter StormBarrier;
