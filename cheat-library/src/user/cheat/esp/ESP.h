@@ -35,6 +35,8 @@ namespace cheat::feature
 		config::field::BaseField<float> m_MinSize;
 		config::field::BaseField<float> m_Range;
 
+		std::string m_Search;
+
 		static ESP& GetInstance();
 
 		const FeatureGUIInfo& GetGUIInfo() const override;
@@ -46,8 +48,8 @@ namespace cheat::feature
 		void DrawExternal() override;
 
 	private:
-		
-		using Filters = std::vector<std::pair<config::field::ESPItemField*, game::IEntityFilter*>>;
+		using FilterInfo = std::pair<config::field::ESPItemField*, game::IEntityFilter*>;
+		using Filters = std::vector<FilterInfo>;
 		using Sections = std::map<std::string, Filters>;
 
 		Sections m_Sections;

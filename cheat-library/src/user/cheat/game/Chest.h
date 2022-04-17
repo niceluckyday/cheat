@@ -15,7 +15,9 @@ namespace cheat::game
 			Chest,
 			Investigate,
 			BookPage,
-			BGM
+			BGM,
+			Flora,
+			QuestInteract
 		};
 
 		enum class ChestState

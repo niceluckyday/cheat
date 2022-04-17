@@ -507,3 +507,41 @@ bool ImGui::HotkeyWidget(const char* label, Hotkey& hotkey, const ImVec2& size)
 
 	return valueChanged;
 }
+
+// https://github.com/ocornut/imgui/issues/3798
+float CalcContrastRatio(const ImU32& backgroundColor, const ImU32& foreGroundColor)
+{
+    // real code https://www.w3.org/TR/WCAG20/#relativeluminancedef
+    /*const auto colBG = ImGui::ColorConvertU32ToFloat4(backgroundColor);
+    const auto colFG = ImGui::ColorConvertU32ToFloat4(foreGroundColor);
+    float lumBG = 0.2126 * colBG.x + 0.7152 * colBG.y + 0.0722 * colBG.z;
+    float lumFG = 0.2126 * colFG.x + 0.7152 * colFG.y + 0.0722 * colFG.z;
+    return (ImMax(lumBG, lumFG) + 0.05) / (ImMin(lumBG, lumFG) + 0.05);*/
+
+    float sa0 = ((backgroundColor >> IM_COL32_A_SHIFT) & 0xFF);
+    float sa1 = ((foreGroundColor >> IM_COL32_A_SHIFT) & 0xFF);
+    static float sr = 0.2126f / 255.0f;
+    static float sg = 0.7152f / 255.0f;
+    static float sb = 0.0722f / 255.0f;
+    const float contrastRatio =
+        (sr * sa0 * ((backgroundColor >> IM_COL32_R_SHIFT) & 0xFF) +
+            sg * sa0 * ((backgroundColor >> IM_COL32_G_SHIFT) & 0xFF) +
+            sb * sa0 * ((backgroundColor >> IM_COL32_B_SHIFT) & 0xFF) + 0.05f) /
+        (sr * sa1 * ((foreGroundColor >> IM_COL32_R_SHIFT) & 0xFF) +
+            sg * sa1 * ((foreGroundColor >> IM_COL32_G_SHIFT) & 0xFF) +
+            sb * sa1 * ((foreGroundColor >> IM_COL32_B_SHIFT) & 0xFF) + 0.05f);
+    if (contrastRatio < 1.0f)
+        return 1.0f / contrastRatio;
+    return contrastRatio;
+}
+
+bool ImGui::PushStyleColorWithContrast(ImU32 backGroundColor, ImGuiCol foreGroundColor, ImU32 invertedColor, float maxContrastRatio)
+{
+	const float contrastRatio = CalcContrastRatio(backGroundColor, GetColorU32(foreGroundColor));
+	if (contrastRatio < maxContrastRatio)
+	{
+		ImGui::PushStyleColor(foreGroundColor, invertedColor);
+		return true;
+	}
+	return false;
+}

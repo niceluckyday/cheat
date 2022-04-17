@@ -23,10 +23,12 @@ namespace cheat::feature
 		NF(m_FilterChestLuxurious , "Luxurious",    "ChestTeleport", true),
 		NF(m_FilterChestRemarkable, "Remarkable",   "ChestTeleport", true),
 
-		NF(m_FilterChest          , "Chests",        "ChestTeleport", true),
-		NF(m_FilterInvestigates   , "Investigates", "ChestTeleport", true),
-		NF(m_FilterBookPage       , "Book pages",   "ChestTeleport", true),
-		NF(m_FilterBGM            , "BGMs",         "ChestTeleport", true),
+		NF(m_FilterChest          , "Chests",       "ChestTeleport", true),
+		NF(m_FilterInvestigates   , "Investigates", "ChestTeleport", false),
+		NF(m_FilterBookPage       , "Book pages",   "ChestTeleport", false),
+		NF(m_FilterBGM            , "BGMs",         "ChestTeleport", false),
+		NF(m_FilterQuestInt       , "Quest Interaction",  "ChestTeleport", false),
+		NF(m_FilterFloraChest     , "Flora chest",  "ChestTeleport", false),
 
 		NF(m_FilterUnknown        , "Unknowns",     "ChestTeleport", true)
 	{ }
@@ -45,6 +47,8 @@ namespace cheat::feature
 			ConfigWidget(m_FilterInvestigates);
 			ConfigWidget(m_FilterBookPage);
 			ConfigWidget(m_FilterBGM);
+			ConfigWidget(m_FilterQuestInt);
+			ConfigWidget(m_FilterFloraChest);
 			ConfigWidget(m_FilterUnknown, "Detecting items, what is not filtered.\nYou can see these items below, if they exists.");
 
 			ImGui::Spacing();
@@ -172,6 +176,10 @@ namespace cheat::feature
 			return m_FilterBookPage ? FilterStatus::Valid : FilterStatus::Invalid;
 		case game::Chest::ItemType::BGM:
 			return m_FilterBGM ? FilterStatus::Valid : FilterStatus::Invalid;
+		case game::Chest::ItemType::QuestInteract:
+			return m_FilterQuestInt ? FilterStatus::Valid : FilterStatus::Invalid;
+		case game::Chest::ItemType::Flora:
+			return m_FilterFloraChest ? FilterStatus::Valid : FilterStatus::Invalid;
 		case game::Chest::ItemType::None:
 		default:
 			return FilterStatus::Unknown;

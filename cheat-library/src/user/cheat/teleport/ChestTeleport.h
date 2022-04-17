@@ -28,6 +28,8 @@ namespace cheat::feature
 		config::field::BaseField<bool> m_FilterInvestigates;
 		config::field::BaseField<bool> m_FilterBookPage;
 		config::field::BaseField<bool> m_FilterBGM;
+		config::field::BaseField<bool> m_FilterQuestInt;
+		config::field::BaseField<bool> m_FilterFloraChest;
 
 		config::field::BaseField<bool> m_FilterUnknown;
 

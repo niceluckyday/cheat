@@ -40,6 +40,7 @@ bool IsValueChanged(void* valuePtr, bool result);
 namespace ImGui
 {
 	bool HotkeyWidget(const char* label, Hotkey& hotkey, const ImVec2& size = ImVec2(0, 0));
+	bool PushStyleColorWithContrast(ImU32 backGroundColor, ImGuiCol foreGroundColor, ImU32 invertedColor, float maxContrastRatio);
 }
 
 float CalcWidth(const std::string_view& view);
