@@ -93,7 +93,7 @@ namespace cheat::feature::esp::render
 		return screenPos;
 	}
 
-	static struct Rect
+	struct Rect
 	{
 		float xMin, xMax;
 		float yMin, yMax;
@@ -104,7 +104,7 @@ namespace cheat::feature::esp::render
 		}
 	};
 
-	static struct BoxScreen
+	struct BoxScreen
 	{
 		ImVec2 lowerTopLeft;
 		ImVec2 lowerTopRight;
@@ -419,7 +419,7 @@ namespace cheat::feature::esp::render
 			ImGuiContext& g = *GImGui;
 			ImFont* font = g.Font;
 			auto textSize = font->CalcTextSizeA(esp.m_FontSize, FLT_MAX, FLT_MAX, text.c_str());
-			namePosition.x -= (textSize.x / 2.0);
+			namePosition.x -= (textSize.x / 2.0f);
 			namePosition.y -= esp.m_FontSize;
 		}
 

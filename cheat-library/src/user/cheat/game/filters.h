@@ -16,11 +16,11 @@ namespace cheat::game::filters
 
 	namespace chest
 	{
-		extern ChestFilter Common;
-		extern ChestFilter Exquisite;
-		extern ChestFilter Precious;
-		extern ChestFilter Luxurious;
-		extern ChestFilter Remarkable;
+		extern ChestFilter CommonChest;
+		extern ChestFilter ExquisiteChest;
+		extern ChestFilter PreciousChest;
+		extern ChestFilter LuxuriousChest;
+		extern ChestFilter RemarkableChest;
 
 		extern ChestFilter SLocked;
 		extern ChestFilter SInLock;
@@ -39,12 +39,12 @@ namespace cheat::game::filters
 		extern SimpleFilter Lumenspar;
 		extern SimpleFilter KeySigil;
 		extern SimpleFilter ShrineOfDepth;
-		extern SimpleFilter TimeTrial;
+		extern SimpleFilter TimeTrialChallenge;
 	}
 
 	namespace guide
 	{
-		extern SimpleFilter Campfire;
+		extern SimpleFilter CampfireTorch;
 		extern SimpleFilter MysteriousCarvings;
 		extern SimpleFilter PhaseGate;
 		extern SimpleFilter Pot;
@@ -96,7 +96,7 @@ namespace cheat::game::filters
 		extern SimpleFilter RuinGuard;
 		extern SimpleFilter RuinHunter;
 		extern SimpleFilter RuinSentinel;
-		extern SimpleFilter Shamanchurl;
+		extern SimpleFilter Samachurl;
 		extern SimpleFilter Slime;
 		extern SimpleFilter Specter;
 		extern SimpleFilter TreasureHoarder;
@@ -116,7 +116,7 @@ namespace cheat::game::filters
 		extern SimpleFilter Cecilia;
 		extern SimpleFilter DandelionSeed;
 		extern SimpleFilter Dendrobium;
-		extern SimpleFilter FlamingFlower;
+		extern SimpleFilter FlamingFlowerStamen;
 		extern SimpleFilter FluorescentFungus;
 		extern SimpleFilter GlazeLily;
 		extern SimpleFilter Horsetail;
@@ -125,7 +125,7 @@ namespace cheat::game::filters
 		extern SimpleFilter LotusHead;
 		extern SimpleFilter Matsutake;
 		extern SimpleFilter Mint;
-		extern SimpleFilter MistFlower;
+		extern SimpleFilter MistFlowerCorolla;
 		extern SimpleFilter Mushroom;
 		extern SimpleFilter NakuWeed;
 		extern SimpleFilter PhilanemoMushroom;
@@ -166,7 +166,6 @@ namespace cheat::game::filters
 		extern SimpleFilter MistBubble;
 		extern SimpleFilter PirateHelm;
 		extern SimpleFilter PressurePlate;
-		extern SimpleFilter SeelieLamp;
 		extern SimpleFilter Seelie;
 		extern SimpleFilter SmallRockPile;
 		extern SimpleFilter StormBarrier;
