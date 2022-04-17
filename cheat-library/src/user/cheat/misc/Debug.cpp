@@ -712,6 +712,11 @@ namespace cheat::feature
 
 	void Debug::DrawExternal()
 	{
+		//auto draw = ImGui::GetBackgroundDrawList();
+
+        //std::string fpsString = fmt::format("{:.1f}/{:.1f}", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        //draw->AddText(ImVec2(100, 100), ImColor(0, 0, 0), fpsString.c_str());
+
         if (!filterItemPickerEnabled)
             return;
 

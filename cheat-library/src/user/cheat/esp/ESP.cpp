@@ -179,11 +179,6 @@ namespace cheat::feature
 
 	void ESP::DrawExternal()
 	{
-		auto draw = ImGui::GetBackgroundDrawList();
-
-		std::string fpsString = fmt::format("{:.1f}/{:.1f}", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		draw->AddText(ImVec2(100, 100), ImColor(0, 0, 0), fpsString.c_str());
-
 		auto& esp = ESP::GetInstance();
 		if (!esp.m_Enabled)
 			return;
