@@ -12,6 +12,7 @@ namespace cheat::game::filters
 
 		extern ChestFilter RadiantSpincrystal;
 		extern ChestFilter BookPage;
+		extern ChestFilter QuestInteract;
 	}
 
 	namespace chest

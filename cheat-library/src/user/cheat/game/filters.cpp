@@ -10,6 +10,7 @@ namespace cheat::game::filters
 		SimpleFilter Viewpoint = { app::EntityType__Enum_1::ViewPoint, "SkillObj_EmptyGadget" };
 		ChestFilter RadiantSpincrystal = ChestFilter(game::Chest::ItemType::BGM);
 		ChestFilter BookPage = ChestFilter(game::Chest::ItemType::BookPage);
+		ChestFilter QuestInteract = ChestFilter(game::Chest::ItemType::QuestInteract);
 	}
 
 	namespace chest

@@ -26,6 +26,10 @@ namespace cheat::game
 			m_ItemType = ItemType::BookPage;
 		else if (name().find("BGM") != std::string::npos)
 			m_ItemType = ItemType::BGM;
+		else if (name().find("FloraChest") != std::string::npos)
+			m_ItemType = ItemType::Flora;
+		else if (name().find("Quest_SiteInteract") != std::string::npos)
+			m_ItemType = ItemType::QuestInteract;
 		else
 			m_ItemType = ItemType::None;
 		
@@ -142,6 +146,8 @@ namespace cheat::game
 		case ItemType::Investigate:
 		case ItemType::BookPage:
 		case ItemType::BGM:
+		case ItemType::QuestInteract:
+		case ItemType::Flora:
 			return ImColor(104, 146, 163);
 		case ItemType::None:
 		default:
@@ -178,6 +184,10 @@ namespace cheat::game
 			return "BPG";
 		case ItemType::BGM:
 			return "BGM";
+		case ItemType::QuestInteract:
+			return "QUE";
+		case ItemType::Flora:
+			return "FLO";
 		case ItemType::None:
 		default:
 			return "UNK";

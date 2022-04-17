@@ -383,6 +383,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(collection, Viewpoint);
 		ADD_FILTER_FIELD(collection, RadiantSpincrystal);
 		ADD_FILTER_FIELD(collection, BookPage);
+		ADD_FILTER_FIELD(collection, QuestInteract);
 
 		ADD_FILTER_FIELD(chest, CommonChest);
 		ADD_FILTER_FIELD(chest, ExquisiteChest);
