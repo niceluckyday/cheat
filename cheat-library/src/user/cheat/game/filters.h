@@ -77,6 +77,7 @@ namespace cheat::game::filters
 		extern SimpleFilter ElectroCrystal;
 		extern SimpleFilter IronChunk;
 		extern SimpleFilter NoctilucousJade;
+		extern SimpleFilter MagicCrystal;
 		extern SimpleFilter StarSilver;
 		extern SimpleFilter WhiteIronChunk;
 	}
