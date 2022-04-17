@@ -249,7 +249,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(featured, Anemoculus);
 		ADD_FILTER_FIELD(featured, CrimsonAgate);
 		ADD_FILTER_FIELD(featured, Electroculus);
-		ADD_FILTER_FIELD(featured, Electrogranur);
+		ADD_FILTER_FIELD(featured, Electrogranum);
 		ADD_FILTER_FIELD(featured, Geoculus);
 		ADD_FILTER_FIELD(featured, ShrineOfDepth);
 		ADD_FILTER_FIELD(featured, TimeTrial);
@@ -277,7 +277,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(mineral, ArchaicStone);
 		ADD_FILTER_FIELD(mineral, CorLapis);
 		ADD_FILTER_FIELD(mineral, CrystalChunk);
-		ADD_FILTER_FIELD(mineral, CrystallMarrow);
+		ADD_FILTER_FIELD(mineral, CrystalMarrow);
 		ADD_FILTER_FIELD(mineral, ElectroCrystal);
 		ADD_FILTER_FIELD(mineral, IronChunk);
 		ADD_FILTER_FIELD(mineral, NoctilucousJade);
@@ -290,7 +290,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(monster, FatuiMirrorMaiden);
 		ADD_FILTER_FIELD(monster, FatuiSkirmisher);
 		ADD_FILTER_FIELD(monster, Geovishap);
-		ADD_FILTER_FIELD(monster, GeovishapHatchiling);
+		ADD_FILTER_FIELD(monster, GeovishapHatchling);
 		ADD_FILTER_FIELD(monster, Hilichurl);
 		ADD_FILTER_FIELD(monster, Mitachurl);
 		ADD_FILTER_FIELD(monster, Nobushi);
@@ -302,7 +302,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(monster, Specter);
 		ADD_FILTER_FIELD(monster, TreasureHoarder);
 		ADD_FILTER_FIELD(monster, UnusualHilichurl);
-		ADD_FILTER_FIELD(monster, Whooperflower);
+		ADD_FILTER_FIELD(monster, Whopperflower);
 		ADD_FILTER_FIELD(monster, WolvesOfTheRift);
 
 		ADD_FILTER_FIELD(plant, AmakumoFruit);
@@ -356,7 +356,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(puzzle, Geogranum);
 		ADD_FILTER_FIELD(puzzle, LargeRockPile);
 		ADD_FILTER_FIELD(puzzle, LightUpTilePuzzle);
-		ADD_FILTER_FIELD(puzzle, LightingStrikeProbe);
+		ADD_FILTER_FIELD(puzzle, LightningStrikeProbe);
 		ADD_FILTER_FIELD(puzzle, MistBubble);
 		ADD_FILTER_FIELD(puzzle, PirateHelm);
 		ADD_FILTER_FIELD(puzzle, PressurePlate);

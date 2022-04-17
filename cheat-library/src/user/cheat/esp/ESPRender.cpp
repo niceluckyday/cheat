@@ -396,6 +396,14 @@ namespace cheat::feature::esp::render
 	{
 		auto& esp = ESP::GetInstance();
 		auto& manager = game::EntityManager::instance();
+		
+		std::string text;
+		if (esp.m_DrawName && esp.m_DrawDistance)
+			text = fmt::format("{} | {:.1f}m", name, manager.avatar()->distance(entity));
+		else if (esp.m_DrawDistance)
+			text = fmt::format("{:.1f}m", manager.avatar()->distance(entity));
+		else
+			text = name;
 
 		ImVec2 namePosition;
 		if (!boxRect.empty())
@@ -406,15 +414,14 @@ namespace cheat::feature::esp::render
 			if (!screenPos)
 				return;
 			namePosition = *screenPos;
+
+			// Might need to be aware of performance hit but there shouldn't be any.
+			ImGuiContext& g = *GImGui;
+			ImFont* font = g.Font;
+			auto textSize = font->CalcTextSizeA(esp.m_FontSize, FLT_MAX, FLT_MAX, text.c_str());
+			namePosition.x -= (textSize.x / 2.0);
+			namePosition.y -= esp.m_FontSize;
 		}
-		
-		std::string text;
-		if (esp.m_DrawName && esp.m_DrawDistance)
-			text = fmt::format("{} | {:.1f}m", name, manager.avatar()->distance(entity));
-		else if (esp.m_DrawDistance)
-			text = fmt::format("{:.1f}m", manager.avatar()->distance(entity));
-		else
-			text = name;
 
 		auto draw = ImGui::GetBackgroundDrawList();
 		draw->AddText(NULL, esp.m_FontSize, namePosition, color, text.c_str());
