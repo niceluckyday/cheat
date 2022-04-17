@@ -32,7 +32,7 @@ namespace cheat::game::filters
 		SimpleFilter Anemoculus = { app::EntityType__Enum_1::GatherObject, "WindCrystalShell" };
 		SimpleFilter CrimsonAgate = { app::EntityType__Enum_1::GatherObject, "Prop_Essence" };
 		SimpleFilter Electroculus = { app::EntityType__Enum_1::GatherObject, "Prop_ElectricCrystal" };
-		SimpleFilter Electrogranur = { app::EntityType__Enum_1::Gadget, "ThunderSeedCreate" };
+		SimpleFilter Electrogranum = { app::EntityType__Enum_1::Gadget, "ThunderSeedCreate" };
 		SimpleFilter Geoculus = { app::EntityType__Enum_1::GatherObject, "RockCrystalShell" };
 		SimpleFilter Lumenspar = { app::EntityType__Enum_1::GatherObject, "CelestiaSplinter" };
 		SimpleFilter KeySigil = { app::EntityType__Enum_1::GatherObject, "RuneContent" };
@@ -71,7 +71,7 @@ namespace cheat::game::filters
 		SimpleFilter ArchaicStone = { app::EntityType__Enum_1::GatherObject, "AncientOre" };
 		SimpleFilter CorLapis = { app::EntityType__Enum_1::GatherObject, "_ElementRock" };
 		SimpleFilter CrystalChunk = { app::EntityType__Enum_1::GatherObject, "_OreCrystal" };
-		SimpleFilter CrystallMarrow = { app::EntityType__Enum_1::GatherObject, "_Crystalizedmarrow" };
+		SimpleFilter CrystalMarrow = { app::EntityType__Enum_1::GatherObject, "_Crystalizedmarrow" };
 		SimpleFilter ElectroCrystal = { app::EntityType__Enum_1::GatherObject, "_OreElectricRock" };
 		SimpleFilter IronChunk = { app::EntityType__Enum_1::GatherObject, "_OreStone" };
 		SimpleFilter NoctilucousJade = { app::EntityType__Enum_1::GatherObject, "_OreNightBerth" };
@@ -87,7 +87,7 @@ namespace cheat::game::filters
 		SimpleFilter FatuiMirrorMaiden = { app::EntityType__Enum_1::Monster, "_Fatuus_Maiden" };
 		SimpleFilter FatuiSkirmisher = { app::EntityType__Enum_1::Monster, "_Skirmisher" };
 		SimpleFilter Geovishap = { app::EntityType__Enum_1::Monster, "_Drake" };
-		SimpleFilter GeovishapHatchiling = { app::EntityType__Enum_1::Monster, "_Wyrm" };
+		SimpleFilter GeovishapHatchling = { app::EntityType__Enum_1::Monster, "_Wyrm" };
 		SimpleFilter Hilichurl = { app::EntityType__Enum_1::Monster, "_Hili" };
 		SimpleFilter Mitachurl = { app::EntityType__Enum_1::Monster, "_Brute" };
 		SimpleFilter Nobushi = { app::EntityType__Enum_1::Monster, "_Samurai" };
@@ -99,7 +99,7 @@ namespace cheat::game::filters
 		SimpleFilter Specter = { app::EntityType__Enum_1::Monster, "_Sylph" };
 		SimpleFilter TreasureHoarder = { app::EntityType__Enum_1::Monster, "_Thoarder" };
 		SimpleFilter UnusualHilichurl = { app::EntityType__Enum_1::Monster, "_Hili_Wei" };
-		SimpleFilter Whooperflower = { app::EntityType__Enum_1::Monster, "_Mimik" };
+		SimpleFilter Whopperflower = { app::EntityType__Enum_1::Monster, "_Mimik" };
 		SimpleFilter WolvesOfTheRift = { app::EntityType__Enum_1::Monster, "_Hound_Kanis" };
 	}
 
@@ -159,7 +159,7 @@ namespace cheat::game::filters
 		SimpleFilter Geogranum = { app::EntityType__Enum_1::Field, "_Rockstraight_" };
 		SimpleFilter LargeRockPile = { app::EntityType__Enum_1::Gadget, "_StonePile_" };
 		SimpleFilter LightUpTilePuzzle = { app::EntityType__Enum_1::Field, "_TwinStoryFloor" };
-		SimpleFilter LightingStrikeProbe = { app::EntityType__Enum_1::Gadget, "_MagneticGear" };
+		SimpleFilter LightningStrikeProbe = { app::EntityType__Enum_1::Gadget, "_MagneticGear" };
 		SimpleFilter MistBubble = { app::EntityType__Enum_1::Platform, "_Suspiciousbubbles" };
 		SimpleFilter PirateHelm = { app::EntityType__Enum_1::Field, "_PirateHelm" };
 		SimpleFilter PressurePlate = { app::EntityType__Enum_1::Field, "Gear_Gravity" };

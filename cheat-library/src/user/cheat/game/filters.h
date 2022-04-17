@@ -34,7 +34,7 @@ namespace cheat::game::filters
 		extern SimpleFilter Anemoculus;
 		extern SimpleFilter CrimsonAgate;
 		extern SimpleFilter Electroculus;
-		extern SimpleFilter Electrogranur;
+		extern SimpleFilter Electrogranum;
 		extern SimpleFilter Geoculus;
 		extern SimpleFilter Lumenspar;
 		extern SimpleFilter KeySigil;
@@ -73,7 +73,7 @@ namespace cheat::game::filters
 		extern SimpleFilter ArchaicStone;
 		extern SimpleFilter CorLapis;
 		extern SimpleFilter CrystalChunk;
-		extern SimpleFilter CrystallMarrow;
+		extern SimpleFilter CrystalMarrow;
 		extern SimpleFilter ElectroCrystal;
 		extern SimpleFilter IronChunk;
 		extern SimpleFilter NoctilucousJade;
@@ -89,7 +89,7 @@ namespace cheat::game::filters
 		extern SimpleFilter FatuiMirrorMaiden;
 		extern SimpleFilter FatuiSkirmisher;
 		extern SimpleFilter Geovishap;
-		extern SimpleFilter GeovishapHatchiling;
+		extern SimpleFilter GeovishapHatchling;
 		extern SimpleFilter Hilichurl;
 		extern SimpleFilter Mitachurl;
 		extern SimpleFilter Nobushi;
@@ -101,7 +101,7 @@ namespace cheat::game::filters
 		extern SimpleFilter Specter;
 		extern SimpleFilter TreasureHoarder;
 		extern SimpleFilter UnusualHilichurl;
-		extern SimpleFilter Whooperflower;
+		extern SimpleFilter Whopperflower;
 		extern SimpleFilter WolvesOfTheRift;
 	}
 
@@ -161,7 +161,7 @@ namespace cheat::game::filters
 		extern SimpleFilter Geogranum;
 		extern SimpleFilter LargeRockPile;
 		extern SimpleFilter LightUpTilePuzzle;
-		extern SimpleFilter LightingStrikeProbe;
+		extern SimpleFilter LightningStrikeProbe;
 		extern SimpleFilter MistBubble;
 		extern SimpleFilter PirateHelm;
 		extern SimpleFilter PressurePlate;
