@@ -75,6 +75,7 @@ namespace cheat::game::filters
 		SimpleFilter ElectroCrystal = { app::EntityType__Enum_1::GatherObject, "_OreElectricRock" };
 		SimpleFilter IronChunk = { app::EntityType__Enum_1::GatherObject, "_OreStone" };
 		SimpleFilter NoctilucousJade = { app::EntityType__Enum_1::GatherObject, "_OreNightBerth" };
+		SimpleFilter MagicalCrystalChunk = { app::EntityType__Enum_1::GatherObject, "_OreMagicCrystal" };
 		SimpleFilter StarSilver = { app::EntityType__Enum_1::GatherObject, "_OreMoonMeteor" };
 		SimpleFilter WhiteIronChunk = { app::EntityType__Enum_1::GatherObject, "_OreMetal" };
 	}
