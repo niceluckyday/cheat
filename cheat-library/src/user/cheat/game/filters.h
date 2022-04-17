@@ -159,6 +159,7 @@ namespace cheat::game::filters
 		extern SimpleFilter ElementalMonument;
 		extern SimpleFilter FloatingAnemoSlime;
 		extern SimpleFilter Geogranum;
+		extern SimpleFilter GeoPuzzle;
 		extern SimpleFilter LargeRockPile;
 		extern SimpleFilter LightUpTilePuzzle;
 		extern SimpleFilter LightningStrikeProbe;
