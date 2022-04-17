@@ -423,7 +423,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(mineral, ElectroCrystal);
 		ADD_FILTER_FIELD(mineral, IronChunk);
 		ADD_FILTER_FIELD(mineral, NoctilucousJade);
-		ADD_FILTER_FIELD(mineral, MagicCrystal);
+		ADD_FILTER_FIELD(mineral, MagicalCrystalChunk);
 		ADD_FILTER_FIELD(mineral, StarSilver);
 		ADD_FILTER_FIELD(mineral, WhiteIronChunk);
 
