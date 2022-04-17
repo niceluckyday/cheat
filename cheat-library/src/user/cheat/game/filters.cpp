@@ -156,8 +156,9 @@ namespace cheat::game::filters
 		SimpleFilter ElectroSeelie = { app::EntityType__Enum_1::Platform, "_ElectricSeelie" };
 		SimpleFilter ElementalMonument = { app::EntityType__Enum_1::Gear, "_ElemTablet" };
 		SimpleFilter FloatingAnemoSlime = { app::EntityType__Enum_1::Platform, "_WindSlime" };
-		SimpleFilter Geogranum = { app::EntityType__Enum_1::Field, "_Rockstraight_" };
-		SimpleFilter LargeRockPile = { app::EntityType__Enum_1::Gadget, "_StonePile_" };
+		SimpleFilter Geogranum = { app::EntityType__Enum_1::Gadget, "_Property_Prop_RockFragment" };
+		SimpleFilter GeoPuzzle = { app::EntityType__Enum_1::Field, "_Rockstraight_" };
+		SimpleFilter LargeRockPile = { app::EntityType__Enum_1::Gadget, "_StonePile_02" };
 		SimpleFilter LightUpTilePuzzle = { app::EntityType__Enum_1::Field, "_TwinStoryFloor" };
 		SimpleFilter LightningStrikeProbe = { app::EntityType__Enum_1::Gadget, "_MagneticGear" };
 		SimpleFilter MistBubble = { app::EntityType__Enum_1::Platform, "_Suspiciousbubbles" };
@@ -165,7 +166,7 @@ namespace cheat::game::filters
 		SimpleFilter PressurePlate = { app::EntityType__Enum_1::Field, "Gear_Gravity" };
 		SimpleFilter SeelieLamp = { app::EntityType__Enum_1::Field, "Gear_SeeliaLamp" };
 		SimpleFilter Seelie = { app::EntityType__Enum_1::Platform, "Gear_Seelie" };
-		SimpleFilter SmallRockPile = { app::EntityType__Enum_1::Gadget, "_Property_Prop_RockFragment" };
+		SimpleFilter SmallRockPile = { app::EntityType__Enum_1::Gadget, "_StonePile_01" };
 		SimpleFilter StormBarrier = { app::EntityType__Enum_1::Field, "_WindField_PushField" };
 		SimpleFilter SwordHilt = { app::EntityType__Enum_1::Field, "_WastedSword_" };
 		SimpleFilter TorchPuzzle = { app::EntityType__Enum_1::Gadget, "_ImmortalFire" };

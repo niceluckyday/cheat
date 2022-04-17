@@ -354,6 +354,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(puzzle, ElementalMonument);
 		ADD_FILTER_FIELD(puzzle, FloatingAnemoSlime);
 		ADD_FILTER_FIELD(puzzle, Geogranum);
+		ADD_FILTER_FIELD(puzzle, GeoPuzzle)
 		ADD_FILTER_FIELD(puzzle, LargeRockPile);
 		ADD_FILTER_FIELD(puzzle, LightUpTilePuzzle);
 		ADD_FILTER_FIELD(puzzle, LightningStrikeProbe);
