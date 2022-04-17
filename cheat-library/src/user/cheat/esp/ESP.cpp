@@ -73,6 +73,7 @@ namespace cheat::feature
 		
 		EndGroupPanel();
 
+		ImGui::Text("How to use item filters:\n\tLeft Mouse Button (LMB) - toggle visibility.\n\tRMB - change color.");
 		ImGui::InputText("Search filters", &m_Search);
 
 		for (auto& [section, filters] : m_Sections)
@@ -253,8 +254,10 @@ namespace cheat::feature
 
 		ImGui::ItemSize(total_bb, style.FramePadding.y);
 		if (!ImGui::ItemAdd(total_bb, id))
+		{
+			ImGui::SameLine();
 			return;
-
+		}
 		const bool hovered = ImGui::ItemHoverable(frame_bb, id);
 		if (hovered)
 		{
