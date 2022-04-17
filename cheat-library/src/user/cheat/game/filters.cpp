@@ -158,7 +158,7 @@ namespace cheat::game::filters
 		SimpleFilter FloatingAnemoSlime = { app::EntityType__Enum_1::Platform, "_WindSlime" };
 		SimpleFilter Geogranum = { app::EntityType__Enum_1::Gadget, "_Property_Prop_RockFragment" };
 		SimpleFilter GeoPuzzle = { app::EntityType__Enum_1::Field, "_Rockstraight_" };
-		SimpleFilter LargeRockPile = { app::EntityType__Enum_1::Gadget, "_StonePile_02" };
+		SimpleFilter LargeRockPile = { app::EntityType__Enum_1::Gadget, std::vector<std::string> {"_ElecRocks", "_StonePile_02" } };
 		SimpleFilter LightUpTilePuzzle = { app::EntityType__Enum_1::Field, "_TwinStoryFloor" };
 		SimpleFilter LightningStrikeProbe = { app::EntityType__Enum_1::Gadget, "_MagneticGear" };
 		SimpleFilter MistBubble = { app::EntityType__Enum_1::Platform, "_Suspiciousbubbles" };
