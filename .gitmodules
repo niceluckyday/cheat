@@ -1,6 +1,3 @@
-[submodule "cheat-base/vendor/imgui"]
-	path = cheat-base/vendor/imgui
-	url = https://github.com/ocornut/imgui.git
 [submodule "cheat-base/vendor/simpleIni"]
 	path = cheat-base/vendor/simpleIni
 	url = https://github.com/brofield/simpleini.git
