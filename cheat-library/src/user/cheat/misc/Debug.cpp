@@ -203,6 +203,8 @@ namespace cheat::feature
 
         static bool useObjectNameFilter = false;
         static char objectNameFilter[128] = {};
+        static float radius = 0.0f;
+        static bool useRadius = false;
 
         static bool checkOnlyShells = false;
         static bool showEmptyTypes = false;
@@ -219,6 +221,16 @@ namespace cheat::feature
         if (!useObjectNameFilter)
             ImGui::EndDisabled();
 
+
+        ImGui::Checkbox("Filter by radius", &useRadius);
+        if (!useRadius)
+            ImGui::BeginDisabled();
+            
+        ImGui::SameLine();
+        ImGui::SliderFloat("Radius", &radius, 0.0f, 100.0f);
+        if (!useRadius)
+            ImGui::EndDisabled();
+            
         ImGui::Checkbox("Show empty types", &showEmptyTypes);
         ImGui::Checkbox("Show only oculi", &checkOnlyShells);
 
@@ -272,6 +284,13 @@ namespace cheat::feature
 
                     if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
                         continue;
+                    
+                    if (useRadius)
+                    {
+                        auto dist  = manager.avatar()->distance(entity);
+                        if (dist > radius)
+                            continue;
+                    }
 
                     validEntities.push_back(entity);
                 }
