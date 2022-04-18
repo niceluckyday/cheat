@@ -121,7 +121,8 @@ namespace cheat::feature
 		
 		for (auto& info : filters)
 		{
-			//m0nrkel : We making a string copies and lowercase them to avoid case sensitive search
+			//m0nkrel : We making a string copies and lowercase them to avoid case sensitive search
+			//Yes, it's shitcode and maybe it break something, but it works.
 			std::string name = info.first->value().m_Name;
 			std::transform(name.begin(), name.end(), name.begin(), ::tolower);
 			std::string search = m_Search;
