@@ -180,6 +180,34 @@ static bool IsKeyReleased(ImGuiKey key)
 	return false;
 }
 
+void FixModKey(short& legacyKey)
+{
+	// Can cause incorrect input when both keys pressed, need to fix!
+	switch (legacyKey)
+	{
+
+	case VK_CONTROL:
+	{
+		if (IsKeyDown(ImGuiKey_LeftCtrl))
+			legacyKey = VK_LCONTROL;
+		else if (IsKeyDown(ImGuiKey_RightCtrl))
+			legacyKey = VK_RCONTROL;
+
+		return;
+	}
+	case VK_SHIFT:
+	{
+		if (IsKeyDown(ImGuiKey_LeftShift))
+			legacyKey = VK_LSHIFT;
+		else if (IsKeyDown(ImGuiKey_RightShift))
+			legacyKey = VK_RSHIFT;
+
+		return;
+	}
+
+	}
+}
+
 Hotkey::Hotkey()
 {
 
@@ -250,6 +278,8 @@ bool Hotkey::IsPressed() const
 
 bool Hotkey::IsPressed(short legacyKey) const
 {
+	FixModKey(legacyKey);
+
     if (keys.count(legacyKey) == 0)
         return false;
 
