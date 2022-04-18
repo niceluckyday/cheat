@@ -121,7 +121,12 @@ namespace cheat::feature
 		
 		for (auto& info : filters)
 		{
-			if (info.first->value().m_Name.find(m_Search) != std::string::npos) 
+			//m0nrkel : We making a string copies and lowercase them to avoid case sensitive search
+			std::string name = info.first->value().m_Name;
+			std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+			std::string search = m_Search;
+			std::transform(search.begin(), search.end(), search.begin(), ::tolower);
+			if (name.find(search) != std::string::npos) 
 				validFilters.push_back(&info);
 		}
 
