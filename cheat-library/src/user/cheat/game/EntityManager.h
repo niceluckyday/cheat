@@ -27,7 +27,7 @@ namespace cheat::game
 		std::vector<Entity*> entities(Validator validator);
 
 		Entity* entity(app::BaseEntity*);
-		Entity* entity(uint32_t runtimeID);
+		Entity* entity(uint32_t runtimeID, bool unsafe = false);
 
 		Entity* avatar();
 
