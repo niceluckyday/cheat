@@ -21,7 +21,7 @@
 
 #define SAFE_BEGIN() __try {
 #define SAFE_ERROR() } __except (EXCEPTION_EXECUTE_HANDLER) { \
-LOG_ERROR("Exception 0x%08x. This error are wrapped, so it doesn't cause crash. But if it do, please open issue on github.", GetExceptionCode());
+LOG_WARNING("Exception 0x%08x.", GetExceptionCode());
 
 #define SAFE_END() }
 #define SAFE_EEND() SAFE_ERROR(); SAFE_END();

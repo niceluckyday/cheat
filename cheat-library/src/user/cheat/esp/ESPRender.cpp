@@ -49,6 +49,7 @@ namespace cheat::feature::esp::render
 	{
 		UPDATE_DELAY(1000);
 
+		SAFE_BEGIN();
 		s_ResolutionScale = { 0, 0 };
 
 		if (s_Camera == nullptr)
@@ -74,6 +75,7 @@ namespace cheat::feature::esp::render
 
 		s_ResolutionScale.x = static_cast<float>(screenWidth) / static_cast<float>(pixelWidth);
 		s_ResolutionScale.y = static_cast<float>(screenHeight) / static_cast<float>(pixelHeight);
+		SAFE_EEND();
 	}
 
 	static app::Vector3 WorldToScreenPosScalled(const app::Vector3& relPosition)
@@ -367,10 +369,12 @@ namespace cheat::feature::esp::render
 
 	static void UpdateAvatarPosition()
 	{
+		SAFE_BEGIN();
 		auto& manager = game::EntityManager::instance();
 		auto avatarPos = WorldToScreenPosScalled(manager.avatar()->relativePosition());
 
 		s_AvatarPosition = ImVec2(avatarPos.x, avatarPos.y);
+		SAFE_EEND();
 	}
 
 	static std::optional<ImVec2> GetEntityScreenPos(game::Entity* entity)
@@ -429,6 +433,7 @@ namespace cheat::feature::esp::render
 
 	bool DrawEntity(const std::string& name, game::Entity* entity, const ImColor& color)
 	{
+		SAFE_BEGIN();
 		auto& esp = ESP::GetInstance();
 
 		Rect rect;
@@ -457,6 +462,9 @@ namespace cheat::feature::esp::render
 		}
 
 		return HasCenter(rect);
+		SAFE_ERROR();
+		return false;
+		SAFE_END();
 	}
 
 	void PrepareFrame()
