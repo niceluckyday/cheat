@@ -100,34 +100,57 @@ namespace cheat::feature
 		return countOfAttacks;
 	}
 
+	bool IsAvatarOwner(game::Entity entity)
+	{
+		auto& manager = game::EntityManager::instance();
+		auto avatarID = manager.avatar()->runtimeID();
+
+		while (entity.isGadget())
+		{
+			game::Entity temp = entity;
+			entity = game::Entity(app::GadgetEntity_GetOwnerEntity(reinterpret_cast<app::GadgetEntity*>(entity.raw()), nullptr));
+			if (entity.runtimeID() == avatarID)
+				return true;
+		} 
+
+		return false;
+		
+	}
+
+	bool IsAttackByAvatar(game::Entity& attacker)
+	{
+		if (attacker.raw() == nullptr)
+			return false;
+
+		auto& manager = game::EntityManager::instance();
+		auto avatarID = manager.avatar()->runtimeID();
+		auto attackerID = attacker.runtimeID();
+
+		return attackerID == avatarID || IsAvatarOwner(attacker);
+	}
+
 	// Raises when any entity do hit event.
 	// Just recall attack few times (regulating by combatProp)
 	// It's not tested well, so, I think, anticheat can detect it.
 	static void LCBaseCombat_DoHitEntity_Hook(app::LCBaseCombat* __this, uint32_t targetID, app::AttackResult* attackResult,
 		bool ignoreCheckCanBeHitInMP, MethodInfo* method)
 	{
-		SAFE_BEGIN();
-		auto& manager = game::EntityManager::instance();
-
-		auto avatarID = manager.avatar()->runtimeID();
-		auto attackerID = __this->fields._._.entityRuntimeID;
-		auto attackerEntity = manager.entity(attackerID, true);
-		auto gadget = game::GetGadget(attackerEntity);
-
-		//LOG_DEBUG("Entity: %u %u", attackerEntity->type(), attackerID);
-		delete attackerEntity;
-		//if (gadget)
-		//	LOG_DEBUG("Owner|Avatar: %u | %u", gadget->fields._ownerRuntimeID, avatarID);
-		if (attackerID != avatarID && (gadget == nullptr || gadget->fields._ownerRuntimeID != avatarID))
+		//SAFE_BEGIN();
+		
+		auto attacker = game::Entity(__this->fields._._._entity);
+		if (!IsAttackByAvatar(attacker))
 			return callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
 
 		RapidFire& rapidFire = RapidFire::GetInstance();
 		int attackCount = rapidFire.GetAttackCount(__this, targetID, attackResult);
 		for (int i = 0; i < attackCount; i++)
 			callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
-		SAFE_ERROR();
-		callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
-		SAFE_END();
+		
+		//SAFE_ERROR();
+
+		//callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
+		//
+		//SAFE_END();
 	}
 }
 

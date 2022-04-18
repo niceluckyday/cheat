@@ -190,6 +190,7 @@ DO_APP_FUNC(0x013B9810, GameObject*, BaseEntity_get_rootGameObject, (BaseEntity*
 // Thanks to @RyujinZX
 DO_APP_FUNC(0x019C5D50, void, LCAbilityElement_ReduceModifierDurability, (LCAbilityElement* __this, int32_t modifierDurabilityIndex, float reduceDurability, Nullable_1_Single_ deltaTime, MethodInfo* method));
 
+DO_APP_FUNC(0x035D8B70, BaseEntity*, GadgetEntity_GetOwnerEntity, (GadgetEntity* __this, MethodInfo* method));
 
 // Singletons
 DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));
