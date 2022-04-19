@@ -9,17 +9,21 @@ namespace cheat::game
 		if (entity == nullptr)
 			return false;
 
-		if (m_Names.size() == 0)
-			return true;
 
 		if (m_Types.size() == 0)
 			return true;
-		
+
+		bool found = false;
 		for (auto& type : m_Types)
+		{
+			if (entity->type() == type)
 			{
-			if (type == entity->type())
-				return true;
-		}
+				found = true;
+				break;
+			}					
+		}if(found == false)
+			return false;
+		
 		
 		auto& name = entity->name();
 		for (auto& pattern : m_Names)
@@ -27,8 +31,7 @@ namespace cheat::game
 			if (name.find(pattern) != -1)
 				return true;
 		}
-
-	
+		
 
 		return false;
 	}

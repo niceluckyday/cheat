@@ -152,7 +152,7 @@ namespace cheat::game::filters
 		SimpleFilter AncientRime = { app::EntityType__Enum_1::Gadget, "_IceSolidBulk" };
 		SimpleFilter BakeDanuki = { app::EntityType__Enum_1::Monster, "Animal_Inu_Tanuki_" };
 		SimpleFilter BloattyFloatty = { app::EntityType__Enum_1::Field, "_Flower_PongPongTree_" };
-		AdvancedFilter CubeDevices = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::Gadget, app::EntityType__Enum_1::Platform }, std::vector<std::string> {"_ElecCubes", "_ElecSwitch" }};
+		AdvancedFilter CubeDevices = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::Gadget, app::EntityType__Enum_1::Platform }, std::vector<std::string> {"_ElecStone", "_ElecSwitch" }};
 		SimpleFilter EightStoneTablets = { app::EntityType__Enum_1::Gadget, "_HistoryBoard" };
 		SimpleFilter ElectricConduction = { app::EntityType__Enum_1::Gear, "_ElectricPowerSource" };
 		SimpleFilter ElectroSeelie = { app::EntityType__Enum_1::Platform, "_ElectricSeelie" };
