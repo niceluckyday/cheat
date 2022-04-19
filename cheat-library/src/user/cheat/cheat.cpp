@@ -33,6 +33,7 @@
 #include <cheat/teleport/OculiTeleport.h>
 
 #include <cheat/esp/ESP.h>
+#include <cheat/imap/InteractiveMap.h>
 
 #include <cheat/ILPatternScanner.h>
 
@@ -77,7 +78,8 @@ namespace cheat
 			FEAT_INST(OculiTeleport),
 			FEAT_INST(MapTeleport),
 
-			FEAT_INST(ESP)
+			FEAT_INST(ESP),
+			FEAT_INST(InteractiveMap)
 
 			});
 #undef FEAT_INST

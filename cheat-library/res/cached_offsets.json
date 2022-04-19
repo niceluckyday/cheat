@@ -322,7 +322,9 @@
         "BaseEntity_get_rootGameObject": "0",
         "BaseEntity_IsVisible": "0",
         "BaseEntity_IsInCamera": "0",
-        "GadgetEntity_GetOwnerEntity": "0"
+        "GadgetEntity_GetOwnerEntity": "0",
+        "InLevelMapPageContext_UpdateView": "0",
+        "UIManager_1_HasEnableMapCamera": "0"
       },
       "hash": {
         "checksum": 6469164240778644427,

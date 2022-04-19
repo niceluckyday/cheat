@@ -39,6 +39,7 @@
     <ClInclude Include="src\user\cheat\game\util.h" />
     <ClInclude Include="src\user\cheat\GenshinMisc.h" />
     <ClInclude Include="src\user\cheat\ILPatternScanner.h" />
+    <ClInclude Include="src\user\cheat\imap\InteractiveMap.h" />
     <ClInclude Include="src\user\cheat\misc\Debug.h" />
     <ClInclude Include="src\user\cheat\misc\Hotkeys.h" />
     <ClInclude Include="src\user\cheat\misc\ProtectionBypass.h" />
@@ -95,6 +96,7 @@
     <ClCompile Include="src\user\cheat\game\util.cpp" />
     <ClCompile Include="src\user\cheat\GenshinMisc.cpp" />
     <ClCompile Include="src\user\cheat\ILPatternScanner.cpp" />
+    <ClCompile Include="src\user\cheat\imap\InteractiveMap.cpp" />
     <ClCompile Include="src\user\cheat\misc\Debug.cpp" />
     <ClCompile Include="src\user\cheat\misc\Hotkeys.cpp" />
     <ClCompile Include="src\user\cheat\misc\ProtectionBypass.cpp" />

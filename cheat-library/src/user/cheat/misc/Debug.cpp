@@ -18,6 +18,7 @@
 // This module is for debug purpose, and... well.. it's shit coded ^)
 namespace cheat::feature 
 {
+
     static bool ActorAbilityPlugin_OnEvent_Hook(void* __this, app::BaseEvent* e, MethodInfo* method);
     void OnGameUpdate();
 
@@ -435,6 +436,18 @@ namespace cheat::feature
         auto levelPos = app::Miscs_GenLevelPos_1(nullptr, avatarPos, nullptr);
         ImGui::Text("Level position: %s", il2cppi_to_string(levelPos).c_str());
 
+
+        static app::Vector3 teleportPos = {};
+        ImGui::InputFloat3("Teleport position", reinterpret_cast<float*>(&teleportPos));
+        
+        auto& teleport = MapTeleport::GetInstance();
+        if (ImGui::Button("Map teleport"))
+            teleport.TeleportTo(app::Vector2 { teleportPos.x, teleportPos.y });
+        
+        ImGui::SameLine();
+
+        if (ImGui::Button("World teleport"))
+            teleport.TeleportTo(teleportPos);
 
         if (ImGui::TreeNode("Ground pos info"))
         {
@@ -1166,35 +1179,29 @@ namespace cheat::feature
 
 	void Debug::DrawMain()
 	{
-        if (ImGui::CollapsingHeader("Icons"))
-            DrawIcons();
-
-        if (ImGui::CollapsingHeader("Filter item picker"))
-            DrawFilterItemPicker();
-        
-        if (ImGui::CollapsingHeader("ScenePropManager"))
-            DrawScenePropManager();
-
-		if (ImGui::CollapsingHeader("Chest plugin", ImGuiTreeNodeFlags_None))
-			DrawChestPlugin();
-
-		if (ImGui::CollapsingHeader("Imgui focus test", ImGuiTreeNodeFlags_None))
-            DrawImGuiFocusTest();
-
-		if (ImGui::CollapsingHeader("Scene id info", ImGuiTreeNodeFlags_None))
-            DrawMapManager();
-
 		if (ImGui::CollapsingHeader("Entity manager", ImGuiTreeNodeFlags_None))
 			DrawEntitiesData();
 
 		if (ImGui::CollapsingHeader("Position", ImGuiTreeNodeFlags_None))
+		{
+			DrawMapManager();
 			DrawPositionInfo();
+		}
 
-		if (ImGui::CollapsingHeader("Interaction manager", ImGuiTreeNodeFlags_None))
-			DrawInteractionManagerInfo();
+        if (ImGui::CollapsingHeader("Icons"))
+            DrawIcons();
 
-		if (ImGui::CollapsingHeader("Map manager", ImGuiTreeNodeFlags_None))
-			DrawManagerData();
+        //if (ImGui::CollapsingHeader("Filter item picker"))
+        //    DrawFilterItemPicker();
+
+		//if (ImGui::CollapsingHeader("Chest plugin", ImGuiTreeNodeFlags_None))
+		//	DrawChestPlugin();
+
+		//if (ImGui::CollapsingHeader("Interaction manager", ImGuiTreeNodeFlags_None))
+		//	DrawInteractionManagerInfo();
+
+		//if (ImGui::CollapsingHeader("Map manager", ImGuiTreeNodeFlags_None))
+		//	DrawManagerData();
 	}
 
 	bool Debug::NeedInfoDraw() const
