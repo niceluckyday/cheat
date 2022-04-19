@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AdvancedFilter.h"
 #include "SimpleFilter.h"
 #include "ChestFilter.h"
 
@@ -154,7 +155,8 @@ namespace cheat::game::filters
 		extern SimpleFilter AncientRime;
 		extern SimpleFilter BakeDanuki;
 		extern SimpleFilter BloattyFloatty;
-		extern SimpleFilter CubeDevices;
+		extern AdvancedFilter CubeDevices;
+
 		extern SimpleFilter EightStoneTablets;
 		extern SimpleFilter ElectricConduction;
 		extern SimpleFilter ElectroSeelie;
