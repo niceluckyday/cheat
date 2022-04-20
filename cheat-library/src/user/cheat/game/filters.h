@@ -186,5 +186,6 @@ namespace cheat::game::filters
 		extern SimpleFilter Oculies;
 		extern SimpleFilter Chests;
 		extern SimpleFilter Monsters;
+		extern SimpleFilter Animals;
 	}
 }

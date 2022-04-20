@@ -25,6 +25,7 @@
 #include <cheat/world/DumbEnemies.h>
 #include <cheat/world/KillAura.h>
 #include <cheat/world/MobVacuum.h>
+#include <cheat/world/MobAnimalVacuum.h>
 #include <cheat/world/AutoTreeFarm.h>
 #include <cheat/world/AutoOreDestroy.h>
 
@@ -72,6 +73,7 @@ namespace cheat
 			FEAT_INST(DumbEnemies),
 			FEAT_INST(KillAura),
 			FEAT_INST(MobVacuum),
+			FEAT_INST(MobAnimalVacuum),
 
 			FEAT_INST(ChestTeleport),
 			FEAT_INST(OculiTeleport),
