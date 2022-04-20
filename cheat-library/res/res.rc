@@ -56,6 +56,11 @@ IDR_RCDATA2             RCDATA                  "signatures.json"
 
 IDR_RCDATA3             RCDATA                  "cached_offsets.json"
 
+MapEnkanomiyaData       RCDATA                  "map_enkanomiya.json"
+
+MapTeyvatData           RCDATA                  "map_teyvat.json"
+
+MapUndegroundMinesData  RCDATA                  "map_undeground_mines.json"
 
 /////////////////////////////////////////////////////////////////////////////
 //
