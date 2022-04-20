@@ -156,7 +156,7 @@ namespace cheat::game::filters
 		AdvancedFilter CubeDevices = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::Gadget, app::EntityType__Enum_1::Platform }, std::vector<std::string> {"_ElecStone", "_ElecSwitch" }};
 		SimpleFilter EightStoneTablets = { app::EntityType__Enum_1::Gadget, "_HistoryBoard" };
 		SimpleFilter ElectricConduction = { app::EntityType__Enum_1::Gear, "_ElectricPowerSource" };
-		SimpleFilter ElectroSeelie = { app::EntityType__Enum_1::Platform, "_ElectricSeelie" };
+		AdvancedFilter ElectroSeelie = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::Field, app::EntityType__Enum_1::Platform }, std::vector<std::string> {"_ElectricSeelie"} };
 		SimpleFilter ElementalMonument = { app::EntityType__Enum_1::Gear, "_ElemTablet" };
 		SimpleFilter FloatingAnemoSlime = { app::EntityType__Enum_1::Platform, "_WindSlime" };
 		SimpleFilter Geogranum = { app::EntityType__Enum_1::Gadget, "_Property_Prop_RockFragment" };

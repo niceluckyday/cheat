@@ -175,7 +175,7 @@ namespace cheat
 			ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus |
 			ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse;
 
-		if (!settings.m_StatusMove)
+		if (!settings.m_InfoMove)
 			flags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
 
 		auto checkLambda = [](const Feature* feat) { return feat->NeedInfoDraw(); };
