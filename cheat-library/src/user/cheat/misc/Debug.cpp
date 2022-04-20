@@ -813,7 +813,7 @@ namespace cheat::feature
                 tempFilter = ItemFilter(selectedEntity->type(), selectedEntity->name());
                 addingFilter = true;
                 tempName = "";
-                renderer::globals::IsInputBlocked = true;
+                renderer::SetInputLock(this, true);
             }
         }
 
@@ -831,14 +831,14 @@ namespace cheat::feature
             if (ImGui::IsKeyPressed(ImGuiKey_Enter, false))
             {
                 simpleFilters[fmt::format("{}::{}", tempSectionName, tempName)] = tempFilter;
-                renderer::globals::IsInputBlocked = false;
+                renderer::SetInputLock(this, false);
                 addingFilter = false;
                 updated = true;
             }
 
 			if (ImGui::IsKeyPressed(ImGuiKey_Escape, false))
 			{
-				renderer::globals::IsInputBlocked = false;
+                renderer::SetInputLock(this, false);
 				addingFilter = false;
 			}
         }

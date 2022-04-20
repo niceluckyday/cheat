@@ -7,6 +7,8 @@
 #include <cheat-base/config/field/EnumField.h>
 #include <cheat-base/config/field/ColorField.h>
 
+#define BLOCK_FOCUS() 
+
 bool ConfigWidget(const char* label, config::field::BaseField<bool>& field, const char* desc = nullptr);
 bool ConfigWidget(const char* label, config::field::BaseField<int>& field, int step = 1, int start = 0, int end = 0, const char* desc = nullptr);
 bool ConfigWidget(const char* label, config::field::BaseField<float>& field, float step = 1.0F, float start = 0, float end = 0, const char* desc = nullptr);

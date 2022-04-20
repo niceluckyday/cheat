@@ -54,7 +54,7 @@ namespace cheat
 
 		if (ImGui::Checkbox("Block key/mouse", &m_IsBlockingInput))
 		{
-			renderer::globals::IsInputBlocked = m_IsBlockingInput;
+			renderer::SetInputLock(this, m_IsBlockingInput);
 		}
 
 		if (ImGui::BeginListBox("##listbox 2", ImVec2(175, -FLT_MIN)))
@@ -252,7 +252,7 @@ namespace cheat
 
 	void CheatManager::CheckToggles(short key)
 	{
-		if (m_IsMenuShowed || renderer::globals::IsInputBlocked)
+		if (m_IsMenuShowed || renderer::IsInputLocked())
 			return;
 
 		for (auto& field : config::GetToggleFields())
@@ -270,7 +270,7 @@ namespace cheat
 	void CheatManager::ToggleMenuShow()
 	{
 		m_IsMenuShowed = !m_IsMenuShowed;
-		renderer::globals::IsInputBlocked = m_IsMenuShowed && m_IsBlockingInput;
+		renderer::SetInputLock(this, m_IsMenuShowed && m_IsBlockingInput);
 		menuToggled = true;
 	}
 
