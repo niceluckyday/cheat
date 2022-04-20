@@ -300,6 +300,74 @@ namespace cheat::feature
 
                 if (ImGui::TreeNode(typeName.data()))
                 {
+                    if (ImGui::Button("Teleport all to me"))
+                    {
+                        for (const auto &entity : validEntities)
+                        {
+                            entity->setRelativePosition(manager.avatar()->relativePosition());
+                        }
+                    }
+
+                    ImGui::SameLine();
+                    if (ImGui::Button("Teleport to closest"))
+                    {
+                        cheat::game::Entity *closest = nullptr;
+                        float closestDist = FLT_MAX;
+                        for (const auto &entity : validEntities)
+                        {
+                            auto dist = manager.avatar()->distance(entity);
+                            if (dist < closestDist)
+                            {
+                                closestDist = dist;
+                                closest = entity;
+                            }
+                        }
+
+                        if (closest != nullptr)
+                        {
+                            if (closestDist > 30.0f)
+                            {
+                                auto& mapTeleport = MapTeleport::GetInstance();
+                                mapTeleport.TeleportTo(closest->absolutePosition());
+                            }
+                            else
+                            {
+                                manager.avatar()->setRelativePosition(closest->relativePosition());
+                            }
+                        }
+                    }
+
+                    ImGui::SameLine();
+                    if (ImGui::Button("Teleport to farthest"))
+                    {
+                        cheat::game::Entity *farthest = nullptr;
+                        float farthestDist = 0.0f;
+                        for (const auto &entity : validEntities)
+                        {
+                            auto dist = manager.avatar()->distance(entity);
+                            if (dist > farthestDist)
+                            {
+                                farthestDist = dist;
+                                farthest = entity;
+                            }
+                        }
+
+                        if (farthest != nullptr)
+                        {
+                            auto& mapTeleport = MapTeleport::GetInstance();
+                            mapTeleport.TeleportTo(farthest->absolutePosition());
+                        }
+                    }
+
+                    ImGui::SameLine();
+                    if (ImGui::Button("Teleport all to void"))
+                    {
+                        for (const auto &entity : validEntities)
+                        {
+                            entity->setRelativePosition({0, 0, 0});
+                        }
+                    }
+                    
                     for (const auto& entity : validEntities)
                     {
                         uintptr_t id = entity->runtimeID();
