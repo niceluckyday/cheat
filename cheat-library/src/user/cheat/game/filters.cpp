@@ -183,5 +183,7 @@ namespace cheat::game::filters
 			featured::Geoculus + featured::Lumenspar + featured::KeySigil;
 		SimpleFilter Chests = { app::EntityType__Enum_1::Chest };
 		SimpleFilter Monsters = { app::EntityType__Enum_1::Monster };
+		SimpleFilter Animals = { app::EntityType__Enum_1::EnvAnimal };
+
 	}
 }
