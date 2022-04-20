@@ -332,9 +332,6 @@
   <ItemGroup>
     <None Include="res\signatures.json" />
     <None Include="res\cached_offsets.json" />
-    <None Include="res\map_enkanomiya.json" />
-    <None Include="res\map_teyvat.json" />
-    <None Include="res\map_undeground_mines.json" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icons\Anemoculus.png">
@@ -343,8 +340,5 @@
     <Image Include="res\icons\Anemoculus.png">
       <Filter>Resource Files</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="res\api_map_json.txt" />
   </ItemGroup>
 </Project>
