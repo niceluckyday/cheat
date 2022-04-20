@@ -6,22 +6,17 @@
 
 #include <cheat-base/util.h>
 #include <cheat-base/render/backend/dx11-hook.h>
+#include <cheat-base/ResourceLoader.h>
 
 std::optional<ImageLoader::ImageData> ImageLoader::GetImage(const std::string& imageName, const char* type)
 {
 	if (s_Textures.count(imageName) > 0)
 		return s_Textures[imageName];
 
-	if (s_Handle == nullptr)
-	{
-		// LOG_WARNING("Handle not setted up, loading image failed: %s", imageName.c_str());
-		return {};
-	}
-
 	LPBYTE pDestination;
 	DWORD size;
 
-	bool loadResult = util::LoadModuleResource(s_Handle, imageName.c_str(), type, pDestination, size);
+	bool loadResult = ResourceLoader::LoadEx(imageName.c_str(), type, pDestination, size);
 	if (!loadResult)
 	{
 		// LOG_WARNING("Failed to load image: %s from resources", imageName);
@@ -56,9 +51,4 @@ std::optional<ImageLoader::ImageData> ImageLoader::GetImage(const std::string& i
 	imageData.size.y = height;
 	s_Textures[imageName] = imageData;
 	return imageData;
-}
-
-void ImageLoader::SetHandle(HMODULE handle)
-{
-	s_Handle = handle;
 }

@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClInclude Include="framework\framework.h" />
     <ClInclude Include="framework\pch.h" />
+    <ClInclude Include="src\cheat-base\ResourceLoader.h" />
     <ClInclude Include="src\cheat-base\config\field\ColorField.h" />
     <ClInclude Include="src\cheat-base\config\field\EnumField.h" />
     <ClInclude Include="src\cheat-base\Hotkey.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="vendor\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\cheat-base\ResourceLoader.cpp" />
     <ClCompile Include="src\cheat-base\config\field\ColorField.cpp" />
     <ClCompile Include="src\cheat-base\Hotkey.cpp" />
     <ClCompile Include="src\cheat-base\render\ImageLoader.cpp" />

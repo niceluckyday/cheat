@@ -18,8 +18,6 @@ namespace util
 	std::optional<std::string> GetOrSelectPath(CSimpleIni& ini, const char* section, const char* name, const char* friendName, const char* filter);
 
 	std::string GetLastErrorAsString(DWORD errorId = 0);
-	bool LoadModuleResource(HINSTANCE hInstance, const char* name, const char* type, LPBYTE& pDest, DWORD& size);
-	bool LoadModuleResource(HINSTANCE hInstance, int resId, const char* type, LPBYTE& pDest, DWORD& size);
 	int64_t GetCurrentTimeMillisec();
 
 	std::vector<std::string> StringSplit(const std::string& delimiter, const std::string& content);
