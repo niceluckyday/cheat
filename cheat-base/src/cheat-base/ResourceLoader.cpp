@@ -8,7 +8,7 @@ std::string ResourceLoader::Load(const char* name, const char* type)
 	DWORD size = 0;
 	if (!LoadEx(name, type, pData, size))
 	{
-		LOG_LAST_ERROR("Failed to load signatures resource.");
+		LOG_LAST_ERROR("Failed to load resource %s", name);
 		return {};
 	}
 

@@ -20,7 +20,7 @@ namespace util
     std::string GetLastErrorAsString(DWORD errorId /*= 0*/)
 	{
         //Get the error message ID, if any.
-        DWORD errorMessageID = errorId == 0 ? ::GetLastError() : 0;
+        DWORD errorMessageID = errorId == 0 ? ::GetLastError() : errorId;
         if (errorMessageID == 0)
         {
             return std::string(); //No error message has been recorded
