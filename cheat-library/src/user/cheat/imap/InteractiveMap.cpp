@@ -163,8 +163,6 @@ namespace cheat::feature
 		ConfigWidget(m_DynamicSize, "Icons will be sized dynamically depend to zoom size.");
         ConfigWidget(m_ShowUnlocked, "Show unlocked positions.");
         ConfigWidget(m_ShowHDIcons, "Show HD icons.");
-		ImGui::End();
-		
     }
 
     inline ImVec2 operator - (const ImVec2& A, const float k)
@@ -190,35 +188,46 @@ namespace cheat::feature
 		if (ImGui::Begin("Interactive map", nullptr, ImGuiWindowFlags_NoFocusOnAppearing))
 		{
 			DrawMenu();
+
+            ImGui::End();
 		}
 
 		if (!m_Enabled)
 			return;
 
         auto draw = ImGui::GetBackgroundDrawList();
+        std::string fpsString = fmt::format("{:.1f}/{:.1f}", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        draw->AddText(ImVec2(100, 100), ImColor(0, 0, 0), fpsString.c_str());
+
         auto size = m_DynamicSize ? m_IconSize * (relativeSizeX / s_MapViewRect.m_Width) : m_IconSize;
         auto radius = size / 2;
-
+        
         int i = 0;
         for (auto& [labelID, label]: m_ScenesData[3].labels)
         {
-            if (i == 10)
-                break;
-            i++;
 
 			auto image = ImageLoader::GetImage(m_ShowHDIcons ? "HD" + label.clearName : label.clearName);
 
 			for (auto& point : label.points)
 			{
 				auto screenPosition = LevelToMapScreenPos(point.pointLocation);
-				draw->AddCircleFilled(screenPosition, radius + 2, ImColor(59, 67, 84));
-				if (image)
+
+                ImVec2 imageStartPos = screenPosition - radius;
+                ImVec2 imageEndPos = screenPosition + radius;
+                if (imageEndPos.x < 0 || imageEndPos.y < 0 || 
+                    imageStartPos.x > app::Screen_get_width(nullptr, nullptr) || 
+                    imageStartPos.y > app::Screen_get_height(nullptr, nullptr))
+                    continue;
+
+				draw->AddCircleFilled(screenPosition, radius, ImColor(59, 67, 84));
+				
+                if (image)
 				{
-					draw->AddImageRounded(image->textureID, screenPosition - radius, screenPosition + radius,
+					draw->AddImageRounded(image->textureID, imageStartPos + 2.0f, imageEndPos - 2.0f,
 						ImVec2(0, 0), ImVec2(1, 1), ImColor(255, 255, 255), radius);
 				}
 
-				draw->AddCircle(screenPosition, radius + 2, ImColor(233, 175, 92));
+				draw->AddCircle(screenPosition, radius, ImColor(233, 175, 92));
 			}
         }
 	}
