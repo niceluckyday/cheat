@@ -64,7 +64,7 @@ static IDXGISwapChainPresent findDirect11Present()
 	// Main D3D11 Objects
 	ID3D11DeviceContext* pContext = nullptr;
 	ID3D11Device* pDevice = nullptr;
-	if (FAILED(D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, NULL, &featureLevel, 1,
+	if (FAILED(D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_WARP, NULL, NULL, &featureLevel, 1,
 		D3D11_SDK_VERSION, &swapChainDesc, &pSwapChain, &pDevice, NULL, &pContext)))
 	{
 		return nullptr;
