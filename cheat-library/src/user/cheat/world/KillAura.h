@@ -9,6 +9,8 @@ namespace cheat::feature
     {
 	public:
 		config::field::ToggleField m_Enabled;
+		config::field::ToggleField m_DamageMode;
+		config::field::ToggleField m_InstantDeathMode;
 		config::field::BaseField<bool> m_OnlyTargeted;
 		config::field::BaseField<float> m_Range;
 		config::field::BaseField<int> m_AttackDelay;

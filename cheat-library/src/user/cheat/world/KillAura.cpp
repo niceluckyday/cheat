@@ -11,14 +11,19 @@
 
 namespace cheat::feature 
 {
+	static void BaseMoveSyncPlugin_ConvertSyncTaskToMotionInfo_Hook(app::BaseMoveSyncPlugin* __this, MethodInfo* method);
+
     KillAura::KillAura() : Feature(),
         NF(m_Enabled,      "Kill aura",                 "KillAura", false),
+		NF(m_DamageMode,   "Damage mode",               "Damage mode", false),
+		NF(m_InstantDeathMode,   "Instant death",       "Instant death", false),
         NF(m_OnlyTargeted, "Only targeted",             "KillAura", true),
         NF(m_Range,        "Range",                     "KillAura", 15.0f),
         NF(m_AttackDelay,  "Attack delay time (in ms)", "KillAura", 100),
         NF(m_RepeatDelay,  "Repeat delay time (in ms)", "KillAura", 1000)
     { 
 		events::GameUpdateEvent += MY_METHOD_HANDLER(KillAura::OnGameUpdate);
+		HookManager::install(app::BaseMoveSyncPlugin_ConvertSyncTaskToMotionInfo, BaseMoveSyncPlugin_ConvertSyncTaskToMotionInfo_Hook);
 	}
 
     const FeatureGUIInfo& KillAura::GetGUIInfo() const
@@ -29,12 +34,21 @@ namespace cheat::feature
 
     void KillAura::DrawMain()
     {
-		ConfigWidget("Enabled", m_Enabled, "Enables kill aura.\n" \
-            "Kill aura cause crash damage for monster around you.");
-		ConfigWidget(m_Range, 0.1f, 5.0f, 100.0f);
-		ConfigWidget(m_OnlyTargeted, "If enabled, only monsters whose target at you will be affected by kill aura.");
-		ConfigWidget(m_AttackDelay, 1, 0, 1000, "Delay before attack next monster.");
-		ConfigWidget(m_RepeatDelay, 1, 100, 2000, "Delay before next attack same monster.");
+		ConfigWidget("Enable Kill Aura", m_Enabled, "Enables kill aura. Need to choose a mode to work.");
+		ImGui::SameLine();
+		ImGui::TextColored(ImColor(255, 165, 0, 255), "Choose any or both modes below.");
+		if (m_Enabled) {
+			ConfigWidget("Crash Damage Mode", m_DamageMode, "Kill aura cause crash damage for monster around you.");
+			ConfigWidget("Instant Death Mode", m_InstantDeathMode, "Kill aura will instagib any valid target.");
+			ImGui::SameLine();
+			ImGui::TextColored(ImColor(255, 165, 0, 255), "Can get buggy with bosses like PMA and Hydro Hypo.");
+			if (m_DamageMode || m_InstantDeathMode) {
+				ConfigWidget(m_Range, 0.1f, 5.0f, 100.0f);
+				ConfigWidget(m_OnlyTargeted, "If enabled, kill aura will only affect monsters targeting you.");
+				ConfigWidget(m_AttackDelay, 1, 0, 1000, "Delay before next crash damage.");
+				ConfigWidget(m_RepeatDelay, 1, 100, 2000, "Delay before crash damaging same monster.");
+			}
+		}
     }
 
     bool KillAura::NeedStatusDraw() const
@@ -65,7 +79,7 @@ namespace cheat::feature
 		static std::queue<game::Entity*> attackQueue;
 		static std::unordered_set<uint32_t> attackSet;
 
-		if (!m_Enabled)
+		if (!m_Enabled || !m_DamageMode)
 			return;
 
 		auto eventManager = GET_SINGLETON(EventManager);
@@ -148,6 +162,39 @@ namespace cheat::feature
 		monsterRepeatTimeMap[monster->runtimeID()] = currentTime + (int)m_RepeatDelay + distribution(generator);
 
 		nextAttackTime = currentTime + (int)m_AttackDelay + distribution(generator);
+	}
+
+	static void OnSyncTask(app::BaseMoveSyncPlugin* moveSync)
+	{
+		KillAura& killAura = KillAura::GetInstance();
+		if (!killAura.m_Enabled || !killAura.m_InstantDeathMode)
+			return;
+
+		auto& manager = game::EntityManager::instance();
+		auto avatarID = manager.avatar()->runtimeID();
+		auto entityID = moveSync->fields._.owner->fields.entityRuntimeID;
+
+		if (entityID == avatarID)
+			return;
+
+		auto monster = manager.entity(entityID);
+		auto combat = monster->combat();
+		if (combat == nullptr)
+			return;
+
+		if (killAura.m_OnlyTargeted && combat->fields._attackTarget.runtimeID != avatarID)
+			return;
+
+		if (manager.avatar()->distance(monster) > killAura.m_Range)
+			return;
+
+		moveSync->fields.moveSyncTask.position.x = 1000000.0f;
+	}
+
+	static void BaseMoveSyncPlugin_ConvertSyncTaskToMotionInfo_Hook(app::BaseMoveSyncPlugin* __this, MethodInfo* method)
+	{
+		OnSyncTask(__this);
+		callOrigin(BaseMoveSyncPlugin_ConvertSyncTaskToMotionInfo_Hook, __this, method);
 	}
 }
 
