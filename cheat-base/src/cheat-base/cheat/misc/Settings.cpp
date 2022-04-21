@@ -13,6 +13,9 @@ namespace cheat::feature
 		
 		NF(m_InfoMove,   "Move info window", "General", true),
 		NF(m_InfoShow,   "Show info window", "General", true),
+		
+		NF(m_FpsMove, "Move FPS indicator", "General", false),
+		NF(m_FpsShow, "Show FPS indicator", "General", true),
 
 		NF(m_ConsoleLogging, "Console logging", "General", true),
 		NF(m_FileLogging,    "File logging",    "General", false)
@@ -50,7 +53,7 @@ namespace cheat::feature
 			}
 		}
 		EndGroupPanel();
-
+		
 		BeginGroupPanel("Status window", ImVec2(-1, 0));
 		{
 			ConfigWidget(m_StatusShow);
@@ -62,6 +65,13 @@ namespace cheat::feature
 		{
 			ConfigWidget(m_InfoShow);
 			ConfigWidget(m_InfoMove, "Give able to move 'Info' window.");
+		}
+		EndGroupPanel();
+		
+		BeginGroupPanel("FPS indicator", ImVec2(-1, 0));
+		{
+			ConfigWidget(m_FpsShow);
+			ConfigWidget(m_FpsMove, "Give able to move 'FPS indicator' window.");
 		}
 		EndGroupPanel();
     }
