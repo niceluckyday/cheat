@@ -39,15 +39,15 @@ namespace cheat::feature
 		ImGui::TextColored(ImColor(255, 165, 0, 255), "Choose any or both modes below.");
 		if (m_Enabled) {
 			ConfigWidget("Crash Damage Mode", m_DamageMode, "Kill aura cause crash damage for monster around you.");
-			if (m_DamageMode) {
-				ConfigWidget(m_Range, 0.1f, 5.0f, 100.0f);
-				ConfigWidget(m_OnlyTargeted, "If enabled, crash damage will only affect monsters targeting you.");
-				ConfigWidget(m_AttackDelay, 1, 0, 1000, "Delay before next crash damage.");
-				ConfigWidget(m_RepeatDelay, 1, 100, 2000, "Delay before damaging same monster.");
-			}
 			ConfigWidget("Instant Death Mode", m_InstantDeathMode, "Kill aura will instagib any valid target.");
 			ImGui::SameLine();
 			ImGui::TextColored(ImColor(255, 165, 0, 255), "Can get buggy with bosses like PMA and Hydro Hypo.");
+			if (m_DamageMode || m_InstantDeathMode) {
+				ConfigWidget(m_Range, 0.1f, 5.0f, 100.0f);
+				ConfigWidget(m_OnlyTargeted, "If enabled, kill aura will only affect monsters targeting you.");
+				ConfigWidget(m_AttackDelay, 1, 0, 1000, "Delay before next crash damage.");
+				ConfigWidget(m_RepeatDelay, 1, 100, 2000, "Delay before crash damaging same monster.");
+			}
 		}
     }
 
@@ -79,7 +79,7 @@ namespace cheat::feature
 		static std::queue<game::Entity*> attackQueue;
 		static std::unordered_set<uint32_t> attackSet;
 
-		if (!m_Enabled)
+		if (!m_Enabled || !m_DamageMode)
 			return;
 
 		auto eventManager = GET_SINGLETON(EventManager);
@@ -164,16 +164,36 @@ namespace cheat::feature
 		nextAttackTime = currentTime + (int)m_AttackDelay + distribution(generator);
 	}
 
-	static void BaseMoveSyncPlugin_ConvertSyncTaskToMotionInfo_Hook(app::BaseMoveSyncPlugin* __this, MethodInfo* method)
+	static void OnSyncTask(app::BaseMoveSyncPlugin* moveSync)
 	{
 		KillAura& killAura = KillAura::GetInstance();
 		if (!killAura.m_Enabled || !killAura.m_InstantDeathMode)
 			return;
+
 		auto& manager = game::EntityManager::instance();
 		auto avatarID = manager.avatar()->runtimeID();
-		auto taskOwnerID = __this->fields._.owner->fields.entityRuntimeID;
-		if (avatarID != taskOwnerID)
-			__this->fields.moveSyncTask.position.x = 1000000.0f;
+		auto entityID = moveSync->fields._.owner->fields.entityRuntimeID;
+
+		if (entityID == avatarID)
+			return;
+
+		auto monster = manager.entity(entityID);
+		auto combat = monster->combat();
+		if (combat == nullptr)
+			return;
+
+		if (killAura.m_OnlyTargeted && combat->fields._attackTarget.runtimeID != avatarID)
+			return;
+
+		if (manager.avatar()->distance(monster) > killAura.m_Range)
+			return;
+
+		moveSync->fields.moveSyncTask.position.x = 1000000.0f;
+	}
+
+	static void BaseMoveSyncPlugin_ConvertSyncTaskToMotionInfo_Hook(app::BaseMoveSyncPlugin* __this, MethodInfo* method)
+	{
+		OnSyncTask(__this);
 		callOrigin(BaseMoveSyncPlugin_ConvertSyncTaskToMotionInfo_Hook, __this, method);
 	}
 }
