@@ -13,6 +13,9 @@ namespace cheat::feature
 		
 		NF(m_InfoMove,   "Move info window", "General", true),
 		NF(m_InfoShow,   "Show info window", "General", true),
+		
+		NF(m_FpsMove, "Move FPS indicator", "General", false),
+		NF(m_FpsShow, "Show FPS indicator", "General", true),
 
 		NF(m_ConsoleLogging, "Console logging", "General", true),
 		NF(m_FileLogging,    "File logging",    "General", false),
@@ -30,9 +33,14 @@ namespace cheat::feature
     void Settings::DrawMain()
     {
 
-		ConfigWidget(m_MenuKey, false,
-			"Key to toggle this menu visibility. Cannot be empty.\nIf you forget this key, you can see it in config file.");
-
+    BeginGroupPanel("General", ImVec2(-1, 0));
+		{
+      ConfigWidget(m_MenuKey, false,
+			  "Key to toggle this menu visibility. Cannot be empty.\nIf you forget this key, you can see it in config file.");
+			ConfigWidget(m_HotkeysEnabled, "Enable hotkeys.");
+    }
+    EndGroupPanel();
+    
 		BeginGroupPanel("Logging", ImVec2(-1, 0));
 		{
 			bool consoleChanged = ConfigWidget(m_ConsoleLogging,
@@ -51,7 +59,7 @@ namespace cheat::feature
 			}
 		}
 		EndGroupPanel();
-
+		
 		BeginGroupPanel("Status window", ImVec2(-1, 0));
 		{
 			ConfigWidget(m_StatusShow);
@@ -65,13 +73,13 @@ namespace cheat::feature
 			ConfigWidget(m_InfoMove, "Give able to move 'Info' window.");
 		}
 		EndGroupPanel();
-
-		BeginGroupPanel("General", ImVec2(-1, 0));
+		
+		BeginGroupPanel("FPS indicator", ImVec2(-1, 0));
 		{
-			ConfigWidget(m_HotkeysEnabled, "Enable hotkeys.");
+			ConfigWidget(m_FpsShow);
+			ConfigWidget(m_FpsMove, "Give able to move 'FPS indicator' window.");
 		}
 		EndGroupPanel();
-    }
 
     Settings& Settings::GetInstance()
     {
