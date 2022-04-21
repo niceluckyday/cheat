@@ -192,6 +192,7 @@ DO_APP_FUNC(0x019C5D50, void, LCAbilityElement_ReduceModifierDurability, (LCAbil
 
 DO_APP_FUNC(0x035D8B70, BaseEntity*, GadgetEntity_GetOwnerEntity, (GadgetEntity* __this, MethodInfo* method));
 
+DO_APP_FUNC(0x0136FBD0, void, InLevelMapPageContext_ZoomMap, (InLevelMapPageContext* __this, float value, MethodInfo* method));
 DO_APP_FUNC(0x013B7F90, void, InLevelMapPageContext_UpdateView, (InLevelMapPageContext* __this, MethodInfo* method));
 DO_APP_FUNC(0x01C6A530, bool, UIManager_1_HasEnableMapCamera, (UIManager_1* __this, MethodInfo* method));
 

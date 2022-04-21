@@ -12,7 +12,7 @@ namespace cheat
 	namespace events 
 	{
 		TCancelableEvent<short> KeyUpEvent{};
-		TEvent<> WndProcEvent{};
+		TCancelableEvent<HWND, UINT, WPARAM, LPARAM> WndProcEvent{};
 	}
 
 	void CheatManager::Init(LPBYTE pFontData, DWORD dFontDataSize, IGameMisc* gameMisc)
@@ -284,7 +284,7 @@ namespace cheat
 		}
 	}
 	
-	void CheatManager::OnWndProc()
+	void CheatManager::OnWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool& canceled)
 	{
 		if (!menuToggled)
 			return;

@@ -13,6 +13,7 @@ namespace cheat::feature
 		config::field::BaseField<bool> m_DynamicSize;
 		config::field::BaseField<bool> m_ShowUnlocked;
 		config::field::BaseField<bool> m_ShowHDIcons;
+		config::field::BaseField<bool> m_BlockingInput;
 		
 		static InteractiveMap& GetInstance();
 
@@ -62,7 +63,11 @@ namespace cheat::feature
 		void ApplyScaling();
 
 		void DrawMenu();
-		void DrawFilterCheck();
+		void DrawFilter(const LabelData& label);
+		void DrawFilters();
+		void DrawPoints();
+
+		void OnWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool& cancelled);
 	};
 }
 

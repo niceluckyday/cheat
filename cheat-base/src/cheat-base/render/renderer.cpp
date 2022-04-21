@@ -128,7 +128,8 @@ namespace renderer
 
 		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
 
-		cheat::events::WndProcEvent();
+		if (!cheat::events::WndProcEvent(hWnd, uMsg, wParam, lParam))
+			return true;
 
 		short key;
 		bool keyUpEvent = true;
