@@ -3,6 +3,7 @@
 
 #include <helpers.h>
 #include <cheat/game/EntityManager.h>
+#include <cheat/game/util.h>
 #include <cheat-base/render/renderer.h>
 
 #define IMGUI_DEFINE_MATH_OPERATORS
@@ -31,28 +32,60 @@ namespace cheat::feature
 
 	void InteractiveMap::LoadLabelData(const nlohmann::json& data, uint32_t sceneID, uint32_t labelID)
 	{
-        LabelData labelData = {};
-        labelData.name = data["name"];
-        labelData.clearName = data["clear_name"];
-        labelData.points = {};
+		auto& sceneData = m_ScenesData[sceneID];
+		auto& labelEntry = sceneData.labels[labelID];
+
+        labelEntry.name = data["name"];
+        labelEntry.clearName = data["clear_name"];
+        labelEntry.enabled = new config::field::BaseField<bool>(labelEntry.name,
+            fmt::format("{}_{}", sceneID, labelEntry.clearName),
+            "InteractiveMapFilters", false);
+        config::AddField(*labelEntry.enabled);
 
         for (auto& pointJsonData : data["points"])
         {
-            labelData.points.push_back(ParsePointData(pointJsonData));
+            labelEntry.points.push_back(ParsePointData(pointJsonData));
         }
 
+        sceneData.name2Label[labelEntry.clearName] = &labelEntry;
+	}
+
+	void InteractiveMap::LoadCategorieData(const nlohmann::json& data, uint32_t sceneID)
+	{
         auto& sceneData = m_ScenesData[sceneID];
-        auto& labelEntry = sceneData.labels[labelID];
-        labelEntry = labelData;
-        sceneData.name2Label[labelData.clearName] = &labelEntry;
+        auto& labels = sceneData.labels;
+        auto& categories = sceneData.categories;
+        
+        categories.push_back({});
+        auto& newCategory = categories.back();
+        
+        auto& children = newCategory.second;
+        for (auto& child : data["children"])
+        {
+            if (labels.count(child) > 0)
+                children.push_back(&labels[child]);
+        }
+
+        if (children.size() == 0)
+        {
+            categories.pop_back();
+            return;
+        }
+
+        newCategory.first = data["name"];
 	}
 
 	void InteractiveMap::LoadSceneData(const nlohmann::json& data, uint32_t sceneID)
 	{
-		for (auto& [labelID, labelData] : data.items())
+		for (auto& [labelID, labelData] : data["labels"].items())
 		{
 			LoadLabelData(labelData, sceneID, std::stoi(labelID));
 		}
+
+        for (auto& categorie : data["categories"])
+        {
+            LoadCategorieData(categorie, sceneID);
+        }
 	}
 
 	void InteractiveMap::LoadScenesData()
@@ -163,6 +196,29 @@ namespace cheat::feature
 		ConfigWidget(m_DynamicSize, "Icons will be sized dynamically depend to zoom size.");
         ConfigWidget(m_ShowUnlocked, "Show unlocked positions.");
         ConfigWidget(m_ShowHDIcons, "Show HD icons.");
+
+        ImGui::Spacing();
+
+        auto sceneID = game::GetCurrentMapSceneID();
+        if (m_ScenesData.count(sceneID) == 0)
+            ImGui::Text("Sorry. Current scene is not supported.");
+
+        auto& categories = m_ScenesData[sceneID].categories;
+        for (auto& [categoryName, labels] : categories)
+        {
+            BeginGroupPanel(categoryName.c_str(), ImVec2(-1, 0));
+            
+            ImGui::BeginTable("MarkFilters", 2);
+            for (auto& label : labels)
+            {
+                ImGui::TableNextColumn();
+				ConfigWidget(*label->enabled);
+
+            }
+            ImGui::EndTable();
+
+            EndGroupPanel();
+        }
     }
 
     inline ImVec2 operator - (const ImVec2& A, const float k)
@@ -202,12 +258,17 @@ namespace cheat::feature
         auto size = m_DynamicSize ? m_IconSize * (relativeSizeX / s_MapViewRect.m_Width) : m_IconSize;
         auto radius = size / 2;
         
-        int i = 0;
-        for (auto& [labelID, label]: m_ScenesData[3].labels)
+		auto sceneID = game::GetCurrentMapSceneID();
+        if (m_ScenesData.count(sceneID) == 0)
+            return;
+
+        auto& labels = m_ScenesData[sceneID].labels;
+        for (auto& [labelID, label]: labels)
         {
+            if (!label.enabled->value())
+                continue;
 
 			auto image = ImageLoader::GetImage(m_ShowHDIcons ? "HD" + label.clearName : label.clearName);
-
 			for (auto& point : label.points)
 			{
 				auto screenPosition = LevelToMapScreenPos(point.pointLocation);
@@ -231,6 +292,5 @@ namespace cheat::feature
 			}
         }
 	}
-
 }
 

@@ -204,11 +204,6 @@ inline app::Vector3 operator - (const app::Vector3& A)
     return { -A.x, -A.y, -A.z};
 }
 
-inline app::Vector2 operator + (const app::Vector2& A, const app::Vector2& B)
-{
-	return { A.x + B.x, A.y + B.y };
-}
-
 inline app::Vector2 operator + (const app::Vector2& A, const float k)
 {
 	return { A.x + k, A.y + k};
@@ -222,6 +217,11 @@ inline app::Vector2 operator - (const app::Vector2& A, const app::Vector2& B)
 inline app::Vector2 operator - (const app::Vector2& A, const float k)
 {
 	return { A.x - k, A.y - k};
+}
+
+inline app::Vector2 operator + (const app::Vector2& A, const app::Vector2& B)
+{
+	return { A.x + B.x, A.y + B.y };
 }
 
 inline app::Vector2 operator * (const app::Vector2& A, const float k)

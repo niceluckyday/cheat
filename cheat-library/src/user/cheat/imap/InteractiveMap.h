@@ -35,6 +35,8 @@ namespace cheat::feature
 		{
 			std::string name;
 			std::string clearName;
+			config::field::BaseField<bool>* enabled;
+
 			Points points;
 		};
 
@@ -42,16 +44,18 @@ namespace cheat::feature
 		{
 			std::map<uint32_t, LabelData> labels;
 			std::map<std::string, LabelData*> name2Label;
+			std::vector<std::pair<std::string, std::vector<LabelData*>>> categories;
 		};
 
 		using ScenesData = std::map<uint32_t, SceneData>;
 
 		ScenesData m_ScenesData;
-		std::vector<std::pair<LabelData*, std::vector<PointData*>>> m_ValidPointsCache;
-		std::map<LabelData*, config::field::BaseField<bool>> m_Filters;
+
+		//std::vector<std::pair<LabelData*, std::vector<PointData*>>> m_ValidPointsCache;
 
 		PointData ParsePointData(const nlohmann::json& data);
 		void LoadLabelData(const nlohmann::json& data, uint32_t sceneID, uint32_t labelID);
+		void LoadCategorieData(const nlohmann::json& data, uint32_t sceneID);
 		void LoadSceneData(const nlohmann::json& data, uint32_t sceneID);
 		void LoadScenesData();
 
