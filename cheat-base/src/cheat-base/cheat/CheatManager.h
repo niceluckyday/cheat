@@ -62,6 +62,7 @@ namespace cheat
 
 		void DrawStatus();
 		void DrawInfo();
+		void DrawFps();
 
 		void PushFeature(Feature* feature);
 		void CheckToggles(short key);

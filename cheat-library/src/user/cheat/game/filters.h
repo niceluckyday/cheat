@@ -160,7 +160,7 @@ namespace cheat::game::filters
 
 		extern SimpleFilter EightStoneTablets;
 		extern SimpleFilter ElectricConduction;
-		extern SimpleFilter ElectroSeelie;
+		extern AdvancedFilter ElectroSeelie;
 		extern SimpleFilter ElementalMonument;
 		extern SimpleFilter FloatingAnemoSlime;
 		extern SimpleFilter Geogranum;
@@ -186,6 +186,6 @@ namespace cheat::game::filters
 		extern SimpleFilter Oculies;
 		extern SimpleFilter Chests;
 		extern SimpleFilter Monsters;
-		extern SimpleFilter Animals;
+		extern AdvancedFilter Animals;
 	}
 }
