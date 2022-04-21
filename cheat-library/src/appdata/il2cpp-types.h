@@ -9004,6 +9004,64 @@ namespace app {
         struct EvtCrash__Fields fields;
     };
 
+    struct MoveSyncTask {
+        struct Vector3 position;
+        struct Vector3 velocity;
+        struct Vector3 forward;
+        struct Vector3 up;
+        struct Quaternion rotation;
+        int32_t motion;
+        int32_t paramNumber;
+        struct Vector3 param0;
+        struct Vector3 param1;
+        struct Vector3 param2;
+        struct Vector3 param3;
+        uint32_t time;
+        uint32_t reliableSeq;
+        uint32_t clientSequenceId;
+        uint32_t subSequenceId;
+        bool reliable;
+        bool isFake;
+        struct Vector3 refPosition;
+        uint32_t refEntityId;
+        uint32_t refEntityTimestamp;
+        bool hasValue;
+        struct Vector3 positionRS;
+        struct Vector3 positionRSLocal;
+        uint32_t randomDelay;
+        int32_t frameCountWhenAddTask;
+    };
+
+    struct BaseMoveSyncPlugin__Fields {
+        struct BaseComponentPlugin__Fields _;
+        struct JEACJCEKBMO__Array* JFHIPAJNCEH;
+        struct MoveSyncTask moveSyncTask;
+        int32_t EBAFCLPDNOA;
+        struct PAGLNCJFJAB* EGOGHHCEKBI;
+        uint32_t BMEKGDMGLDM;
+        float BPNLDBMLCPG;
+        int32_t IMGAJKMBICM;
+        int32_t JFNJPLBNEAH;
+        uint64_t LDHCFEHMENK;
+        struct MoveSyncTask PKJLBFAGDPG;
+        float KHDFGOBLNOH;
+        bool BAHIDGDKDPG;
+        bool MPNMLBJNIJK;
+        float BPNMMCBBPDO;
+        uint32_t DANEEGOIAOE;
+        struct HBGKJGFOBDG* HHAPKOKPBPN;
+        bool KCODNABDGKC;
+        uint64_t PHBBAMKNKEH;
+        uint32_t JEKLOEMBBJB;
+        struct MoveSyncTask GPOABHBBEGL;
+    };
+
+    struct BaseMoveSyncPlugin {
+        struct BaseMoveSyncPlugin__Class* klass;
+        MonitorData* monitor;
+        struct BaseMoveSyncPlugin__Fields fields;
+    };
+
     struct __declspec(align(8)) ADOCDLJKPGF__Fields {
         struct Dictionary_2_UniRx_Tuple_2_Dictionary_2_System_UInt32_MoleMole_IndexHandleObjectList_1_* PKPGAJELFJP;
         struct Dictionary_2_System_UInt32_MoleMole_IndexHandleObjectList_1__2* EPNNKHDPMKN;

@@ -232,6 +232,7 @@
         "BaseEntity_SetRelativePosition": "1659210",
         "BaseEntity_ToStringRelease": "164dc50",
         "BaseEntity_GetAllLogicComponents": "0",
+        "BaseMoveSyncPlugin_ConvertSyncTaskToMotionInfo": "0",
         "CreateCrashEvent": "31adf70",
         "Cursor_get_visible": "7445000",
         "Cursor_set_lockState": "7445050",

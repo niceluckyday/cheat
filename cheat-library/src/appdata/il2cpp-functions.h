@@ -101,7 +101,7 @@ DO_APP_FUNC(0x02F2A3E0, void, EventManager_FireEvent, (EventManager* __this, Bas
 DO_APP_FUNC(0x050ABF60, bool, FixedBoolStack_get_value, (FixedBoolStack* __this, MethodInfo* method));
 DO_APP_FUNC(0x04566900, EvtCrash*, CreateCrashEvent, (void* __this, MethodInfo* method));
 DO_APP_FUNC_METHODINFO(0x0B1CE4B0, CreateCrashEvent__MethodInfo);
-
+DO_APP_FUNC(0x028DD7F0, void, BaseMoveSyncPlugin_ConvertSyncTaskToMotionInfo, (BaseMoveSyncPlugin* __this, MethodInfo* method));
 
 // Utility
 DO_APP_FUNC(0x01402C90, float,   Miscs_CalcCurrentGroundWaterHeight, (void* __this, float x, float z, MethodInfo* method));
