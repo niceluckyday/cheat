@@ -237,13 +237,40 @@ bool ConfigWidget(config::field::ColorField& field, const char* desc /*= nullptr
 
 // https://github.com/ocornut/imgui/issues/1496#issuecomment-655048353
 
-static ImVector<ImRect> s_GroupPanelLabelStack;
-
-void BeginGroupPanel(const char* name, const ImVec2& size)
+struct GroupPanelInfo
 {
-    ImGui::BeginGroup();
+    ImRect labelRect;
+    ImRect selectRect;    
+};
+static ImVector<GroupPanelInfo> s_GroupPanelLabelStack;
 
-    auto cursorPos = ImGui::GetCursorScreenPos();
+bool GroupPanelIsOpen(ImGuiID id)
+{
+	ImGuiContext& g = *GImGui;
+	ImGuiWindow* window = g.CurrentWindow;
+    ImGuiStorage* storage = window->DC.StateStorage;
+
+    return storage->GetInt(id, 1) != 0;
+}
+
+void GroupPanelSetOpen(ImGuiID id, bool open)
+{
+	ImGuiContext& g = *GImGui;
+	ImGuiWindow* window = g.CurrentWindow;
+	ImGuiStorage* storage = window->DC.StateStorage;
+
+    storage->SetInt(id, open ? 1 : 0);
+}
+
+bool BeginGroupPanel(const char* name, const ImVec2& size, bool node, SelectData* selectData)
+{
+	ImGuiContext& g = *GImGui;
+	ImGuiWindow* window = g.CurrentWindow;
+
+	ImGui::BeginGroup();
+
+	auto cursorPos = ImGui::GetCursorScreenPos();
+
     auto itemSpacing = ImGui::GetStyle().ItemSpacing;
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 0.0f));
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
@@ -258,16 +285,73 @@ void BeginGroupPanel(const char* name, const ImVec2& size)
         effectiveSize.x = size.x;
     ImGui::Dummy(ImVec2(effectiveSize.x, 0.0f));
 
+    ImVec2 startPos = window->DC.CursorPos;
     ImGui::Dummy(ImVec2(frameHeight * 0.5f, 0.0f));
     ImGui::SameLine(0.0f, 0.0f);
     ImGui::BeginGroup();
     ImGui::Dummy(ImVec2(frameHeight * 0.5f, 0.0f));
     ImGui::SameLine(0.0f, 0.0f);
     ImGui::TextUnformatted(name);
+
     auto labelMin = ImGui::GetItemRectMin();
     auto labelMax = ImGui::GetItemRectMax();
     ImGui::SameLine(0.0f, 0.0f);
+
+    ImVec2 selectMin = {};
+    ImVec2 selectMax = {};
+    if (selectData != nullptr)
+    {
+		bool useText = true;
+		const char* selectAll = "Select all";
+		auto textSize = ImGui::CalcTextSize(selectAll);
+		auto spaceSize = ImVec2(effectiveSize.x - textSize.x - 35.0f - labelMax.x + startPos.x, 0.0f);
+		if (spaceSize.x <= 0)
+		{
+			spaceSize = ImVec2(effectiveSize.x - 35.0f - labelMax.x + startPos.x, 0.0f);
+			useText = false;
+		}
+		ImGui::Dummy(spaceSize);
+		ImGui::SameLine(0.0f, 0.0f);
+
+        selectData->changed = ImGui::Checkbox(useText ? selectAll : "", &selectData->toggle);
+        
+        selectMin = ImGui::GetItemRectMin();
+		selectMax = ImGui::GetItemRectMax();
+    }
+
+    ImGui::SameLine(0.0f, 0.0f);
     ImGui::Dummy(ImVec2(0.0, frameHeight + itemSpacing.y));
+    
+	if (node)
+	{
+		labelMin.x = startPos.x;
+
+		const ImVec2 text_size = ImGui::CalcTextSize(name);
+		const ImGuiID id = window->GetID(name);
+
+		bool isOpen = GroupPanelIsOpen(id);
+
+		bool hovered;
+		bool toggled = ImGui::ButtonBehavior({ labelMin, labelMax }, id, &hovered, nullptr, ImGuiButtonFlags_PressedOnClick);
+		if (toggled)
+		{
+			isOpen = !isOpen;
+			GroupPanelSetOpen(id, isOpen);
+		}
+
+		const ImU32 text_col = ImGui::GetColorU32(ImGuiCol_Text);
+		ImGui::RenderArrow(window->DrawList, { cursorPos.x, cursorPos.y + text_size.y * 0.15f }, text_col,
+			isOpen ? ImGuiDir_Down : ImGuiDir_Right, 0.7f);
+
+        if (!isOpen)
+        {
+            ImGui::PopStyleVar(2);
+            ImGui::EndGroup();
+            ImGui::EndGroup();
+            return false;
+        }
+	}
+
     ImGui::BeginGroup();
 
     //ImGui::GetWindowDrawList()->AddRect(labelMin, labelMax, IM_COL32(255, 0, 255, 255));
@@ -286,7 +370,9 @@ void BeginGroupPanel(const char* name, const ImVec2& size)
     auto itemWidth = ImGui::CalcItemWidth();
     ImGui::PushItemWidth(ImMax(0.0f, itemWidth - frameHeight));
 
-    s_GroupPanelLabelStack.push_back(ImRect(labelMin, labelMax));
+    s_GroupPanelLabelStack.push_back({ ImRect(labelMin, labelMax) , ImRect(selectMin, selectMax)});
+
+    return true;
 }
 
 void EndGroupPanel()
@@ -316,34 +402,70 @@ void EndGroupPanel()
     auto itemMax = ImGui::GetItemRectMax();
     //ImGui::GetWindowDrawList()->AddRectFilled(itemMin, itemMax, IM_COL32(255, 0, 0, 64), 4.0f);
 
-    auto labelRect = s_GroupPanelLabelStack.back();
+    auto& info = s_GroupPanelLabelStack.back();
     s_GroupPanelLabelStack.pop_back();
 
     ImVec2 halfFrame = ImVec2(frameHeight * 0.25f, frameHeight) * 0.5f;
     ImRect frameRect = ImRect(itemMin + halfFrame, itemMax - ImVec2(halfFrame.x, 0.0f));
+
+    auto& labelRect = info.labelRect;
     labelRect.Min.x -= itemSpacing.x;
     labelRect.Max.x += itemSpacing.x;
-    for (int i = 0; i < 4; ++i)
+
+    bool hasSelect = info.selectRect.Min.x != 0;
+
+    if (!hasSelect)
     {
-        switch (i)
-        {
-            // left half-plane
-        case 0: ImGui::PushClipRect(ImVec2(-FLT_MAX, -FLT_MAX), ImVec2(labelRect.Min.x, FLT_MAX), true); break;
-            // right half-plane
-        case 1: ImGui::PushClipRect(ImVec2(labelRect.Max.x, -FLT_MAX), ImVec2(FLT_MAX, FLT_MAX), true); break;
-            // top
-        case 2: ImGui::PushClipRect(ImVec2(labelRect.Min.x, -FLT_MAX), ImVec2(labelRect.Max.x, labelRect.Min.y), true); break;
-            // bottom
-        case 3: ImGui::PushClipRect(ImVec2(labelRect.Min.x, labelRect.Max.y), ImVec2(labelRect.Max.x, FLT_MAX), true); break;
-        }
+		for (int i = 0; i < 3; ++i)
+		{
+			switch (i)
+			{
+				// left half-plane
+			case 0: ImGui::PushClipRect(ImVec2(-FLT_MAX, -FLT_MAX), ImVec2(labelRect.Min.x, FLT_MAX), true); break;
+				// right half-plane
+			case 1: ImGui::PushClipRect(ImVec2(labelRect.Max.x, -FLT_MAX), ImVec2(FLT_MAX, FLT_MAX), true); break;
+				// bottom
+			case 2: ImGui::PushClipRect(ImVec2(labelRect.Min.x, labelRect.Max.y), ImVec2(labelRect.Max.x, FLT_MAX), true); break;
+			}
 
-        ImGui::GetWindowDrawList()->AddRect(
-            frameRect.Min, frameRect.Max,
-            ImColor(ImGui::GetStyleColorVec4(ImGuiCol_Border)),
-            halfFrame.x);
+			ImGui::GetWindowDrawList()->AddRect(
+				frameRect.Min, frameRect.Max,
+				ImColor(ImGui::GetStyleColorVec4(ImGuiCol_Border)),
+				halfFrame.x);
 
-        ImGui::PopClipRect();
+			ImGui::PopClipRect();
+		}
+    } 
+    else
+    {
+        auto& selectRect = info.selectRect;
+        selectRect.Min.x -= itemSpacing.x;
+        selectRect.Max.x += itemSpacing.x;
+		for (int i = 0; i < 5; ++i)
+		{
+			switch (i)
+			{
+				// left half-plane
+			case 0: ImGui::PushClipRect(ImVec2(-FLT_MAX, -FLT_MAX), ImVec2(labelRect.Min.x, FLT_MAX), true); break;
+				// label - select
+			case 1: ImGui::PushClipRect(ImVec2(labelRect.Max.x, -FLT_MAX), ImVec2(selectRect.Min.x, FLT_MAX), true); break;
+				// bottom label
+			case 2: ImGui::PushClipRect(ImVec2(labelRect.Min.x, labelRect.Max.y), ImVec2(labelRect.Max.x, FLT_MAX), true); break;
+				// bottom select
+			case 3: ImGui::PushClipRect(ImVec2(selectRect.Min.x, selectRect.Max.y), ImVec2(selectRect.Max.x, FLT_MAX), true); break;
+				// right hand-plane
+			case 4: ImGui::PushClipRect(ImVec2(selectRect.Max.x, -FLT_MAX), ImVec2(FLT_MAX, FLT_MAX), true); break;
+			}
+
+			ImGui::GetWindowDrawList()->AddRect(
+				frameRect.Min, frameRect.Max,
+				ImColor(ImGui::GetStyleColorVec4(ImGuiCol_Border)),
+				halfFrame.x);
+
+			ImGui::PopClipRect();
+		}
     }
+
 
     ImGui::PopStyleVar(2);
 

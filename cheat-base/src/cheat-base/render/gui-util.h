@@ -34,7 +34,13 @@ bool InputPath(const char* label, std::filesystem::path* buffer, bool onlyDirect
 void AddUnderLine(ImColor col_);
 void TextURL(const char* name_, const char* URL_, bool SameLineBefore_, bool SameLineAfter_);
 
-void BeginGroupPanel(const char* name, const ImVec2& size);
+struct SelectData
+{
+	bool toggle;
+	bool changed;
+};
+
+bool BeginGroupPanel(const char* name, const ImVec2& size = ImVec2(-1, 0), bool node = false, SelectData* selectData = nullptr);
 void EndGroupPanel();
 
 bool IsValueChanged(void* valuePtr, bool result);

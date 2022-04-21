@@ -52,6 +52,8 @@ namespace cheat::feature
 
 		ScenesData m_ScenesData;
 
+		std::string m_SearchText;
+
 		//std::vector<std::pair<LabelData*, std::vector<PointData*>>> m_ValidPointsCache;
 
 		PointData ParsePointData(const nlohmann::json& data);

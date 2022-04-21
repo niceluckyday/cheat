@@ -8,6 +8,7 @@
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui_internal.h"
+#include <misc/cpp/imgui_stdlib.h>
 
 namespace cheat::feature
 {
@@ -255,20 +256,60 @@ namespace cheat::feature
 		if (m_ScenesData.count(sceneID) == 0)
 			ImGui::Text("Sorry. Current scene is not supported.");
 
+		ImGui::InputText("Search", &m_SearchText);
+
 		auto& categories = m_ScenesData[sceneID].categories;
 		for (auto& [categoryName, labels] : categories)
 		{
-			BeginGroupPanel(categoryName.c_str(), ImVec2(-1, 0));
+			std::vector<LabelData*> validLabels;
 
-			ImGui::BeginTable("MarkFilters", 2);
-			for (auto& label : labels)
+			if (m_SearchText.empty())
 			{
-				ImGui::TableNextColumn();
-				DrawFilter(*label);
+				validLabels = labels;
 			}
-			ImGui::EndTable();
+			else
+			{
+				for (auto& label : labels)
+				{
+					std::string name = label->name;
+					std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+					std::string search = m_SearchText;
+					std::transform(search.begin(), search.end(), search.begin(), ::tolower);
+					if (name.find(search) != std::string::npos)
+						validLabels.push_back(label);
+				}
+			}
 
-			EndGroupPanel();
+			if (validLabels.size() == 0)
+				continue;
+
+			SelectData selData
+			{
+				std::all_of(validLabels.begin(), validLabels.end(), [](const LabelData* label) { return label->enabled->value(); }),
+				false
+			};
+
+			if (BeginGroupPanel(categoryName.c_str(), ImVec2(-1, 0), true, &selData))
+			{
+				ImGui::BeginTable("MarkFilters", 2);
+				for (auto& label : validLabels)
+				{
+					ImGui::TableNextColumn();
+					DrawFilter(*label);
+				}
+				ImGui::EndTable();
+
+				EndGroupPanel();
+			}
+
+			if (selData.changed)
+			{
+				for (auto& label : validLabels)
+				{
+					*label->enabled->valuePtr() = selData.toggle;
+				}
+				validLabels[0]->enabled->Check();
+			}
 		}
 	}
 

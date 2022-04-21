@@ -48,30 +48,31 @@ namespace cheat::feature
 
     void ESP::DrawMain()
     {
-		BeginGroupPanel("General", ImVec2(-1, 0));
+		if (BeginGroupPanel("General", ImVec2(-1, 0), true))
+		{
+			ConfigWidget("ESP Enabled", m_Enabled, "Show filtered object through obstacles.");
+			ConfigWidget(m_Range, 1.0f, 1.0f, 200.0f);
 
-		ConfigWidget("ESP Enabled", m_Enabled, "Show filtered object through obstacles.");
-        ConfigWidget(m_Range, 1.0f, 1.0f, 200.0f);
-        
-        ConfigWidget(m_DrawBoxMode, "Select the mode of box drawing.");
-		ConfigWidget(m_Fill);
-		ConfigWidget(m_FillTransparency, 0.01f, 0.0f, 1.0f, "Transparency of filled part.");
+			ConfigWidget(m_DrawBoxMode, "Select the mode of box drawing.");
+			ConfigWidget(m_Fill);
+			ConfigWidget(m_FillTransparency, 0.01f, 0.0f, 1.0f, "Transparency of filled part.");
 
-        ImGui::Spacing();
-        ConfigWidget(m_DrawLine,     "Show line from character to object on screen.");
-        ConfigWidget(m_DrawName,     "Draw name about object.");
-        ConfigWidget(m_DrawDistance, "Draw distance about object.");
+			ImGui::Spacing();
+			ConfigWidget(m_DrawLine, "Show line from character to object on screen.");
+			ConfigWidget(m_DrawName, "Draw name about object.");
+			ConfigWidget(m_DrawDistance, "Draw distance about object.");
 
-        ImGui::Spacing();
-        ConfigWidget(m_FontSize, 0.05f, 1.0f, 100.0f, "Font size of name or distance.");
-        ConfigWidget(m_FontColor, "Color of name or distance text font.");
-		ConfigWidget(m_ApplyGlobalFontColor, "Override all color settings with above font color setting.\n"
-			"Turn off to revert to custom settings.");
+			ImGui::Spacing();
+			ConfigWidget(m_FontSize, 0.05f, 1.0f, 100.0f, "Font size of name or distance.");
+			ConfigWidget(m_FontColor, "Color of name or distance text font.");
+			ConfigWidget(m_ApplyGlobalFontColor, "Override all color settings with above font color setting.\n"
+				"Turn off to revert to custom settings.");
 
-        ConfigWidget(m_MinSize, 0.05f, 0.1f, 200.0f, "Minimal object size in world.\n"
-            "Some entities have not bounds or bounds is too small, this parameter help set minimal size of this type object.");
-		
-		EndGroupPanel();
+			ConfigWidget(m_MinSize, 0.05f, 0.1f, 200.0f, "Minimal object size in world.\n"
+				"Some entities have not bounds or bounds is too small, this parameter help set minimal size of this type object.");
+
+			EndGroupPanel();
+		}
 
 		ImGui::Text("How to use item filters:\n\tLeft Mouse Button (LMB) - toggle visibility.\n\tRMB - change color.");
 		ImGui::InputText("Search filters", &m_Search);
@@ -118,7 +119,7 @@ namespace cheat::feature
 	void ESP::DrawSection(const std::string& section, const Filters& filters)
 	{
 		std::vector<const FilterInfo*> validFilters;
-		
+				
 		for (auto& info : filters)
 		{
 			//m0nkrel : We making a string copies and lowercase them to avoid case sensitive search
@@ -134,35 +135,50 @@ namespace cheat::feature
 		if (validFilters.size() == 0)
 			return;
 
-		BeginGroupPanel(section.c_str(), ImVec2(-1, 0));
-
-		for (auto& info: validFilters)
+		SelectData selData
 		{
-			ImGui::PushID(info->first);
-			DrawFilterField(*info->first);
-			ImGui::PopID();
-		}
+			std::all_of(validFilters.begin(), validFilters.end(), [](const FilterInfo* filter) { return filter->first->value().m_Enabled; }),
+			false
+		};
 
-		ImGui::Spacing();
-
-		if (ImGui::TreeNode(this, "Hotkeys"))
+		if (BeginGroupPanel(section.c_str(), ImVec2(-1, 0), true, &selData))
 		{
 			for (auto& info : validFilters)
 			{
-				auto& field = info->first;
-				ImGui::PushID(field);
-
-				auto& hotkey = field->valuePtr()->m_EnabledHotkey;
-				if (InputHotkey(field->GetName().c_str(), &hotkey, true))
-					field->Check();
-
+				ImGui::PushID(info->first);
+				DrawFilterField(*info->first);
 				ImGui::PopID();
 			}
 
-			ImGui::TreePop();
+			ImGui::Spacing();
+
+			if (ImGui::TreeNode(this, "Hotkeys"))
+			{
+				for (auto& info : validFilters)
+				{
+					auto& field = info->first;
+					ImGui::PushID(field);
+
+					auto& hotkey = field->valuePtr()->m_EnabledHotkey;
+					if (InputHotkey(field->GetName().c_str(), &hotkey, true))
+						field->Check();
+
+					ImGui::PopID();
+				}
+
+				ImGui::TreePop();
+			}
+			EndGroupPanel();
 		}
 
-		EndGroupPanel();
+		if (selData.changed)
+		{
+			for (auto& info : validFilters)
+			{
+				info->first->valuePtr()->m_Enabled = selData.toggle;
+			}
+			validFilters[0]->first->Check();
+		}
 	}
 
 	std::string Unsplit(const std::string& value)
