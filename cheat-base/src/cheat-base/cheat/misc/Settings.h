@@ -23,6 +23,8 @@ namespace cheat::feature
 		config::field::BaseField<bool> m_ConsoleLogging;
 		config::field::BaseField<bool> m_FileLogging;
 
+		config::field::BaseField<bool> m_HotkeysEnabled;
+
 		static Settings& GetInstance();
 
 		const FeatureGUIInfo& GetGUIInfo() const override;

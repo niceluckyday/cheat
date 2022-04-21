@@ -18,7 +18,8 @@ namespace cheat::feature
 		NF(m_FpsShow, "Show FPS indicator", "General", true),
 
 		NF(m_ConsoleLogging, "Console logging", "General", true),
-		NF(m_FileLogging,    "File logging",    "General", false)
+		NF(m_FileLogging,    "File logging",    "General", false),
+		NF(m_HotkeysEnabled, "Hotkeys enabled", "General", true)
     {
 
     }
@@ -32,9 +33,14 @@ namespace cheat::feature
     void Settings::DrawMain()
     {
 
-		ConfigWidget(m_MenuKey, false,
-			"Key to toggle this menu visibility. Cannot be empty.\nIf you forget this key, you can see it in config file.");
-
+    BeginGroupPanel("General", ImVec2(-1, 0));
+		{
+      ConfigWidget(m_MenuKey, false,
+			  "Key to toggle this menu visibility. Cannot be empty.\nIf you forget this key, you can see it in config file.");
+			ConfigWidget(m_HotkeysEnabled, "Enable hotkeys.");
+    }
+    EndGroupPanel();
+    
 		BeginGroupPanel("Logging", ImVec2(-1, 0));
 		{
 			bool consoleChanged = ConfigWidget(m_ConsoleLogging,
@@ -74,7 +80,6 @@ namespace cheat::feature
 			ConfigWidget(m_FpsMove, "Give able to move 'FPS indicator' window.");
 		}
 		EndGroupPanel();
-    }
 
     Settings& Settings::GetInstance()
     {
