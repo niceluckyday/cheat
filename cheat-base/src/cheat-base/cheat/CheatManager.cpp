@@ -254,6 +254,10 @@ namespace cheat
 	{
 		if (m_IsMenuShowed || renderer::globals::IsInputBlocked)
 			return;
+		
+		auto& settings = feature::Settings::GetInstance();
+		if (!settings.m_HotkeysEnabled)
+			return;
 
 		for (auto& field : config::GetToggleFields())
 		{

@@ -15,7 +15,8 @@ namespace cheat::feature
 		NF(m_InfoShow,   "Show info window", "General", true),
 
 		NF(m_ConsoleLogging, "Console logging", "General", true),
-		NF(m_FileLogging,    "File logging",    "General", false)
+		NF(m_FileLogging,    "File logging",    "General", false),
+		NF(m_HotkeysEnabled, "Hotkeys enabled", "General", true)
     {
 
     }
@@ -62,6 +63,12 @@ namespace cheat::feature
 		{
 			ConfigWidget(m_InfoShow);
 			ConfigWidget(m_InfoMove, "Give able to move 'Info' window.");
+		}
+		EndGroupPanel();
+
+		BeginGroupPanel("General", ImVec2(-1, 0));
+		{
+			ConfigWidget(m_HotkeysEnabled, "Enable hotkeys.");
 		}
 		EndGroupPanel();
     }
