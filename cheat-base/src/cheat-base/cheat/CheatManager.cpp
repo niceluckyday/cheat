@@ -175,7 +175,7 @@ namespace cheat
 			ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus |
 			ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse;
 
-		if (!settings.m_StatusMove)
+		if (!settings.m_InfoMove)
 			flags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
 
 		auto checkLambda = [](const Feature* feat) { return feat->NeedInfoDraw(); };
@@ -229,7 +229,21 @@ namespace cheat
 		ImGui::End();
 
 	}
+	
+	void CheatManager::DrawFps()
+	{
+		auto& settings = feature::Settings::GetInstance();
+		
+		ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoFocusOnAppearing 
+			| ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoCollapse;
 
+		if (!settings.m_FpsMove)
+			flags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
+		ImGui::SetWindowSize(ImVec2(ImGui::CalcTextSize(std::to_string(ImGui::GetIO().Framerate).c_str()).x + 20, 40));
+		ImGui::Begin("FPS", nullptr, flags);
+		ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
 
 	void CheatManager::OnRender()
 	{
@@ -245,6 +259,9 @@ namespace cheat
 
 		if (settings.m_InfoShow)
 			DrawInfo();
+		
+		if (settings.m_FpsShow)
+			DrawFps();
 
 		if (settings.m_MenuKey.value().IsReleased() && !ImGui::IsAnyItemActive())
 			ToggleMenuShow();
@@ -253,6 +270,10 @@ namespace cheat
 	void CheatManager::CheckToggles(short key)
 	{
 		if (m_IsMenuShowed || renderer::globals::IsInputBlocked)
+			return;
+		
+		auto& settings = feature::Settings::GetInstance();
+		if (!settings.m_HotkeysEnabled)
 			return;
 
 		for (auto& field : config::GetToggleFields())

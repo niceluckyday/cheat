@@ -13,9 +13,13 @@ namespace cheat::feature
 		
 		NF(m_InfoMove,   "Move info window", "General", true),
 		NF(m_InfoShow,   "Show info window", "General", true),
+		
+		NF(m_FpsMove, "Move FPS indicator", "General", false),
+		NF(m_FpsShow, "Show FPS indicator", "General", true),
 
 		NF(m_ConsoleLogging, "Console logging", "General", true),
-		NF(m_FileLogging,    "File logging",    "General", false)
+		NF(m_FileLogging,    "File logging",    "General", false),
+		NF(m_HotkeysEnabled, "Hotkeys enabled", "General", true)
     {
 
     }
@@ -26,17 +30,22 @@ namespace cheat::feature
         return info;
     }
 
-    void Settings::DrawMain()
-    {
+	void Settings::DrawMain()
+	{
 
-		ConfigWidget(m_MenuKey, false,
-			"Key to toggle this menu visibility. Cannot be empty.\nIf you forget this key, you can see it in config file.");
+		BeginGroupPanel("General", ImVec2(-1, 0));
+		{
+			ConfigWidget(m_MenuKey, false,
+				"Key to toggle this menu visibility. Cannot be empty.\nIf you forget this key, you can see it in config file.");
+			ConfigWidget(m_HotkeysEnabled, "Enable hotkeys.");
+		}
+		EndGroupPanel();
 
 		BeginGroupPanel("Logging", ImVec2(-1, 0));
 		{
 			bool consoleChanged = ConfigWidget(m_ConsoleLogging,
 				"Enable console for logging information. (Enabling will take effect after next launch)");
-			if (consoleChanged && !m_ConsoleLogging) 
+			if (consoleChanged && !m_ConsoleLogging)
 			{
 				Logger::SetLevel(Logger::Level::None, Logger::LoggerType::ConsoleLogger);
 			}
@@ -44,7 +53,7 @@ namespace cheat::feature
 			bool fileLogging = ConfigWidget(m_FileLogging,
 				"Enable file logging. (Enabling will take effect after next launch)\n" \
 				"That's mean that in cheat directory will be created folder which will be contain file with logs.");
-			if (fileLogging && !m_FileLogging) 
+			if (fileLogging && !m_FileLogging)
 			{
 				Logger::SetLevel(Logger::Level::None, Logger::LoggerType::FileLogger);
 			}
@@ -64,7 +73,14 @@ namespace cheat::feature
 			ConfigWidget(m_InfoMove, "Give able to move 'Info' window.");
 		}
 		EndGroupPanel();
-    }
+
+		BeginGroupPanel("FPS indicator", ImVec2(-1, 0));
+		{
+			ConfigWidget(m_FpsShow);
+			ConfigWidget(m_FpsMove, "Give able to move 'FPS indicator' window.");
+		}
+		EndGroupPanel();
+	}
 
     Settings& Settings::GetInstance()
     {
