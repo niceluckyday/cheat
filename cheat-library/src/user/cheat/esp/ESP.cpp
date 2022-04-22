@@ -400,6 +400,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(featured, Electroculus);
 		ADD_FILTER_FIELD(featured, Electrogranum);
 		ADD_FILTER_FIELD(featured, Geoculus);
+		ADD_FILTER_FIELD(featured, Lumenspar);
 		ADD_FILTER_FIELD(featured, KeySigil);
 		ADD_FILTER_FIELD(featured, ShrineOfDepth);
 		ADD_FILTER_FIELD(featured, TimeTrialChallenge);
@@ -451,6 +452,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(monster, Samachurl);
 		ADD_FILTER_FIELD(monster, ShadowyHusk);
 		ADD_FILTER_FIELD(monster, Slime);
+		ADD_FILTER_FIELD(monster, FloatingFungus);
 		ADD_FILTER_FIELD(monster, Specter);
 		ADD_FILTER_FIELD(monster, TreasureHoarder);
 		ADD_FILTER_FIELD(monster, UnusualHilichurl);
