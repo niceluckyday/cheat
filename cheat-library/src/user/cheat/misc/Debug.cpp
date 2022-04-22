@@ -526,6 +526,18 @@ namespace cheat::feature
 
             ImGui::TreePop();
         }
+        if (ImGui::Button("Copy Position Info"))
+        {
+            auto text = il2cppi_to_string(avatarPos) + "\n" + il2cppi_to_string(relativePos) + "\n" + il2cppi_to_string(levelPos);
+            ImGui::SetClipboardText(text.c_str());
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Copy All Info"))
+        {
+            auto text = il2cppi_to_string(avatarPos) + "\n" + il2cppi_to_string(relativePos) + "\n" + il2cppi_to_string(levelPos) + "\n" + il2cppi_to_string(app::Miscs_CalcCurrentGroundNorm(nullptr, avatarPos, nullptr));
+            ImGui::SetClipboardText(text.c_str());
+        }
+
     }
 
     void DrawMapManager()
