@@ -124,6 +124,7 @@ DO_APP_FUNC(0x018D0AE0, void,    ActorUtils_SyncAvatarMotion, (void* __this, int
 DO_APP_FUNC(0x0749AF60, Vector3, Transform_get_position, (Transform* __this, MethodInfo* method));
 DO_APP_FUNC(0x0749BAA0, void,    Transform_set_position, (Transform* __this, Vector3 value, MethodInfo* method));
 DO_APP_FUNC(0x0749EB80, float,   Vector3_Distance, (void* __this, Vector3 a, Vector3 b, MethodInfo* method));
+DO_APP_FUNC(0x073D8E70, float,   Vector2_Distance, (void* __this, Vector2 a, Vector2 b, MethodInfo* method));
 
 DO_APP_FUNC(0x074BA270, void, Cursor_set_visible,   (void* __this, bool value, MethodInfo* method));
 DO_APP_FUNC(0x074BA220, void, Cursor_set_lockState, (void* __this, CursorLockMode__Enum value, MethodInfo* method));
