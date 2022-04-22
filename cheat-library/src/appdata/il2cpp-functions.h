@@ -60,7 +60,7 @@ DO_APP_FUNC(0x04D96080, void, LCSelectPickup_AddInteeBtnByID, (void* __this, Bas
 DO_APP_FUNC(0x04D94930, bool, LCSelectPickup_IsInPosition, (void* __this, BaseEntity* entity, MethodInfo* method));
 DO_APP_FUNC(0x04D946E0, bool, LCSelectPickup_IsOutPosition, (void* __this, BaseEntity* entity, MethodInfo* method));
 DO_APP_FUNC(0x012316E0, void, ItemModule_PickItem, (ItemModule* __this, uint32_t entityID, MethodInfo* method));
-
+DO_APP_FUNC(0x017B0A10, void, LevelSceneElementViewPlugin_Tick, (LevelSceneElementViewPlugin* __this, float inDeltaTime, MethodInfo* method));
 
 // Dialog skipping
 DO_APP_FUNC(0x02B9E6A0, bool, TalkDialogContext_get_canClick, (TalkDialogContext* __this, MethodInfo* method)); // delete

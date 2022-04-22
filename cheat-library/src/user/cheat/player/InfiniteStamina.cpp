@@ -11,7 +11,7 @@ namespace cheat::feature
 		app::JKNLDEEBGLL value, MethodInfo* method);
 
     InfiniteStamina::InfiniteStamina() : Feature(),
-        NF(m_Enabled, "Inifinite stamina", "InfiniteStamina", false),
+        NF(m_Enabled, "Infinite stamina", "InfiniteStamina", false),
         NF(m_PacketReplacement, "Move sync packet replacement", "InfiniteStamina", false)
     {
 		HookManager::install(app::AvatarPropDictionary_SetItem, AvatarPropDictionary_SetItem_Hook);

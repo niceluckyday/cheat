@@ -183,6 +183,9 @@
     <ClInclude Include="src\user\cheat\world\MobAnimalVacuum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\user\cheat\world\ElementalSight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="res\Ruda-Bold.ttf" />
@@ -327,6 +330,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\cheat\world\MobAnimalVacuum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\world\ElementalSight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
