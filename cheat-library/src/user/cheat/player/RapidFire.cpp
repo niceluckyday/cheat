@@ -111,8 +111,7 @@ namespace cheat::feature
 		}
 		if (m_Randomize)
 		{
-			// randomize the multiplier
-			countOfAttacks = rand() % (m_maxMultiplier.value() - m_Multiplier.value()) + m_Multiplier.value();
+			countOfAttacks = rand() % (m_maxMultiplier.value() - m_Multiplier.value());
 			return countOfAttacks;
 		}
 
