@@ -13,6 +13,9 @@ namespace cheat::feature
 		config::field::ToggleField m_Enabled;
 		config::field::BaseField<int> m_Multiplier;
 		config::field::BaseField<bool> m_OnePunch;
+		config::field::ToggleField m_Randomize;
+		config::field::BaseField<int> m_minMultiplier;
+		config::field::BaseField<int> m_maxMultiplier;
 
 		static RapidFire& GetInstance();
 
