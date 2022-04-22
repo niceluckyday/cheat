@@ -12,7 +12,10 @@ namespace cheat::feature
     RapidFire::RapidFire() : Feature(),
         NF(m_Enabled,    "Rapid fire",     "RapidFire", false),
         NF(m_Multiplier, "Multiplier",     "RapidFire", 2),
-        NF(m_OnePunch,   "One punch mode", "RapidFire", false)
+        NF(m_OnePunch,   "One punch mode", "RapidFire", false),
+		NF(m_Randomize,  "Randomize",      "RapidFire", false),
+		NF(m_minMultiplier, "Min Multiplier", "RapidFire", 1),
+		NF(m_maxMultiplier, "Max multiplier", "RapidFire", 3)
     {
 		HookManager::install(app::LCBaseCombat_DoHitEntity, LCBaseCombat_DoHitEntity_Hook);
     }
@@ -29,10 +32,19 @@ namespace cheat::feature
             Rapid fire just multiply your attack count.\n\
             It's not well tested, and can be detected by anticheat.\n\
             So not recommend to you that in your main account.");
-
+		ConfigWidget("Randomize", m_Randomize, "Randomize multiplier between min and max multiplier.");
+		if (!m_Randomize)
+		{
 		ConfigWidget(m_Multiplier, 1, 2, 1000, "Rapid fire multiply count.\n\
             Each hit is multiplied by the multiplier.\n\
             Note that large values may cause some lag.");
+		}
+		else
+		{
+			ConfigWidget(m_minMultiplier, 1, 2, 1000, "Min Mutliplier.");
+			ConfigWidget(m_maxMultiplier, 1, 2, 1000, "Max multiplier.");
+		}
+
 
 		ConfigWidget(m_OnePunch, "Calculate how many attacks needed to kill an enemy.\n\
             Since the damage is calculated from the server, The calculation may not be on-point.");
@@ -97,6 +109,12 @@ namespace cheat::feature
 				attackResult, manager.avatar()->raw(), targetEntity->raw(), nullptr);
 			countOfAttacks = CalcCountToKill(attackResult->fields.damage, targetID);
 		}
+		if (m_Randomize)
+		{
+			countOfAttacks = rand() % (m_maxMultiplier.value() - m_minMultiplier.value()) + m_minMultiplier.value();
+			return countOfAttacks;
+		}
+
 		return countOfAttacks;
 	}
 
