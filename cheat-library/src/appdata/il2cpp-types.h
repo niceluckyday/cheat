@@ -8945,6 +8945,67 @@ namespace app {
         // struct DPLADHCBJOP__Fields fields;
     };
 
+    struct LevelSceneElementViewPlugin__VTable
+    {
+        VirtualInvokeData Equals;
+        VirtualInvokeData Finalize;
+        VirtualInvokeData GetHashCode;
+        VirtualInvokeData ToString;
+        VirtualInvokeData get_listenEventValid;
+        VirtualInvokeData set_listenEventValid;
+        VirtualInvokeData ListenEvent;
+        VirtualInvokeData CanHandleEvent;
+        VirtualInvokeData get_metaTypeID;
+        VirtualInvokeData get_isForceFullTick;
+        VirtualInvokeData get_canBeTickedReadonly;
+        VirtualInvokeData get_metaTypeID_1;
+        VirtualInvokeData Init;
+        VirtualInvokeData OnEntityReady;
+        VirtualInvokeData Retarget;
+        VirtualInvokeData ReInit;
+        VirtualInvokeData PostReInit;
+        VirtualInvokeData Clear;
+        VirtualInvokeData ClearInThread;
+        VirtualInvokeData OnEnable;
+        VirtualInvokeData OnDisable;
+        VirtualInvokeData Tick;
+        VirtualInvokeData LateTick;
+        VirtualInvokeData Destroy;
+        VirtualInvokeData OnEvent;
+        VirtualInvokeData OnRemoteEvtBeingHit;
+        VirtualInvokeData OnEventResolved;
+        VirtualInvokeData ListenEvent_1;
+        VirtualInvokeData GetEntity;
+    };
+
+    struct LevelSceneElementViewPlugin__Class
+    {
+        Il2CppClass_0 _0;
+        Il2CppRuntimeInterfaceOffsetPair* interfaceOffsets;
+        struct LevelSceneElementViewPlugin__StaticFields* static_fields;
+        const Il2CppRGCTXData* rgctx_data;
+        Il2CppClass_1 _1;
+        struct LevelSceneElementViewPlugin__VTable vtable;
+    };
+
+    struct LevelSceneElementViewPlugin__Fields
+    {
+        struct BaseComponentPlugin__Fields _;
+        bool elementalSightActivated;
+        float JJLPILGECJP;
+        struct ElementView* CJLJMMNOFBP;
+        float GBEPFGGJBOF;
+        struct Action* DKFFCMKNNGC;
+        struct Action* NIBNGEAILBH;
+    };
+
+    struct LevelSceneElementViewPlugin
+    {
+        struct LevelSceneElementViewPlugin__Class* klass;
+        MonitorData* monitor;
+        struct LevelSceneElementViewPlugin__Fields fields;
+    };
+
     struct Nullable_1_Single_ {
         float value;
         bool has_value;

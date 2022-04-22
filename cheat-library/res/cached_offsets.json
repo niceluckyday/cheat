@@ -262,6 +262,7 @@
         "LCSelectPickup_AddInteeBtnByID": "426a900",
         "LCSelectPickup_IsInPosition": "426bda0",
         "LCSelectPickup_IsOutPosition": "426c350",
+        "LevelSceneElementViewPlugin_Tick": "0",
         "LevelSyncCombatPlugin_RequestSceneEntityMoveReq": "4bdb410",
         "LevelSyncCombatPlugin_SendFaceToDir": "4bdac80",
         "LoadingManager_NeedTransByServer": "17f4fe0",

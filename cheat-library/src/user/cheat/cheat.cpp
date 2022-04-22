@@ -23,6 +23,7 @@
 #include <cheat/world/AutoLoot.h>
 #include <cheat/world/DialogSkip.h>
 #include <cheat/world/DumbEnemies.h>
+#include <cheat/world/ElementalSight.h>
 #include <cheat/world/KillAura.h>
 #include <cheat/world/MobVacuum.h>
 #include <cheat/world/MobAnimalVacuum.h>
@@ -71,6 +72,7 @@ namespace cheat
 			FEAT_INST(AutoOreDestroy),
 			FEAT_INST(DialogSkip),
 			FEAT_INST(DumbEnemies),
+			FEAT_INST(ElementalSight),
 			FEAT_INST(KillAura),
 			FEAT_INST(MobVacuum),
 			FEAT_INST(MobAnimalVacuum),
