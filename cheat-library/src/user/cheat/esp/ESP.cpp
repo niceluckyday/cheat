@@ -452,6 +452,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(monster, Samachurl);
 		ADD_FILTER_FIELD(monster, ShadowyHusk);
 		ADD_FILTER_FIELD(monster, Slime);
+		ADD_FILTER_FIELD(monster, FloatingFungus);
 		ADD_FILTER_FIELD(monster, Specter);
 		ADD_FILTER_FIELD(monster, TreasureHoarder);
 		ADD_FILTER_FIELD(monster, UnusualHilichurl);

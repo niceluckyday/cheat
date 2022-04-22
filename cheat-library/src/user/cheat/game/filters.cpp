@@ -99,6 +99,7 @@ namespace cheat::game::filters
 		SimpleFilter Samachurl = { app::EntityType__Enum_1::Monster, "_Shaman" };
 	    SimpleFilter ShadowyHusk = { app::EntityType__Enum_1::Monster, "ForlornVessel_Strong" };
 		SimpleFilter Slime = { app::EntityType__Enum_1::Monster, "_Slime" };
+		SimpleFilter FloatingFungus = { app::EntityType__Enum_1::Monster, "_Fungus" };
 		SimpleFilter Specter = { app::EntityType__Enum_1::Monster, "_Sylph" };
 		SimpleFilter TreasureHoarder = { app::EntityType__Enum_1::Monster, "_Thoarder" };
 		SimpleFilter UnusualHilichurl = { app::EntityType__Enum_1::Monster, "_Hili_Wei" };

@@ -102,6 +102,7 @@ namespace cheat::game::filters
 		extern SimpleFilter Samachurl;
 		extern SimpleFilter ShadowyHusk;
 		extern SimpleFilter Slime;
+		extern SimpleFilter FloatingFungus;
 		extern SimpleFilter Specter;
 		extern SimpleFilter TreasureHoarder;
 		extern SimpleFilter UnusualHilichurl;
