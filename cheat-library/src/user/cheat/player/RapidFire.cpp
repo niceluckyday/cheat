@@ -111,7 +111,7 @@ namespace cheat::feature
 		}
 		if (m_Randomize)
 		{
-			countOfAttacks = rand() % (m_maxMultiplier.value() - m_Multiplier.value());
+			countOfAttacks = rand() % (m_maxMultiplier.value() - m_minMultiplier.value()) + m_minMultiplier.value();
 			return countOfAttacks;
 		}
 
