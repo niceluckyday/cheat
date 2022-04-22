@@ -400,6 +400,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(featured, Electroculus);
 		ADD_FILTER_FIELD(featured, Electrogranum);
 		ADD_FILTER_FIELD(featured, Geoculus);
+		ADD_FILTER_FIELD(featured, Lumenspar);
 		ADD_FILTER_FIELD(featured, KeySigil);
 		ADD_FILTER_FIELD(featured, ShrineOfDepth);
 		ADD_FILTER_FIELD(featured, TimeTrialChallenge);
