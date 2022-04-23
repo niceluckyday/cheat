@@ -19,6 +19,8 @@ namespace config
 	void AddField(ConfigEntry& entry);
 	void AddField(field::ToggleField& entry);
 
+	void UpdateAll();
+
 	template<class R, typename ... Args>
 	R& NewField(Args ... args) 
 	{

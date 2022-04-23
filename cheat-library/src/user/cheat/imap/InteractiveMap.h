@@ -117,7 +117,7 @@ namespace cheat::feature
 
 		// Drawing
 		void DrawMenu();
-		void DrawFilters();
+		void DrawFilters(bool searchFixed = true);
 		void DrawFilter(const LabelData& label);
 
 		void DrawPoint(const PointData& pointData, const ImVec2& screenPosition, float radius, float radiusSquared, ImTextureID texture);

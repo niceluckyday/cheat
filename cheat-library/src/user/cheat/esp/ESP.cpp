@@ -177,7 +177,7 @@ namespace cheat::feature
 			{
 				info->first->valuePtr()->m_Enabled = selData.toggle;
 			}
-			validFilters[0]->first->Check();
+			config::UpdateAll();
 		}
 	}
 

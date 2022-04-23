@@ -547,13 +547,16 @@ namespace cheat::feature
 		return;
 	}
 	
-	void InteractiveMap::DrawFilters()
+	void InteractiveMap::DrawFilters(bool searchFixed)
 	{
 		auto sceneID = game::GetCurrentMapSceneID();
 		if (m_ScenesData.count(sceneID) == 0)
 			ImGui::Text("Sorry. Current scene is not supported.");
 
 		ImGui::InputText("Search", &m_SearchText);
+
+		if (searchFixed)
+			ImGui::BeginChild("FiltersList", ImVec2(-1, 0), false, ImGuiWindowFlags_NoBackground);
 
 		auto& categories = m_ScenesData[sceneID].categories;
 		for (auto& [categoryName, labels] : categories)
@@ -606,10 +609,13 @@ namespace cheat::feature
 				{
 					*label->enabled->valuePtr() = selData.toggle;
 				}
-				validLabels[0]->enabled->Check();
+				config::UpdateAll();
 			}
 			ImGui::PopID();
 		}
+
+		if (searchFixed)
+			ImGui::EndChild();
 	}
 
 	static bool IsMapActive()
@@ -624,6 +630,7 @@ namespace cheat::feature
 	static app::Rect s_MapViewRect = { 0, 0, 1, 1 };
 	static void InLevelMapPageContext_UpdateView_Hook(app::InLevelMapPageContext* __this, MethodInfo* method)
 	{
+		callOrigin(InLevelMapPageContext_UpdateView_Hook, __this, method);
 		s_MapViewRect = __this->fields._mapViewRect;
 	}
 
@@ -690,22 +697,6 @@ namespace cheat::feature
 		return _monoMiniMap->fields._areaMinDistance;
 	}
 
-
-	static void DrawAreaTest()
-	{
-		auto& manager = game::EntityManager::instance();
-		
-		auto avatarLevelPos = manager.avatar()->levelPosition();
-		auto avatarScreenPos = LevelToMapScreenPos(avatarLevelPos);
-
-		auto areaLevelPos = avatarLevelPos;
-		areaLevelPos.y += 175;
-		auto areaSceenPos = LevelToMapScreenPos(areaLevelPos);
-
-		auto draw = ImGui::GetBackgroundDrawList();
-		draw->AddCircle(avatarScreenPos, abs(areaSceenPos.y - avatarScreenPos.y), ImColor(1.0f, 0.0f, 0.5f));
-	}
-
 	void InteractiveMap::DrawExternal()
 	{
 		if (IsMiniMapActive())
@@ -713,8 +704,6 @@ namespace cheat::feature
 
         if (!IsMapActive())
             return;
-        
-		DrawAreaTest();
 
 		auto mapManager = GET_SINGLETON(MapManager);
 		if (mapManager == nullptr)
@@ -842,7 +831,8 @@ namespace cheat::feature
 		ImVec2 screenSize = { static_cast<float>(app::Screen_get_width(nullptr, nullptr)),
 			static_cast<float>(app::Screen_get_height(nullptr, nullptr)) };
 
-		auto iconSize = m_DynamicSize ? m_IconSize * (relativeSizeX / s_MapViewRect.m_Width) : m_IconSize;
+		
+		auto iconSize = (m_DynamicSize && s_MapViewRect.m_Width != 0.0f) ? m_IconSize * (relativeSizeX / s_MapViewRect.m_Width) : m_IconSize;
 		auto radius = iconSize / 2;
 		auto radiusSquared = radius * radius;
 
