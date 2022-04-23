@@ -34,6 +34,7 @@ namespace cheat::game::filters
 		SimpleFilter CrimsonAgate = { app::EntityType__Enum_1::GatherObject, "Prop_Essence" };
 		SimpleFilter Electroculus = { app::EntityType__Enum_1::GatherObject, "Prop_ElectricCrystal" };
 		SimpleFilter Electrogranum = { app::EntityType__Enum_1::Gadget, "ThunderSeedCreate" };
+		SimpleFilter FishingPoint = { app::EntityType__Enum_1::FishPool, "_FishingShoal" };
 		SimpleFilter Geoculus = { app::EntityType__Enum_1::GatherObject, "RockCrystalShell" };
 		SimpleFilter Lumenspar = { app::EntityType__Enum_1::GatherObject, "CelestiaSplinter" };
 		SimpleFilter KeySigil = { app::EntityType__Enum_1::GatherObject, "RuneContent" };

@@ -37,6 +37,7 @@ namespace cheat::game::filters
 		extern SimpleFilter CrimsonAgate;
 		extern SimpleFilter Electroculus;
 		extern SimpleFilter Electrogranum;
+		extern SimpleFilter FishingPoint;
 		extern SimpleFilter Geoculus;
 		extern SimpleFilter Lumenspar;
 		extern SimpleFilter KeySigil;

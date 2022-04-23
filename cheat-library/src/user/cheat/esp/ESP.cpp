@@ -399,6 +399,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(featured, CrimsonAgate);
 		ADD_FILTER_FIELD(featured, Electroculus);
 		ADD_FILTER_FIELD(featured, Electrogranum);
+		ADD_FILTER_FIELD(featured, FishingPoint);
 		ADD_FILTER_FIELD(featured, Geoculus);
 		ADD_FILTER_FIELD(featured, KeySigil);
 		ADD_FILTER_FIELD(featured, Lumenspar);
