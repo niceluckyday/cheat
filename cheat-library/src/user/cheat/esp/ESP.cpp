@@ -399,9 +399,10 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(featured, CrimsonAgate);
 		ADD_FILTER_FIELD(featured, Electroculus);
 		ADD_FILTER_FIELD(featured, Electrogranum);
+		ADD_FILTER_FIELD(featured, FishingPoint);
 		ADD_FILTER_FIELD(featured, Geoculus);
-		ADD_FILTER_FIELD(featured, Lumenspar);
 		ADD_FILTER_FIELD(featured, KeySigil);
+		ADD_FILTER_FIELD(featured, Lumenspar);
 		ADD_FILTER_FIELD(featured, ShrineOfDepth);
 		ADD_FILTER_FIELD(featured, TimeTrialChallenge);
 
@@ -441,6 +442,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(monster, FatuiCicinMage);
 		ADD_FILTER_FIELD(monster, FatuiMirrorMaiden);
 		ADD_FILTER_FIELD(monster, FatuiSkirmisher);
+		ADD_FILTER_FIELD(monster, FloatingFungus);
 		ADD_FILTER_FIELD(monster, Geovishap);
 		ADD_FILTER_FIELD(monster, GeovishapHatchling);
 		ADD_FILTER_FIELD(monster, Hilichurl);
@@ -452,7 +454,6 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(monster, Samachurl);
 		ADD_FILTER_FIELD(monster, ShadowyHusk);
 		ADD_FILTER_FIELD(monster, Slime);
-		ADD_FILTER_FIELD(monster, FloatingFungus);
 		ADD_FILTER_FIELD(monster, Specter);
 		ADD_FILTER_FIELD(monster, TreasureHoarder);
 		ADD_FILTER_FIELD(monster, UnusualHilichurl);
@@ -512,6 +513,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(puzzle, LargeRockPile);
 		ADD_FILTER_FIELD(puzzle, LightUpTilePuzzle);
 		ADD_FILTER_FIELD(puzzle, LightningStrikeProbe);
+		ADD_FILTER_FIELD(puzzle, LuminousSeelie);
 		ADD_FILTER_FIELD(puzzle, MistBubble);
 		ADD_FILTER_FIELD(puzzle, PirateHelm);
 		ADD_FILTER_FIELD(puzzle, PressurePlate);
@@ -522,6 +524,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(puzzle, SwordHilt);
 		ADD_FILTER_FIELD(puzzle, TorchPuzzle);
 		ADD_FILTER_FIELD(puzzle, UniqueRocks);
+		ADD_FILTER_FIELD(puzzle, WarmingSeelie);
 		ADD_FILTER_FIELD(puzzle, WindmillMechanism);
 	}
 #undef ADD_FILTER_FIELD
