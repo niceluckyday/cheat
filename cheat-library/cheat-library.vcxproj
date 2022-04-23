@@ -131,6 +131,9 @@
     <ProjectReference Include="..\cheat-base\cheat-base.vcxproj">
       <Project>{adb35022-823b-4dc0-b495-3efefbd3a82f}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\injector\injector.vcxproj">
+      <Project>{f578b30c-8de6-4741-99e4-1d30d2acdac4}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\res.rc" />

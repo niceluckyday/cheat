@@ -13,8 +13,17 @@
 namespace cheat::feature
 {
 
+#define UPDATE_DELAY(type, name, delay) \
+							static type name = {};                 \
+							static ULONGLONG s_LastUpdate = 0;     \
+                            ULONGLONG currentTime = GetTickCount();\
+                            if (s_LastUpdate + delay > currentTime)\
+                                return name;\
+                            s_LastUpdate = currentTime;
+
     static void InLevelMapPageContext_UpdateView_Hook(app::InLevelMapPageContext* __this, MethodInfo* method);
 	static void InLevelMapPageContext_ZoomMap_Hook(app::InLevelMapPageContext* __this, float value, MethodInfo* method);
+	static void MonoMiniMap_Update_Hook(app::MonoMiniMap* __this, MethodInfo* method);
 
     InteractiveMap::InteractiveMap() : Feature(),
         NFF(m_Enabled, "Interactive map", "m_InteractiveMap", "InteractiveMap", false),
@@ -36,6 +45,8 @@ namespace cheat::feature
     {
         cheat::events::WndProcEvent += MY_METHOD_HANDLER(InteractiveMap::OnWndProc);
 		cheat::events::KeyUpEvent += MY_METHOD_HANDLER(InteractiveMap::OnKeyUp);
+
+		HookManager::install(app::MonoMiniMap_Update, MonoMiniMap_Update_Hook);
 
         HookManager::install(app::InLevelMapPageContext_UpdateView, InLevelMapPageContext_UpdateView_Hook);
 		HookManager::install(app::InLevelMapPageContext_ZoomMap, InLevelMapPageContext_ZoomMap_Hook);
@@ -657,12 +668,54 @@ namespace cheat::feature
 		);
 	}
 
-    static const float relativeSizeX = 821.0f;
+	static app::MonoMiniMap* _monoMiniMap;
+	static bool IsMiniMapActive()
+	{
+		if (_monoMiniMap == nullptr)
+			return false;
+
+		SAFE_BEGIN();
+		return app::Behaviour_get_isActiveAndEnabled(reinterpret_cast<app::Behaviour*>(_monoMiniMap), nullptr);
+		SAFE_ERROR();
+		_monoMiniMap = nullptr;
+		return false;
+		SAFE_END();
+	}
+
+	static float GetMinimapLevelDistance()
+	{
+		if (_monoMiniMap == nullptr)
+			return {};
+
+		return _monoMiniMap->fields._areaMinDistance;
+	}
+
+
+	static void DrawAreaTest()
+	{
+		auto& manager = game::EntityManager::instance();
+		
+		auto avatarLevelPos = manager.avatar()->levelPosition();
+		auto avatarScreenPos = LevelToMapScreenPos(avatarLevelPos);
+
+		auto areaLevelPos = avatarLevelPos;
+		areaLevelPos.y += 175;
+		auto areaSceenPos = LevelToMapScreenPos(areaLevelPos);
+
+		auto draw = ImGui::GetBackgroundDrawList();
+		draw->AddCircle(avatarScreenPos, abs(areaSceenPos.y - avatarScreenPos.y), ImColor(1.0f, 0.0f, 0.5f));
+	}
+
 	void InteractiveMap::DrawExternal()
 	{
+		if (IsMiniMapActive())
+			DrawMinimapPoints();
+
         if (!IsMapActive())
             return;
         
+		DrawAreaTest();
+
 		auto mapManager = GET_SINGLETON(MapManager);
 		if (mapManager == nullptr)
 			return;
@@ -683,7 +736,6 @@ namespace cheat::feature
 				if (!m_SeparatedWindows)
 				{
 					ImGui::Spacing();
-
 					DrawFilters();
 				}
 				ImGui::End();
@@ -769,6 +821,8 @@ namespace cheat::feature
     void InteractiveMap::DrawPoints()
 	{
 		static uint32_t _lastSceneID = 0;
+		static const float relativeSizeX = 821.0f;
+
 		// TODO: Remove
 		auto draw = ImGui::GetBackgroundDrawList();
 		std::string fpsString = fmt::format("{:.1f}/{:.1f}", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
@@ -813,6 +867,123 @@ namespace cheat::feature
 
 				//ImGui::PushID(&point);
 				DrawPoint(point, screenPosition, radius, radiusSquared, image ? image->textureID : nullptr);
+				//ImGui::PopID();
+			}
+		}
+	}
+
+	struct ImCircle
+	{
+		ImVec2 center;
+		float radius;
+
+		bool Contains(const ImCircle& b)
+		{
+			if (b.radius > radius)
+				return false;
+
+			auto diff = b.center - center;
+			auto distanceSqrd = std::pow(diff.x, 2) + std::pow(diff.y, 2);
+			auto radiusDiffSqrd = std::pow(radius - b.radius, 2);
+			return radiusDiffSqrd > distanceSqrd;
+		}
+	};
+
+	static ImCircle GetMinimapCircle()
+	{
+		if (_monoMiniMap == nullptr)
+			return {};
+
+		UPDATE_DELAY(ImCircle, _miniMapCircle, 2000);
+
+		auto uiManager = GET_SINGLETON(UIManager_1);
+		if (uiManager == nullptr || uiManager->fields._sceneCanvas == nullptr)
+			return {};
+
+		auto back = _monoMiniMap->fields._grpMapBack;
+		if (back == nullptr)
+			return {};
+
+		auto mapPos = app::Transform_get_position(reinterpret_cast<app::Transform*>(back), nullptr);
+		auto center = app::Camera_WorldToScreenPoint(uiManager->fields._uiCamera, mapPos, nullptr);
+		center.y = app::Screen_get_height(nullptr, nullptr) - center.y;
+
+		auto mapRect = app::RectTransform_get_rect(back, nullptr);
+		float scaleFactor = app::Canvas_get_scaleFactor(uiManager->fields._sceneCanvas, nullptr);
+		_miniMapCircle = {
+			ImVec2(center.x, center.y),
+			(mapRect.m_Width * scaleFactor) / 2
+		};
+
+		return _miniMapCircle;
+	}
+
+	static float GetMinimapRotation()
+	{
+		if (_monoMiniMap == nullptr)
+			return {};
+
+		auto back = _monoMiniMap->fields._grpMiniBackRotate;
+		if (back == nullptr)
+			return {};
+
+		auto rotation = app::Transform_get_rotation(reinterpret_cast<app::Transform*>(back), nullptr);
+
+		app::Quaternion__Boxed boxed = { nullptr, nullptr, rotation };
+		return app::Quaternion_get_eulerAngles(&boxed, nullptr).z;
+	}
+
+	void InteractiveMap::DrawMinimapPoints()
+	{
+		// Found by hands. Only in Teyvat (3 scene), need also test another scenes.
+		static const float minimapAreaLevelRadius = 175.0f;
+		constexpr float PI = 3.14159265;
+
+		auto sceneID = game::GetCurrentPlayerSceneID();
+		if (m_ScenesData.count(sceneID) == 0)
+			return;
+
+		auto rotation = GetMinimapRotation();
+		ImVec2 rotationMult = ImVec2(1.0f, 0.0f);
+		if (rotation != 0)
+		{
+			auto rad =  ( (360.0f - rotation) * PI ) / 180.0f;
+			rotationMult = { sin(rad), cos(rad) };
+		}
+
+		ImCircle minimapCircle = GetMinimapCircle();
+		auto avatarLevelPos = game::EntityManager::instance().avatar()->levelPosition();
+		auto scale = minimapCircle.radius / minimapAreaLevelRadius;
+		
+		auto iconRadius = (m_IconSize * scale * 2.0f) / 2;
+		auto iconRadiusSqrd = std::pow(iconRadius, 2);
+
+		auto& labels = m_ScenesData[sceneID].labels;
+		for (auto& [labelID, label] : labels)
+		{
+			if (!label.enabled->value())
+				continue;
+
+			auto image = ImageLoader::GetImage(m_ShowHDIcons ? "HD" + label.clearName : label.clearName);
+			for (auto& [pointID, point] : label.points)
+			{
+				ImVec2 positionDiff = { point.levelPosition.x - avatarLevelPos.x, avatarLevelPos.y - point.levelPosition.y };
+				positionDiff = positionDiff * scale;
+				if (rotation != 0.0f)
+				{
+					positionDiff = {
+						positionDiff.x * rotationMult.y - positionDiff.y * rotationMult.x,
+						positionDiff.x * rotationMult.x + positionDiff.y * rotationMult.y
+					};
+				}
+
+
+				ImVec2 screenPos = minimapCircle.center + positionDiff;
+				if (!minimapCircle.Contains({ screenPos, iconRadius }))
+					continue;
+
+				//ImGui::PushID(&point);
+				DrawPoint(point, screenPos, iconRadius, iconRadiusSqrd, image ? image->textureID : nullptr);
 				//ImGui::PopID();
 			}
 		}
@@ -888,7 +1059,9 @@ namespace cheat::feature
 
 	}
 
-
-
+	void MonoMiniMap_Update_Hook(app::MonoMiniMap* __this, MethodInfo* method)
+	{
+		_monoMiniMap = __this;
+		callOrigin(MonoMiniMap_Update_Hook, __this, method);
+	}
 }
-

@@ -196,6 +196,13 @@ DO_APP_FUNC(0x035D8B70, BaseEntity*, GadgetEntity_GetOwnerEntity, (GadgetEntity*
 DO_APP_FUNC(0x0136FBD0, void, InLevelMapPageContext_ZoomMap, (InLevelMapPageContext* __this, float value, MethodInfo* method));
 DO_APP_FUNC(0x013B7F90, void, InLevelMapPageContext_UpdateView, (InLevelMapPageContext* __this, MethodInfo* method));
 DO_APP_FUNC(0x01C6A530, bool, UIManager_1_HasEnableMapCamera, (UIManager_1* __this, MethodInfo* method));
+DO_APP_FUNC(0x03D64A80, void, MonoMiniMap_Update, (MonoMiniMap* __this, MethodInfo* method));
+DO_APP_FUNC(0x073BFD20, Rect, RectTransform_get_rect, (RectTransform* __this, MethodInfo* method));
+DO_APP_FUNC(0x083C1430, float, Canvas_get_scaleFactor, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x03992EB0, MonoMiniMap*, MonoInLevelMainPage_get_miniMap, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x074E9960, Vector3, Quaternion_get_eulerAngles, (Quaternion__Boxed* __this, MethodInfo* method));
+DO_APP_FUNC(0x073D73E0, Quaternion, Transform_get_rotation, (Transform* __this, MethodInfo* method));
+
 
 // Singletons
 DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));

@@ -122,6 +122,8 @@ namespace cheat::feature
 
 		void DrawPoint(const PointData& pointData, const ImVec2& screenPosition, float radius, float radiusSquared, ImTextureID texture);
 		void DrawPoints();
+
+		void DrawMinimapPoints();
 		
 		// Block interact
 		void OnWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool& cancelled);
