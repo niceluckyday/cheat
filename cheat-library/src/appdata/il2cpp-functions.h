@@ -62,12 +62,17 @@ DO_APP_FUNC(0x04D946E0, bool, LCSelectPickup_IsOutPosition, (void* __this, BaseE
 DO_APP_FUNC(0x012316E0, void, ItemModule_PickItem, (ItemModule* __this, uint32_t entityID, MethodInfo* method));
 DO_APP_FUNC(0x017B0A10, void, LevelSceneElementViewPlugin_Tick, (LevelSceneElementViewPlugin* __this, float inDeltaTime, MethodInfo* method));
 
+// Time functions
+DO_APP_FUNC(0x073D35A0, float, Time_get_timeScale, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x073D3940, void, Time_set_timeScale, (void* __this, float value, MethodInfo* method));
+
 // Dialog skipping
 DO_APP_FUNC(0x02B9E6A0, bool, TalkDialogContext_get_canClick, (TalkDialogContext* __this, MethodInfo* method)); // delete
 DO_APP_FUNC(0x02B9BB50, bool, TalkDialogContext_get_canAutoClick, (TalkDialogContext* __this, MethodInfo* method));
 DO_APP_FUNC(0x02BA24C0, void, TalkDialogContext_OnDialogSelectItem, (TalkDialogContext* __this, Notify* notify, MethodInfo* method));
 DO_APP_FUNC(0x0419D8A0, void, InLevelCutScenePageContext_OnFreeClick, (InLevelCutScenePageContext* __this, MethodInfo* method)); // manual
 DO_APP_FUNC(0x0419F270, void, InLevelCutScenePageContext_UpdateView, (InLevelCutScenePageContext* __this, MethodInfo* method)); // manual (find by InLevelCutScenePageContext_ShowSkipBtn)
+DO_APP_FUNC(0x0419BF40, void, InLevelCutScenePageContext_ClearView, (InLevelCutScenePageContext* __this, MethodInfo* method));
 
 
 // Protection bypass
