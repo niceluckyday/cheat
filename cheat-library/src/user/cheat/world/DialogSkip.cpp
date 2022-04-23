@@ -6,12 +6,15 @@
 namespace cheat::feature 
 {
     static void InLevelCutScenePageContext_UpdateView_Hook(app::InLevelCutScenePageContext* __this, MethodInfo* method);
+    static void InLevelCutScenePageContext_ClearView_Hook(app::InLevelCutScenePageContext* __this, MethodInfo* method);
 
     DialogSkip::DialogSkip() : Feature(),
         NF(m_Enabled,               "Auto talk",                "AutoTalk", false),
-        NF(m_AutoSelectDialog,      "Auto select dialog",       "AutoTalk", true)
+        NF(m_AutoSelectDialog,      "Auto select dialog",       "AutoTalk", true),
+        NF(m_FastDialog,            "Fast dialog",              "AutoTalk", false)
     {
         HookManager::install(app::InLevelCutScenePageContext_UpdateView, InLevelCutScenePageContext_UpdateView_Hook);
+        HookManager::install(app::InLevelCutScenePageContext_ClearView, InLevelCutScenePageContext_ClearView_Hook);
     }
 
     const FeatureGUIInfo& DialogSkip::GetGUIInfo() const
@@ -24,6 +27,7 @@ namespace cheat::feature
     {
         ConfigWidget(m_Enabled, "Automatically continue the dialog.");
         ConfigWidget(m_AutoSelectDialog, "Automatically select dialogs.");
+        ConfigWidget(m_FastDialog, "Speeds up dialog (includes crafting/cooking/cutscenes).");
     }
 
     bool DialogSkip::NeedStatusDraw() const
@@ -47,12 +51,15 @@ namespace cheat::feature
     // When appear dialog choose we create notify with dialog select first item.
     void DialogSkip::OnCutScenePageUpdate(app::InLevelCutScenePageContext* context) 
     {
-		if (!m_Enabled)
-			return;
+        if (!m_Enabled)
+            return;
 
-		auto talkDialog = context->fields._talkDialog;
-		if (talkDialog == nullptr)
-			return;
+        auto talkDialog = context->fields._talkDialog;
+        if (talkDialog == nullptr)
+            return;
+
+        if (m_FastDialog)
+            app::Time_set_timeScale(nullptr, 5.0f, nullptr);
 
 		if (talkDialog->fields._inSelect && m_AutoSelectDialog)
 		{
@@ -72,5 +79,15 @@ namespace cheat::feature
         DialogSkip& dialogSkip = DialogSkip::GetInstance();
         dialogSkip.OnCutScenePageUpdate(__this);
 	}
+    
+    // Raised when exiting a dialog. We try to hackishly return to normal value.
+    // Should be a better way to store the pre-dialog speed using Time_get_timeScale.
+    static void InLevelCutScenePageContext_ClearView_Hook(app::InLevelCutScenePageContext* __this, MethodInfo* method)
+    {
+        float gameSpeed = app::Time_get_timeScale(nullptr, nullptr);
+        if (gameSpeed > 1.0f)
+            app::Time_set_timeScale(nullptr, 1.0f, nullptr);
+        callOrigin(InLevelCutScenePageContext_ClearView_Hook, __this, method);
+    }
 }
 
