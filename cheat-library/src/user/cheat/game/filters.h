@@ -169,6 +169,7 @@ namespace cheat::game::filters
 		extern SimpleFilter LargeRockPile;
 		extern SimpleFilter LightUpTilePuzzle;
 		extern SimpleFilter LightningStrikeProbe;
+		extern SimpleFilter LuminousSeelie;
 		extern SimpleFilter MistBubble;
 		extern SimpleFilter PirateHelm;
 		extern SimpleFilter PressurePlate;
@@ -179,6 +180,7 @@ namespace cheat::game::filters
 		extern SimpleFilter SwordHilt;
 		extern SimpleFilter TorchPuzzle;
 		extern SimpleFilter UniqueRocks;
+		extern SimpleFilter WarmingSeelie;
 		extern SimpleFilter WindmillMechanism;
 	}
 

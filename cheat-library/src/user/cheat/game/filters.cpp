@@ -165,6 +165,7 @@ namespace cheat::game::filters
 		SimpleFilter LargeRockPile = { app::EntityType__Enum_1::Gadget, std::vector<std::string> {"_ElecRocks", "_StonePile_02" } };
 		SimpleFilter LightUpTilePuzzle = { app::EntityType__Enum_1::Field, "_TwinStoryFloor" };
 		SimpleFilter LightningStrikeProbe = { app::EntityType__Enum_1::Gadget, "_MagneticGear" };
+		SimpleFilter LuminousSeelie = { app::EntityType__Enum_1::Platform, "_LitSeelie" };
 		SimpleFilter MistBubble = { app::EntityType__Enum_1::Platform, "_Suspiciousbubbles" };
 		SimpleFilter PirateHelm = { app::EntityType__Enum_1::Field, "_PirateHelm" };
 		SimpleFilter PressurePlate = { app::EntityType__Enum_1::Field, "Gear_Gravity" };
@@ -175,6 +176,7 @@ namespace cheat::game::filters
 		SimpleFilter SwordHilt = { app::EntityType__Enum_1::Field, "_WastedSword_" };
 		SimpleFilter TorchPuzzle = { app::EntityType__Enum_1::Gadget, "_ImmortalFire" };
 		SimpleFilter UniqueRocks = { app::EntityType__Enum_1::Gadget, "_Chalcedony" };
+		SimpleFilter WarmingSeelie = { app::EntityType__Enum_1::Platform, "_FireSeelie" };
 		SimpleFilter WindmillMechanism = { app::EntityType__Enum_1::Gear, "Gear_Windmill" };
 	}
 
