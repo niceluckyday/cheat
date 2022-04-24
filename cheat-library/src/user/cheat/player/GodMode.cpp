@@ -25,7 +25,9 @@ namespace cheat::feature
 
     void GodMode::DrawMain()
     {
-        ConfigWidget(m_Enabled, "Enables god mode. (No income damage); May not work with some types of damage.");
+        ConfigWidget("God Mode", m_Enabled, 
+                     "Enables god mode, i.e. no incoming damage.\n" \
+                     "May not work with some types of damage.");
     }
 
     bool GodMode::NeedStatusDraw() const
@@ -35,7 +37,7 @@ namespace cheat::feature
 
     void GodMode::DrawStatus() 
     {
-        ImGui::Text("God mode");
+        ImGui::Text("God Mode");
     }
 
     GodMode& GodMode::GetInstance()

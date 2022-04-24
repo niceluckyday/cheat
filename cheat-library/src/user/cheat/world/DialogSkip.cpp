@@ -25,9 +25,9 @@ namespace cheat::feature
 
     void DialogSkip::DrawMain()
     {
-        ConfigWidget(m_Enabled, "Automatically continue the dialog.");
-        ConfigWidget(m_AutoSelectDialog, "Automatically select dialogs.");
-        ConfigWidget(m_FastDialog, "Speeds up dialog (includes crafting/cooking/cutscenes).");
+        ConfigWidget("Enabled", m_Enabled, "Automatically continue the dialog.");
+        ConfigWidget("Auto-select Dialog", m_AutoSelectDialog, "Automatically select dialogs.");
+        ConfigWidget("Fast Dialog", m_FastDialog, "Speeds up dialog (includes crafting/cooking/cutscenes).");
     }
 
     bool DialogSkip::NeedStatusDraw() const
