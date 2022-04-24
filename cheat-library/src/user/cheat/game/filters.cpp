@@ -187,9 +187,9 @@ namespace cheat::game::filters
 			featured::Geoculus + featured::Lumenspar + featured::KeySigil;
 		SimpleFilter Chests = { app::EntityType__Enum_1::Chest };
 		SimpleFilter Monsters = { app::EntityType__Enum_1::Monster };
+		AdvancedFilter Living = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster } };
 		AdvancedFilter Animals = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster }, std::vector<std::string> {"Animal" }};
 		//m0nkrel: We can choose the entities we need ourselves so as not to magnetize cats, dogs, etc.
 		//AdvancedFilter Animals = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster }, std::vector<std::string> {"Crane","Tit", "Boar" , "Squirrel", "Fox", "Pigeon", "Wigeon", "Falcon" ,"Marten" } };
-
 	}
 }
