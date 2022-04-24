@@ -35,23 +35,21 @@ namespace cheat::feature
 		ConfigWidget("Enabled", m_Enabled, "Enables no-clip (fast speed + no collision).\n" \
             "To move, use WASD, Space (go up), and Shift (go down).");
 
-		if (m_Enabled) {
-			ConfigWidget("Speed", m_Speed, 0.1f, 2.0f, 100.0f,
-				"No-clip move speed.\n" \
-				"Not recommended setting above 5.0.");
+		ConfigWidget("Speed", m_Speed, 0.1f, 2.0f, 100.0f,
+			"No-clip move speed.\n" \
+			"Not recommended setting above 5.0.");
 
-			ConfigWidget("Camera-relative movement", m_CameraRelative,
-				"Move relative to camera view instead of avatar view/direction.");
+		ConfigWidget("Camera-relative movement", m_CameraRelative,
+			"Move relative to camera view instead of avatar view/direction.");
 
-			ConfigWidget("Alternate No-clip", m_AltSpeedEnabled,
-				"Allows usage of alternate speed when holding down LeftCtrl key.\n" \
-				"Useful if you want to temporarily go faster/slower than the no-clip speed setting.");
+		ConfigWidget("Alternate No-clip", m_AltSpeedEnabled,
+			"Allows usage of alternate speed when holding down LeftCtrl key.\n" \
+			"Useful if you want to temporarily go faster/slower than the no-clip speed setting.");
 			
-			if (m_AltSpeedEnabled) {
-				ConfigWidget("Alt Speed", m_AltSpeed, 0.1f, 2.0f, 100.0f,
-					"Alternate no-clip move speed.\n" \
-					"Not recommended setting above 5.0.");
-			}
+		if (m_AltSpeedEnabled) {
+			ConfigWidget("Alt Speed", m_AltSpeed, 0.1f, 2.0f, 100.0f,
+				"Alternate no-clip move speed.\n" \
+				"Not recommended setting above 5.0.");
 		}
     }
 

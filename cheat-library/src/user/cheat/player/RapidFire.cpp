@@ -33,23 +33,23 @@ namespace cheat::feature
             "This is not well tested, and can be detected by anticheat.\n" \
             "Not recommended to be used with main accounts or used with high values.\n" \
 			"Known issues with certain multi-hit attacks, e.g. Xiao E, Ayaka CA, etc.");
-		if (m_Enabled)
+
+		ConfigWidget("One-Punch Mode", m_OnePunch, "Calculate how many attacks needed to kill an enemy based on their HP\n" \
+			"and uses that to set the multiplier accordingly.\n" \
+			"May be safer, but multiplier calculation may not be on-point.");
+
+		ConfigWidget("Randomize Multiplier", m_Randomize, "Randomize multiplier between min and max multiplier.");
+		ImGui::SameLine();
+		ImGui::TextColored(ImColor(255, 165, 0, 255), "This will override One-Punch Mode!");
+
+		if (!m_Randomize)
 		{
-			ConfigWidget("One-Punch Mode", m_OnePunch, "Calculate how many attacks needed to kill an enemy based on their HP\n" \
-				"and uses that to set the multiplier accordingly.\n" \
-				"May be safer, but multiplier calculation may not be on-point.");
-			ConfigWidget("Randomize Multiplier", m_Randomize, "Randomize multiplier between min and max multiplier.");
-			ImGui::SameLine();
-			ImGui::TextColored(ImColor(255, 165, 0, 255), "This will override One-Punch Mode!");
-			if (!m_Randomize)
-			{
-				ConfigWidget("Multiplier", m_Multiplier, 1, 2, 1000, "Attack count multiplier.");
-			}
-			else
-			{
-				ConfigWidget("Min Multiplier", m_minMultiplier, 1, 2, 1000, "Attack count minimum multiplier.");
-				ConfigWidget("Max Multiplier", m_maxMultiplier, 1, 2, 1000, "Attack count maximum multiplier.");
-			}
+			ConfigWidget("Multiplier", m_Multiplier, 1, 2, 1000, "Attack count multiplier.");
+		}
+		else
+		{
+			ConfigWidget("Min Multiplier", m_minMultiplier, 1, 2, 1000, "Attack count minimum multiplier.");
+			ConfigWidget("Max Multiplier", m_maxMultiplier, 1, 2, 1000, "Attack count maximum multiplier.");
 		}
     }
 

@@ -28,12 +28,11 @@ namespace cheat::feature
     void InfiniteStamina::DrawMain()
     {
 		ConfigWidget("Enabled", m_Enabled, "Enables infinite stamina option.");
-		if (m_Enabled) {
-			ConfigWidget("Move Sync Packet Replacement", m_PacketReplacement,
-				"This mode prevents sending server packets with stamina cost actions,\n" \
-				"e.g. swim, climb, sprint, etc.\n" \
-				"NOTE: This is may be more safe than the standard method. More testing is needed.");
-		}
+
+		ConfigWidget("Move Sync Packet Replacement", m_PacketReplacement,
+			"This mode prevents sending server packets with stamina cost actions,\n" \
+			"e.g. swim, climb, sprint, etc.\n" \
+			"NOTE: This is may be more safe than the standard method. More testing is needed.");
     }
 
     bool InfiniteStamina::NeedStatusDraw() const
