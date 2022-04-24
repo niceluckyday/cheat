@@ -10,6 +10,7 @@ namespace cheat::feature
 	public:
 		config::field::ToggleField m_Enabled;
 		config::field::ToggleField m_AutoSelectDialog;
+		config::field::ToggleField m_ExcludeImportant;
 		config::field::ToggleField m_FastDialog;
 
 		static DialogSkip& GetInstance();

@@ -2,6 +2,7 @@
 #include "DialogSkip.h"
 
 #include <helpers.h>
+#include <cheat/game/EntityManager.h>
 
 namespace cheat::feature 
 {
@@ -11,6 +12,7 @@ namespace cheat::feature
     DialogSkip::DialogSkip() : Feature(),
         NF(m_Enabled,               "Auto talk",                "AutoTalk", false),
         NF(m_AutoSelectDialog,      "Auto select dialog",       "AutoTalk", true),
+        NF(m_ExcludeImportant,      "Exclude Katheryne/Tubby",  "AutoTalk", true),
         NF(m_FastDialog,            "Fast dialog",              "AutoTalk", false)
     {
         HookManager::install(app::InLevelCutScenePageContext_UpdateView, InLevelCutScenePageContext_UpdateView_Hook);
@@ -25,9 +27,15 @@ namespace cheat::feature
 
     void DialogSkip::DrawMain()
     {
-        ConfigWidget("Enabled", m_Enabled, "Automatically continue the dialog.");
-        ConfigWidget("Auto-select Dialog", m_AutoSelectDialog, "Automatically select dialogs.");
-        ConfigWidget("Fast Dialog", m_FastDialog, "Speeds up dialog (includes crafting/cooking/cutscenes).");
+        ConfigWidget(m_Enabled, "Automatically continue the dialog.");
+        ConfigWidget(m_AutoSelectDialog, "Automatically select dialogs.");
+        if (m_AutoSelectDialog)
+        {
+            ImGui::Indent();
+            ConfigWidget(m_ExcludeImportant, "Exclude Kath/Tubby from auto-select.");
+            ImGui::Unindent();
+        }
+        ConfigWidget(m_FastDialog, "Speeds up dialog (includes crafting/cooking/cutscenes).");
     }
 
     bool DialogSkip::NeedStatusDraw() const
@@ -38,6 +46,11 @@ namespace cheat::feature
     void DialogSkip::DrawStatus() 
     {
         ImGui::Text("Auto Talk: %s", m_AutoSelectDialog ? "Auto" : "Manual");
+        if (m_AutoSelectDialog)
+            ImGui::Text("Exclude K/T: %s", m_ExcludeImportant ? "Yes" : "No");
+        ImGui::Text("Fast Dialog: %s", m_FastDialog ? "Yes" : "No");
+        // if (m_FastDialog)
+        //    ImGui::Text("Fast Inventory", m_FastInventory ? "Yes" : "No");
     }
 
     DialogSkip& DialogSkip::GetInstance()
@@ -61,7 +74,30 @@ namespace cheat::feature
         if (m_FastDialog)
             app::Time_set_timeScale(nullptr, 5.0f, nullptr);
 
-		if (talkDialog->fields._inSelect && m_AutoSelectDialog)
+        bool isImportant = false;
+        if (m_ExcludeImportant)
+        {
+            // TODO: Add a custom filter in the future where users can
+            // add their own name substrings of entities to avoid
+            // speeding up dialog on.
+            std::vector<std::string> impEntitiesNames = {
+                "Djinn", 
+                "Katheryne"
+            };
+            auto dialogPartnerID = context->fields._inteeID;
+            auto& manager = game::EntityManager::instance();
+            auto dialogPartner = manager.entity(dialogPartnerID);
+            auto dialogPartnerName = dialogPartner->name();
+            for (auto impEntityName : impEntitiesNames)
+            {
+                if (dialogPartnerName.find(impEntityName)) {
+                    isImportant = true;
+                    break;
+                }
+            }
+        }
+
+		if (talkDialog->fields._inSelect && m_AutoSelectDialog && !isImportant)
 		{
 			int32_t value = 0;
 			auto object = il2cpp_value_box((Il2CppClass*)*app::Int32__TypeInfo, &value);
