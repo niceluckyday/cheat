@@ -17,8 +17,8 @@ namespace cheat::feature
 		NF(m_CapturingEnabled, "Capturing", "PacketSniffer", false),
 		NF(m_ManipulationEnabled, "Manipulation", "PacketSniffer", false),
 		NF(m_PipeEnabled, "Pipe", "PacketSniffer", false),
-		NF(m_ProtoDirPath, "Proto dir path", "PacketSniffer", ""),
-		NF(m_ProtoIDFilePath, "Proto id file path", "PacketSniffer", ""),
+		NF(m_ProtoDirPath, "Proto Dir Path", "PacketSniffer", ""),
+		NF(m_ProtoIDFilePath, "Proto ID File Path", "PacketSniffer", ""),
 
 		m_ProtoManager(),
 		m_NextTimeToConnect(0),
@@ -34,7 +34,7 @@ namespace cheat::feature
 
 	const FeatureGUIInfo& PacketSniffer::GetGUIInfo() const
 	{
-		static const FeatureGUIInfo info{ "Packet sniffer", "Settings", true };
+		static const FeatureGUIInfo info{ "Packet Sniffer", "Settings", true };
 		return info;
 	}
 
@@ -56,7 +56,7 @@ namespace cheat::feature
 	void PacketSniffer::DrawMain()
 	{
 		//ImGui::Text("Dev: for working needs server for named pipe 'genshin_packet_pipe'.\nCheck 'packet-handler' project like example.");
-		if (ConfigWidget(m_CapturingEnabled, "Enabling capturing packets info and send it to pipe, if exists."))
+		if (ConfigWidget(m_CapturingEnabled, "Enabling capturing of packet info and sending to pipe, if it exists."))
 		{ 
 			bool result = OnCapturingChanged();
 			if (!result)
@@ -75,23 +75,23 @@ namespace cheat::feature
 		
 		if (ImGui::BeginPopup("Error"))
 		{
-			ImGui::Text("Please fill 'Proto dir path' and 'Proto id file path' before enabling capture.");
+			ImGui::Text("Please fill 'Proto Dir Path' and 'Proto ID File Path' before enabling capture.");
 			ImGui::EndPopup();
 		}
 
-		ConfigWidget(m_PipeEnabled, "Enable sending packet data to pipe with name 'genshin_packet_pipe'.\n"\
-			"This feature can be used to do external monitoring tool.");
+		ConfigWidget(m_PipeEnabled, "Enable sending of packet data to pipe with name 'genshin_packet_pipe'.\n"\
+			"This feature can be used with external monitoring tools.");
 		//ConfigWidget(m_ManipulationEnabled, "Enabling manipulation packet feature, that allows to replace, block incoming/outcoming packets." \
 		//	"\nThis feature often needs, to read-write pipe operation, so can decrease network bandwidth.");
 
 		if (m_CapturingEnabled)
 		{
-			ImGui::Text("This parameters can be changed only when 'Capturing' disabled.");
+			ImGui::Text("These parameters can only be changed when 'Capturing' is disabled.");
 			ImGui::BeginDisabled();
 		}
 
-		ConfigWidget(m_ProtoDirPath, "Path to directory contains genshin .proto files.");
-		ConfigWidget(m_ProtoIDFilePath, "Path to json file contained packet id->packet name info.");
+		ConfigWidget(m_ProtoDirPath, "Path to directory containing Genshin .proto files.");
+		ConfigWidget(m_ProtoIDFilePath, "Path to JSON file containing packet id->packet name info.");
 
 		if (m_CapturingEnabled)
 			ImGui::EndDisabled();

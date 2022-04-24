@@ -21,17 +21,18 @@ namespace cheat::feature
 
     const FeatureGUIInfo& InfiniteStamina::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info { "Infinite stamina", "Player", true };
+        static const FeatureGUIInfo info { "Infinite Stamina", "Player", true };
         return info;
     }
 
     void InfiniteStamina::DrawMain()
     {
 		ConfigWidget("Enabled", m_Enabled, "Enables infinite stamina option.");
-		ConfigWidget(m_PacketReplacement,
+
+		ConfigWidget("Move Sync Packet Replacement", m_PacketReplacement,
 			"This mode prevents sending server packets with stamina cost actions,\n" \
-            "(etc. swim, climb, sprint..).\n" \
-            "NOTE. This is may be more safe than the standard method. More testing is needed.");
+			"e.g. swim, climb, sprint, etc.\n" \
+			"NOTE: This is may be more safe than the standard method. More testing is needed.");
     }
 
     bool InfiniteStamina::NeedStatusDraw() const
@@ -41,7 +42,7 @@ namespace cheat::feature
 
     void InfiniteStamina::DrawStatus() 
     { 
-        ImGui::Text("Inf stamina [%s]", m_PacketReplacement ? "Packet" : "Normal");
+        ImGui::Text("Inf. Stamina [%s]", m_PacketReplacement ? "Packet" : "Normal");
     }
 
     InfiniteStamina& InfiniteStamina::GetInstance()

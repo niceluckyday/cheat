@@ -15,8 +15,8 @@ namespace cheat::feature
         NF(m_Enabled,            "No clip",              "NoClip", false),
         NF(m_Speed,              "Speed",                "NoClip", 5.5f),
         NF(m_CameraRelative,     "Relative to camera",   "NoClip", true),
-		NF(m_SneakSpeedEnabled,  "Sneak speed enabled",  "NoClip", false),
-		NF(m_SneakSpeedValue,    "Sneak speed",          "NoClip", 1.0f)
+		NF(m_AltSpeedEnabled,	 "Alt speed enabled",    "NoClip", false),
+		NF(m_AltSpeed,			 "Alt speed",            "NoClip", 1.0f)
     {
 		HookManager::install(app::HumanoidMoveFSM_LateTick, HumanoidMoveFSM_LateTick_Hook);
 
@@ -26,23 +26,31 @@ namespace cheat::feature
 
     const FeatureGUIInfo& NoClip::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ "No clip", "Player", true };
+        static const FeatureGUIInfo info{ "No-Clip", "Player", true };
         return info;
     }
 
     void NoClip::DrawMain()
     {
-		ConfigWidget("Enabled", m_Enabled, "Enables no clip.\n" \
-            "For move use ('W', 'A', 'S', 'D', 'Space', 'Shift')");
+		ConfigWidget("Enabled", m_Enabled, "Enables no-clip (fast speed + no collision).\n" \
+            "To move, use WASD, Space (go up), and Shift (go down).");
 
-		ConfigWidget(m_Speed, 0.1f, 2.0f, 100.0f, "No clip move speed.\n"\
-            "It's not recommended to set value above 5.");
-		
-        ConfigWidget(m_CameraRelative, "Move performing relative to camera direction. Not avatar facing direction.");
-		
-		ConfigWidget("", m_SneakSpeedEnabled); ImGui::SameLine();
-		ConfigWidget(m_SneakSpeedValue, 0.1f, 2.0f, 100.0f,
-			"Override move speed with value.\nPressing LeftCtrl will make you move faster/slower depending on the value you set.");
+		ConfigWidget("Speed", m_Speed, 0.1f, 2.0f, 100.0f,
+			"No-clip move speed.\n" \
+			"Not recommended setting above 5.0.");
+
+		ConfigWidget("Camera-relative movement", m_CameraRelative,
+			"Move relative to camera view instead of avatar view/direction.");
+
+		ConfigWidget("Alternate No-clip", m_AltSpeedEnabled,
+			"Allows usage of alternate speed when holding down LeftCtrl key.\n" \
+			"Useful if you want to temporarily go faster/slower than the no-clip speed setting.");
+			
+		if (m_AltSpeedEnabled) {
+			ConfigWidget("Alt Speed", m_AltSpeed, 0.1f, 2.0f, 100.0f,
+				"Alternate no-clip move speed.\n" \
+				"Not recommended setting above 5.0.");
+		}
     }
 
     bool NoClip::NeedStatusDraw() const
@@ -52,7 +60,11 @@ namespace cheat::feature
 
     void NoClip::DrawStatus() 
     {
-        ImGui::Text("NoClip [%.01f|%s]", m_Speed.value(), m_CameraRelative ? "CR" : "PR");
+		ImGui::Text("NoClip%s[%.01f%s%|%s]",
+			m_AltSpeedEnabled ? "+Alt " : " ",
+			m_Speed.value(),
+			m_AltSpeedEnabled ? fmt::format("|{:.1f}", m_AltSpeed.value()) : "",
+			m_CameraRelative ? "CR" : "PR");
     }
 
     NoClip& NoClip::GetInstance()
@@ -103,8 +115,8 @@ namespace cheat::feature
 		auto relativeEntity = m_CameraRelative ? &cameraEntity : avatarEntity;
 
 		float speed = m_Speed.value();
-		if (m_SneakSpeedEnabled && Hotkey(VK_LCONTROL).IsPressed())
-			speed = m_SneakSpeedValue.value(); 
+		if (m_AltSpeedEnabled && Hotkey(VK_LCONTROL).IsPressed())
+			speed = m_AltSpeed.value(); 
 
 		app::Vector3 dir = {};
 		if (Hotkey('W').IsPressed())
@@ -121,7 +133,7 @@ namespace cheat::feature
 
 		if (Hotkey(VK_SPACE).IsPressed())
 			dir = dir + relativeEntity->up();
-
+		
 		if (Hotkey(ImGuiKey_ModShift).IsPressed())
 			dir = dir + relativeEntity->down();
 

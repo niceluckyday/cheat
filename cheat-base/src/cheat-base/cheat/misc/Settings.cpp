@@ -6,20 +6,20 @@
 namespace cheat::feature 
 {
     Settings::Settings() : Feature(),
-        NF(m_MenuKey,    "Show cheat menu key", "General", Hotkey(VK_F1)),
+        NF(m_MenuKey,    "Show Cheat Menu Key", "General", Hotkey(VK_F1)),
 		
-		NF(m_StatusMove, "Move status window", "General", true),
-		NF(m_StatusShow, "Show status window", "General", true),
+		NF(m_StatusMove, "Move Status Window", "General", true),
+		NF(m_StatusShow, "Show Status Window", "General", true),
 		
-		NF(m_InfoMove,   "Move info window", "General", true),
-		NF(m_InfoShow,   "Show info window", "General", true),
+		NF(m_InfoMove,   "Move Info Window", "General", true),
+		NF(m_InfoShow,   "Show Info Window", "General", true),
 		
-		NF(m_FpsMove, "Move FPS indicator", "General", false),
-		NF(m_FpsShow, "Show FPS indicator", "General", true),
+		NF(m_FpsMove, "Move FPS Indicator", "General", false),
+		NF(m_FpsShow, "Show FPS Indicator", "General", true),
 
-		NF(m_ConsoleLogging, "Console logging", "General", true),
-		NF(m_FileLogging,    "File logging",    "General", false),
-		NF(m_HotkeysEnabled, "Hotkeys enabled", "General", true)
+		NF(m_ConsoleLogging, "Console Logging", "General", true),
+		NF(m_FileLogging,    "File Logging",    "General", false),
+		NF(m_HotkeysEnabled, "Hotkeys Enabled", "General", true)
     {
 
     }
@@ -36,7 +36,8 @@ namespace cheat::feature
 		BeginGroupPanel("General", ImVec2(-1, 0));
 		{
 			ConfigWidget(m_MenuKey, false,
-				"Key to toggle this menu visibility. Cannot be empty.\nIf you forget this key, you can see it in config file.");
+				"Key to toggle main menu visibility. Cannot be empty.\n"\
+				"If you forget this key, you can see or set it in your config file.");
 			ConfigWidget(m_HotkeysEnabled, "Enable hotkeys.");
 		}
 		EndGroupPanel();
@@ -44,15 +45,15 @@ namespace cheat::feature
 		BeginGroupPanel("Logging", ImVec2(-1, 0));
 		{
 			bool consoleChanged = ConfigWidget(m_ConsoleLogging,
-				"Enable console for logging information. (Enabling will take effect after next launch)");
+				"Enable console for logging information (changes will take effect after relaunch)");
 			if (consoleChanged && !m_ConsoleLogging)
 			{
 				Logger::SetLevel(Logger::Level::None, Logger::LoggerType::ConsoleLogger);
 			}
 
 			bool fileLogging = ConfigWidget(m_FileLogging,
-				"Enable file logging. (Enabling will take effect after next launch)\n" \
-				"That's mean that in cheat directory will be created folder which will be contain file with logs.");
+				"Enable file logging (changes will take effect after relaunch).\n" \
+				"A folder in the app directory will be created for logs.");
 			if (fileLogging && !m_FileLogging)
 			{
 				Logger::SetLevel(Logger::Level::None, Logger::LoggerType::FileLogger);
@@ -60,24 +61,24 @@ namespace cheat::feature
 		}
 		EndGroupPanel();
 
-		BeginGroupPanel("Status window", ImVec2(-1, 0));
+		BeginGroupPanel("Status Window", ImVec2(-1, 0));
 		{
 			ConfigWidget(m_StatusShow);
-			ConfigWidget(m_StatusMove, "Give able to move 'Status' window.");
+			ConfigWidget(m_StatusMove, "Allow moving of 'Status' window.");
 		}
 		EndGroupPanel();
 
-		BeginGroupPanel("Info window", ImVec2(-1, 0));
+		BeginGroupPanel("Info Window", ImVec2(-1, 0));
 		{
 			ConfigWidget(m_InfoShow);
-			ConfigWidget(m_InfoMove, "Give able to move 'Info' window.");
+			ConfigWidget(m_InfoMove, "Allow moving of 'Info' window.");
 		}
 		EndGroupPanel();
 
 		BeginGroupPanel("FPS indicator", ImVec2(-1, 0));
 		{
 			ConfigWidget(m_FpsShow);
-			ConfigWidget(m_FpsMove, "Give able to move 'FPS indicator' window.");
+			ConfigWidget(m_FpsMove, "Allow moving of 'FPS Indicator' window.");
 		}
 		EndGroupPanel();
 	}

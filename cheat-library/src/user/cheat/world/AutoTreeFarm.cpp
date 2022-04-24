@@ -22,27 +22,27 @@ namespace cheat::feature
 
     const FeatureGUIInfo& AutoTreeFarm::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ "Auto tree farm", "World", true };
+        static const FeatureGUIInfo info{ "Auto Tree Farm", "World", true };
         return info;
     }
 
     void AutoTreeFarm::DrawMain()
     {
-		ImGui::TextColored(ImColor(255, 165, 0, 255), "Note. This feature not tested in detectable aspect.\n"
-			"\tDon't recommend use it in main account in first days after release.");
+		ImGui::TextColored(ImColor(255, 165, 0, 255), "Note. This feature is not fully tested detection-wise.\n"
+			"Not recommended for main accounts or used with high values.");
 		
 		ConfigWidget("Enabled", m_Enabled, "Automatically attack trees in range.");
-		ConfigWidget(m_AttackDelay, 1, 0, 1000, "Delay before next tree attack.");
-		ConfigWidget(m_RepeatDelay, 1, 500, 1000, "Delay before next attack same tree. <500 not work.");
+		ConfigWidget("Attack Delay (ms)", m_AttackDelay, 1, 0, 1000, "Delay before next tree attack.");
+		ConfigWidget("Repeat Delay (ms)", m_RepeatDelay, 1, 500, 1000, "Delay before attacking same tree. <500 will not work.");
 
-		ConfigWidget(m_AttackPerTree, 1, 0, 100, "Counts of attack to one tree.\n" 
-			"It needs to avoid unnecessary attacks to empty tree.\n" 
-			"Note:   0 - Unlimited\n"
-			"Note.2: Memorized trees' attacks reset after game restart."
+		ConfigWidget("Attacks per Tree", m_AttackPerTree, 1, 0, 100, "Counts of attack for one tree.\n" \
+			"Recommended to set to 10 or lower to avoid attacking empty trees.\n" \
+			"Set to 0 for unlimited attacks (even empty trees, extremely high risk).\n" \
+			"Note: Memorized trees' attacks are reset after game restart."
 		);
 
-		ImGui::TextColored(ImColor(255, 165, 0, 255), "In current version range limited ~15m.");
-		ConfigWidget(m_Range, 0.1f, 1.0f, 15.0f);
+		ConfigWidget("Range (m)", m_Range, 0.1f, 1.0f, 15.0f);
+		ImGui::TextColored(ImColor(255, 165, 0, 255), "Range is softly limited to ~15m for safety purposes.");
     }
 
     bool AutoTreeFarm::NeedStatusDraw() const
@@ -52,7 +52,11 @@ namespace cheat::feature
 
     void AutoTreeFarm::DrawStatus() 
     { 
-        ImGui::Text("Tree farm [%dms]", m_RepeatDelay.value());
+        ImGui::Text("Tree Farm\n[%dms|%dms|%d|%.1fm]", 
+			m_AttackDelay.value(),
+			m_RepeatDelay.value(),
+			m_AttackPerTree.value(),
+			m_Range.value());
     }
 
     AutoTreeFarm& AutoTreeFarm::GetInstance()

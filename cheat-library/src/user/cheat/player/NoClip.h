@@ -14,8 +14,8 @@ namespace cheat::feature
 		config::field::BaseField<float> m_Speed;
 		config::field::BaseField<bool> m_CameraRelative;
 
-		config::field::BaseField<bool> m_SneakSpeedEnabled;
-		config::field::BaseField<float> m_SneakSpeedValue;
+		config::field::BaseField<bool> m_AltSpeedEnabled;
+		config::field::BaseField<float> m_AltSpeed;
 
 		static NoClip& GetInstance();
 

@@ -28,19 +28,20 @@ namespace cheat::feature
 
     const FeatureGUIInfo& AutoLoot::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ "Auto loot", "World", true };
+        static const FeatureGUIInfo info{ "Auto Loot", "World", true };
         return info;
     }
 
     void AutoLoot::DrawMain()
     {
-		ConfigWidget("Enabled", m_Enabled, "loots dropped items.\n\
-            Note: custom range and decreasing delay time are high-risk features. Expect a ban.");
-		ConfigWidget(m_DelayTime, 1, 0, 1000, "Delay (in ms) beetwen looting items.\n\
-            Values under 200ms are unsafe.");
-		ConfigWidget(m_UseCustomRange, "Enable Pickup Range.\n\
-            Using this feature is not recommended, as it is easily detected by the server.");
-		ConfigWidget(m_CustomRange, 0.1f, 0.5f, 60.0f, "Pickup range.");
+		ConfigWidget("Enabled", m_Enabled, "Loots dropped items.\n" \
+            "Note: Custom range and low delay times are high-risk features.\n" \
+			"Abuse will definitely merit a ban.");
+		ConfigWidget("Delay Time (ms)", m_DelayTime, 1, 0, 1000, "Delay (in ms) beetwen looting items.\n" \
+            "Values under 200ms are unsafe.");
+		ConfigWidget("Use Custom Pickup Range", m_UseCustomRange, "Enable custom pickup range.\n" \
+            "Using this feature is not recommended, as it is easily detected by the server.");
+		ConfigWidget("Range (m)", m_CustomRange, 0.1f, 0.5f, 60.0f, "Modifies pickup range to this value (in meters).");
     }
 
     bool AutoLoot::NeedStatusDraw() const
@@ -50,7 +51,9 @@ namespace cheat::feature
 
     void AutoLoot::DrawStatus() 
     {
-        ImGui::Text("Auto loot [%d ms]", m_DelayTime.value());
+		ImGui::Text("Auto Loot [%dms%sm]",
+			m_DelayTime.value(),
+			m_UseCustomRange ? fmt::format("|{:.1f}", m_CustomRange.value()) : "");
     }
 
     AutoLoot& AutoLoot::GetInstance()
