@@ -1,7 +1,7 @@
 #pragma once
 #include <optional>
 #include <list>
-#include <unordered_set>
+#include <set>
 
 #include <cheat-base/cheat/Feature.h>
 #include <cheat-base/config/Config.h>
@@ -20,11 +20,19 @@ namespace cheat::feature
 		config::field::BaseField<bool> m_UnlockedLogShow;
 
 		config::field::BaseField<float> m_IconSize;
+		config::field::BaseField<float> m_MinimapIconSize;
 		config::field::BaseField<bool> m_DynamicSize;
 		config::field::BaseField<bool> m_ShowHDIcons;
 		
 		config::field::BaseField<bool> m_ShowUnlocked;
 		config::field::BaseField<float> m_UnlockedTransparency;
+
+		config::field::BaseField<bool> m_AutoDetectNewItems;
+		config::field::BaseField<float> m_NewItemsDetectRange;
+		config::field::BaseField<int> m_NewItemsDetectingDelay;
+
+		config::field::BaseField<bool> m_AutoDetectGatheredItems;
+		config::field::BaseField<float> m_GatheredItemsDetectRange;
 		
 		config::field::HotkeyField m_UnlockNearestPoint;
 		config::field::HotkeyField m_RevertLatestUnlock;
@@ -49,6 +57,9 @@ namespace cheat::feature
 
 			bool unlocked;
 			int64_t unlockTimestamp;
+
+			bool isCustom;
+			int64_t creationTimestamp;
 		};
 
 		// std::optional<PointData> GetSelectedPoint();
@@ -57,9 +68,12 @@ namespace cheat::feature
 		InteractiveMap::PointData* FindNearestPoint(app::Vector2 levelPosition, uint32_t sceneID = 0);
 		InteractiveMap::PointData* FindEntityPoint(game::Entity* entity, uint32_t sceneID = 0);
 
-		void AddUnlockedPoint(PointData* pointData);
-		void RemoveUnlockedPoint(PointData* pointData);
-		void RemoveLatestUnlockedPoint();
+		void UnlockPoint(PointData* pointData);
+		void LockPoint(PointData* pointData);
+		void RevertLatestUnlocking();
+
+		void AddCustomPoint(uint32_t sceneID, uint32_t labelID, app::Vector2 levelPosition);
+		void RemoveCustomPoint(PointData* pointData);
 
 	private:
 
@@ -67,11 +81,18 @@ namespace cheat::feature
 
 		struct LabelData
 		{
+			uint32_t id;
+			uint32_t sceneID;
+
 			std::string name;
 			std::string clearName;
 			config::field::BaseField<bool>* enabled;
 
 			std::map<uint32_t, PointData> points;
+			uint32_t unlockedCount;
+
+			game::IEntityFilter* filter;
+			bool supportGatherDetect;
 		};
 
 		struct CategoryData
@@ -89,12 +110,25 @@ namespace cheat::feature
 
 		std::map<uint32_t, SceneData> m_ScenesData;
 
-		config::field::StringField m_UnlockedPointsField;
-		std::list<PointData*> m_UnlockedPoints;
-		std::unordered_set<PointData*> m_UnlockedPointsSet;
+		std::mutex m_UserDataMutex; // Support multithread
+		config::field::StringField m_UserPointsData;
+		config::field::BaseField<uint32_t> m_CustomPointIndex; // Stores last index for new custom points
 		
-		std::map<std::string, game::IEntityFilter*> m_LabelToFilter; // Used to determine 
-		std::vector<PointData*> m_ValidPointsCache;
+		struct _UnlockTimestampCmp {
+			bool operator() (PointData* const& lhs, PointData* const& rhs) const
+			{
+				return lhs->unlockTimestamp > rhs->unlockTimestamp;
+			}
+		};
+		std::set<PointData*, _UnlockTimestampCmp> m_CustomPoints;
+
+		struct _CreationTimestampCmp {
+			bool operator() (PointData* const& lhs, PointData* const& rhs) const
+			{
+				return lhs->creationTimestamp > rhs->creationTimestamp;
+			}
+		};
+		std::set<PointData*, _CreationTimestampCmp> m_UnlockedPoints;
 
 		std::mutex m_PointMutex;
 		// PointData* m_SelectedPoint;
@@ -111,16 +145,25 @@ namespace cheat::feature
 
 		void ApplyScaling();
 
-		void LoadUnlockedPoints();
-		void SaveUnlockedPoints();
+		void InitializeEntityFilter(game::IEntityFilter* filter, const std::string& clearName);
 		void InitializeEntityFilters();
 
+		// Loading user data
+		void LoadUserData();
+		void SaveUserData();
+
+		void LoadUnlockPointData(LabelData* labelData, const nlohmann::json& data);
+		void SaveUnlockPointData(nlohmann::json& jObject, PointData* pointData);
+		
+		void LoadCustomPointData(LabelData* labelData, const nlohmann::json& data);
+		void SaveCustomPointData(nlohmann::json& jObject, PointData* pointData);
+		
 		// Drawing
 		void DrawMenu();
 		void DrawFilters(bool searchFixed = true);
-		void DrawFilter(const LabelData& label);
+		void DrawFilter(LabelData& label);
 
-		void DrawPoint(const PointData& pointData, const ImVec2& screenPosition, float radius, float radiusSquared, ImTextureID texture);
+		void DrawPoint(const PointData& pointData, const ImVec2& screenPosition, float radius, float radiusSquared, ImTextureID texture, bool selectable = true);
 		void DrawPoints();
 
 		void DrawMinimapPoints();
@@ -129,8 +172,9 @@ namespace cheat::feature
 		void OnWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool& cancelled);
 		void OnKeyUp(short key, bool& cancelled);
 
-		// Cache valid points
-		void RefreshValidPoints();
+		// Detecting stuff
+		void OnGameUpdate();
+		void NewItemsDetect();
 	};
 }
 

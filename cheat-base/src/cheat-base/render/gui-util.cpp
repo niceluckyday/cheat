@@ -9,17 +9,21 @@
 #include <cheat-base/util.h>
 #include <shellapi.h>
 
+
+void ShowHelpText(const char* text)
+{
+	ImGui::BeginTooltip();
+	ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+	ImGui::TextUnformatted(text);
+	ImGui::PopTextWrapPos();
+	ImGui::EndTooltip();
+}
+
 void HelpMarker(const char* desc)
 {
     ImGui::TextDisabled("(?)");
     if (ImGui::IsItemHovered())
-    {
-        ImGui::BeginTooltip();
-        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-        ImGui::TextUnformatted(desc);
-        ImGui::PopTextWrapPos();
-        ImGui::EndTooltip();
-    }
+        ShowHelpText(desc);
 }
 
 bool InputHotkey(const char* label, Hotkey* hotkey, bool clearable)

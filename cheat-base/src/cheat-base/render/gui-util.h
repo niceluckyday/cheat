@@ -25,6 +25,7 @@ bool ConfigWidget(config::field::BaseField<std::string>& field, const char* desc
 bool ConfigWidget(config::field::BaseField<std::filesystem::path>& field, bool onlyDirectories = false, const char* filter = nullptr, const char* desc = nullptr);
 bool ConfigWidget(config::field::ColorField& field, const char* desc = nullptr);
 
+void ShowHelpText(const char* text);
 void HelpMarker(const char* desc);
 
 bool InputHotkey(const char* label, Hotkey* hotkey, bool clearable);
