@@ -22,32 +22,35 @@ namespace cheat::feature
 
     const FeatureGUIInfo& RapidFire::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ "Rapid fire", "Player", true };
+        static const FeatureGUIInfo info{ "Attack Multiplier", "Player", true };
         return info;
     }
 
     void RapidFire::DrawMain()
     {
-		ConfigWidget("Enabled", m_Enabled, "Enables rapid fire.\n\
-            Rapid fire just multiply your attack count.\n\
-            It's not well tested, and can be detected by anticheat.\n\
-            So not recommend to you that in your main account.");
-		ConfigWidget("Randomize", m_Randomize, "Randomize multiplier between min and max multiplier.");
-		if (!m_Randomize)
+		ConfigWidget("Enabled", m_Enabled, "Enables multi-hit.\n" \
+            "Multiplies your attack count.\n" \
+            "This is not well tested, and can be detected by anticheat.\n" \
+            "Not recommended to be used with main accounts or used with high values.\n" \
+			"Known issues with certain multi-hit attacks, e.g. Xiao E, Ayaka CA, etc.");
+		if (m_Enabled)
 		{
-		ConfigWidget(m_Multiplier, 1, 2, 1000, "Rapid fire multiply count.\n\
-            Each hit is multiplied by the multiplier.\n\
-            Note that large values may cause some lag.");
+			ConfigWidget("One-Punch Mode", m_OnePunch, "Calculate how many attacks needed to kill an enemy based on their HP\n" \
+				"and uses that to set the multiplier accordingly.\n" \
+				"May be safer, but multiplier calculation may not be on-point.");
+			ConfigWidget("Randomize Multiplier", m_Randomize, "Randomize multiplier between min and max multiplier.");
+			ImGui::SameLine();
+			ImGui::TextColored(ImColor(255, 165, 0, 255), "This will override One-Punch Mode!");
+			if (!m_Randomize)
+			{
+				ConfigWidget("Multiplier", m_Multiplier, 1, 2, 1000, "Attack count multiplier.");
+			}
+			else
+			{
+				ConfigWidget("Min Multiplier", m_minMultiplier, 1, 2, 1000, "Attack count minimum multiplier.");
+				ConfigWidget("Max Multiplier", m_maxMultiplier, 1, 2, 1000, "Attack count maximum multiplier.");
+			}
 		}
-		else
-		{
-			ConfigWidget(m_minMultiplier, 1, 2, 1000, "Min Mutliplier.");
-			ConfigWidget(m_maxMultiplier, 1, 2, 1000, "Max multiplier.");
-		}
-
-
-		ConfigWidget(m_OnePunch, "Calculate how many attacks needed to kill an enemy.\n\
-            Since the damage is calculated from the server, The calculation may not be on-point.");
     }
 
     bool RapidFire::NeedStatusDraw() const
@@ -57,10 +60,12 @@ namespace cheat::feature
 
     void RapidFire::DrawStatus() 
     {
-        if (m_OnePunch)
-            ImGui::Text("Rapid fire [OnePunch]");
-        else
-            ImGui::Text("Rapid fire [%d]", m_Multiplier.value());
+		if (m_Randomize)
+			ImGui::Text("Multi-Hit Random[%d|%d]", m_minMultiplier.value(), m_maxMultiplier.value());
+        else if (m_OnePunch)
+            ImGui::Text("Multi-Hit [OnePunch]");
+		else
+            ImGui::Text("Multi-Hit [%d]", m_Multiplier.value());
     }
 
     RapidFire& RapidFire::GetInstance()

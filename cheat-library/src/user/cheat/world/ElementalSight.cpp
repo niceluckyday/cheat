@@ -8,7 +8,7 @@ namespace cheat::feature
     static void LevelSceneElementViewPlugin_Tick_Hook(app::LevelSceneElementViewPlugin* __this, float inDeltaTime, MethodInfo* method);
 
     ElementalSight::ElementalSight() : Feature(),
-        NF(m_Enabled, "Permanent elemental sight", "ElementalSight", false)
+        NF(m_Enabled, "Permanent Elemental Sight", "ElementalSight", false)
     {
         HookManager::install(app::LevelSceneElementViewPlugin_Tick, LevelSceneElementViewPlugin_Tick_Hook);
     }
@@ -21,7 +21,7 @@ namespace cheat::feature
 
     void ElementalSight::DrawMain()
     {
-        ConfigWidget(m_Enabled, "Elemental sight is kept on even when moving.\n"
+        ConfigWidget("Permanent Elemental Sight", m_Enabled, "Elemental sight is kept on even when moving.\n"
                      "To turn off, toggle off and use Elemental Sight again.");
     }
 
@@ -32,7 +32,7 @@ namespace cheat::feature
 
     void ElementalSight::DrawStatus()
     {
-        ImGui::Text("Perma elemental sight");
+        ImGui::Text("Perma Elemental Sight");
     }
 
     ElementalSight& ElementalSight::GetInstance()

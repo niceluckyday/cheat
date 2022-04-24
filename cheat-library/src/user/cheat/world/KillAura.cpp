@@ -28,7 +28,7 @@ namespace cheat::feature
 
     const FeatureGUIInfo& KillAura::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ "Kill aura", "World", true };
+        static const FeatureGUIInfo info{ "Kill Aura", "World", true };
         return info;
     }
 
@@ -38,8 +38,8 @@ namespace cheat::feature
 		ImGui::SameLine();
 		ImGui::TextColored(ImColor(255, 165, 0, 255), "Choose any or both modes below.");
 		if (m_Enabled) {
-			ConfigWidget("Crash Damage Mode", m_DamageMode, "Kill aura cause crash damage for monster around you.");
-			ConfigWidget("Instant Death Mode", m_InstantDeathMode, "Kill aura will instagib any valid target.");
+			ConfigWidget("Crash Damage Mode", m_DamageMode, "Kill aura causes crash damage for monster around you.");
+			ConfigWidget("Instant Death Mode", m_InstantDeathMode, "Kill aura will attempt to instagib any valid target.");
 			ImGui::SameLine();
 			ImGui::TextColored(ImColor(255, 165, 0, 255), "Can get buggy with bosses like PMA and Hydro Hypo.");
 			if (m_DamageMode || m_InstantDeathMode) {
@@ -58,7 +58,12 @@ namespace cheat::feature
 
     void KillAura::DrawStatus() 
     { 
-        ImGui::Text("Kill aura [%.01fm]", m_Range.value());
+        ImGui::Text("Kill Aura [%s]\n[%.01fm|%s|%dms|%dms]", 
+			m_DamageMode && m_InstantDeathMode ? "Extreme" : m_DamageMode ? "Crash" : m_InstantDeathMode ? "Instant" : "None",
+			m_Range.value(),
+			m_OnlyTargeted ? "Aggro" : "All",
+			m_AttackDelay.value(),
+			m_RepeatDelay.value());
     }
 
     KillAura& KillAura::GetInstance()

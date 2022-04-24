@@ -36,11 +36,11 @@ namespace cheat::feature
             "To move, use WASD, Space (go up), and Shift (go down).");
 
 		if (m_Enabled) {
-			ConfigWidget(m_Speed, 0.1f, 2.0f, 100.0f, 
+			ConfigWidget("Speed", m_Speed, 0.1f, 2.0f, 100.0f,
 				"No-clip move speed.\n" \
 				"Not recommended setting above 5.0.");
 
-			ConfigWidget(m_CameraRelative, 
+			ConfigWidget("Camera-relative movement", m_CameraRelative,
 				"Move relative to camera view instead of avatar view/direction.");
 
 			ConfigWidget("Alternate No-clip", m_AltSpeedEnabled,
@@ -62,7 +62,11 @@ namespace cheat::feature
 
     void NoClip::DrawStatus() 
     {
-		ImGui::Text("NoClip%s[%.01f|%.01f|%s]", m_AltSpeedEnabled ? "+Alt ": " ", m_Speed.value(), m_AltSpeed.value(), m_CameraRelative ? "CR" : "PR");
+		ImGui::Text("NoClip%s[%.01f%s%|%s]",
+			m_AltSpeedEnabled ? "+Alt " : " ",
+			m_Speed.value(),
+			m_AltSpeedEnabled ? fmt::format("|{:.1f}", m_AltSpeed.value()) : "",
+			m_CameraRelative ? "CR" : "PR");
     }
 
     NoClip& NoClip::GetInstance()

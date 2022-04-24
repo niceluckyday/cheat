@@ -21,17 +21,17 @@ namespace cheat::feature
 
     const FeatureGUIInfo& AutoOreDestroy::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info { "Auto ore destroy", "World", true };
+        static const FeatureGUIInfo info { "Auto Ore Destroy", "World", true };
         return info;
     }
 
     void AutoOreDestroy::DrawMain()
     {
-		ImGui::TextColored(ImColor(255, 165, 0, 255), "Note. This feature not tested in detectable aspect.\n"
-			"\tDon't recommend use it in main account in 5-10 days after release.");
+		ImGui::TextColored(ImColor(255, 165, 0, 255), "Note. This feature is not fully tested detection-wise.\n"
+			"Not recommended for main accounts or used with high values.");
 		
 		ConfigWidget("Enabled", m_Enabled, "Instantly destroys ores in specified range.");
-		ConfigWidget(m_Range, 0.1f, 1.0f, 15.0f);
+		ConfigWidget("Range (m)", m_Range, 0.1f, 1.0f, 15.0f);
     }
 
     bool AutoOreDestroy::NeedStatusDraw() const
@@ -41,7 +41,7 @@ namespace cheat::feature
 
     void AutoOreDestroy::DrawStatus() 
     { 
-        ImGui::Text("Ore destroy [%0.1fm]", m_Range.value());
+        ImGui::Text("Ore Destroy [%0.1fm]", m_Range.value());
     }
 
     AutoOreDestroy& AutoOreDestroy::GetInstance()

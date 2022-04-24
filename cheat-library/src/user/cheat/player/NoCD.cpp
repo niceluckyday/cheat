@@ -29,51 +29,56 @@ namespace cheat::feature
 
     const FeatureGUIInfo& NoCD::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info{ "No cooldown", "Player", true };
+        static const FeatureGUIInfo info{ "Cooldown Effects", "Player", true };
         return info;
     }
 
     void NoCD::DrawMain()
     {
-		ConfigWidget(m_InstantBow, "Disable cooldown of bow charge.");
-		ConfigWidget(m_Ability, "Disable Elemental Skills and Ultimate cooldowns.");
-		ConfigWidget(m_Sprint, "Disable use sprint delay.");
-
-		ImGui::Text("If instant bow charge doesn't work:");
-		TextURL("Check issue on github.", "https://github.com/CallowBlack/genshin-cheat/issues/47", false, false);
-		if (ImGui::TreeNode("Ability log [DEBUG]"))
-		{
-			if (ImGui::Button("Copy to clipboard"))
+		ConfigWidget("No Skill/Burst Cooldown", m_Ability, "Disable cooldowns of elemental skills and bursts.\n" \
+			"Removes energy requirement for elemental bursts.\n" \
+			"(Energy bubble may appear incomplete but still usable).");
+		ConfigWidget("No Sprint Cooldown", m_Sprint, "Removes delay in-between sprints.");
+		ConfigWidget("Instant Bow Charge", m_InstantBow, "Disable cooldown of bow charge.\n" \
+			"Known issues with Fischl.");
+		if (m_InstantBow) {
+			ImGui::Text("If Instant Bow Charge doesn't work:");
+			TextURL("Please contribute to issue on GitHub.", "https://github.com/CallowBlack/genshin-cheat/issues/47", false, false);
+			if (ImGui::TreeNode("Ability Log [DEBUG]"))
 			{
-				ImGui::LogToClipboard();
+				if (ImGui::Button("Copy to Clipboard"))
+				{
+					ImGui::LogToClipboard();
 
-				ImGui::LogText("Ability log:\n");
+					ImGui::LogText("Ability Log:\n");
 
-				for (auto& logEntry : abilityLog)
-					ImGui::LogText("%s\n", logEntry.c_str());
+					for (auto& logEntry : abilityLog)
+						ImGui::LogText("%s\n", logEntry.c_str());
 
-				ImGui::LogFinish();
+					ImGui::LogFinish();
+				}
+
+				for (std::string& logEntry : abilityLog)
+					ImGui::Text(logEntry.c_str());
+
+				ImGui::TreePop();
 			}
-
-			for (std::string& logEntry : abilityLog)
-				ImGui::Text(logEntry.c_str());
-
-			ImGui::TreePop();
 		}
     }
 
     bool NoCD::NeedStatusDraw() const
 {
-        return m_InstantBow || m_Ability;
+        return m_InstantBow || m_Ability || m_Sprint;
     }
 
     void NoCD::DrawStatus() 
     {
-        if (m_InstantBow)
-            ImGui::Text("Instant bow");
-
-        if (m_Ability)
-            ImGui::Text("No ability CD");
+		ImGui::Text("NoCD [%s%s%s%s%s]", 
+			m_Ability ? "E/Q" : "", 
+			m_Ability && (m_InstantBow || m_Sprint) ? "|" : "",
+			m_InstantBow ? "Bow" : "", 
+			m_InstantBow && m_Sprint ? "|": "",
+			m_Sprint ? "Sprint" : "");
     }
 
     NoCD& NoCD::GetInstance()

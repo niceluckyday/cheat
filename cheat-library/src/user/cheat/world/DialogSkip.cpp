@@ -27,15 +27,15 @@ namespace cheat::feature
 
     void DialogSkip::DrawMain()
     {
-        ConfigWidget(m_Enabled, "Automatically continue the dialog.");
-        ConfigWidget(m_AutoSelectDialog, "Automatically select dialogs.");
+        ConfigWidget("Enabled", m_Enabled, "Automatically continue the dialog.");
+        ConfigWidget("Auto-select Dialog", m_AutoSelectDialog, "Automatically select dialog choices.");
         if (m_AutoSelectDialog)
         {
             ImGui::Indent();
-            ConfigWidget(m_ExcludeImportant, "Exclude Kath/Tubby from auto-select.");
+            ConfigWidget("Exclude Katheryne/Tubby", m_ExcludeImportant, "Exclude Kath/Tubby from auto-select.");
             ImGui::Unindent();
         }
-        ConfigWidget(m_FastDialog, "Speeds up dialog (includes crafting/cooking/cutscenes).");
+        ConfigWidget("Fast Dialog", m_FastDialog, "Speeds up dialog (includes crafting/cooking/cutscenes).");
     }
 
     bool DialogSkip::NeedStatusDraw() const
@@ -45,12 +45,12 @@ namespace cheat::feature
 
     void DialogSkip::DrawStatus() 
     {
-        ImGui::Text("Auto Talk: %s", m_AutoSelectDialog ? "Auto" : "Manual");
-        if (m_AutoSelectDialog)
-            ImGui::Text("Exclude K/T: %s", m_ExcludeImportant ? "Yes" : "No");
-        ImGui::Text("Fast Dialog: %s", m_FastDialog ? "Yes" : "No");
-        // if (m_FastDialog)
-        //    ImGui::Text("Fast Inventory", m_FastInventory ? "Yes" : "No");
+        ImGui::Text("Dialog [%s%s%s%s%s]",
+            m_AutoSelectDialog ? "Auto" : "Manual",
+            m_AutoSelectDialog && (m_ExcludeImportant || m_FastDialog) ? "|" : "",
+            m_ExcludeImportant ? "Exc" : "",
+            m_ExcludeImportant && m_FastDialog ? "|" : "",
+            m_FastDialog ? "Fast" : "Normal");
     }
 
     DialogSkip& DialogSkip::GetInstance()
@@ -90,7 +90,8 @@ namespace cheat::feature
             auto dialogPartnerName = dialogPartner->name();
             for (auto impEntityName : impEntitiesNames)
             {
-                if (dialogPartnerName.find(impEntityName)) {
+                if (dialogPartnerName.find(impEntityName) != -1) {
+                    LOG_DEBUG("%s %s %d", dialogPartnerName.c_str(), impEntityName, dialogPartnerName.find(impEntityName));
                     isImportant = true;
                     break;
                 }
