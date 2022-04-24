@@ -13,6 +13,7 @@ namespace cheat::feature
     {
 	public:
 		config::field::ToggleField m_Enabled;
+		config::field::ToggleField m_IncludeAnimals;
 		config::field::BaseField<float> m_Speed;
 		config::field::BaseField<float> m_Radius;
 		config::field::BaseField<float> m_Distance;
