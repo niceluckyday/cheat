@@ -1244,7 +1244,23 @@ namespace cheat::feature
         ImGui::Spacing();
     }
 
-	void Debug::DrawMain()
+    void DrawFPSGraph()
+    {
+        static float values[120] = {0};
+        static int values_offset = 0;
+        values[values_offset++] = ImGui::GetIO().Framerate;
+        if (values_offset >= IM_ARRAYSIZE(values))
+            values_offset = 0;
+        ImGui::PlotLines("", values, IM_ARRAYSIZE(values), values_offset, "", 0.0f, 100.0f, ImVec2(0, 80));
+        ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
+        float avg_fps = 0.0f;
+        for (int i = 0; i < IM_ARRAYSIZE(values); i++)
+            avg_fps += values[i];
+        avg_fps /= IM_ARRAYSIZE(values);
+        ImGui::Text("%.1f FPS (avg)", avg_fps);
+    }
+
+    void Debug::DrawMain()
 	{
         if (ImGui::CollapsingHeader("Icons"))
             DrawIcons();
@@ -1275,6 +1291,8 @@ namespace cheat::feature
 
 		if (ImGui::CollapsingHeader("Map manager", ImGuiTreeNodeFlags_None))
 			DrawManagerData();
+        if (ImGui::CollapsingHeader("FPS Graph", ImGuiTreeNodeFlags_None))
+            DrawFPSGraph();
 	}
 
 	bool Debug::NeedInfoDraw() const
