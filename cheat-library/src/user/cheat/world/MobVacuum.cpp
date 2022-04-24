@@ -70,12 +70,8 @@ namespace cheat::feature
         if (!game::filters::combined::Living.IsValid(entity) && m_IncludeAnimals)
             return false;
 
-        LOG_DEBUG("Valid living entity %s", entity->name().c_str());
-
         if (!game::filters::combined::Monsters.IsValid(entity))
             return false;
-
-        LOG_DEBUG("Valid monster entity %s", entity->name().c_str());
 
         auto& manager = game::EntityManager::instance();
         if (m_OnlyTarget && game::filters::combined::Monsters.IsValid(entity))
@@ -152,7 +148,7 @@ namespace cheat::feature
     // Mob vacuum sync packet replace.
     // Replacing move sync speed and motion state.
     //   Callow: I think it is more safe method, 
-    //           because for server monster don't change position m_Instantly.
+    //           because for server monster don't change position instantly.
     void MobVacuum::OnMoveSync(uint32_t entityId, app::MotionInfo* syncInfo)
     {
         if (!m_Enabled || m_Instantly)
