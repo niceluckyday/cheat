@@ -43,26 +43,26 @@ namespace cheat::feature
 
 			ImGui::Text("Type filters");
 
-			ConfigWidget(m_FilterChest, "Detecting chests. Also unlock chest filters.");
+			ConfigWidget(m_FilterChest, "Enable chest detection and filters.");
 			ConfigWidget(m_FilterInvestigates);
 			ConfigWidget(m_FilterBookPage);
 			ConfigWidget(m_FilterBGM);
 			ConfigWidget(m_FilterQuestInt);
 			ConfigWidget(m_FilterFloraChest);
-			ConfigWidget(m_FilterUnknown, "Detecting items, what is not filtered.\nYou can see these items below, if they exists.");
+			ConfigWidget(m_FilterUnknown, "Enable detection of unknown items.\nYou can see these items below, if they exist.");
 
 			ImGui::Spacing();
 
 			if (!m_FilterChest)
 				ImGui::BeginDisabled();
 
-			if (ImGui::BeginTable("Chest filters", 2, ImGuiTableFlags_NoBordersInBody))
+			if (ImGui::BeginTable("Chest Filters", 2, ImGuiTableFlags_NoBordersInBody))
 			{
 				ImGui::TableNextColumn();
-				ImGui::Text("Rarity filter");
+				ImGui::Text("Rarity Filter");
 
 				ImGui::TableNextColumn();
-				ImGui::Text("State filter");
+				ImGui::Text("State Filter");
 
 				ImGui::TableNextColumn();
 				ConfigWidget(m_FilterChestCommon);
@@ -110,7 +110,7 @@ namespace cheat::feature
 
 	const FeatureGUIInfo& ChestTeleport::GetGUIInfo() const
 	{
-		static const FeatureGUIInfo info{ "Chest teleport", "Teleport", true };
+		static const FeatureGUIInfo info{ "Chest Teleport", "Teleport", true };
 		return info;
 	}
 
@@ -271,23 +271,23 @@ namespace cheat::feature
 		if (unknowns.empty())
 			return;
 
-		ImGui::TextColored(ImColor(255, 165, 0, 255), "Wow, you found unknowns chest names. Means this chest items have no filter yet.");
-		TextURL("Please check issue on github with information about it.", "https://github.com/CallowBlack/genshin-cheat/issues/48", false, false);
+		ImGui::TextColored(ImColor(255, 165, 0, 255), "Wow, you found unknown chest names. This means this chest type has no filter yet.");
+		TextURL("Please contribute to issue on GitHub", "https://github.com/CallowBlack/genshin-cheat/issues/48", false, false);
 		
 		if (ImGui::Button("Copy to clipboard"))
 		{
 			ImGui::LogToClipboard();
 
-			ImGui::LogText("Unknown names:\n");
+			ImGui::LogText("Unknown Names:\n");
 			
 			for (auto& entity : unknowns)
-				ImGui::LogText("%s; position: %s; scene: %u\n", entity->name().c_str(), 
+				ImGui::LogText("%s; Position: %s; Scene: %u\n", entity->name().c_str(), 
 					il2cppi_to_string(entity->relativePosition()).c_str(), game::GetCurrentPlayerSceneID());
 			
 			ImGui::LogFinish();
 		}
 
-		if (!ImGui::TreeNode("Unknown items"))
+		if (!ImGui::TreeNode("Unknown Items"))
 			return;
 
 		ImGui::BeginTable("UnknownsTable", 2);

@@ -14,7 +14,7 @@ namespace cheat::feature
 	}
 
     ProtectionBypass::ProtectionBypass() : Feature(),
-        NFF(m_Enabled, "Disable protection", "m_DisableMhyProt", "General", true),
+        NFF(m_Enabled, "Disable Protection", "m_DisableMhyProt", "General", true),
 		m_CorrectSignatures({})
     {
 		HookManager::install(app::Unity_RecordUserData, RecordUserData_Hook);
@@ -47,7 +47,7 @@ namespace cheat::feature
     void ProtectionBypass::DrawMain()
     {
 		ConfigWidget(m_Enabled, 
-			"Close mhyprot2 handle (The changes will take effect after the next launch");
+			"Close mhyprot2 handle (changes will take effect after relaunch).");
     }
 
     ProtectionBypass& ProtectionBypass::GetInstance()

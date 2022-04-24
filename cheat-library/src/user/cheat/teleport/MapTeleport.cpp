@@ -42,7 +42,7 @@ namespace cheat::feature
 
     const FeatureGUIInfo& MapTeleport::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info { "Map teleport", "Teleport", true };
+        static const FeatureGUIInfo info { "Map Teleport", "Teleport", true };
         return info;
     }
 
@@ -50,22 +50,24 @@ namespace cheat::feature
     {
 		ConfigWidget("Enabled",
 			m_Enabled,
-			"Enable teleportation to mark functionality.\n" \
+			"Enable teleport-to-mark functionality.\n" \
 			"Usage: \n" \
 			"\t1. Open map.\n" \
-			"\t2. Hold [Teleport key] and click with the LMB anywhere in the map.\n" \
-			"\tDone. You have been teleported to selected location."
+			"\t2. Hold [Teleport Key] and click with the LMB anywhere in the map.\n" \
+			"\tDone. You have been teleported to selected location.\n" \
+			"Teleport might glitch if teleporting to an extremely high location. \n" \
+			"Adjust Override Height accordingly to help avoid."
 		);
 
 		if (!m_Enabled)
 			ImGui::BeginDisabled();
 
-		ConfigWidget(m_DefaultHeight, 1.0F, 200.0F, 800.0F,
-			"If cheat cannot get ground height of target location, it will teleport you to the height specified here.\n" \
-			"It is reccomended to have this value be at least as high as a mountain Otherwise, you may fall through the ground.");
+		ConfigWidget("Override Height (m)", m_DefaultHeight, 1.0F, 200.0F, 800.0F,
+			"If teleport cannot get ground height of target location,\nit will teleport you to the height specified here.\n" \
+			"It is recommended to have this value to be at least as high as a mountain.\nOtherwise, you may fall through the ground.");
 
-		ConfigWidget(m_Key, true,
-			"Key which you have held while clicking at the target location.");
+		ConfigWidget("Teleport Key", m_Key, true,
+			"Key to hold down before clicking on target location.");
 
 		if (!m_Enabled)
 			ImGui::EndDisabled();

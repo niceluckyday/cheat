@@ -52,11 +52,11 @@ namespace cheat::feature
 
     void AutoTreeFarm::DrawStatus() 
     { 
-        ImGui::Text("Tree Farm\n[%dms|%dms|%d|%sm]", 
+        ImGui::Text("Tree Farm\n[%dms|%dms|%d|%.1fm]", 
 			m_AttackDelay.value(),
 			m_RepeatDelay.value(),
 			m_AttackPerTree.value(),
-			fmt::format("{:.1f}", m_Range.value()));
+			m_Range.value());
     }
 
     AutoTreeFarm& AutoTreeFarm::GetInstance()
