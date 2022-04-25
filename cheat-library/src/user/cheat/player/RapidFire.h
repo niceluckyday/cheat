@@ -11,11 +11,14 @@ namespace cheat::feature
     {
 	public:
 		config::field::ToggleField m_Enabled;
+		config::field::ToggleField m_MultiHit;
 		config::field::BaseField<int> m_Multiplier;
 		config::field::BaseField<bool> m_OnePunch;
 		config::field::ToggleField m_Randomize;
 		config::field::BaseField<int> m_minMultiplier;
 		config::field::BaseField<int> m_maxMultiplier;
+		config::field::ToggleField m_MultiTarget;
+		config::field::BaseField<float> m_MultiTargetRadius;
 
 		static RapidFire& GetInstance();
 
