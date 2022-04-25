@@ -10,12 +10,14 @@
 #include <resource.h>
 #include <cheat-base/config/field/StringField.h>
 
-bool InitMetadata(HMODULE hModule);
+bool InitMetadata();
 bool StubTerminateProcess();
 
 void Run(HMODULE* phModule)
 {
     Sleep(10000);
+
+	ResourceLoader::SetModuleHandle(*phModule);
 
 	// Init config
 	std::string configPath = (std::filesystem::current_path() / "cfg.ini").string();
@@ -35,7 +37,7 @@ void Run(HMODULE* phModule)
 		il2cppi_new_console();
 	}
 
-	if (InitMetadata(*phModule))
+	if (InitMetadata())
 	{
 		LOG_INFO("Metadata was successfully initialized.");
 	}
@@ -50,19 +52,20 @@ void Run(HMODULE* phModule)
 	else
 		LOG_ERROR("Stub TerminateProcess failed.");
 
-	cheat::Init(*phModule);
+	cheat::Init();
 
     LOG_DEBUG("Config path is at %s", configPath.c_str());
     LOG_DEBUG("UserAssembly.dll is at 0x%p", il2cppi_get_base_address());
     LOG_DEBUG("UnityPlayer.dll is at 0x%p", il2cppi_get_unity_address());
 }
 
-bool InitMetadata(HMODULE hModule)
+bool InitMetadata()
 {
+
 	// Getting signatures data from resources
 	LPBYTE pSignaturesData = nullptr;
 	DWORD signaturesSize = 0;
-	if (!util::LoadModuleResource(hModule, IDR_RCDATA2, RT_RCDATA, pSignaturesData, signaturesSize))
+	if (!ResourceLoader::LoadEx(IDR_RCDATA2, RT_RCDATA, pSignaturesData, signaturesSize))
 	{
 		LOG_LAST_ERROR("Failed to load signatures resource.");
 		return false;
@@ -73,7 +76,7 @@ bool InitMetadata(HMODULE hModule)
 	// Getting cached offsets
 	LPBYTE pCachedOffsetsData = nullptr;
 	DWORD cachedOffsetsSize = 0;
-	if (!util::LoadModuleResource(hModule, IDR_RCDATA3, RT_RCDATA, pCachedOffsetsData, cachedOffsetsSize))
+	if (!ResourceLoader::LoadEx(IDR_RCDATA3, RT_RCDATA, pCachedOffsetsData, cachedOffsetsSize))
 	{
 		LOG_LAST_ERROR("Failed to load cached offsets resource.");
 		return false;

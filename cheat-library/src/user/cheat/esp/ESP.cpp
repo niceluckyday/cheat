@@ -123,7 +123,7 @@ namespace cheat::feature
 	void ESP::DrawSection(const std::string& section, const Filters& filters)
 	{
 		std::vector<const FilterInfo*> validFilters;
-		
+				
 		for (auto& info : filters)
 		{
 			//m0nkrel : We making a string copies and lowercase them to avoid case sensitive search
@@ -139,35 +139,50 @@ namespace cheat::feature
 		if (validFilters.size() == 0)
 			return;
 
-		BeginGroupPanel(section.c_str(), ImVec2(-1, 0));
-
-		for (auto& info: validFilters)
+		SelectData selData
 		{
-			ImGui::PushID(info->first);
-			DrawFilterField(*info->first);
-			ImGui::PopID();
-		}
+			std::all_of(validFilters.begin(), validFilters.end(), [](const FilterInfo* filter) { return filter->first->value().m_Enabled; }),
+			false
+		};
 
-		ImGui::Spacing();
-
-		if (ImGui::TreeNode(this, "Hotkeys"))
+		if (BeginGroupPanel(section.c_str(), ImVec2(-1, 0), true, &selData))
 		{
 			for (auto& info : validFilters)
 			{
-				auto& field = info->first;
-				ImGui::PushID(field);
-
-				auto& hotkey = field->valuePtr()->m_EnabledHotkey;
-				if (InputHotkey(field->GetName().c_str(), &hotkey, true))
-					field->Check();
-
+				ImGui::PushID(info->first);
+				DrawFilterField(*info->first);
 				ImGui::PopID();
 			}
 
-			ImGui::TreePop();
+			ImGui::Spacing();
+
+			if (ImGui::TreeNode(this, "Hotkeys"))
+			{
+				for (auto& info : validFilters)
+				{
+					auto& field = info->first;
+					ImGui::PushID(field);
+
+					auto& hotkey = field->valuePtr()->m_EnabledHotkey;
+					if (InputHotkey(field->GetName().c_str(), &hotkey, true))
+						field->Check();
+
+					ImGui::PopID();
+				}
+
+				ImGui::TreePop();
+			}
+			EndGroupPanel();
 		}
 
-		EndGroupPanel();
+		if (selData.changed)
+		{
+			for (auto& info : validFilters)
+			{
+				info->first->valuePtr()->m_Enabled = selData.toggle;
+			}
+			config::UpdateAll();
+		}
 	}
 
 	std::string Unsplit(const std::string& value)

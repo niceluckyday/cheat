@@ -12,7 +12,7 @@ namespace cheat
 	namespace events 
 	{
 		TCancelableEvent<short> KeyUpEvent{};
-		TEvent<> WndProcEvent{};
+		TCancelableEvent<HWND, UINT, WPARAM, LPARAM> WndProcEvent{};
 	}
 
 	void CheatManager::Init(LPBYTE pFontData, DWORD dFontDataSize, IGameMisc* gameMisc)
@@ -54,7 +54,7 @@ namespace cheat
 
 		if (ImGui::Checkbox("Block key/mouse", &m_IsBlockingInput))
 		{
-			renderer::globals::IsInputBlocked = m_IsBlockingInput;
+			renderer::SetInputLock(this, m_IsBlockingInput);
 		}
 
 		if (ImGui::BeginListBox("##listbox 2", ImVec2(175, -FLT_MIN)))
@@ -235,14 +235,16 @@ namespace cheat
 		auto& settings = feature::Settings::GetInstance();
 		
 		ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoFocusOnAppearing 
-			| ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoCollapse;
+			| ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize;
 
 		if (!settings.m_FpsMove)
 			flags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
-		ImGui::SetWindowSize(ImVec2(ImGui::CalcTextSize(std::to_string(ImGui::GetIO().Framerate).c_str()).x + 20, 40));
-		ImGui::Begin("FPS", nullptr, flags);
-		ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-		ImGui::End();
+
+		if (ImGui::Begin("FPS", nullptr, flags))
+		{
+			ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+			ImGui::End();
+		}
 	}
 
 	void CheatManager::OnRender()
@@ -269,7 +271,7 @@ namespace cheat
 
 	void CheatManager::CheckToggles(short key)
 	{
-		if (m_IsMenuShowed || renderer::globals::IsInputBlocked)
+		if (m_IsMenuShowed || renderer::IsInputLocked())
 			return;
 		
 		auto& settings = feature::Settings::GetInstance();
@@ -291,7 +293,7 @@ namespace cheat
 	void CheatManager::ToggleMenuShow()
 	{
 		m_IsMenuShowed = !m_IsMenuShowed;
-		renderer::globals::IsInputBlocked = m_IsMenuShowed && m_IsBlockingInput;
+		renderer::SetInputLock(this, m_IsMenuShowed && m_IsBlockingInput);
 		menuToggled = true;
 	}
 
@@ -305,7 +307,7 @@ namespace cheat
 		}
 	}
 	
-	void CheatManager::OnWndProc()
+	void CheatManager::OnWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool& canceled)
 	{
 		if (!menuToggled)
 			return;

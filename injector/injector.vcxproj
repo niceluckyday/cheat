@@ -23,10 +23,6 @@
     <ProjectReference Include="..\cheat-base\cheat-base.vcxproj">
       <Project>{adb35022-823b-4dc0-b495-3efefbd3a82f}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\cheat-library\cheat-library.vcxproj">
-      <Project>{ce178784-cb96-45ca-ae16-fc0da1126970}</Project>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

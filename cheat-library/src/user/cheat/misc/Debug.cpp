@@ -18,6 +18,7 @@
 // This module is for debug purpose, and... well.. it's shit coded ^)
 namespace cheat::feature 
 {
+
     static bool ActorAbilityPlugin_OnEvent_Hook(void* __this, app::BaseEvent* e, MethodInfo* method);
     void OnGameUpdate();
 
@@ -504,6 +505,18 @@ namespace cheat::feature
         ImGui::Text("Level position: %s", il2cppi_to_string(levelPos).c_str());
 
 
+        static app::Vector3 teleportPos = {};
+        ImGui::InputFloat3("Teleport position", reinterpret_cast<float*>(&teleportPos));
+        
+        auto& teleport = MapTeleport::GetInstance();
+        if (ImGui::Button("Map teleport"))
+            teleport.TeleportTo(app::Vector2 { teleportPos.x, teleportPos.y });
+        
+        ImGui::SameLine();
+
+        if (ImGui::Button("World teleport"))
+            teleport.TeleportTo(teleportPos);
+
         if (ImGui::TreeNode("Ground pos info"))
         {
             auto groundNormal = app::Miscs_CalcCurrentGroundNorm(nullptr, avatarPos, nullptr);
@@ -880,7 +893,7 @@ namespace cheat::feature
                 tempFilter = ItemFilter(selectedEntity->type(), selectedEntity->name());
                 addingFilter = true;
                 tempName = "";
-                renderer::globals::IsInputBlocked = true;
+                renderer::SetInputLock(this, true);
             }
         }
 
@@ -898,14 +911,14 @@ namespace cheat::feature
             if (ImGui::IsKeyPressed(ImGuiKey_Enter, false))
             {
                 simpleFilters[fmt::format("{}::{}", tempSectionName, tempName)] = tempFilter;
-                renderer::globals::IsInputBlocked = false;
+                renderer::SetInputLock(this, false);
                 addingFilter = false;
                 updated = true;
             }
 
 			if (ImGui::IsKeyPressed(ImGuiKey_Escape, false))
 			{
-				renderer::globals::IsInputBlocked = false;
+                renderer::SetInputLock(this, false);
 				addingFilter = false;
 			}
         }
@@ -914,335 +927,6 @@ namespace cheat::feature
             FiltetItemPickerSave();
 	}
 
-	static std::vector<std::string> iconNames = {
-		"StatueofTheSeven",
-			"TeleportWaypoint",
-			"Domain",
-			"FrostbearingTree",
-			"WaveriderWaypointCannotTeleport",
-			"GlimmeringBeaconCannotTeleport",
-			"SacredSakura",
-			"TheCruxTheAlcor",
-			"JadeChamber",
-			"StatueoftheVassals",
-			"CommonChest",
-			"ExquisiteChest",
-			"PreciousChest",
-			"LuxuriousChest",
-			"RemarkableChest",
-			"Anemoculus",
-			"Geoculus",
-			"CrimsonAgate",
-			"EchoingConch",
-			"Electroculus",
-			"KeySigilI",
-			"KeySigilII",
-			"KeySigilIII",
-			"KeySigilIV",
-			"KeySigilV",
-			"Lumenspar",
-			"Seelie",
-			"WarmingSeelie",
-			"TimeTrialChallenge",
-			"WindmillMechanism",
-			"FloatingAnemoSlime",
-			"PressurePlate",
-			"BloattyFloatty",
-			"BuriedChest",
-			"ElementalMonument",
-			"TorchPuzzle",
-			"LargeRockPile",
-			"SmallRockPile",
-			"HarvestablePlant",
-			"SealedChest",
-			"Geogranum",
-			"MiniPuzzle",
-			"EnemiesFirstTimeVictory",
-			"StormBarrier",
-			"AncientRime",
-			"EightStoneTablets",
-			"ThreeBoxes",
-			"LightningStrikeProbe",
-			"SwordHilt",
-			"MistBubble",
-			"Mural",
-			"ElectroSeelie",
-			"CubeDevices",
-			"ElectricConduction",
-			"LightUpTilePuzzle",
-			"BakeDanuki",
-			"SealLocation",
-			"SealLocationII",
-			"SealLocationIII",
-			"SealLocationIV",
-			"SealLocationV",
-			"LightGuidingCeremony",
-			"SentouTrial",
-			"DamagedStoneSlate",
-			"UniqueRocks",
-			"DoNotPublish",
-			"Hilichurl",
-			"Samachurl",
-			"TreasureHoarder",
-			"HilichurlShooter",
-			"Slime",
-			"Nobushi",
-			"Specter",
-			"FatuiSkirmisher",
-			"Whopperflower",
-			"PyroWhopperflower",
-			"ElectroWhopperflower",
-			"Ochimusha",
-			"FloatingHydroFungus",
-			"Mitachurl",
-			"BlazingAxeMitachurl",
-			"WoodenShieldwallMitachurl",
-			"RockShieldwallMitachurl",
-			"CracklingAxeMitachurl",
-			"AbyssMage",
-			"PyroAbyssMage",
-			"HydroAbyssMage",
-			"FatuiAgent",
-			"FatuiCicinMage",
-			"RuinSentinel",
-			"RuinGrader",
-			"RuinGuard",
-			"RuinHunter",
-			"GeovishapHatchling",
-			"Geovishap",
-			"FrostarmLawachurl",
-			"HilichurlChieftain",
-			"TheGreatSnowboarKing",
-			"EyeoftheStorm",
-			"ElectroAbyssMage",
-			"ThunderhelmLawachurl",
-			"FatuiMirrorMaiden",
-			"WolvesoftheRift",
-			"AbyssHerald",
-			"BathysmalVishap",
-			"ShadowyHusk",
-			"AnemoHypostasis",
-			"CryoRegisvine",
-			"LupusBoreas",
-			"ElectroHypostasis",
-			"Oceanid",
-			"PyroRegisvine",
-			"GeoHypostasis",
-			"PrimoGeovishap",
-			"CryoHypostasis",
-			"MaguuKenki",
-			"PyroHypostasis",
-			"PerpetualMechanicalArray",
-			"HydroHypostasis",
-			"ThunderManifestation",
-			"GoldenWolflord",
-			"BathysmalVishapHerd",
-			"RuinSerpent",
-			"Valberry",
-			"JueyunChili",
-			"CallaLily",
-			"Qingxin",
-			"SmallLampGrass",
-			"Violetgrass",
-			"Cecilia",
-			"SilkFlower",
-			"DandelionSeed",
-			"GlazeLily",
-			"PhilanemoMushroom",
-			"CorLapis",
-			"Wolfhook",
-			"NoctilucousJade",
-			"WindwheelAster",
-			"Starconch",
-			"SeaGanoderma",
-			"Onikabuto",
-			"NakuWeed",
-			"Dendrobium",
-			"SakuraBloom",
-			"CrystalMarrow",
-			"SangoPearl",
-			"AmakumoFruit",
-			"FluorescentFungus",
-			"MistFlowerCorolla",
-			"FlamingFlowerStamen",
-			"ElectroCrystal",
-			"BambooShoot",
-			"LoachPearl",
-			"CrystalCore",
-			"ButterflyWings",
-			"Snapdragon",
-			"Horsetail",
-			"Frog",
-			"LizardTail",
-			"Crab",
-			"RawMeat",
-			"Fish",
-			"Fowl",
-			"Matsutake",
-			"Pinecone",
-			"BirdEgg",
-			"StrangeTooth",
-			"ChilledMeat",
-			"SweetFlower",
-			"Mint",
-			"Mushroom",
-			"Berry",
-			"Sunsettia",
-			"Apple",
-			"LotusHead",
-			"Carrot",
-			"Radish",
-			"LuminescentSpine",
-			"LavenderMelon",
-			"Seagrass",
-			"UnagiMeat",
-			"TokoyoLegume",
-			"AphotiumOre",
-			"Starshroom",
-			"RadiantSpincrystal",
-			"ArchaicStone",
-			"WhitePigeon",
-			"PaleRedCrab",
-			"EmeraldFinch",
-			"CryoCrystalfly",
-			"RedFinnedUnagi",
-			"CrimsonFinch",
-			"CrimsonflankPigeon",
-			"AnemoCrystalfly",
-			"OceanCrab",
-			"BlackKingPigeon",
-			"CrimsonFox",
-			"RedHornedLizard",
-			"RedTailedWeasel",
-			"Kitsune",
-			"GoldenCrab",
-			"GraySnowCat",
-			"GraywingPigeon",
-			"GeneralCrab",
-			"GoldenLoach",
-			"GoldenFinch",
-			"VioletIbis",
-			"Sapphire",
-			"BlueHornedLizard",
-			"BlueFrog",
-			"ElectroCrystalfly",
-			"BrightcrownPigeon",
-			"SunsetLoach",
-			"GreenHornedLizard",
-			"MudFrog",
-			"Frog",
-			"SunnyLoach",
-			"MarrowLizard",
-			"Squirrel",
-			"SunCrab",
-			"AdornedUnagi",
-			"BootWeasel",
-			"SnowFox",
-			"SnowFinch",
-			"SnowWeasel",
-			"Snowboar",
-			"Crow",
-			"GeoCrystalfly",
-			"DeepSeaUnagi",
-			"CoralButterfly",
-			"LucklightFly",
-			"BluethunderWeasel",
-			"Electrogranum",
-			"PhaseGate",
-			"Stormstone",
-			"MysteriousCarvings",
-			"Pot",
-			"CampfireTorch",
-			"RuinBrazier",
-			"SeelieCourt",
-			"EnkanomiyaPhaseGate",
-			"DayNightSwitchingMechanism",
-			"PlacesofEssenceWorship",
-			"TriangularMechanism",
-			"EnergyPoint",
-			"Lumenlamp",
-			"Mondstadt",
-			"Liyue",
-			"InazumaShrineofDepths",
-			"FishingPoint",
-			"Medaka",
-			"GlazeMedaka",
-			"SweetFlowerMedaka",
-			"AizenMedaka",
-			"Dawncatcher",
-			"Crystalfish",
-			"LungedStickleback",
-			"Betta",
-			"VenomspineFish",
-			"AkaiMaou",
-			"Snowstrider",
-			"GoldenKoi",
-			"RustyKoi",
-			"BrownShirakodai",
-			"PurpleShirakodai",
-			"TeaColoredShirakodai",
-			"AbidingAngelfish",
-			"RaimeiAngelfish",
-			"Pufferfish",
-			"BitterPufferfish",
-			"FormaloRay",
-			"DivdaRay",
-			"WhiteIronChunk",
-			"CrystalChunk",
-			"MagicalCrystalChunk",
-			"Starsilver",
-			"ScarletQuartz",
-			"IronChunk",
-			"AmethystLump",
-			"UnusualHilichurl",
-			"Viewpoint",
-			"WorldQuests",
-			"Book",
-			"Recipe",
-			"Artifact",
-			"Mora",
-			"GeoSigil",
-			"WoodenCrate",
-			"CookingIngredient",
-			"MysteriousConch",
-			"Weapon",
-			"Ores",
-			"SmashedStone",
-			"RockPile",
-			"Merchant",
-			"KidKujirai",
-			"Dandy",
-			"Illusion",
-			"FirWood",
-			"PineWood",
-			"BambooSegment",
-			"SandbearerWood",
-			"BirchWood",
-			"CuihuaWood",
-			"FragrantCedarWood",
-			"OtogiWood",
-			"MapleWood",
-			"AraliaWood",
-			"YumemiruWood",
-			"PaintedWall",
-			"HarpastumChest",
-			"Mural"
-    };
-
-    void DrawIcons()
-    {
-		int i = 0;
-		for (auto& name : iconNames)
-		{
-            i++;
-			auto imageInfo = ImageLoader::GetImage(name);
-			if (imageInfo)
-				ImGui::Image(imageInfo->textureID, imageInfo->size);
-			if (i % 15 != 0)
-				ImGui::SameLine();
-		}
-        ImGui::Spacing();
-    }
 
     void DrawFPSGraph()
     {
@@ -1262,32 +946,23 @@ namespace cheat::feature
 
     void Debug::DrawMain()
 	{
-        if (ImGui::CollapsingHeader("Icons"))
-            DrawIcons();
-
-        if (ImGui::CollapsingHeader("Filter item picker"))
-            DrawFilterItemPicker();
-        
-        if (ImGui::CollapsingHeader("ScenePropManager"))
-            DrawScenePropManager();
-
-		if (ImGui::CollapsingHeader("Chest plugin", ImGuiTreeNodeFlags_None))
-			DrawChestPlugin();
-
-		if (ImGui::CollapsingHeader("Imgui focus test", ImGuiTreeNodeFlags_None))
-            DrawImGuiFocusTest();
-
-		if (ImGui::CollapsingHeader("Scene id info", ImGuiTreeNodeFlags_None))
-            DrawMapManager();
-
 		if (ImGui::CollapsingHeader("Entity manager", ImGuiTreeNodeFlags_None))
 			DrawEntitiesData();
 
 		if (ImGui::CollapsingHeader("Position", ImGuiTreeNodeFlags_None))
+		{
+			DrawMapManager();
 			DrawPositionInfo();
+		}
 
-		if (ImGui::CollapsingHeader("Interaction manager", ImGuiTreeNodeFlags_None))
-			DrawInteractionManagerInfo();
+        //if (ImGui::CollapsingHeader("Filter item picker"))
+        //    DrawFilterItemPicker();
+
+		//if (ImGui::CollapsingHeader("Chest plugin", ImGuiTreeNodeFlags_None))
+		//	DrawChestPlugin();
+
+		//if (ImGui::CollapsingHeader("Interaction manager", ImGuiTreeNodeFlags_None))
+		//	DrawInteractionManagerInfo();
 
 		if (ImGui::CollapsingHeader("Map manager", ImGuiTreeNodeFlags_None))
 			DrawManagerData();

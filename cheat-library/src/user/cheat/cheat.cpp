@@ -34,6 +34,7 @@
 #include <cheat/teleport/OculiTeleport.h>
 
 #include <cheat/esp/ESP.h>
+#include <cheat/imap/InteractiveMap.h>
 
 #include <cheat/ILPatternScanner.h>
 
@@ -41,10 +42,8 @@ namespace cheat
 {
 	static void InstallEventHooks();
 
-	void Init(HMODULE hModule)
+	void Init()
 	{
-		ImageLoader::SetHandle(hModule);
-
 		auto& protectionBypass = feature::ProtectionBypass::GetInstance();
 		protectionBypass.Init();
 
@@ -79,7 +78,8 @@ namespace cheat
 			FEAT_INST(OculiTeleport),
 			FEAT_INST(MapTeleport),
 
-			FEAT_INST(ESP)
+			FEAT_INST(ESP),
+			FEAT_INST(InteractiveMap)
 
 			});
 #undef FEAT_INST
@@ -96,7 +96,7 @@ namespace cheat
 
 		LPBYTE pFontData = nullptr;
 		DWORD dFontSize = 0;
-		if (!util::LoadModuleResource(hModule, IDR_RCDATA1, RT_RCDATA, pFontData, dFontSize))
+		if (!ResourceLoader::LoadEx(IDR_RCDATA1, RT_RCDATA, pFontData, dFontSize))
 			LOG_WARNING("Failed to get font from resources.");
 
 		manager.Init(pFontData, dFontSize, &GenshinMisc::GetInstance());

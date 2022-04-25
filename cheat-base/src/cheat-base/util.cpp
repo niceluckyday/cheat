@@ -20,7 +20,7 @@ namespace util
     std::string GetLastErrorAsString(DWORD errorId /*= 0*/)
 	{
         //Get the error message ID, if any.
-        DWORD errorMessageID = errorId == 0 ? ::GetLastError() : 0;
+        DWORD errorMessageID = errorId == 0 ? ::GetLastError() : errorId;
         if (errorMessageID == 0)
         {
             return std::string(); //No error message has been recorded
@@ -150,26 +150,6 @@ namespace util
         ini.SetValue(section, name, selectedPath->c_str());
         return selectedPath;
     }
-
-	bool LoadModuleResource(HINSTANCE hInstance, const char* name, const char* type, LPBYTE& pDest, DWORD& size)
-	{
-		HRSRC hResource = FindResource(hInstance, name, type);
-		if (hResource) {
-			HGLOBAL hGlob = LoadResource(hInstance, hResource);
-			if (hGlob) {
-				size = SizeofResource(hInstance, hResource);
-				pDest = static_cast<LPBYTE>(LockResource(hGlob));
-				if (size > 0 && pDest)
-					return true;
-			}
-		}
-		return false;
-	}
-
-	bool LoadModuleResource(HINSTANCE hInstance, int resId, const char* type, LPBYTE& pDest, DWORD& size)
-	{
-		return LoadModuleResource(hInstance, MAKEINTRESOURCE(resId), type, pDest, size);
-	}
 	
 	int64_t GetCurrentTimeMillisec()
 	{

@@ -80,5 +80,14 @@ namespace config
 		SetValue(*entry);
 		Save();
 	}
+
+	void UpdateAll()
+	{
+		for (auto& field : fields)
+		{
+			SetValue(*field);
+		}
+		Save();
+	}
 }
 

@@ -7,6 +7,8 @@
 #include <cheat-base/config/field/EnumField.h>
 #include <cheat-base/config/field/ColorField.h>
 
+#define BLOCK_FOCUS() 
+
 bool ConfigWidget(const char* label, config::field::BaseField<bool>& field, const char* desc = nullptr);
 bool ConfigWidget(const char* label, config::field::BaseField<int>& field, int step = 1, int start = 0, int end = 0, const char* desc = nullptr);
 bool ConfigWidget(const char* label, config::field::BaseField<float>& field, float step = 1.0F, float start = 0, float end = 0, const char* desc = nullptr);
@@ -23,6 +25,7 @@ bool ConfigWidget(config::field::BaseField<std::string>& field, const char* desc
 bool ConfigWidget(config::field::BaseField<std::filesystem::path>& field, bool onlyDirectories = false, const char* filter = nullptr, const char* desc = nullptr);
 bool ConfigWidget(config::field::ColorField& field, const char* desc = nullptr);
 
+void ShowHelpText(const char* text);
 void HelpMarker(const char* desc);
 
 bool InputHotkey(const char* label, Hotkey* hotkey, bool clearable);
@@ -32,7 +35,13 @@ bool InputPath(const char* label, std::filesystem::path* buffer, bool onlyDirect
 void AddUnderLine(ImColor col_);
 void TextURL(const char* name_, const char* URL_, bool SameLineBefore_, bool SameLineAfter_);
 
-void BeginGroupPanel(const char* name, const ImVec2& size);
+struct SelectData
+{
+	bool toggle;
+	bool changed;
+};
+
+bool BeginGroupPanel(const char* name, const ImVec2& size = ImVec2(-1, 0), bool node = false, SelectData* selectData = nullptr);
 void EndGroupPanel();
 
 bool IsValueChanged(void* valuePtr, bool result);

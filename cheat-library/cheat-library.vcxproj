@@ -41,6 +41,7 @@
     <ClInclude Include="src\user\cheat\game\util.h" />
     <ClInclude Include="src\user\cheat\GenshinMisc.h" />
     <ClInclude Include="src\user\cheat\ILPatternScanner.h" />
+    <ClInclude Include="src\user\cheat\imap\InteractiveMap.h" />
     <ClInclude Include="src\user\cheat\misc\Debug.h" />
     <ClInclude Include="src\user\cheat\misc\Hotkeys.h" />
     <ClInclude Include="src\user\cheat\misc\ProtectionBypass.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="src\user\cheat\game\util.cpp" />
     <ClCompile Include="src\user\cheat\GenshinMisc.cpp" />
     <ClCompile Include="src\user\cheat\ILPatternScanner.cpp" />
+    <ClCompile Include="src\user\cheat\imap\InteractiveMap.cpp" />
     <ClCompile Include="src\user\cheat\misc\Debug.cpp" />
     <ClCompile Include="src\user\cheat\misc\Hotkeys.cpp" />
     <ClCompile Include="src\user\cheat\misc\ProtectionBypass.cpp" />
@@ -132,6 +134,9 @@
   <ItemGroup>
     <ProjectReference Include="..\cheat-base\cheat-base.vcxproj">
       <Project>{adb35022-823b-4dc0-b495-3efefbd3a82f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\injector\injector.vcxproj">
+      <Project>{f578b30c-8de6-4741-99e4-1d30d2acdac4}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -4,5 +4,5 @@
 
 namespace cheat 
 {
-	void Init(HMODULE hModule);
+	void Init();
 }

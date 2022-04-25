@@ -129,6 +129,7 @@ DO_APP_FUNC(0x018D0AE0, void,    ActorUtils_SyncAvatarMotion, (void* __this, int
 DO_APP_FUNC(0x0749AF60, Vector3, Transform_get_position, (Transform* __this, MethodInfo* method));
 DO_APP_FUNC(0x0749BAA0, void,    Transform_set_position, (Transform* __this, Vector3 value, MethodInfo* method));
 DO_APP_FUNC(0x0749EB80, float,   Vector3_Distance, (void* __this, Vector3 a, Vector3 b, MethodInfo* method));
+DO_APP_FUNC(0x073D8E70, float,   Vector2_Distance, (void* __this, Vector2 a, Vector2 b, MethodInfo* method));
 
 DO_APP_FUNC(0x074BA270, void, Cursor_set_visible,   (void* __this, bool value, MethodInfo* method));
 DO_APP_FUNC(0x074BA220, void, Cursor_set_lockState, (void* __this, CursorLockMode__Enum value, MethodInfo* method));
@@ -197,6 +198,17 @@ DO_APP_FUNC(0x013B9810, GameObject*, BaseEntity_get_rootGameObject, (BaseEntity*
 DO_APP_FUNC(0x019C5D50, void, LCAbilityElement_ReduceModifierDurability, (LCAbilityElement* __this, int32_t modifierDurabilityIndex, float reduceDurability, Nullable_1_Single_ deltaTime, MethodInfo* method));
 
 DO_APP_FUNC(0x035D8B70, BaseEntity*, GadgetEntity_GetOwnerEntity, (GadgetEntity* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x0136FBD0, void, InLevelMapPageContext_ZoomMap, (InLevelMapPageContext* __this, float value, MethodInfo* method));
+DO_APP_FUNC(0x013B7F90, void, InLevelMapPageContext_UpdateView, (InLevelMapPageContext* __this, MethodInfo* method));
+DO_APP_FUNC(0x01C6A530, bool, UIManager_1_HasEnableMapCamera, (UIManager_1* __this, MethodInfo* method));
+DO_APP_FUNC(0x03D64A80, void, MonoMiniMap_Update, (MonoMiniMap* __this, MethodInfo* method));
+DO_APP_FUNC(0x073BFD20, Rect, RectTransform_get_rect, (RectTransform* __this, MethodInfo* method));
+DO_APP_FUNC(0x083C1430, float, Canvas_get_scaleFactor, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x03992EB0, MonoMiniMap*, MonoInLevelMainPage_get_miniMap, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x074E9960, Vector3, Quaternion_get_eulerAngles, (Quaternion__Boxed* __this, MethodInfo* method));
+DO_APP_FUNC(0x073D73E0, Quaternion, Transform_get_rotation, (Transform* __this, MethodInfo* method));
+DO_APP_FUNC(0x02702190, void, GadgetModule_OnGadgetInteractRsp, (void* __this, GadgetInteractRsp* notify, MethodInfo* method));
 
 // Singletons
 DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));

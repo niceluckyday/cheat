@@ -16,8 +16,10 @@ namespace cheat::game
 
 		app::Vector3 relativePosition();
 		app::Vector3 absolutePosition();
+		app::Vector2 levelPosition();
 
 		float distance(const app::Vector3& point);
+		float distance(const app::Vector2& levelPosition);
 		float distance(Entity* entity);
 		float distance(app::BaseEntity* rawEntity);
 

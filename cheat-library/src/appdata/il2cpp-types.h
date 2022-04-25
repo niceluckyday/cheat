@@ -8875,7 +8875,7 @@ namespace app {
         struct HashSet_1_MoleMole_BaseContext_* BCPDECEFFMF;
         struct UIPlatformConfig* platformConfig;
         uint32_t _curProfileHandle;
-        struct Canvas* _sceneCanvas;
+        void* _sceneCanvas;
         struct Camera* _uiCamera;
     };
 
@@ -9842,6 +9842,280 @@ namespace app {
 		MonitorData* monitor;
 		struct Behaviour__Fields fields;
 	};
+
+	struct IGKEDHHIDMA__Fields
+	{
+		struct BasePageContext__Fields _;
+		float EnterCountDown;
+		struct String* CountDownPrefab;
+		struct GameObject* _CountDownGo;
+		struct MonoInLevelProgressBar* _script;
+		float _countDownTime;
+		uint32_t _handle;
+		struct Image* _fillImage;
+		struct Coroutine* countCoroutine;
+		bool _panelActive;
+		bool _countDownAcitve;
+		bool _isEndingCountdown;
+		struct Nullable_1_MoleMole_AsyncJob_ _countDownLoadingJob;
+		int32_t _versusBattleTotle;
+		struct CNCFAOMBJIP* _countDown;
+		struct EAPNPEGAAII* _inteePanelCom;
+		struct AJEAPLJOAON* _directionIndicator;
+		struct ELCMPFBKPBA* _targetIndicator;
+		struct GDIAIBAJMDC* _gadgetIndicator;
+		struct OOKIJPIAEGD* _navigationIndicator;
+		struct LNBLFPFIGFF* _galleryPlay;
+		struct BPJHCKHOCIO* _quickChangeTeamCom;
+		struct MonoParticleDamageTextContainer* _damageParticleTextContainer;
+		void* _pageMono;
+		struct MonoInLevelLimitRegion* _monoBlackMask;
+		struct BEJJFHHKIBA* _newItemDialog;
+		struct NBMGJNBMIOA* _specialItemDialog;
+		struct MLHLCCGMGOP* _galleryDialog;
+		struct GJPBGPGKGNN* _localAvatar;
+		struct Button* _transBtn;
+        int32_t _lastLayoutVersion;
+		bool _canChangeMoveType;
+		bool _autoOpenedDungeonFactor;
+		bool _forbiddenToggleMoveByState;
+		bool _isPaimonNormal;
+		bool _isChatEnabled;
+		struct MBKDBIHKAGD* chatBubbleDisplayer;
+		bool _chatPanelResolved;
+		bool _mapActive;
+		bool _transAppear;
+		struct DateTime _rttRefreshTime;
+		struct Color _rttGreen;
+		struct Color _rttYellow;
+		struct Color _rttRed;
+		uint32_t _rttLowLimit;
+		uint32_t _rttMidLimit;
+		uint32_t _rttHighLimit;
+		uint32_t _rttRefreshDeltaTime;
+		struct String* KMBJFGJMNMH;
+		struct Coroutine* _dungeonItemCoroutine;
+		bool _isOpenInputContainer;
+		bool _isOpenActionContainer;
+		bool _isOpenMessageContainer;
+		uint32_t _lastTimeLeft;
+		uint32_t _lastCount;
+        int32_t combatBarType;
+		struct List_1_EJFOBCPHDFP_* _saveCombatsData;
+		struct GameObject* m_LightingInfoUI;
+		struct GameObject* m_TreeOverdrawInfoUI;
+		struct GameObject* m_QuickRenderMenu;
+		bool _inShakeOff;
+		struct OKGLPFDFCPK* _challengeConfig;
+		struct Coroutine* _blossomBeginCoroutine;
+		struct MonoTowerHintText* _hintPage;
+		struct Coroutine* fleurFairDungeonStartAnimCoroutine;
+		float _curFleurFairDungeonBarValue;
+		bool _isInFlightChallenge;
+		bool _isShowFlightChallengeHint;
+		struct OKGLPFDFCPK* _flightSubChallengeConfig;
+		bool _waitStart;
+		struct Coroutine* _startCoroutine;
+		struct Coroutine* _uidCoroutine;
+		bool _playUidOpEnd;
+		uint32_t _curStage;
+		struct HDMIAHJPLCJ* _combat;
+		struct Coroutine* _altPressCoroutine;
+		struct Coroutine* _cameraLookEndCoroutine;
+		bool _disableSkillInput;
+		bool _disableMoveInput;
+		bool _disableActionInput;
+		bool _mapInfoVisible;
+		bool _chatInfoVisible;
+		struct Dictionary_2_System_Int32_HashSet_1_System_Int32_* _uiDisableStateDic;
+		struct Dictionary_2_System_Int32_HashSet_1_System_Int32_* _inputEnableStateDic;
+		struct HashSet_1_System_Int32_* _mainPageDisableSet;
+		struct DODHAKHMNDK* zoomSmoother;
+		struct KOOFBIDHECP* _virtualDialDialog;
+		struct NOIFCOKPBBI* AEKMPNKPJCK;
+		int32_t _prevState;
+		bool _changeWithSkill;
+		struct DINCOJBJLML* _messageDialog;
+		bool showHazadousWarning;
+		struct List_1_DINCOJBJLML_PGCPDEKPCKM_* HGLADPDCIEO;
+		struct IKECDNKKMJM* _questHintDialog;
+		struct FBCIMPOLFEI* _questProgressDialog;
+		struct ECDKKGFNMNF* _rewardDialogGeneral;
+		struct ECDKKGFNMNF* _rewardDialogQuest;
+		struct ECDKKGFNMNF* _rewardDialogDailyTask;
+		struct ECDKKGFNMNF* _rewardDialogRandTask;
+		struct ECDKKGFNMNF* _rewardDialogGather;
+		struct GCMPGGFPHDJ* _deblockingDialog;
+		struct OEBIPCONBLK* _taskTitleDialog;
+		struct Coroutine* _templateReminderCoroutine;
+		struct PCIKGHOIFOO* _reminderDialog;
+		bool HICPKFKAOCK;
+		struct Nullable_1_UnityEngine_Vector3_ _targetPos;
+		int32_t _lastIntDst;
+		bool _pushtipsShowed;
+		bool BPENOEMPIBP;
+		uint32_t APGMBPPFPDH;
+		struct PGGJOHPFKCO* HIJIBGFKGAC;
+		bool NLNAHEMFIDM;
+		struct MonoMiniMap* _miniMap;
+		struct MonoMapFogAreaGrp* _miniMapFog;
+		bool _mapImgReady;
+		uint32_t _mapImageHandle;
+		uint32_t _mapFogHandle;
+		struct Dictionary_2_System_Int32_Dictionary_2_System_UInt32_MoleMole_MonoMapMark_* _marks;
+		struct HashSet_1_MoleMole_MonoMapMark_* _activeMarks;
+		struct HashSet_1_MoleMole_MonoMapMark_* _candidateMarks;
+		struct Vector2 _searchRegionCenter;
+		struct MonoMapMark* _mapMarkPrefab;
+		uint32_t _sceneID;
+		float _sqrUpdateSearchDistance;
+		float _sqrSearchRegionRadius;
+		struct GameObject* _mapImageInst;
+		float _miniMapScale;
+		float _defaultMiniMapScale;
+		struct RectTransform* _miniMapBackImg;
+		struct MonoLevelMap* _levelMap;
+		struct RectTransform* _levelMapTrans;
+		struct Vector2 rectSize;
+		struct Coroutine* _setScaleCoroutine;
+		float _currTime;
+		float _tweenTime;
+		float _targetScale;
+		float _preScale;
+		bool _forceUpdateMark;
+		struct Vector3 _lastPlayerPos;
+		float _lastCameraAngle;
+		float _lastAvatarAngle;
+		struct BaseEntity* _teamEntity;
+		struct Transform* _cameraTrans;
+		float _markContainerLocalEulerAngleZ;
+		bool updateCamera;
+		struct Vector3 newEulerAngle;
+		int32_t _lastFixType;
+		struct HashSet_1_System_UInt32_* _fakemarkTobeRemoved;
+		bool _mapBackRotateDirty;
+		bool _mapContainerDiry;
+		bool _isSignalActive;
+		float _checkInterval;
+		float _checkTime;
+		float _lastDistance;
+		float _audioTime;
+		float _audioPeriod;
+		uint32_t _signalAudioID;
+		struct String* miniMapQuestMarkPath;
+		struct Dictionary_2_System_UInt32_MoleMole_MonoMapMark_* _fakeMarkDic;
+		uint32_t _fakeMarkHandle;
+		float _sightWorldRadius_k__BackingField;
+		float _markReachToUIRatio_k__BackingField;
+		float _worldUnitPerPixel_k__BackingField;
+		bool _questEnable;
+		struct Coroutine* _spPresstartCoroutine;
+		uint64_t _currentAvatarID;
+		struct List_1_MoleMole_MonoTeamBtn_* _buttonList;
+		struct List_1_System_UInt64_* _avatarGuidList;
+		bool _showChangeAvatarCDText;
+		int32_t _count;
+		struct List_1_MoleMole_MonoMPTeamBtn_* teamBtnList;
+		bool _hideTeamBtnName;
+		float HFFMDBPJNCL;
+		struct Dictionary_2_System_Int32_Queue_1_MoleMole_BaseContext_* _widgetQueueDic;
+		float DELAY_TIME;
+		struct Action* _onSetActiveHandler;
+	};
+
+	struct InLevelMainPageContext
+	{
+		struct IGKEDHHIDMA__Class* klass;
+		MonitorData* monitor;
+		struct IGKEDHHIDMA__Fields fields;
+	};
+
+	struct MonoMiniMap__Fields {
+		struct MonoBehaviour__Fields _;
+		struct Button* _actionButton;
+		struct RectTransform* _grpMap;
+		struct RectTransform* _grpMapBack;
+		struct RectTransform* _markContainer;
+		struct RectTransform* _unusedMarkContainer;
+		struct RectTransform* _maskedMarkLayer;
+		struct RectTransform__Array* _markContainerLayers;
+		struct RectTransform* _localAvatarMark;
+		struct RectTransform* _sightFanMark;
+		struct RectTransform* _directionMark;
+		struct RectTransform* _grpMiniBackRotate;
+		struct Image* _imgMiniBack;
+		float _areaMinDistance;
+		struct Queue_1_MoleMole_MonoMapMark_* LMMANOILMOH;
+		struct MonoMapMark* EBLFANFFMGM;
+		struct RectTransform* _hazardousArea;
+		float KJNIFJIIJBC;
+		float HOODCADEJHE;
+		bool CODJAKHFFLB;
+		struct IGKEDHHIDMA* DLJNLLBFMCP;
+	};
+
+	struct MonoMiniMap {
+		struct MonoMiniMap__Class* klass;
+		MonitorData* monitor;
+		struct MonoMiniMap__Fields fields;
+	};
+
+	struct RectTransform__Fields {
+		struct Transform__Fields _;
+	};
+
+	struct RectTransform {
+		struct RectTransform__Class* klass;
+		MonitorData* monitor;
+		struct RectTransform__Fields fields;
+	};
+
+	struct Quaternion__Boxed {
+		struct Quaternion__Class* klass;
+		MonitorData* monitor;
+		struct Quaternion fields;
+	};
+
+	enum class InteractType__Enum : int32_t {
+		InteractNone = 0x00000000,
+		InteractPickItem = 0x00000001,
+		InteractGather = 0x00000002,
+		InteractOpenChest = 0x00000003,
+		InteractOpenStatue = 0x00000004,
+		InteractConsum = 0x00000005,
+		InteractMpPlayReward = 0x00000006,
+		InteractView = 0x00000007,
+		InteractGeneralReward = 0x00000008,
+		InteractMiracleRing = 0x00000009,
+		InteractFoundation = 0x0000000a,
+		InteractEchoShell = 0x0000000b,
+		InteractHomeGather = 0x0000000c,
+		InteractEnvAnimal = 0x0000000d,
+		InteractQuestGadget = 0x0000000e,
+        LGHNPMNCLLI = 0x0000000f,
+	};
+
+	enum InterOpType__Enum {
+		InterOpType__Enum_InterOpFinish = 0x00000000,
+		InterOpType__Enum_InterOpStart = 0x00000001,
+	};
+
+	struct GadgetInteractRsp__Fields {
+		struct MessageBase_1__Fields _;
+		int32_t retcode_;
+		uint32_t gadgetEntityId_;
+		InteractType__Enum interactType_;
+        InterOpType__Enum opType_;
+		uint32_t gadgetId_;
+	};
+
+	struct GadgetInteractRsp {
+		struct GadgetInteractRsp__Class* klass;
+		MonitorData* monitor;
+		struct GadgetInteractRsp__Fields fields;
+	};
+
+
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }
 #endif

@@ -18,9 +18,7 @@ public:
 	};
 
 	static std::optional<ImageData> GetImage(const std::string& imageName, const char* imageType = "PNG");
-	static void SetHandle(HMODULE handle);
 
 private:
 	inline static std::map<std::string, ImageData> s_Textures {};
-	inline static HMODULE s_Handle = nullptr;
 };

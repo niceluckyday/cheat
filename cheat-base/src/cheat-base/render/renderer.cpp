@@ -13,6 +13,8 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 namespace renderer
 {
+	static std::unordered_set<void*> inputLockers;
+
 	static ImFont* pFont;
 	
 	static LPBYTE pFontData;
@@ -36,6 +38,31 @@ namespace renderer
 		backend::DX11Events::InitializeEvent += FREE_METHOD_HANDLER(OnDX11Initialize);
 
 		backend::InitializeDX11Hooks();
+	}
+
+	void SetInputLock(void* id, bool value)
+	{
+		if (value)
+			AddInputLocker(id);
+		else
+			RemoveInputLocker(id);
+	}
+
+	void AddInputLocker(void* id)
+	{
+		if (inputLockers.count(id) == 0)
+			inputLockers.insert(id);
+	}
+
+	void RemoveInputLocker(void* id)
+	{
+		if (inputLockers.count(id) > 0)
+			inputLockers.erase(id);
+	}
+
+	bool IsInputLocked()
+	{
+		return inputLockers.size() > 0;
 	}
 
 	static void SetupImGuiStyle();
@@ -101,7 +128,8 @@ namespace renderer
 
 		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
 
-		cheat::events::WndProcEvent();
+		if (!cheat::events::WndProcEvent(hWnd, uMsg, wParam, lParam))
+			return true;
 
 		short key;
 		bool keyUpEvent = true;
@@ -131,8 +159,7 @@ namespace renderer
 		if (keyUpEvent)
 			canceled = !cheat::events::KeyUpEvent(key);
 
-
-		if (globals::IsInputBlocked || canceled)
+		if (IsInputLocked() || canceled)
 			return true;
 
 		return CallWindowProc(OriginalWndProcHandler, hWnd, uMsg, wParam, lParam);

@@ -18,7 +18,7 @@ namespace cheat::feature::esp::render
 	static ImVec2 s_AvatarPosition = ImVec2(0, 0);
 
 // Adding delaying helps to improve performance
-#define UPDATE_DELAY(delay) static ULONGLONG s_LastUpdate = 0;\
+#define UPDATE_DELAY_VAR(delay) static ULONGLONG s_LastUpdate = 0;\
                             ULONGLONG currentTime = GetTickCount();\
                             if (s_LastUpdate + delay > currentTime)\
                                 return;\
@@ -27,7 +27,7 @@ namespace cheat::feature::esp::render
 
 	static void UpdateMainCamera()
 	{
-		UPDATE_DELAY(1000);
+		UPDATE_DELAY_VAR(1000);
 
 		s_Camera = nullptr;
 
@@ -47,7 +47,7 @@ namespace cheat::feature::esp::render
 
 	static void UpdateResolutionScale()
 	{
-		UPDATE_DELAY(1000);
+		UPDATE_DELAY_VAR(1000);
 
 		SAFE_BEGIN();
 		s_ResolutionScale = { 0, 0 };

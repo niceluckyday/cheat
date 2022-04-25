@@ -7,15 +7,14 @@ namespace renderer
 
 	void Init(LPBYTE pFontData, DWORD dFontDataSize);
 
+	void SetInputLock(void* id, bool value);
+	void AddInputLocker(void* id);
+	void RemoveInputLocker(void* id);
+	bool IsInputLocked();
+
 	class events 
 	{
 	public:
 		inline static TEvent<> RenderEvent{};
-	};
-
-	class globals
-	{
-	public:
-		inline static bool IsInputBlocked = false;
 	};
 }

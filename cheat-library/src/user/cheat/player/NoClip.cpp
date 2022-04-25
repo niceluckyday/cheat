@@ -110,7 +110,7 @@ namespace cheat::feature
 		if (baseMove == nullptr)
 			return;
 
-		if (renderer::globals::IsInputBlocked)
+		if (renderer::IsInputLocked())
 			return;
 
 		auto rigidBody = avatarEntity->rigidbody();
