@@ -10,6 +10,7 @@
 namespace cheat::feature 
 {
 	static void HumanoidMoveFSM_LateTick_Hook(void* __this, float deltaTime, MethodInfo* method);
+	app::Vector3 zero;
 
     NoClip::NoClip() : Feature(),
         NF(m_Enabled,            "No clip",              "NoClip", false),
@@ -110,6 +111,7 @@ namespace cheat::feature
 			return;
 
 		app::Rigidbody_set_detectCollisions(rigidBody, false, nullptr);
+		app::Rigidbody_set_velocity(rigidBody, zero,nullptr);
 
 		auto cameraEntity = game::Entity(reinterpret_cast<app::BaseEntity*>(manager.mainCamera()));
 		auto relativeEntity = m_CameraRelative ? &cameraEntity : avatarEntity;
