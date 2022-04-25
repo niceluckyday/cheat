@@ -167,6 +167,7 @@ DO_APP_FUNC(0x01E9F090, List_1_MoleMole_BaseEntity_*, EntityManager_GetEntities,
 
 DO_APP_FUNC(0x084045B0, void, Rigidbody_set_detectCollisions, (Rigidbody* __this, bool value, MethodInfo* method));
 DO_APP_FUNC(0x08404790, void, Rigidbody_set_isKinematic,      (Rigidbody* __this, bool value, MethodInfo* method));
+DO_APP_FUNC(0x08333840, void, Rigidbody_set_velocity,         (Rigidbody* __this, Vector3 value, MethodInfo * method));
 
 DO_APP_FUNC(0x07496F70, float, Time_get_deltaTime, (void* __this, MethodInfo* method));
 
