@@ -9957,6 +9957,46 @@ namespace app {
 		struct Quaternion fields;
 	};
 
+	enum class InteractType__Enum : int32_t {
+		InteractNone = 0x00000000,
+		InteractPickItem = 0x00000001,
+		InteractGather = 0x00000002,
+		InteractOpenChest = 0x00000003,
+		InteractOpenStatue = 0x00000004,
+		InteractConsum = 0x00000005,
+		InteractMpPlayReward = 0x00000006,
+		InteractView = 0x00000007,
+		InteractGeneralReward = 0x00000008,
+		InteractMiracleRing = 0x00000009,
+		InteractFoundation = 0x0000000a,
+		InteractEchoShell = 0x0000000b,
+		InteractHomeGather = 0x0000000c,
+		InteractEnvAnimal = 0x0000000d,
+		InteractQuestGadget = 0x0000000e,
+        LGHNPMNCLLI = 0x0000000f,
+	};
+
+	enum InterOpType__Enum {
+		InterOpType__Enum_InterOpFinish = 0x00000000,
+		InterOpType__Enum_InterOpStart = 0x00000001,
+	};
+
+	struct GadgetInteractRsp__Fields {
+		struct MessageBase_1__Fields _;
+		int32_t retcode_;
+		uint32_t gadgetEntityId_;
+		InteractType__Enum interactType_;
+        InterOpType__Enum opType_;
+		uint32_t gadgetId_;
+	};
+
+	struct GadgetInteractRsp {
+		struct GadgetInteractRsp__Class* klass;
+		MonitorData* monitor;
+		struct GadgetInteractRsp__Fields fields;
+	};
+
+
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }
 #endif

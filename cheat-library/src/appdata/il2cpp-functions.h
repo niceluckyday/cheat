@@ -202,7 +202,7 @@ DO_APP_FUNC(0x083C1430, float, Canvas_get_scaleFactor, (void* __this, MethodInfo
 DO_APP_FUNC(0x03992EB0, MonoMiniMap*, MonoInLevelMainPage_get_miniMap, (void* __this, MethodInfo* method));
 DO_APP_FUNC(0x074E9960, Vector3, Quaternion_get_eulerAngles, (Quaternion__Boxed* __this, MethodInfo* method));
 DO_APP_FUNC(0x073D73E0, Quaternion, Transform_get_rotation, (Transform* __this, MethodInfo* method));
-
+DO_APP_FUNC(0x02702190, void, GadgetModule_OnGadgetInteractRsp, (void* __this, GadgetInteractRsp* notify, MethodInfo* method));
 
 // Singletons
 DO_APP_FUNC(0x065A04E0, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));

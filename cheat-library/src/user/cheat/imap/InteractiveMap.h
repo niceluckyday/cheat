@@ -17,26 +17,27 @@ namespace cheat::feature
 	public:
 		config::field::ToggleField m_Enabled;
 		config::field::BaseField<bool> m_SeparatedWindows;
-		config::field::BaseField<bool> m_UnlockedLogShow;
+		config::field::BaseField<bool> m_CompletionLogShow;
 
 		config::field::BaseField<float> m_IconSize;
 		config::field::BaseField<float> m_MinimapIconSize;
 		config::field::BaseField<bool> m_DynamicSize;
 		config::field::BaseField<bool> m_ShowHDIcons;
 		
-		config::field::BaseField<bool> m_ShowUnlocked;
-		config::field::BaseField<float> m_UnlockedTransparency;
+		config::field::BaseField<bool> m_ShowCompleted;
+		config::field::BaseField<float> m_CompletePointTransparency;
 
 		config::field::BaseField<bool> m_AutoDetectNewItems;
+		config::field::BaseField<bool> m_NewItemstDetectOnlyShowed;
 		config::field::BaseField<float> m_NewItemsDetectRange;
 		config::field::BaseField<int> m_NewItemsDetectingDelay;
 
 		config::field::BaseField<bool> m_AutoDetectGatheredItems;
 		config::field::BaseField<float> m_GatheredItemsDetectRange;
 		
-		config::field::HotkeyField m_UnlockNearestPoint;
-		config::field::HotkeyField m_RevertLatestUnlock;
-		config::field::BaseField<bool> m_UnlockOnlySelected;
+		config::field::HotkeyField m_CompleteNearestPoint;
+		config::field::HotkeyField m_RevertLatestCompletion;
+		config::field::BaseField<bool> m_CompleteOnlyViewed;
 		config::field::BaseField<float> m_PointFindRange;
 		
 		static InteractiveMap& GetInstance();
@@ -55,8 +56,8 @@ namespace cheat::feature
 
 			app::Vector2 levelPosition;
 
-			bool unlocked;
-			int64_t unlockTimestamp;
+			bool completed;
+			int64_t completeTimestamp;
 
 			bool isCustom;
 			int64_t creationTimestamp;
@@ -65,12 +66,13 @@ namespace cheat::feature
 		// std::optional<PointData> GetSelectedPoint();
 		InteractiveMap::PointData* GetHoveredPoint();
 
-		InteractiveMap::PointData* FindNearestPoint(app::Vector2 levelPosition, uint32_t sceneID = 0);
-		InteractiveMap::PointData* FindEntityPoint(game::Entity* entity, uint32_t sceneID = 0);
+		std::vector<PointData*> GetEnitityPoints(game::Entity* entity, bool completed = false, uint32_t sceneID = 0);
+		InteractiveMap::PointData* FindNearestPoint(const app::Vector2& levelPosition, float range = 0.0f, bool onlyShowed = true, bool completed = false, uint32_t sceneID = 0);
+		InteractiveMap::PointData* FindEntityPoint(game::Entity* entity, float range = 0.0f, uint32_t sceneID = 0);
 
-		void UnlockPoint(PointData* pointData);
-		void LockPoint(PointData* pointData);
-		void RevertLatestUnlocking();
+		void CompletePoint(PointData* pointData);
+		void UncompletePoint(PointData* pointData);
+		void RevertLatestPointCompleting();
 
 		void AddCustomPoint(uint32_t sceneID, uint32_t labelID, app::Vector2 levelPosition);
 		void RemoveCustomPoint(PointData* pointData);
@@ -89,7 +91,7 @@ namespace cheat::feature
 			config::field::BaseField<bool>* enabled;
 
 			std::map<uint32_t, PointData> points;
-			uint32_t unlockedCount;
+			uint32_t completedCount;
 
 			game::IEntityFilter* filter;
 			bool supportGatherDetect;
@@ -114,21 +116,8 @@ namespace cheat::feature
 		config::field::StringField m_UserPointsData;
 		config::field::BaseField<uint32_t> m_CustomPointIndex; // Stores last index for new custom points
 		
-		struct _UnlockTimestampCmp {
-			bool operator() (PointData* const& lhs, PointData* const& rhs) const
-			{
-				return lhs->unlockTimestamp > rhs->unlockTimestamp;
-			}
-		};
-		std::set<PointData*, _UnlockTimestampCmp> m_CustomPoints;
-
-		struct _CreationTimestampCmp {
-			bool operator() (PointData* const& lhs, PointData* const& rhs) const
-			{
-				return lhs->creationTimestamp > rhs->creationTimestamp;
-			}
-		};
-		std::set<PointData*, _CreationTimestampCmp> m_UnlockedPoints;
+		std::unordered_set<PointData*> m_CustomPoints;
+		std::unordered_set<PointData*> m_CompletedPoints;
 
 		std::mutex m_PointMutex;
 		// PointData* m_SelectedPoint;
@@ -148,12 +137,14 @@ namespace cheat::feature
 		void InitializeEntityFilter(game::IEntityFilter* filter, const std::string& clearName);
 		void InitializeEntityFilters();
 
+		void InitializeGatherDetectItems();
+
 		// Loading user data
 		void LoadUserData();
 		void SaveUserData();
 
-		void LoadUnlockPointData(LabelData* labelData, const nlohmann::json& data);
-		void SaveUnlockPointData(nlohmann::json& jObject, PointData* pointData);
+		void LoadCompletedPointData(LabelData* labelData, const nlohmann::json& data);
+		void SaveCompletedPointData(nlohmann::json& jObject, PointData* pointData);
 		
 		void LoadCustomPointData(LabelData* labelData, const nlohmann::json& data);
 		void SaveCustomPointData(nlohmann::json& jObject, PointData* pointData);
@@ -175,6 +166,17 @@ namespace cheat::feature
 		// Detecting stuff
 		void OnGameUpdate();
 		void NewItemsDetect();
+		void OnItemGathered(game::Entity* entity);
+
+		// Utility
+		PointData* FindNearestPoint(const LabelData& label, const app::Vector2& levelPosition, float range = 0.0f, float checkUnlocked = false);
+		std::vector<InteractiveMap::LabelData*> FindLabelsByClearName(const std::string& clearName);
+
+		// Hooks
+		static void GadgetModule_OnGadgetInteractRsp_Hook(void* __this, app::GadgetInteractRsp* notify, MethodInfo* method);
+		static void InLevelMapPageContext_UpdateView_Hook(app::InLevelMapPageContext* __this, MethodInfo* method);
+		static void InLevelMapPageContext_ZoomMap_Hook(app::InLevelMapPageContext* __this, float value, MethodInfo* method);
+		static void MonoMiniMap_Update_Hook(app::MonoMiniMap* __this, MethodInfo* method);
 	};
 }
 

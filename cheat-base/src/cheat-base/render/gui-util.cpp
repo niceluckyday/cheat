@@ -271,8 +271,8 @@ bool BeginGroupPanel(const char* name, const ImVec2& size, bool node, SelectData
 	ImGuiContext& g = *GImGui;
 	ImGuiWindow* window = g.CurrentWindow;
 
+    ImGui::PushID(name);
 	ImGui::BeginGroup();
-
 	auto cursorPos = ImGui::GetCursorScreenPos();
 
     auto itemSpacing = ImGui::GetStyle().ItemSpacing;
@@ -352,6 +352,7 @@ bool BeginGroupPanel(const char* name, const ImVec2& size, bool node, SelectData
             ImGui::PopStyleVar(2);
             ImGui::EndGroup();
             ImGui::EndGroup();
+            ImGui::PopID();
             return false;
         }
 	}
@@ -485,6 +486,7 @@ void EndGroupPanel()
     ImGui::Dummy(ImVec2(0.0f, 0.0f));
 
     ImGui::EndGroup();
+    ImGui::PopID();
 }
 
 void AddUnderLine(ImColor col_)
