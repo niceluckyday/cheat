@@ -79,12 +79,13 @@ namespace cheat::feature
 
     bool RapidFire::NeedStatusDraw() const
 {
-        return m_Enabled;
+        return m_Enabled && (m_MultiHit || m_MultiTarget);
     }
 
     void RapidFire::DrawStatus() 
     {
-		if (m_MultiHit) {
+		if (m_MultiHit) 
+		{
 			if (m_Randomize)
 				ImGui::Text("Multi-Hit Random[%d|%d]", m_minMultiplier.value(), m_maxMultiplier.value());
 			else if (m_OnePunch)
