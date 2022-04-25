@@ -13,9 +13,12 @@ namespace cheat::feature
 		config::field::ToggleField m_Enabled;
 		config::field::BaseField<float> m_Speed;
 		config::field::BaseField<bool> m_CameraRelative;
+		config::field::ToggleField m_VelocityMode;
+		config::field::ToggleField m_FreeflightMode;
 
 		config::field::BaseField<bool> m_AltSpeedEnabled;
 		config::field::BaseField<float> m_AltSpeed;
+
 
 		static NoClip& GetInstance();
 

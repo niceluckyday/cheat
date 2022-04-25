@@ -16,6 +16,8 @@ namespace cheat::feature
         NF(m_Enabled,            "No clip",              "NoClip", false),
         NF(m_Speed,              "Speed",                "NoClip", 5.5f),
         NF(m_CameraRelative,     "Relative to camera",   "NoClip", true),
+		NF(m_VelocityMode,       "Velocity mode",        "NoClip", false),
+		NF(m_FreeflightMode,     "Freeflight mode",      "NoClip", false),
 		NF(m_AltSpeedEnabled,	 "Alt speed enabled",    "NoClip", false),
 		NF(m_AltSpeed,			 "Alt speed",            "NoClip", 1.0f)
     {
@@ -51,6 +53,9 @@ namespace cheat::feature
 			ConfigWidget("Alt Speed", m_AltSpeed, 0.1f, 2.0f, 100.0f,
 				"Alternate no-clip move speed.\n" \
 				"Not recommended setting above 5.0.");
+		
+		ConfigWidget("Velocity mode", m_VelocityMode,"Use velocity instead of position to move.");
+		ConfigWidget("Freeflight mode", m_FreeflightMode,"Don't remove collisions");
 		}
     }
 
@@ -89,7 +94,9 @@ namespace cheat::feature
 			if (rigidBody == nullptr)
 				return;
 
-			app::Rigidbody_set_detectCollisions(rigidBody, true, nullptr);
+			if (!m_FreeflightMode)
+				app::Rigidbody_set_detectCollisions(rigidBody, true, nullptr);
+			
 			isApplied = false;
 		}
 
@@ -109,9 +116,11 @@ namespace cheat::feature
 		auto rigidBody = avatarEntity->rigidbody();
 		if (rigidBody == nullptr)
 			return;
-
-		app::Rigidbody_set_detectCollisions(rigidBody, false, nullptr);
-		app::Rigidbody_set_velocity(rigidBody, zero,nullptr);
+		if (!m_FreeflightMode)
+			app::Rigidbody_set_detectCollisions(rigidBody, false, nullptr);
+		
+		if (!m_VelocityMode)
+			app::Rigidbody_set_velocity(rigidBody, zero,nullptr);
 
 		auto cameraEntity = game::Entity(reinterpret_cast<app::BaseEntity*>(manager.mainCamera()));
 		auto relativeEntity = m_CameraRelative ? &cameraEntity : avatarEntity;
@@ -146,7 +155,10 @@ namespace cheat::feature
 		float deltaTime = app::Time_get_deltaTime(nullptr, nullptr);
 
 		app::Vector3 newPos = prevPos + dir * speed * deltaTime;
-		avatarEntity->setRelativePosition(newPos);
+		if (!m_VelocityMode)
+			avatarEntity->setRelativePosition(newPos);
+		else
+			app::Rigidbody_set_velocity(rigidBody, dir * speed, nullptr);
 	}
 
 	// Fixing player sync packets when no clip
