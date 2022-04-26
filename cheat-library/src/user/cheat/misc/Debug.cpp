@@ -403,6 +403,148 @@ namespace cheat::feature
 #define DRAW_FLOAT(owner, fieldName) ImGui::Text("%s: %f", #fieldName, owner##->fields.##fieldName );
 #define DRAW_BOOL(owner, fieldName) ImGui::Text("%s: %s", #fieldName, owner##->fields.##fieldName ? "true" : "false");
 
+    void DrawTeleportsManager()
+    {
+        auto &entityManager = game::EntityManager::instance();
+
+        static std::string teleportName;
+        ImGui::InputText("Teleport name", &teleportName);
+        static std::vector<std::pair<std::string, app::Vector3>> teleports;
+        app::Vector3 pos = entityManager.avatar()->absolutePosition();
+        if (ImGui::Button("Add teleport"))
+        {
+            // check if already added
+            bool found = false;
+            for (const auto &[name, pos] : teleports)
+            {
+                if (name == teleportName)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            // check if name is valid and doesnt  contain special characters
+            if (!teleportName.find_first_of("\\/:*?\"<>|") == std::string::npos)
+            {
+                return;
+            }
+
+            teleports.push_back({teleportName, pos});
+
+            auto dir = std::filesystem::current_path();
+            dir /= "teleports";
+            if (!std::filesystem::exists(dir))
+                std::filesystem::create_directory(dir);
+            std::ofstream ofs(dir / (teleportName + ".json"));
+            nlohmann::json j;
+            j["name"] = teleportName;
+            j["position"] = {pos.x, pos.y, pos.z};
+            ofs << j;
+            teleportName.clear();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Reload"))
+        {
+            auto dir = std::filesystem::current_path();
+            dir /= "teleports";
+            auto result = std::filesystem::directory_iterator(dir);
+            teleports.clear();
+            for (auto &file : result)
+            {
+
+                if (file.path().extension() != ".json")
+                    continue;
+
+                std::string name = file.path().stem().string();
+                if (file.is_directory())
+                    continue;
+
+                std::ifstream ifs(file.path());
+                nlohmann::json j;
+                ifs >> j;
+                teleports.push_back({j["name"], {j["position"][0], j["position"][1], j["position"][2]}});
+                LOG_INFO("Loaded teleport %s", name.c_str());
+            }
+        }
+        ImGui::SameLine();
+        // open directory
+        if (ImGui::Button("Open Folder"))
+        {
+            auto dir = std::filesystem::current_path();
+            dir /= "teleports";
+            ShellExecuteA(NULL, "open", dir.string().c_str(), NULL, NULL, SW_SHOW);
+        }
+
+        static std::string jsonInput;
+        ImGui::InputTextMultiline("JSON input", &jsonInput, ImVec2(0, 50), ImGuiInputTextFlags_AllowTabInput);
+
+        if (ImGui::Button("Load from JSON"))
+        {
+            auto dir = std::filesystem::current_path();
+            dir /= "teleports";
+            LOG_INFO("Defined dir");
+            if (!std::filesystem::exists(dir))
+                std::filesystem::create_directory(dir);
+            nlohmann::json j;
+            try
+            {
+                j = nlohmann::json::parse(jsonInput);
+            }
+            catch (nlohmann::json::parse_error &e)
+            {
+                LOG_ERROR("Failed to parse JSON: %s", e.what());
+                return;
+            }
+            LOG_INFO("Parsed JSON");
+            std::string teleportName = j["name"];
+            app::Vector3 pos = { j["position"][0], j["position"][1], j["position"][2] };
+            teleports.push_back({ teleportName, pos });
+            LOG_INFO("Loaded teleport %s", teleportName.c_str());
+            std::ofstream ofs(dir / (teleportName + ".json"));
+            ofs << jsonInput;
+            jsonInput.clear();
+
+        }
+
+        if (ImGui::TreeNode("Teleports"))
+        {
+            std::string search;
+            ImGui::InputText("Search", &search);
+            for (const auto &[teleportName, position] : teleports)
+            {
+                // find without case sensitivity
+                if (search.empty() || std::search(teleportName.begin(), teleportName.end(), search.begin(), search.end(), [](char a, char b)
+                                                  { return std::tolower(a) == std::tolower(b); }) != teleportName.end())
+                {
+                    if (ImGui::TreeNode(teleportName.data()))
+                    {
+                        ImGui::Text("Position: %.3f, %.3f, %.3f", position.x, position.y, position.z);
+                        if (ImGui::Button("Teleport"))
+                        {
+                            auto &mapTeleport = MapTeleport::GetInstance();
+                            mapTeleport.TeleportTo(position);
+                        }
+                        ImGui::SameLine();
+                        if (ImGui::Button("Remove"))
+                        {
+                            auto dir = std::filesystem::current_path();
+                            dir /= "teleports";
+                            // delete file
+                            std::filesystem::remove(dir / (teleportName + ".json"));
+                            auto it = std::find_if(teleports.begin(), teleports.end(), [&teleportName](const auto &pair)
+                                                   { return pair.first == teleportName; });
+                            if (it != teleports.end())
+                                teleports.erase(it);
+                        }
+                        ImGui::SameLine();
+                        HelpMarker("Warning: Removing a teleport will remove the file from the directory. It will be lost forever.");
+                        ImGui::TreePop();
+                    }
+                }
+            }
+            ImGui::TreePop();
+        }
+    }
     static void DrawBaseInteraction(app::BaseInterAction* inter)
     {
         ImGui::Text("_type: %s", magic_enum::enum_name(inter->fields._type).data());
@@ -539,15 +681,29 @@ namespace cheat::feature
 
             ImGui::TreePop();
         }
-        if (ImGui::Button("Copy Position Info"))
+        if (ImGui::Button("Copy Position"))
         {
-            auto text = il2cppi_to_string(avatarPos) + "\n" + il2cppi_to_string(relativePos) + "\n" + il2cppi_to_string(levelPos);
+            auto text = il2cppi_to_string(avatarPos);
             ImGui::SetClipboardText(text.c_str());
         }
         ImGui::SameLine();
         if (ImGui::Button("Copy All Info"))
         {
             auto text = il2cppi_to_string(avatarPos) + "\n" + il2cppi_to_string(relativePos) + "\n" + il2cppi_to_string(levelPos) + "\n" + il2cppi_to_string(app::Miscs_CalcCurrentGroundNorm(nullptr, avatarPos, nullptr));
+            ImGui::SetClipboardText(text.c_str());
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Copy as json"))
+        {
+            std::string text = "\"position\":[";
+            text += std::to_string(avatarPos.x) + ",";
+            text += std::to_string(avatarPos.y) + ",";
+            text += std::to_string(avatarPos.z) + "]";
+            std::string name = "";
+            for (int i = 0; i < 10; i++)
+                name += std::to_string(rand() % 10);
+            text = "\"name\":\"" + name + "\"," + text;
+            text = "{" + text + "}";            
             ImGui::SetClipboardText(text.c_str());
         }
 
@@ -968,6 +1124,8 @@ namespace cheat::feature
 			DrawManagerData();
         if (ImGui::CollapsingHeader("FPS Graph", ImGuiTreeNodeFlags_None))
             DrawFPSGraph();
+        if (ImGui::CollapsingHeader("Custom Teleports", ImGuiTreeNodeFlags_None))
+            DrawTeleportsManager();
 	}
 
 	bool Debug::NeedInfoDraw() const
