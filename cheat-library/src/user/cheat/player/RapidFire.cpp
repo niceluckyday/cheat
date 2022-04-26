@@ -121,7 +121,7 @@ namespace cheat::feature
 		auto safeHP = baseCombat->fields._combatProperty_k__BackingField->fields.HP;
 		auto HP = app::SafeFloat_GetValue(nullptr, safeHP, nullptr);
 		int attackCount = (int)ceil(HP / attackDamage);
-		return std::clamp(attackCount, 1, 1000);
+		return std::clamp(attackCount, 1, 200);
 	}
 
 	int RapidFire::GetAttackCount(app::LCBaseCombat* combat, uint32_t targetID, app::AttackResult* attackResult)
@@ -130,14 +130,14 @@ namespace cheat::feature
 			return 1;
 
 		auto& manager = game::EntityManager::instance();
+		auto targetEntity = manager.entity(targetID);
+		auto baseCombat = targetEntity->combat();
+		if (baseCombat == nullptr)
+			return 1;
+
 		int countOfAttacks = m_Multiplier;
 		if (m_OnePunch)
 		{
-			auto targetEntity = manager.entity(targetID);
-			auto baseCombat = targetEntity->combat();
-			if (baseCombat == nullptr)
-				return 1;
-
 			app::Formula_CalcAttackResult(targetEntity, combat->fields._combatProperty_k__BackingField,
 				baseCombat->fields._combatProperty_k__BackingField,
 				attackResult, manager.avatar()->raw(), targetEntity->raw(), nullptr);
@@ -195,6 +195,9 @@ namespace cheat::feature
 
 		auto& manager = game::EntityManager::instance();
 		auto originalTarget = manager.entity(targetID);
+		if (!game::filters::combined::Living.IsValid(originalTarget))
+			return callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
+
 		std::vector<cheat::game::Entity*> validEntities;
 		validEntities.push_back(originalTarget);
 		
