@@ -10115,6 +10115,98 @@ namespace app {
 		struct GadgetInteractRsp__Fields fields;
 	};
 
+    struct EntityHandle_1_BaseEntity_ {
+        uint32_t runtimeID;
+        struct BaseEntity* _entityRef;
+    };
+
+    struct __declspec(align(8)) FishingManager__Fields {
+        struct LevelFishBait__Array* _levelFishBait;
+        struct UInt32__Array* _failedReminder;
+        struct UInt32__Array* _preSuccessReminder;
+        struct UInt32__Array* _star3Reminder;
+        struct UInt32__Array* _star4Reminder;
+        uint64_t _lastPreSuccessTime;
+        uint32_t _lastPreSuccessReminder;
+        uint32_t baitId;
+        uint32_t rodId;
+        uint32_t _rodEntityId;
+        uint32_t poolId;
+        uint32_t poolEntityId;
+        uint32_t fishRuntimeId;
+        bool _enterPosChecked;
+        struct Vector3 _enterPos;
+        float _curForce_k__BackingField; //0x68
+        float _curDmg_k__BackingField; //0x6c
+        float _lastForce;
+        float _baseAddForce;
+        float _addForceAcce;
+        float _addForceMax;
+        float _addForceStartTime;
+        float _addForceTime;
+        float _curAddForce;
+        float _baseReduceForce;
+        float _reduceForceAcce;
+        float _reduceForceMax;
+        float _reduceForceStartTime;
+        float _reduceForceTime;
+        float _curReduceForce;
+        float _forceFactorX;
+        float _baseAddAtk;
+        float _addAtkAcce;
+        float _addAtkMax;
+        float _curAddAtk;
+        float _baseReduceAtk;
+        float _dmgFactorX;
+        float _triggerInterval;
+        float _releaseInterval;
+        int32_t _inBonusFlag;
+        uint64_t _enterBonusTime;
+        uint64_t _maxBonusTime;
+        bool _isEnterFishing_k__BackingField; //0xd0
+        bool _isFishing; //0xd4
+        bool _isCastingAnchorPoint_k__BackingField;
+        float _maxDmg; //0xd8
+        float _triggerTime;
+        float _releaseTime;
+        float _damageZeroTimeStart;
+        float _lastWarnningTime;
+        uint32_t _strength;
+        struct EntityHandle_1_BaseEntity_ _fishHandle;
+        float _lowFishHp;
+        uint64_t _lastLevelTimeStamp;
+        float _bonusCenter; //0x108
+        float _bonusRadius; //0x110
+        float _curBonusRadius_k__BackingField; //0x110
+        float _bonusRadiusSpeed;
+        float _bonusRadiusTime;
+        float _bonusSpeed;
+        float _bonusTarget; //0x120
+        float _bonusDir;
+        float _bonusTime;
+        float _bonusDuration;
+        struct Vector2 _bonusDurationRange;
+        struct Vector2 _bonusOffsetRange;
+        struct Vector2 _bonusSpeedRange;
+        float _curBonusSpeed;
+        float _bonusStartAcc;
+        float _bonusEndAcc;
+        float _bonusMoveDst;
+        struct Config_FishExcelConfig* _fishConfig;
+        bool _dmgStart; //0x160 Proto.FishBattleBeginRsp
+        uint64_t _qteStartTime;
+        int32_t _tipsFlag;
+        struct List_1_FishingManager_FishingManager_FishSkill_* _skillList;
+        struct FishingManager_FishingManager_FishSkill* _curForceSkill;
+        struct FishingManager_FishingManager_FishSkill* _curBonusSkill;
+        struct GeneralDialogContext* _generalDialogContext;
+    };
+
+    struct FishingManager {
+        struct FishingManager__Class* klass;
+        MonitorData* monitor;
+        struct FishingManager__Fields fields;
+    };
 
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }

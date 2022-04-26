@@ -244,6 +244,8 @@
         "Entity_SetPosition": "1645b20",
         "EventManager_FireEvent": "2f3b3d0",
         "EvtCrash_Init": "0",
+        "FishingManager_get_forcePercent": "19e73f0",
+        "FishingManager_Tick": "19eb990",
         "FixedBoolStack_get_value": "1c11490",
         "Formula_CalcAttackResult": "29b4870",
         "GameManager_Update": "3253b80",

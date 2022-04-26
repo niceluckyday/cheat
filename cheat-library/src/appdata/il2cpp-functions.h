@@ -108,6 +108,12 @@ DO_APP_FUNC(0x04566900, EvtCrash*, CreateCrashEvent, (void* __this, MethodInfo* 
 DO_APP_FUNC_METHODINFO(0x0B1CE4B0, CreateCrashEvent__MethodInfo);
 DO_APP_FUNC(0x028DD7F0, void, BaseMoveSyncPlugin_ConvertSyncTaskToMotionInfo, (BaseMoveSyncPlugin* __this, MethodInfo* method));
 
+
+// Fishing
+DO_APP_FUNC(0x019E73F0, float, FishingManager_get_forcePercent, (FishingManager* __this, MethodInfo* method));
+DO_APP_FUNC(0x019EB990, void, FishingManager_Tick, (FishingManager* __this, MethodInfo* method));
+
+
 // Utility
 DO_APP_FUNC(0x01402C90, float,   Miscs_CalcCurrentGroundWaterHeight, (void* __this, float x, float z, MethodInfo* method));
 DO_APP_FUNC(0x01402500, float,   Miscs_CalcCurrentGroundHeight,      (void* __this, float x, float z, MethodInfo* method));
