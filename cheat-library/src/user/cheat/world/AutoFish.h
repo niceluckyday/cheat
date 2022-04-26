@@ -9,6 +9,9 @@ namespace cheat::feature
     {
 	public:
 		config::field::ToggleField m_Enabled;
+		config::field::BaseField<int> m_DelayBeforeCatch;
+		config::field::BaseField<bool> m_AutoRecastRod;
+		config::field::BaseField<int> m_DelayBeforeRecast;
 
 		static AutoFish& GetInstance();
 
@@ -20,5 +23,34 @@ namespace cheat::feature
 
 	private:
 		AutoFish();
+
+		std::mutex m_BattleFinishTimestampMutex;
+		uint64_t m_BattleFinishTimestamp;
+
+		std::mutex m_RecastTimestampMutex;
+		uint64_t m_RecastTimestamp;
+
+		struct RodCastData
+		{
+			bool exist;
+
+			void* fishingModule;
+			uint32_t baitId;
+			uint32_t rodId;
+			app::Vector3 pos;
+			uint32_t rodEntityId;
+		};
+
+		RodCastData m_LastCastData;
+
+		void OnGameUpdate();
+
+		// Hooks
+		static void FishingModule_OnFishBattleEndRsp_Hook(void* __this, app::FishBattleEndRsp* rsp, MethodInfo* method);
+		static void FishingModule_OnExitFishingRsp_Hook(void* __this, void* rsp, MethodInfo* method);
+		static void FishingModule_RequestFishCastRod_Hook(void* __this, uint32_t baitId, uint32_t rodId, app::Vector3 pos, uint32_t rodEntityId, MethodInfo* method);
+		static void FishingModule_onFishChosenNotify_Hook(void* __this, void* notify, MethodInfo* method);
+		static void FishingModule_OnFishBiteRsp_Hook(void* __this, app::FishBiteRsp* rsp, MethodInfo* method);
+		static void FishingModule_OnFishBattleBeginRsp_Hook(void* __this, app::FishBattleBeginRsp* rsp, MethodInfo* method);
 	};
 }
