@@ -168,7 +168,6 @@ namespace cheat::feature
 		auto& categories = m_ScenesData[sceneID].categories;
 		for (auto& [categoryName, labels] : categories)
 		{
-			ImGui::PushID(categoryName.c_str());
 			std::vector<LabelData*> validLabels;
 
 			if (m_SearchText.empty())
@@ -220,7 +219,7 @@ namespace cheat::feature
 				}
 				config::UpdateAll();
 			}
-			ImGui::PopID();
+			
 		}
 
 		if (searchFixed)

@@ -352,6 +352,7 @@ bool BeginGroupPanel(const char* name, const ImVec2& size, bool node, SelectData
             ImGui::PopStyleVar(2);
             ImGui::EndGroup();
             ImGui::EndGroup();
+            ImGui::EndGroup();
             ImGui::PopID();
             return false;
         }
