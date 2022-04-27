@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\user\cheat\world\AutoFish.h" />
     <ClInclude Include="src\user\cheat\world\ElementalSight.h" />
     <ClInclude Include="src\user\cheat\game\AdvancedFilter.h" />
     <ClInclude Include="src\user\cheat\game\Chest.h" />
@@ -73,6 +74,7 @@
     <Font Include="res\Ruda-Bold.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\user\cheat\world\AutoFish.cpp" />
     <ClCompile Include="src\user\cheat\world\ElementalSight.cpp" />
     <ClCompile Include="src\user\cheat\game\AdvancedFilter.cpp" />
     <ClCompile Include="src\user\cheat\game\Chest.cpp" />

@@ -36,6 +36,8 @@
 #include <cheat/esp/ESP.h>
 #include <cheat/imap/InteractiveMap.h>
 
+#include <cheat/world/AutoFish.h>
+
 #include <cheat/ILPatternScanner.h>
 
 namespace cheat 
@@ -79,7 +81,9 @@ namespace cheat
 			FEAT_INST(MapTeleport),
 
 			FEAT_INST(ESP),
-			FEAT_INST(InteractiveMap)
+			FEAT_INST(InteractiveMap),
+
+			FEAT_INST(AutoFish)
 
 			});
 #undef FEAT_INST
