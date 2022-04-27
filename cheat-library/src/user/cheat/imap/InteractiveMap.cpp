@@ -1079,7 +1079,7 @@ namespace cheat::feature
 
 	void InteractiveMap::DrawExternal()
 	{
-		if (IsMiniMapActive())
+		if (IsMiniMapActive() && m_Enabled)
 			DrawMinimapPoints();
 
         if (!IsMapActive())
