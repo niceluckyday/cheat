@@ -15,6 +15,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\user\cheat\world\AutoFish.h" />
     <ClInclude Include="src\user\cheat\world\ElementalSight.h" />
     <ClInclude Include="src\user\cheat\game\AdvancedFilter.h" />
     <ClInclude Include="src\user\cheat\game\Chest.h" />
@@ -76,7 +77,7 @@
     <ClInclude Include="src\user\cheat\teleport\MapTeleport.h" />
     <ClInclude Include="src\user\cheat\teleport\OculiTeleport.h" />
     <ClInclude Include="src\user\cheat\world\AutoLoot.h" />
-    <ClInclude Include="src\user\cheat\world\AutoOreDestroy.h" />
+    <ClInclude Include="src\user\cheat\world\AutoDestroy.h" />
     <ClInclude Include="src\user\cheat\world\AutoTreeFarm.h" />
     <ClInclude Include="src\user\cheat\world\DialogSkip.h" />
     <ClInclude Include="src\user\cheat\world\DumbEnemies.h" />
@@ -89,6 +90,7 @@
     <Font Include="res\Ruda-Bold.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\user\cheat\world\AutoFish.cpp" />
     <ClCompile Include="src\user\cheat\world\ElementalSight.cpp" />
     <ClCompile Include="src\user\cheat\game\AdvancedFilter.cpp" />
     <ClCompile Include="src\user\cheat\game\Chest.cpp" />
@@ -149,7 +151,7 @@
     <ClCompile Include="src\user\cheat\teleport\MapTeleport.cpp" />
     <ClCompile Include="src\user\cheat\teleport\OculiTeleport.cpp" />
     <ClCompile Include="src\user\cheat\world\AutoLoot.cpp" />
-    <ClCompile Include="src\user\cheat\world\AutoOreDestroy.cpp" />
+    <ClCompile Include="src\user\cheat\world\AutoDestroy.cpp" />
     <ClCompile Include="src\user\cheat\world\AutoTreeFarm.cpp" />
     <ClCompile Include="src\user\cheat\world\DialogSkip.cpp" />
     <ClCompile Include="src\user\cheat\world\DumbEnemies.cpp" />

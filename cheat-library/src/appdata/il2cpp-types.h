@@ -10115,6 +10115,164 @@ namespace app {
 		struct GadgetInteractRsp__Fields fields;
 	};
 
+    struct EntityHandle_1_BaseEntity_ {
+        uint32_t runtimeID;
+        struct BaseEntity* _entityRef;
+    };
+	
+    struct GGGIOOJFONN_CCAMDLAOBAA_ {
+		uint32_t ODBALKCAMHN;
+		struct CCAMDLAOBAA* KCIDMFKGBFB;
+	};
+
+    struct __declspec(align(8)) FishingManager__Fields {
+		struct DBEHAHEIEIP__Array* _levelFishBait;
+		struct UInt32__Array* _failedReminder;
+		struct UInt32__Array* _preSuccessReminder;
+		struct UInt32__Array* _star3Reminder;
+		struct UInt32__Array* _star4Reminder;
+		float _lastPreSuccessTime;
+		uint32_t _lastPreSuccessReminder;
+		uint32_t baitId;
+		uint32_t rodId;
+		uint32_t _rodEntityId;
+		uint32_t poolId;
+		uint32_t poolEntityId;
+		uint32_t fishRuntimeId;
+		bool _enterPosChecked;
+		struct Vector3 _enterPos;
+		float _curForce_k__BackingField;
+		float _curDmg_k__BackingField;
+		float _lastForce;
+		float _baseAddForce;
+		float _addForceAcce;
+		float _addForceMax;
+		float _addForceStartTime;
+		float _addForceTime;
+		float _curAddForce;
+		float _baseReduceForce;
+		float _reduceForceAcce;
+		float _reduceForceMax;
+		float _reduceForceStartTime;
+		float _reduceForceTime;
+		float _curReduceForce;
+		float _forceFactorX;
+		float _baseAddAtk;
+		float _addAtkAcce;
+		float _addAtkMax;
+		float _curAddAtk;
+		float _baseReduceAtk;
+		float _dmgFactorX;
+		float _triggerInterval;
+		float _releaseInterval;
+		int32_t _inBonusFlag;
+		float _enterBonusTime;
+		float _maxBonusTime;
+		bool _isEnterFishing_k__BackingField;
+		bool _isFishing;
+		bool _isCastingAnchorPoint_k__BackingField;
+		float _maxDmg;
+		float _triggerTime;
+		float _releaseTime;
+		float _damageZeroTimeStart;
+		float _lastWarnningTime;
+		uint32_t _strength;
+		struct GGGIOOJFONN_CCAMDLAOBAA_ _fishHandle;
+		float LEFNBAMIIFA;
+		float IAGEFBOLFGL;
+		float _bonusCenter;
+		float _bonusRadius;
+		float _curBonusRadius_k__BackingField;
+		float _bonusRadiusSpeed;
+		float _bonusRadiusTime;
+		float _bonusSpeed;
+		float _bonusTarget;
+		float _bonusDir;
+		float _bonusTime;
+		float _bonusDuration;
+		struct Vector2 _bonusDurationRange;
+		struct Vector2 _bonusOffsetRange;
+		struct Vector2 _bonusSpeedRange;
+		float _curBonusSpeed;
+		float _bonusStartAcc;
+		float _bonusEndAcc;
+		float _bonusMoveDst;
+		struct LJHBAOBBLDE* _fishConfig;
+		bool _dmgStart;
+		uint64_t _qteStartTime;
+		int32_t _tipsFlag;
+		struct List_1_HJJINBLMFFC_BDBAIICPIMN_* _skillList;
+		struct HJJINBLMFFC_BDBAIICPIMN* _curForceSkill;
+		struct HJJINBLMFFC_BDBAIICPIMN* _curBonusSkill;
+		struct PCIKGHOIFOO* _generalDialogContext;
+    };
+
+    struct FishingManager {
+        struct FishingManager__Class* klass;
+        MonitorData* monitor;
+        struct FishingManager__Fields fields;
+    };
+
+	struct FishBiteRsp__Fields {
+		struct MessageBase_1__Fields _;
+		int32_t retcode_;
+	};
+
+	struct FishBiteRsp {
+		struct FishBiteRsp__Class* klass;
+		MonitorData* monitor;
+		struct FishBiteRsp__Fields fields;
+	};
+
+	struct FishBattleBeginRsp__Fields {
+		struct MessageBase_1__Fields _;
+		int32_t retcode_;
+	};
+
+	struct FishBattleBeginRsp {
+		struct FishBattleBeginRsp__Class* klass;
+		MonitorData* monitor;
+		struct FishBattleBeginRsp__Fields fields;
+	};
+
+	enum class FishBattleResult__Enum : int32_t {
+		None = 0x00000000,
+		Succ = 0x00000001,
+		Fail = 0x00000002,
+		Timeout = 0x00000003,
+		Cancel = 0x00000004,
+		Exit = 0x00000005,
+	};
+
+	enum class FishingEvent__Enum : int32_t {
+		None = 0x00000000,
+		QteStart = 0x00000001,
+		QteTrigger = 0x00000002,
+		RequestQuit = 0x00000003,
+		CastAnchorPoint = 0x00000004,
+		SelectBait = 0x00000005,
+		Pull = 0x00000006,
+		NotifyBait = 0x00000007,
+	};
+
+	struct FishBattleEndRsp__Fields {
+		struct MessageBase_1__Fields _;
+		int32_t retcode_;
+		FishBattleResult__Enum battleResult_;
+		/*
+        bool isGotReward_;
+		FishBattleEndRsp_DFMONJENODL_BCGICPPBNDK__Enum noRewardReason_;
+		struct JKGMNHEOCKM_Proto_ItemParam_* rewardItemList_;
+		struct JKGMNHEOCKM_Proto_ItemParam_* dropItemList_;
+		struct JKGMNHEOCKM_Proto_ItemParam_* talentItemList_;
+	    */
+    };
+
+	struct FishBattleEndRsp {
+		struct FishBattleEndRsp__Class* klass;
+		MonitorData* monitor;
+		struct FishBattleEndRsp__Fields fields;
+	};
 
 #if !defined(_GHIDRA_) && !defined(_IDA_)
 }

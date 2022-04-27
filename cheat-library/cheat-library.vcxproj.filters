@@ -135,7 +135,7 @@
     <ClInclude Include="src\user\cheat\world\AutoTreeFarm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\cheat\world\AutoOreDestroy.h">
+    <ClInclude Include="src\user\cheat\world\AutoDestroy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\user\cheat\esp\ESP.h">
@@ -184,6 +184,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\user\cheat\imap\InteractiveMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\world\AutoFish.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -287,7 +290,7 @@
     <ClCompile Include="src\user\cheat\world\AutoTreeFarm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\world\AutoOreDestroy.cpp">
+    <ClCompile Include="src\user\cheat\world\AutoDestroy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\cheat\esp\ESP.cpp">
@@ -333,6 +336,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\cheat\world\ElementalSight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\world\AutoFish.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

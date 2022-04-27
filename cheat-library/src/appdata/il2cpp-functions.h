@@ -108,6 +108,23 @@ DO_APP_FUNC(0x031ADF70, EvtCrash*, CreateCrashEvent, (void* __this, MethodInfo* 
 DO_APP_FUNC_METHODINFO(0x0B381CF8, CreateCrashEvent__MethodInfo);
 DO_APP_FUNC(0x028DD7F0, void, BaseMoveSyncPlugin_ConvertSyncTaskToMotionInfo, (BaseMoveSyncPlugin* __this, MethodInfo* method));
 
+
+// Fishing
+DO_APP_FUNC(0x036B9B40, void, FishingModule_RequestFishCastRod, (void* __this, uint32_t baitId, uint32_t rodId, Vector3 pos, uint32_t rodEntityId, MethodInfo* method));
+
+DO_APP_FUNC(0x036BD030, void, FishingModule_RequestFishBite, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x036B9DB0, void, FishingModule_OnFishBiteRsp, (void* __this, FishBiteRsp* rsp, MethodInfo* method));
+
+DO_APP_FUNC(0x036BD440, void, FishingModule_RequestFishBattleBegin, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x036BACD0, void, FishingModule_OnFishBattleBeginRsp, (void* __this, FishBattleBeginRsp* rsp, MethodInfo* method));
+
+DO_APP_FUNC(0x036BAB00, void, FishingModule_RequestFishBattleEnd, (void* __this, FishBattleResult__Enum result, bool isAlwaysBonus, float mxBonusTime, MethodInfo* method));
+DO_APP_FUNC(0x036BC180, void, FishingModule_OnFishBattleEndRsp, (void* __this, FishBattleEndRsp* rsp, MethodInfo* method));
+
+DO_APP_FUNC(0x036B8AA0, void, FishingModule_OnExitFishingRsp, (void* __this, void* rsp, MethodInfo* method));
+DO_APP_FUNC(0x036BB0B0, void, FishingModule_onFishChosenNotify, (void* __this, void* notify, MethodInfo* method));
+
+
 // Utility
 DO_APP_FUNC(0x015DD910, float,   Miscs_CalcCurrentGroundWaterHeight, (void* __this, float x, float z, MethodInfo* method));
 DO_APP_FUNC(0x015DD1D0, float,   Miscs_CalcCurrentGroundHeight,      (void* __this, float x, float z, MethodInfo* method));
@@ -226,3 +243,4 @@ DO_APP_FUNC_METHODINFO(0x0B2EC728, Singleton_1_PlayerModule__get_Instance__Metho
 DO_APP_FUNC_METHODINFO(0x0B2FD3D0, Singleton_1_MapManager__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B321D50, Singleton_1_ScenePropManager__get_Instance__MethodInfo);
 DO_APP_FUNC_METHODINFO(0x0B3A9738, Singleton_1_NetworkManager_1__get_Instance__MethodInfo);
+

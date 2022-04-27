@@ -30,7 +30,7 @@
 #include <cheat/world/KillAura.h>
 #include <cheat/world/MobVacuum.h>
 #include <cheat/world/AutoTreeFarm.h>
-#include <cheat/world/AutoOreDestroy.h>
+#include <cheat/world/AutoDestroy.h>
 
 #include <cheat/teleport/ChestTeleport.h>
 #include <cheat/teleport/MapTeleport.h>
@@ -38,6 +38,8 @@
 
 #include <cheat/esp/ESP.h>
 #include <cheat/imap/InteractiveMap.h>
+
+#include <cheat/world/AutoFish.h>
 
 #include <cheat/ILPatternScanner.h>
 
@@ -73,7 +75,7 @@ namespace cheat
 
 			FEAT_INST(AutoLoot),
 			FEAT_INST(AutoTreeFarm),
-			FEAT_INST(AutoOreDestroy),
+			FEAT_INST(AutoDestroy),
 			FEAT_INST(DialogSkip),
 			FEAT_INST(DumbEnemies),
 			FEAT_INST(ElementalSight),
@@ -85,7 +87,9 @@ namespace cheat
 			FEAT_INST(MapTeleport),
 
 			FEAT_INST(ESP),
-			FEAT_INST(InteractiveMap)
+			FEAT_INST(InteractiveMap),
+
+			FEAT_INST(AutoFish)
 
 			});
 #undef FEAT_INST

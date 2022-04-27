@@ -5,13 +5,16 @@
 namespace cheat::feature 
 {
 
-	class AutoOreDestroy : public Feature
+	class AutoDestroy : public Feature
     {
 	public:
 		config::field::ToggleField m_Enabled;
+		config::field::ToggleField m_DestroyOres;
+		config::field::ToggleField m_DestroyShields;
+		config::field::ToggleField m_DestroyDoodads;
 		config::field::BaseField<float> m_Range;
 
-		static AutoOreDestroy& GetInstance();
+		static AutoDestroy& GetInstance();
 
 		const FeatureGUIInfo& GetGUIInfo() const override;
 		void DrawMain() override;
@@ -20,7 +23,7 @@ namespace cheat::feature
 		void DrawStatus() override;
 	
 	private:
-		AutoOreDestroy();
+		AutoDestroy();
 	};
 }
 
