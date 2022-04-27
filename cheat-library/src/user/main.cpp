@@ -37,15 +37,7 @@ void Run(HMODULE* phModule)
 		il2cppi_new_console();
 	}
 
-	if (InitMetadata())
-	{
-		LOG_INFO("Metadata was successfully initialized.");
-	}
-	else
-	{
-		LOG_CRIT("Failed to initialize metadata. Please contact the developers about this problem");
-		return;
-	}
+	init_il2cpp();
 
 	if (StubTerminateProcess())
 		LOG_INFO("TerminateProcess stubbed successfully.");
@@ -57,36 +49,6 @@ void Run(HMODULE* phModule)
     LOG_DEBUG("Config path is at %s", configPath.c_str());
     LOG_DEBUG("UserAssembly.dll is at 0x%p", il2cppi_get_base_address());
     LOG_DEBUG("UnityPlayer.dll is at 0x%p", il2cppi_get_unity_address());
-}
-
-bool InitMetadata()
-{
-
-	// Getting signatures data from resources
-	LPBYTE pSignaturesData = nullptr;
-	DWORD signaturesSize = 0;
-	if (!ResourceLoader::LoadEx(IDR_RCDATA2, RT_RCDATA, pSignaturesData, signaturesSize))
-	{
-		LOG_LAST_ERROR("Failed to load signatures resource.");
-		return false;
-	}
-
-	std::string signaturesContent = std::string((char*)pSignaturesData, signaturesSize);
-
-	// Getting cached offsets
-	LPBYTE pCachedOffsetsData = nullptr;
-	DWORD cachedOffsetsSize = 0;
-	if (!ResourceLoader::LoadEx(IDR_RCDATA3, RT_RCDATA, pCachedOffsetsData, cachedOffsetsSize))
-	{
-		LOG_LAST_ERROR("Failed to load cached offsets resource.");
-		return false;
-	}
-	std::string cachedOffsets = std::string((char*)pCachedOffsetsData, cachedOffsetsSize);
-
-	// Initializing all functions
-	init_il2cpp(signaturesContent, cachedOffsets);
-
-	return true;
 }
 
 BOOL WINAPI TerminateProcess_Hook(HANDLE hProcessUINT, UINT uExitCode)

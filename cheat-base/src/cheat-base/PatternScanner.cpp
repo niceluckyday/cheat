@@ -7,7 +7,8 @@
 #include <functional>
 #include <cheat-base/util.h>
 
-PatternScanner::PatternScanner()
+PatternScanner::PatternScanner() : 
+	m_CacheChanged(false)
 {
 }
 
@@ -304,6 +305,19 @@ size_t ComputeChecksum(const std::string& filename)
 	return sum;
 }
 
+int64_t PatternScanner::GetModuleTimestamp(const std::string& moduleName)
+{
+	auto& moduleInfo = GetModuleInfo(moduleName);
+	auto write_time = std::filesystem::last_write_time(moduleInfo.filePath);
+	return write_time.time_since_epoch().count();
+}
+
+int64_t PatternScanner::GetModuleTimestamp(HMODULE hModule)
+{
+	auto& moduleInfo = GetModuleInfo(hModule);
+	auto write_time = std::filesystem::last_write_time(moduleInfo.filePath);
+	return write_time.time_since_epoch().count();
+}
 
 bool PatternScanner::IsValidModuleHash(const std::string& moduleName, const nlohmann::json& hashObject)
 {
@@ -316,9 +330,7 @@ bool PatternScanner::IsValidModuleHash(HMODULE hModule, const nlohmann::json& ha
 	if (!hashObject.contains("timestamp") || !hashObject.contains("checksum"))
 		return false;
 
-	auto& moduleInfo = GetModuleInfo(hModule);
-	auto write_time = std::filesystem::last_write_time(moduleInfo.filePath);
-	int64_t currTimestamp = write_time.time_since_epoch().count();
+	int64_t currTimestamp = GetModuleTimestamp(hModule);
 
 	int64_t timestamp = hashObject["timestamp"];
 	size_t checksum = hashObject["checksum"];
@@ -330,7 +342,7 @@ bool PatternScanner::IsValidModuleHash(HMODULE hModule, const nlohmann::json& ha
 		return true;
 	}
 
-	size_t currChecksum = m_ComputedHashes.count(hModule) > 0 ? m_ComputedHashes[hModule] : ComputeChecksum(moduleInfo.filePath);
+	size_t currChecksum = m_ComputedHashes.count(hModule) > 0 ? m_ComputedHashes[hModule] : ComputeChecksum(GetModuleInfo(hModule).filePath);
 	m_ComputedHashes[hModule] = currChecksum;
 
 	return checksum == currChecksum;

@@ -144,9 +144,7 @@ ILPatternScanner::MetadataInfo* ILPatternScanner::GetMetadataInfo()
 	return &registrationInfo;
 }
 
-ILPatternScanner::ILPatternScanner(const std::string& content) : PatternScanner() {
-	ParseSignatureFile(content);
-}
+ILPatternScanner::ILPatternScanner() : PatternScanner() { }
 
 uintptr_t ILPatternScanner::SearchAPI(const std::string& apiFunctionName)
 {

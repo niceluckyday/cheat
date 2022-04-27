@@ -10,9 +10,12 @@
 #include <cheat-base/cheat/misc/Settings.h>
 
 #include <cheat/misc/ProtectionBypass.h>
-#include <cheat/misc/sniffer/PacketSniffer.h>
 #include <cheat/misc/Hotkeys.h>
 #include <cheat/misc/Debug.h>
+
+#ifdef _PACKET_SNIFFER
+#include <cheat/misc/sniffer/PacketSniffer.h>
+#endif
 
 #include <cheat/player/GodMode.h>
 #include <cheat/player/InfiniteStamina.h>
@@ -55,9 +58,12 @@ namespace cheat
 		manager.AddFeatures({
 			&protectionBypass,
 			FEAT_INST(Settings),
-			FEAT_INST(PacketSniffer),
 			FEAT_INST(Hotkeys),
 			FEAT_INST(Debug),
+
+#ifdef _PACKET_SNIFFER
+			FEAT_INST(PacketSniffer),
+#endif
 
 			FEAT_INST(GodMode),
 			FEAT_INST(InfiniteStamina),
@@ -96,7 +102,7 @@ namespace cheat
 
 		LPBYTE pFontData = nullptr;
 		DWORD dFontSize = 0;
-		if (!ResourceLoader::LoadEx(IDR_RCDATA1, RT_RCDATA, pFontData, dFontSize))
+		if (!ResourceLoader::LoadEx("ImGui_Font", RT_RCDATA, pFontData, dFontSize))
 			LOG_WARNING("Failed to get font from resources.");
 
 		manager.Init(pFontData, dFontSize, &GenshinMisc::GetInstance());

@@ -5,4 +5,4 @@
 
 #include <string>
 // IL2CPP application initializer
-void init_il2cpp(const std::string& signaturePatterns, const std::string& cachedOffsets);
+void init_il2cpp();

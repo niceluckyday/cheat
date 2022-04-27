@@ -1,11 +1,11 @@
 #pragma once
-#include <cheat-base/scanner/PatternScanner.h>
+#include <cheat-base/PatternScanner.h>
 class ILPatternScanner :
     public PatternScanner
 {
 
 public:
-	ILPatternScanner(const std::string& content);
+	ILPatternScanner();
 	
 	uintptr_t SearchAPI(const std::string& apiFunctionName);
 	uintptr_t SearchTypeInfo(const std::string& typeName);

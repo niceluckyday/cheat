@@ -159,7 +159,7 @@
     <ClInclude Include="src\cheat-base\config\field\StringField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\cheat-base\scanner\PatternScanner.h">
+    <ClInclude Include="src\cheat-base\PatternScanner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\cheat-base\Hotkey.h">
@@ -266,7 +266,7 @@
     <ClCompile Include="src\cheat-base\config\field\StringField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\cheat-base\scanner\PatternScanner.cpp">
+    <ClCompile Include="src\cheat-base\PatternScanner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\cheat-base\Hotkey.cpp">

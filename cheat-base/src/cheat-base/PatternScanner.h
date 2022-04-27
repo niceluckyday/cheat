@@ -25,6 +25,12 @@ public:
 
 	bool IsUpdated();
 
+	bool IsValidModuleHash(HMODULE HMODULE, const nlohmann::json& hashObject);
+	bool IsValidModuleHash(const std::string& moduleName, const nlohmann::json& hashObject);
+
+	int64_t GetModuleTimestamp(const std::string& moduleName);
+	int64_t GetModuleTimestamp(HMODULE hModule);
+
 protected:
 	
 	virtual void SaveJson(nlohmann::json& outObject);
@@ -80,9 +86,6 @@ protected:
 
 	void SaveModuleHash(HMODULE hModule, nlohmann::json& outObject);
 	void SaveModuleHash(const std::string& moduleName, nlohmann::json& outObject);
-
-	bool IsValidModuleHash(HMODULE HMODULE, const nlohmann::json& hashObject);
-	bool IsValidModuleHash(const std::string& moduleName, const nlohmann::json& hashObject);
 	
 	ModuleInfo& GetModuleInfo(HMODULE hModule);
 	ModuleInfo& GetModuleInfo(const std::string& moduleName);

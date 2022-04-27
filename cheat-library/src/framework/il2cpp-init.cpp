@@ -29,30 +29,64 @@ namespace app {
 #define DO_SINGLETONEDEF(a, n) Singleton_1__Class** n ## __TypeInfo
 namespace app {
 #include "il2cpp-types-ptr.h"
+#include <resource.h>
 }
 #undef DO_TYPEDEF
 #undef DO_SINGLETONEDEF
 
-#define SELECT_OR(container, type, val, def) { auto value = val; if (value == 0) container = (type)(def); else container = (type)val; }
-
-// IL2CPP application initializer
-void init_il2cpp(const std::string& signaturePatterns, const std::string& cachedOffsets)
+void init_static_offsets()
 {
 	// Get base address of IL2CPP module
 	uintptr_t baseAddress = il2cppi_get_base_address();
 
+	// Define IL2CPP API function addresses
+	#define DO_API(r, n, p) n = (r (*) p)(baseAddress + n ## _ptr)
+	#include "il2cpp-api-functions.h"
+	#undef DO_API
+
+	// Define function addresses
+	#define DO_APP_FUNC(a, r, n, p) n = (r (*) p)(baseAddress + a)
+	#define DO_APP_FUNC_METHODINFO(a, n) n = (struct MethodInfo **)(baseAddress + a)
+	#include "il2cpp-functions.h"
+	#undef DO_APP_FUNC
+	#undef DO_APP_FUNC_METHODINFO
+
+	// Define TypeInfo variables
+	#define DO_SINGLETONEDEF(a, n) n ## __TypeInfo = (Singleton_1__Class**) (baseAddress + a)
+	#define DO_TYPEDEF(a, n) n ## __TypeInfo = (n ## __Class**) (baseAddress + a)
+	#include "il2cpp-types-ptr.h"
+	#undef DO_TYPEDEF
+	#undef DO_SINGLETONEDEF
+
+	uintptr_t unityPlayerAddress = il2cppi_get_unity_address();
+	// Define UnityPlayer functions
+	#define DO_APP_FUNC(a, r, n, p) n = (r (*) p)(unityPlayerAddress + a)
+	#define DO_APP_FUNC_METHODINFO(a, n) n = (struct MethodInfo **)(unityPlayerAddress + a)
+	#include "il2cpp-unityplayer-functions.h"
+	#undef DO_APP_FUNC
+	#undef DO_APP_FUNC_METHODINFO
+}
+
+void init_scanned_offsets()
+{
+	// Get base address of IL2CPP module
+	uintptr_t baseAddress = il2cppi_get_base_address();
+
+#define SELECT_OR(container, type, val, def) { auto value = val; if (value == 0) container = (type)(def); else container = (type)val; }
+
+	static config::field::StringField offsetDataField("OffsetData", "m_OffsetData", "PatternScanner", "{}");
+	config::AddField(offsetDataField);
+
+	std::string signatures = ResourceLoader::Load("Signatures", RT_RCDATA);
+
+	auto scanner = ILPatternScanner();
+	scanner.ParseSignatureFile(signatures);
+	scanner.Load(offsetDataField.value());
+
 	using namespace app;
 
-	static config::field::StringField m_OffsetData("OffsetData", "m_OffsetData", "PatternScanner", "{}");
-	config::AddField(m_OffsetData);
-
-	auto scanner = ILPatternScanner(signaturePatterns);
-
-	if (!scanner.Load(cachedOffsets))
-		scanner.Load(m_OffsetData.value());
-
 	// Define IL2CPP API function addresses
-	#define DO_API(r, n, p) n = (r (*) p)scanner.SearchAPI(#n);
+	#define DO_API(r, n, p) n = (r (*) p) scanner.SearchAPI(#n);
 	#include "il2cpp-api-functions.h"
 	#undef DO_API
 
@@ -60,10 +94,10 @@ void init_il2cpp(const std::string& signaturePatterns, const std::string& cached
 
 	// Define function addresses
 	#define DO_APP_FUNC(a, r, n, p) SELECT_OR(n, r (*) p, scanner.Search("UserAssembly.dll", #n), baseAddress + a)
- 	#define DO_APP_FUNC_METHODINFO(a, n) SELECT_OR(n, struct MethodInfo **, scanner.SearchMethodInfo(#n), baseAddress + a)
+	#define DO_APP_FUNC_METHODINFO(a, n) SELECT_OR(n, struct MethodInfo **, scanner.SearchMethodInfo(#n), baseAddress + a)
 	#include "il2cpp-functions.h"
 	#undef DO_APP_FUNC
- 	#undef DO_APP_FUNC_METHODINFO
+	#undef DO_APP_FUNC_METHODINFO
 
 	// Define TypeInfo variables
 	#define DO_SINGLETONEDEF(a, n) SELECT_OR(n ## __TypeInfo, Singleton_1__Class**, scanner.SearchTypeInfo(#n), baseAddress + a)
@@ -72,20 +106,77 @@ void init_il2cpp(const std::string& signaturePatterns, const std::string& cached
 	#undef DO_TYPEDEF
 	#undef DO_SINGLETONEDEF
 
-	uintptr_t unityPlayerAddress = il2cppi_get_unity_address();
-	// Define UnityPlayer functions
-    #define DO_APP_FUNC(a, r, n, p) SELECT_OR(n, r (*) p, scanner.Search("UnityPlayer.dll", #n), unityPlayerAddress + a)
-    #include "il2cpp-unityplayer-functions.h"
-    #undef DO_APP_FUNC
+		uintptr_t unityPlayerAddress = il2cppi_get_unity_address();
+		// Define UnityPlayer functions
+	#define DO_APP_FUNC(a, r, n, p) SELECT_OR(n, r (*) p, scanner.Search("UnityPlayer.dll", #n), unityPlayerAddress + a)
+	#include "il2cpp-unityplayer-functions.h"
+	#undef DO_APP_FUNC
 
 	if (scanner.IsUpdated())
 	{
-		scanner.Save(*m_OffsetData.valuePtr());
-		m_OffsetData.Check();
+		scanner.Save(*offsetDataField.valuePtr());
+		offsetDataField.Check();
 
 		LOG_INFO("Seems like some offsets was found for a first time. Recommend to restart game for correct cheat and game work.");
 	}
-		
-}
 
 #undef SELECT_OR
+}
+
+bool IsStaticCheckSumValid()
+{
+	PatternScanner scanner;
+	std::string assemblyChecksumData = ResourceLoader::Load("AssemblyChecksums", RT_RCDATA);
+
+	nlohmann::json assemblyChecksumJson = nlohmann::json::parse(assemblyChecksumData, nullptr, false);
+	if (assemblyChecksumJson.is_discarded())
+	{
+		LOG_ERROR("Failed to parse assembly checksum data.");
+		return false;
+	}
+
+	static config::field::StringField checksumTimestampsField("ChecksumTimestamp", "m_CheckSumTimestamp", "PatternScanner", "{}");
+	config::AddField(checksumTimestampsField);
+
+	nlohmann::json checksumTimestamps = nlohmann::json::parse(checksumTimestampsField.value(), nullptr, false);
+	if (assemblyChecksumJson.is_discarded())
+	{
+		LOG_ERROR("Failed to parse saved checksum timestamps.");
+		return false;
+	}
+	
+	std::string version = assemblyChecksumJson["game_version"];
+
+	for (auto& [moduleName, checksumData] : assemblyChecksumJson["modules"].items())
+	{
+		if (checksumTimestamps.contains(moduleName))
+			checksumData["timestamp"] = checksumTimestamps[moduleName];
+
+		if (!scanner.IsValidModuleHash(moduleName, checksumData))
+		{
+			LOG_WARNING("Seems like assembly checksum don't match with version %s. It's normal only if you using Chinese version of genshin impact.", version.c_str());
+			return false;
+		}
+
+		checksumTimestamps[moduleName] = scanner.GetModuleTimestamp(moduleName);
+	}
+
+	return true;
+}
+
+// IL2CPP application initializer
+void init_il2cpp()
+{
+	if (IsStaticCheckSumValid())
+	{
+		init_static_offsets();
+		return;
+	}
+
+#ifdef _PATTERN_SCANNER
+	init_scanned_offsets();
+#else
+	init_static_offsets();
+#endif
+	
+}
