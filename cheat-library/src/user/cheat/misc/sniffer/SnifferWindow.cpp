@@ -65,8 +65,17 @@ namespace cheat::feature::sniffer
 
 		const std::lock_guard<std::mutex> lock(m_CapturePacketLock);
 
-		if (!ImGui::Begin("Packet sniffer", m_Show))
+		bool showPrev = m_Show;
+		bool windowShowed = ImGui::Begin("Packet sniffer", m_Show);
+		
+		if (showPrev != m_Show)
+			m_Show.Check();
+		
+		if (!windowShowed)
+		{
+			ImGui::End();
 			return;
+		}
 
 		if (ComboEnum("## SortValue", &m_SortValue))
 		{

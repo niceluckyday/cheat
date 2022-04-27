@@ -66,18 +66,14 @@ namespace cheat::feature
 				ImGui::OpenPopup("Error");
 			}
 		}
-
-		auto& window = sniffer::SnifferWindow::GetInstance();
-
-		ConfigWidget(window.m_Show, "Show capturing window.");
-		if (window.m_Show)
-			window.Draw();
 		
 		if (ImGui::BeginPopup("Error"))
 		{
 			ImGui::Text("Please fill 'Proto Dir Path' and 'Proto ID File Path' before enabling capture.");
 			ImGui::EndPopup();
 		}
+		auto& window = sniffer::SnifferWindow::GetInstance();
+		ConfigWidget(window.m_Show, "Show capturing window.");
 
 		ConfigWidget(m_PipeEnabled, "Enable sending of packet data to pipe with name 'genshin_packet_pipe'.\n"\
 			"This feature can be used with external monitoring tools.");
@@ -95,6 +91,13 @@ namespace cheat::feature
 
 		if (m_CapturingEnabled)
 			ImGui::EndDisabled();
+	}
+	
+	void PacketSniffer::DrawExternal()
+	{
+		auto& window = sniffer::SnifferWindow::GetInstance();
+		if (window.m_Show)
+			window.Draw();
 	}
 
 	PacketSniffer& PacketSniffer::GetInstance()

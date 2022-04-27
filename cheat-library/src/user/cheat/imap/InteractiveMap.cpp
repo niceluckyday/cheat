@@ -1107,8 +1107,8 @@ namespace cheat::feature
 					ImGui::Spacing();
 					DrawFilters(false);
 				}
-				ImGui::End();
 			}
+			ImGui::End();
 
 			if (m_SeparatedWindows)
 			{
@@ -1116,10 +1116,9 @@ namespace cheat::feature
 				AddWindowRect();
 
 				if (filtersOpened)
-				{
 					DrawFilters();
-					ImGui::End();
-				}
+
+				ImGui::End();
 			}
 		}
 
