@@ -187,6 +187,46 @@ namespace cheat::game::filters
 			featured::Geoculus + featured::Lumenspar + featured::KeySigil;
 		SimpleFilter Chests = { app::EntityType__Enum_1::Chest };
 		SimpleFilter Monsters = { app::EntityType__Enum_1::Monster };
+		SimpleFilter Ores = {
+			mineral::AmethystLump +
+			mineral::ArchaicStone +
+			mineral::CorLapis +
+			mineral::CrystalChunk +
+			mineral::CrystalMarrow +
+			mineral::ElectroCrystal +
+			mineral::IronChunk +
+			mineral::NoctilucousJade +
+			mineral::MagicalCrystalChunk +
+			mineral::StarSilver +
+			mineral::WhiteIronChunk
+		};
+		SimpleFilter MonsterEquips = { app::EntityType__Enum_1::MonsterEquip };
+		AdvancedFilter Doodads = {
+			std::vector<app::EntityType__Enum_1> { 
+				app::EntityType__Enum_1::Gadget
+			},
+				std::vector<std::string> { 
+					"Monster_Effigy_Electric_01",
+					"Monster_Effigy_Electric_02",
+					"Monster_Effigy_Wind_01",
+					"Monster_Effigy_Wind_02",
+					"Monster_Effigy_Rock_01",
+					"Monster_Effigy_Rock_02",
+					"Monster_Effigy_Water_01",
+					"Monster_Effigy_Ice_01",
+					"Monster_Effigy_Fire_01",
+					"Monster_Effigy_Water_Underling_Ooze_01",
+					"Monster_Effigy_Water_Underling_Ooze_02",
+					"Monster_Effigy_Water_Underling_Ooze_03",
+					"Monster_Effigy_Water_Underling_Ooze_04",
+					"HiliWoodenBox", 
+					"HiliWoodenBarrel",
+					"HumanBox", 
+					"HumanJars",
+					"QQTotem",
+					"WatchTower01"
+					"WatchTower02"
+			}};
 		AdvancedFilter Living = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster } };
 		AdvancedFilter Animals = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster }, std::vector<std::string> {"Animal" }};
 		//m0nkrel: We can choose the entities we need ourselves so as not to magnetize cats, dogs, etc.

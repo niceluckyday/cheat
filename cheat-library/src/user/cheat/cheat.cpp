@@ -27,7 +27,7 @@
 #include <cheat/world/KillAura.h>
 #include <cheat/world/MobVacuum.h>
 #include <cheat/world/AutoTreeFarm.h>
-#include <cheat/world/AutoOreDestroy.h>
+#include <cheat/world/AutoDestroy.h>
 
 #include <cheat/teleport/ChestTeleport.h>
 #include <cheat/teleport/MapTeleport.h>
@@ -69,7 +69,7 @@ namespace cheat
 
 			FEAT_INST(AutoLoot),
 			FEAT_INST(AutoTreeFarm),
-			FEAT_INST(AutoOreDestroy),
+			FEAT_INST(AutoDestroy),
 			FEAT_INST(DialogSkip),
 			FEAT_INST(DumbEnemies),
 			FEAT_INST(ElementalSight),
