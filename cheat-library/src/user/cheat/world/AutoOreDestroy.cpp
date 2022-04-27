@@ -7,21 +7,25 @@
 #include <cheat/events.h>
 #include <cheat/game/SimpleFilter.h>
 #include <cheat/game/EntityManager.h>
+#include <cheat/game/filters.h>
 
 namespace cheat::feature 
 {
 	static void LCAbilityElement_ReduceModifierDurability_Hook(app::LCAbilityElement* __this, int32_t modifierDurabilityIndex, float reduceDurability, app::Nullable_1_Single_ deltaTime, MethodInfo* method);
 
     AutoOreDestroy::AutoOreDestroy() : Feature(),
-        NF(m_Enabled,      "Auto ore destroy",  "AutoOreDestroy", false),
-        NF(m_Range,        "Range",             "AutoOreDestroy", 10.0f)
+        NF(m_Enabled,			"Auto Destroy",  "AutoOreDestroy", false),
+		NF(m_DestroyOres,		"Destroy Ores",			"AutoOreDestroy", false),
+		NF(m_DestroyShields,	"Destroy Shields",		"AutoOreDestroy", false),
+		NF(m_DestroyDoodads,	"Destroy Doodads",		"AutoOreDestroy", false),
+        NF(m_Range,				"Range",				"AutoOreDestroy", 10.0f)
     { 
 		HookManager::install(app::LCAbilityElement_ReduceModifierDurability, LCAbilityElement_ReduceModifierDurability_Hook);
 	}
 
     const FeatureGUIInfo& AutoOreDestroy::GetGUIInfo() const
     {
-        static const FeatureGUIInfo info { "Auto Ore Destroy", "World", true };
+        static const FeatureGUIInfo info { "Auto Destroy Objects", "World", true };
         return info;
     }
 
@@ -30,7 +34,12 @@ namespace cheat::feature
 		ImGui::TextColored(ImColor(255, 165, 0, 255), "Note. This feature is not fully tested detection-wise.\n"
 			"Not recommended for main accounts or used with high values.");
 		
-		ConfigWidget("Enabled", m_Enabled, "Instantly destroys ores in specified range.");
+		ConfigWidget("Enabled", m_Enabled, "Instantly destroys non-living objects within range.");
+		ImGui::Indent();
+		ConfigWidget("Ores", m_DestroyOres, "Ores and variants, e.g. electro crystals, marrows, etc.");
+		ConfigWidget("Shields", m_DestroyShields, "Abyss mage/churl/slime shields.");
+		ConfigWidget("Doodads", m_DestroyDoodads, "Barrels, boxes, vases, etc.");
+		ImGui::Unindent();
 		ConfigWidget("Range (m)", m_Range, 0.1f, 1.0f, 15.0f);
     }
 
@@ -41,7 +50,12 @@ namespace cheat::feature
 
     void AutoOreDestroy::DrawStatus() 
     { 
-        ImGui::Text("Ore Destroy [%0.1fm]", m_Range.value());
+		ImGui::Text("Destroy [%.01fm%s%s%s%s]",
+			m_Range.value(),
+			m_DestroyOres || m_DestroyShields || m_DestroyDoodads ? "|" : "",
+			m_DestroyOres ? "O" : "",
+			m_DestroyShields ? "S" : "",
+			m_DestroyDoodads ? "D" : "");
     }
 
     AutoOreDestroy& AutoOreDestroy::GetInstance()
@@ -58,31 +72,17 @@ namespace cheat::feature
 	// This function also can work with some types of shields (TODO: improve killaura with this function)
 	static void LCAbilityElement_ReduceModifierDurability_Hook(app::LCAbilityElement* __this, int32_t modifierDurabilityIndex, float reduceDurability, app::Nullable_1_Single_ deltaTime, MethodInfo* method)
 	{
-		// Ore filter
-		// Callow: I didn't found any different way to find ores
-		static const game::SimpleFilter oreFilter = {
-			app::EntityType__Enum_1::GatherObject,
-			{
-				"Crystalizedmarrow",
-				"Thundercrystal",
-				"OreNightBerth",
-				"OreCrystal",
-				"ElementRock",
-				"OreMagicCrystal",
-				"OreMetal",
-				"OreMoonMeteor",
-				"OreElectricRock",
-				"OreStone",
-				"AncientOre"
-			}
-		};
-
 		auto& manager = game::EntityManager::instance();
-		auto& autoOreDestroy = AutoOreDestroy::GetInstance();
+		auto& autoDestroy = AutoOreDestroy::GetInstance();
 		auto entity = __this->fields._._._entity;
-		if (autoOreDestroy.m_Enabled && 
-			autoOreDestroy.m_Range > manager.avatar()->distance(entity) &&
-			oreFilter.IsValid(manager.entity(entity)))
+		if (autoDestroy.m_Enabled && 
+			autoDestroy.m_Range > manager.avatar()->distance(entity) &&
+			(
+				(autoDestroy.m_DestroyOres && game::filters::combined::Ores.IsValid(manager.entity(entity))) || 
+				(autoDestroy.m_DestroyDoodads && game::filters::combined::Doodads.IsValid(manager.entity(entity))) ||
+				(autoDestroy.m_DestroyShields && game::filters::combined::Living.IsValid(manager.entity(entity)))
+			)
+		)
 		{
 			// This value always above any ore durability
 			reduceDurability = 1000;

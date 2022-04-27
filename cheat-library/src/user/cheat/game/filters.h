@@ -190,6 +190,8 @@ namespace cheat::game::filters
 		extern SimpleFilter Oculies;
 		extern SimpleFilter Chests;
 		extern SimpleFilter Monsters;
+		extern SimpleFilter Ores;
+		extern AdvancedFilter Doodads;
 		extern AdvancedFilter Living;
 		extern AdvancedFilter Animals;
 	}

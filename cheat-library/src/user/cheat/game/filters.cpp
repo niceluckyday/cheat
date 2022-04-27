@@ -187,6 +187,44 @@ namespace cheat::game::filters
 			featured::Geoculus + featured::Lumenspar + featured::KeySigil;
 		SimpleFilter Chests = { app::EntityType__Enum_1::Chest };
 		SimpleFilter Monsters = { app::EntityType__Enum_1::Monster };
+		SimpleFilter Ores = {
+			app::EntityType__Enum_1::GatherObject,
+			{
+				"Crystalizedmarrow",
+				"Thundercrystal",
+				"OreNightBerth",
+				"OreCrystal",
+				"ElementRock",
+				"OreMagicCrystal",
+				"OreMetal",
+				"OreMoonMeteor",
+				"OreElectricRock",
+				"OreStone",
+				"AncientOre"
+			}
+		};
+		AdvancedFilter Doodads = {
+			{ 
+				app::EntityType__Enum_1::MonsterEquip, app::EntityType__Enum_1::Gadget }, 
+				std::vector<std::string> { 
+					"MonEquip_Shield_01",
+					"MonEquip_Shield_02",
+					"MonEquip_Torch_02",
+					"MonEquip_WoodenClub_01",
+				    "MonEquip_Axe_01",
+					"MonEquip_Crossbow_Ice_01",
+					"MonEquip_Crossbow_Thunder_01",
+					"MonEquip_Crossbow_Fire_01",
+					"MonEquip_Wand_Grass_01",
+					"MonEquip_Staff_Ice_01",
+					"Monster_Effigy_Rock_01",
+					"HiliWoodenBox", 
+					"HiliWoodenBarrel",
+					"HumanBox", 
+					"HumanJars",
+					"QQTotem",
+					"WatchTower02"
+			}};
 		AdvancedFilter Living = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster } };
 		AdvancedFilter Animals = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster }, std::vector<std::string> {"Animal" }};
 		//m0nkrel: We can choose the entities we need ourselves so as not to magnetize cats, dogs, etc.

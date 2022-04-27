@@ -9,6 +9,9 @@ namespace cheat::feature
     {
 	public:
 		config::field::ToggleField m_Enabled;
+		config::field::ToggleField m_DestroyOres;
+		config::field::ToggleField m_DestroyShields;
+		config::field::ToggleField m_DestroyDoodads;
 		config::field::BaseField<float> m_Range;
 
 		static AutoOreDestroy& GetInstance();
