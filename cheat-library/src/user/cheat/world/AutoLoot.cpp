@@ -51,9 +51,9 @@ namespace cheat::feature
 
     void AutoLoot::DrawStatus() 
     {
-		ImGui::Text("Auto Loot [%dms%sm]",
+		ImGui::Text("Auto Loot [%dms%s]",
 			m_DelayTime.value(),
-			m_UseCustomRange ? fmt::format("|{:.1f}", m_CustomRange.value()) : "");
+			m_UseCustomRange ? fmt::format("|{:.1f}m ", m_CustomRange.value()).c_str() : "");
     }
 
     AutoLoot& AutoLoot::GetInstance()

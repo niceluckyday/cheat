@@ -484,7 +484,7 @@ namespace cheat::feature
                 }
             }
             // check if name is valid and doesnt  contain special characters
-            if (!teleportName.find_first_of("\\/:*?\"<>|") == std::string::npos)
+            if (teleportName.find_first_of("\\/:*?\"<>|") != std::string::npos)
             {
                 return;
             }

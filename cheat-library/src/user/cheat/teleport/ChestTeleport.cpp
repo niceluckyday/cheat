@@ -209,7 +209,7 @@ namespace cheat::feature
 			return;
 		ImGui::SameLine();
 
-		ImGui::TextColored(chest->chestColor(), "%s", chest->minName());
+		ImGui::TextColored(chest->chestColor(), "%s", chest->minName().c_str());
 	}
 
 	void ChestTeleport::DrawChests()
