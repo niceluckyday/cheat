@@ -94,8 +94,7 @@ namespace cheat::feature
 			if (rigidBody == nullptr)
 				return;
 
-			if (!m_FreeflightMode)
-				app::Rigidbody_set_detectCollisions(rigidBody, true, nullptr);
+			app::Rigidbody_set_detectCollisions(rigidBody, true, nullptr);
 			
 			isApplied = false;
 		}
@@ -120,7 +119,7 @@ namespace cheat::feature
 			app::Rigidbody_set_detectCollisions(rigidBody, false, nullptr);
 		
 		if (!m_VelocityMode)
-			app::Rigidbody_set_velocity(rigidBody, zero,nullptr);
+			app::Rigidbody_set_velocity(rigidBody, zero, nullptr);
 
 		auto cameraEntity = game::Entity(reinterpret_cast<app::BaseEntity*>(manager.mainCamera()));
 		auto relativeEntity = m_CameraRelative ? &cameraEntity : avatarEntity;
