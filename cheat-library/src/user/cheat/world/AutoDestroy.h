@@ -1,6 +1,6 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 
 namespace cheat::feature 
 {
@@ -8,11 +8,11 @@ namespace cheat::feature
 	class AutoDestroy : public Feature
     {
 	public:
-		config::field::ToggleField m_Enabled;
-		config::field::ToggleField m_DestroyOres;
-		config::field::ToggleField m_DestroyShields;
-		config::field::ToggleField m_DestroyDoodads;
-		config::field::BaseField<float> m_Range;
+		config::Field<config::ToggleHotkey> f_Enabled;
+		config::Field<config::ToggleHotkey> f_DestroyOres;
+		config::Field<config::ToggleHotkey> f_DestroyShields;
+		config::Field<config::ToggleHotkey> f_DestroyDoodads;
+		config::Field<float> f_Range;
 
 		static AutoDestroy& GetInstance();
 

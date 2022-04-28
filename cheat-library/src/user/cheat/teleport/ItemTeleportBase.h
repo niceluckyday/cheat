@@ -1,6 +1,6 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 
 #include <cheat/game/IEntityFilter.h>
 
@@ -10,8 +10,8 @@ namespace cheat::feature
 	class ItemTeleportBase : public Feature, public game::IEntityFilter
     {
 	public:
-		config::field::HotkeyField m_Key;
-		config::field::BaseField<bool> m_ShowInfo;
+		config::Field<Hotkey> f_Key;
+		config::Field<bool> f_ShowInfo;
 
 		void DrawMain() final;
 		

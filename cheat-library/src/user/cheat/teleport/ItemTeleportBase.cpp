@@ -11,8 +11,8 @@
 namespace cheat::feature 
 {
     ItemTeleportBase::ItemTeleportBase(const std::string& section, const std::string& name) : Feature(),
-		NF(m_Key, "Teleport to Nearest", section, Hotkey()),
-		NF(m_ShowInfo, "Show Info", section, true),
+		NF(f_Key, "Teleport to Nearest", section, Hotkey()),
+		NF(f_ShowInfo, "Show Info", section, true),
         section(section), name(name)
     {
 		events::KeyUpEvent += MY_METHOD_HANDLER(ItemTeleportBase::OnKeyUp);
@@ -21,7 +21,7 @@ namespace cheat::feature
     void ItemTeleportBase::DrawMain()
     {
 		auto desc = util::string_format("When key pressed, will teleport to nearest %s if exists.", name.c_str());
-		ConfigWidget(m_Key, desc.c_str());
+		ConfigWidget(f_Key, desc.c_str());
 
 		DrawFilterOptions();
 
@@ -40,7 +40,7 @@ namespace cheat::feature
 
 	bool ItemTeleportBase::NeedInfoDraw() const
 {
-		return m_ShowInfo;
+		return f_ShowInfo;
 	}
 
 	void ItemTeleportBase::DrawInfo()
@@ -53,7 +53,7 @@ namespace cheat::feature
 		if (CheatManager::IsMenuShowed())
 			return;
 
-		if (m_Key.value().IsPressed(key))
+		if (f_Key.value().IsPressed(key))
 		{
 			auto entity = game::FindNearestEntity(*this);
 			if (entity != nullptr)

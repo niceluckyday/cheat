@@ -67,7 +67,24 @@ namespace cheat::game::filters
 		extern SimpleFilter LuminescentSpine;
 		extern SimpleFilter Onikabuto;
 		extern SimpleFilter Starconch;
-		extern SimpleFilter UnagiMeat;
+		extern SimpleFilter Eel;
+		extern SimpleFilter Inu;
+		extern SimpleFilter Boar;
+		extern SimpleFilter Fox;
+		extern SimpleFilter Squirrel;
+		extern SimpleFilter Crane;
+		extern SimpleFilter Falcon;
+		extern SimpleFilter LucklightFly;
+		extern SimpleFilter Salamander;
+		extern SimpleFilter Pigeon;
+		extern SimpleFilter Crow;
+		extern SimpleFilter Finch;
+		extern SimpleFilter Wigeon;
+		extern SimpleFilter Dog;
+		extern SimpleFilter Cat;
+		extern SimpleFilter Weasel;
+		extern SimpleFilter Kitsune;
+		extern SimpleFilter BakeDanuki;
 	}
 
 	namespace mineral
@@ -108,7 +125,45 @@ namespace cheat::game::filters
 		extern SimpleFilter TreasureHoarder;
 		extern SimpleFilter UnusualHilichurl;
 		extern SimpleFilter Whopperflower;
-		extern SimpleFilter WolvesOfTheRift;
+		extern SimpleFilter RifthoundWhelp;
+		extern SimpleFilter Rifthound;
+		extern SimpleFilter Dvalin;
+		extern SimpleFilter Andrius;
+		extern SimpleFilter Tartaglia;
+		extern SimpleFilter Azhdaha;
+		extern SimpleFilter Signora;
+		extern SimpleFilter Shougan;
+		extern SimpleFilter EyeoftheStorm;
+		extern SimpleFilter ElectroHypostasis;
+		extern SimpleFilter AnemoHypostasis;
+		extern SimpleFilter GeoHypostasis;
+		extern SimpleFilter HydroHypostasis;
+		extern SimpleFilter CryoHypostasis;
+		extern SimpleFilter PyroHypostasis;
+		extern SimpleFilter HydroHypostasisSummon;
+		extern SimpleFilter Oceanid;
+		extern SimpleFilter OceanidBoar;
+		extern SimpleFilter OceanidCrane;
+		extern SimpleFilter OceanidCrab;
+		extern SimpleFilter OceanidFinch;
+		extern SimpleFilter OceanidWigeon;
+		extern SimpleFilter OceanidSquirrel;
+		extern SimpleFilter OceanidFrog;
+		extern SimpleFilter OceanidFalcon;
+		extern SimpleFilter ThunderManifestation;
+		extern SimpleFilter HydroAbyssHerald;
+		extern SimpleFilter ElectroAbyssLector;
+		extern SimpleFilter PyroAbyssLector;
+		extern SimpleFilter BlackSerpentKnight;
+		extern SimpleFilter GoldenWolflord;
+		extern SimpleFilter RuinSerpent;
+		extern SimpleFilter Millelith;
+		extern SimpleFilter ShogunateInfantry;
+		extern SimpleFilter SangonomiyaCohort;
+		extern SimpleFilter CryoRegisvine;
+		extern SimpleFilter PyroRegisvine;
+		extern SimpleFilter Cicin;
+		extern SimpleFilter Beisht;
 	}
 
 	namespace plant

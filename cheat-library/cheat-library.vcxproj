@@ -24,7 +24,7 @@
     <ClInclude Include="src\user\cheat\game\CacheFilterExecutor.h" />
     <ClInclude Include="src\user\cheat\game\EntityManager.h" />
     <ClInclude Include="src\user\cheat\esp\ESPRender.h" />
-    <ClInclude Include="src\user\cheat\esp\data\ESPItem.h" />
+    <ClInclude Include="src\user\cheat\esp\ESPItem.h" />
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="src\appdata\il2cpp-api-functions-ptr.h" />
     <ClInclude Include="src\appdata\il2cpp-api-functions.h" />
@@ -83,7 +83,6 @@
     <ClInclude Include="src\user\cheat\world\DumbEnemies.h" />
     <ClInclude Include="src\user\cheat\world\KillAura.h" />
     <ClInclude Include="src\user\cheat\world\MobVacuum.h" />
-    <ClInclude Include="src\user\cheat\esp\data\ESPItemField.h" />
     <ClInclude Include="src\user\main.h" />
   </ItemGroup>
   <ItemGroup>
@@ -99,7 +98,6 @@
     <ClCompile Include="src\user\cheat\game\CacheFilterExecutor.cpp" />
     <ClCompile Include="src\user\cheat\game\EntityManager.cpp" />
     <ClCompile Include="src\user\cheat\esp\ESPRender.cpp" />
-    <ClCompile Include="src\user\cheat\esp\data\ESPItem.cpp" />
     <ClCompile Include="src\framework\dllmain.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -157,7 +155,6 @@
     <ClCompile Include="src\user\cheat\world\DumbEnemies.cpp" />
     <ClCompile Include="src\user\cheat\world\KillAura.cpp" />
     <ClCompile Include="src\user\cheat\world\MobVacuum.cpp" />
-    <ClCompile Include="src\user\cheat\esp\data\ESPItemField.cpp" />
     <ClCompile Include="src\user\main.cpp" />
   </ItemGroup>
   <PropertyGroup>

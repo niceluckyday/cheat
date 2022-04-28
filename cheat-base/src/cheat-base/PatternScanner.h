@@ -21,6 +21,9 @@ public:
 	bool Load(const std::filesystem::path& filename);
 	bool Load(const std::string& content);
 
+	virtual void SaveJson(nlohmann::json& outObject);
+	virtual bool LoadJson(const nlohmann::json& object);
+
 	void ParseSignatureFile(const std::string& signaturesContent);
 
 	bool IsUpdated();
@@ -32,9 +35,6 @@ public:
 	int64_t GetModuleTimestamp(HMODULE hModule);
 
 protected:
-	
-	virtual void SaveJson(nlohmann::json& outObject);
-	virtual bool LoadJson(const nlohmann::json& object);
 
 	class AddressCounter
 	{

@@ -49,6 +49,8 @@ namespace cheat
 
 	void Init()
 	{
+		config::SetupUpdate(&events::GameUpdateEvent);
+
 		auto& protectionBypass = feature::ProtectionBypass::GetInstance();
 		protectionBypass.Init();
 

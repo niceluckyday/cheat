@@ -1,8 +1,8 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 
-#include <cheat/esp/data/ESPItemField.h>
+#include <cheat/esp/ESPItem.h>
 #include <cheat/game/IEntityFilter.h>
 #include <cheat/game/CacheFilterExecutor.h>
 
@@ -19,21 +19,21 @@ namespace cheat::feature
 			Box
 		};
 
-		config::field::ToggleField m_Enabled;
-		config::field::EnumField<DrawMode> m_DrawBoxMode;
-		config::field::BaseField<bool> m_Fill;
-		config::field::BaseField<float> m_FillTransparency;
+		config::Field<config::ToggleHotkey> f_Enabled;
+		config::Field<config::Enum<DrawMode>> f_DrawBoxMode;
+		config::Field<bool> f_Fill;
+		config::Field<float> f_FillTransparency;
 
-		config::field::BaseField<bool> m_DrawLine;
-		config::field::BaseField<bool> m_DrawDistance;
-		config::field::BaseField<bool> m_DrawName;
+		config::Field<bool> f_DrawLine;
+		config::Field<bool> f_DrawDistance;
+		config::Field<bool> f_DrawName;
 
-		config::field::BaseField<float> m_FontSize;
-		config::field::ColorField m_FontColor;
-		config::field::BaseField<bool> m_ApplyGlobalFontColor;
+		config::Field<float> f_FontSize;
+		config::Field<ImColor> f_FontColor;
+		config::Field<bool> f_ApplyGlobalFontColor;
 
-		config::field::BaseField<float> m_MinSize;
-		config::field::BaseField<float> m_Range;
+		config::Field<float> f_MinSize;
+		config::Field<float> f_Range;
 
 		std::string m_Search;
 
@@ -48,7 +48,7 @@ namespace cheat::feature
 		void DrawExternal() override;
 
 	private:
-		using FilterInfo = std::pair<config::field::ESPItemField*, game::IEntityFilter*>;
+		using FilterInfo = std::pair<config::Field<esp::ESPItem>, game::IEntityFilter*>;
 		using Filters = std::vector<FilterInfo>;
 		using Sections = std::map<std::string, Filters>;
 
@@ -59,7 +59,7 @@ namespace cheat::feature
 		void AddFilter(const std::string& section, const std::string& name, game::IEntityFilter* filter);
 		
 		void DrawSection(const std::string& section, const Filters& filters);
-		void DrawFilterField(config::field::ESPItemField& field);
+		void DrawFilterField(const config::Field<esp::ESPItem>& field);
 
 		void OnKeyUp(short key, bool& cancelled);
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 
 #include <il2cpp-appdata.h>
 
@@ -10,14 +10,14 @@ namespace cheat::feature
 	class NoClip : public Feature
     {
 	public:
-		config::field::ToggleField m_Enabled;
-		config::field::BaseField<float> m_Speed;
-		config::field::BaseField<bool> m_CameraRelative;
-		config::field::ToggleField m_VelocityMode;
-		config::field::ToggleField m_FreeflightMode;
+		config::Field<config::ToggleHotkey> f_Enabled;
+		config::Field<float> f_Speed;
+		config::Field<bool> f_CameraRelative;
+		config::Field<config::ToggleHotkey> f_VelocityMode;
+		config::Field<config::ToggleHotkey> f_FreeflightMode;
 
-		config::field::BaseField<bool> m_AltSpeedEnabled;
-		config::field::BaseField<float> m_AltSpeed;
+		config::Field<bool> f_AltSpeedEnabled;
+		config::Field<float> f_AltSpeed;
 
 
 		static NoClip& GetInstance();

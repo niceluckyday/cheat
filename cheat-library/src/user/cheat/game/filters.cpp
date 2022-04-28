@@ -64,7 +64,24 @@ namespace cheat::game::filters
 		SimpleFilter LuminescentSpine = { app::EntityType__Enum_1::EnvAnimal, "FireFly" };
 		SimpleFilter Onikabuto = { app::EntityType__Enum_1::GatherObject, "Electrohercules" };
 		SimpleFilter Starconch = { app::EntityType__Enum_1::GatherObject, "_Shell" };
-		SimpleFilter UnagiMeat = { app::EntityType__Enum_1::EnvAnimal, "_Eel_" };
+		SimpleFilter Eel = { app::EntityType__Enum_1::EnvAnimal, "_Eel_" };
+		SimpleFilter Inu = { app::EntityType__Enum_1::EnvAnimal, "Inu_Shihandai" };
+		SimpleFilter Boar = { app::EntityType__Enum_1::EnvAnimal, "Boar" };
+		SimpleFilter Fox = { app::EntityType__Enum_1::EnvAnimal, "Fox" };
+		SimpleFilter Squirrel = { app::EntityType__Enum_1::EnvAnimal, "Squirrel" };
+		SimpleFilter Crane = { app::EntityType__Enum_1::EnvAnimal, "Crane" };
+		SimpleFilter Falcon = { app::EntityType__Enum_1::EnvAnimal, "Falcon" };
+		SimpleFilter LucklightFly = { app::EntityType__Enum_1::EnvAnimal, "Boltbug_" };
+		SimpleFilter Salamander = { app::EntityType__Enum_1::EnvAnimal, "Salamander" };
+		SimpleFilter Pigeon = { app::EntityType__Enum_1::EnvAnimal, "Pigeon" };
+		SimpleFilter Crow = { app::EntityType__Enum_1::EnvAnimal, "Crow" };
+		SimpleFilter Finch = { app::EntityType__Enum_1::EnvAnimal, "Tit" };
+		SimpleFilter Wigeon = { app::EntityType__Enum_1::EnvAnimal, "Wigeon" };
+		SimpleFilter Dog = { app::EntityType__Enum_1::EnvAnimal, "DogPrick" };
+		SimpleFilter Cat = { app::EntityType__Enum_1::EnvAnimal, "Cat" };
+		SimpleFilter Weasel = { app::EntityType__Enum_1::EnvAnimal, "Marten" };
+		SimpleFilter Kitsune = { app::EntityType__Enum_1::EnvAnimal, "Vulpes" };
+		SimpleFilter BakeDanuki = { app::EntityType__Enum_1::EnvAnimal, "Inu_Tanuki" };
 	}
 
 	namespace mineral
@@ -105,7 +122,45 @@ namespace cheat::game::filters
 		SimpleFilter TreasureHoarder = { app::EntityType__Enum_1::Monster, "_Thoarder" };
 		SimpleFilter UnusualHilichurl = { app::EntityType__Enum_1::Monster, "_Hili_Wei" };
 		SimpleFilter Whopperflower = { app::EntityType__Enum_1::Monster, "_Mimik" };
-		SimpleFilter WolvesOfTheRift = { app::EntityType__Enum_1::Monster, "_Hound_Kanis" };
+		SimpleFilter RifthoundWhelp = { app::EntityType__Enum_1::Monster, "_Hound_Kanis" };
+		SimpleFilter Rifthound = { app::EntityType__Enum_1::Monster, "_Hound_Riftstalker" };
+		SimpleFilter Dvalin = { app::EntityType__Enum_1::Monster, "_Dragon_Dvalin" };
+		SimpleFilter Andrius = { app::EntityType__Enum_1::Monster, "_Wolf_LupiBoreas" };
+		SimpleFilter Tartaglia = { app::EntityType__Enum_1::Monster, "_Tartaglia" };
+		SimpleFilter Azhdaha = { app::EntityType__Enum_1::Monster, "_Dahaka" };
+		SimpleFilter Signora = { app::EntityType__Enum_1::Monster, "_LaSignora" };
+		SimpleFilter Shougan = { app::EntityType__Enum_1::Monster, "_Shougan" };
+		SimpleFilter EyeoftheStorm = { app::EntityType__Enum_1::Monster, "_Elemental_Wind" };
+		SimpleFilter ElectroHypostasis = { app::EntityType__Enum_1::Monster, "_Effigy_Electric" };
+		SimpleFilter AnemoHypostasis = { app::EntityType__Enum_1::Monster, "_Effigy_Wind" };
+		SimpleFilter GeoHypostasis = { app::EntityType__Enum_1::Monster, "_Effigy_Rock" };
+		SimpleFilter HydroHypostasis = { app::EntityType__Enum_1::Monster, "_Effigy_Water" };
+		SimpleFilter CryoHypostasis = { app::EntityType__Enum_1::Monster, "_Effigy_Ice" };
+		SimpleFilter PyroHypostasis = { app::EntityType__Enum_1::Monster, "_Effigy_Fire" };
+		SimpleFilter HydroHypostasisSummon = { app::EntityType__Enum_1::Monster, "_Effigy_Water_Underling_Ooze" };
+		SimpleFilter Oceanid = { app::EntityType__Enum_1::Monster, "_Oceanid" };
+		SimpleFilter OceanidBoar = { app::EntityType__Enum_1::Monster, "_Oceanid_Boar" };
+		SimpleFilter OceanidCrane = { app::EntityType__Enum_1::Monster, "_Oceanid_Crane" };
+		SimpleFilter OceanidCrab = { app::EntityType__Enum_1::Monster, "_Oceanid_Crab" };
+		SimpleFilter OceanidFinch = { app::EntityType__Enum_1::Monster, "_Oceanid_Tit" };
+		SimpleFilter OceanidWigeon = { app::EntityType__Enum_1::Monster, "_Oceanid_Wigeon" };
+		SimpleFilter OceanidSquirrel = { app::EntityType__Enum_1::Monster, "_Oceanid_Squirrel" };
+		SimpleFilter OceanidFrog = { app::EntityType__Enum_1::Monster, "_Oceanid_Frog" };
+		SimpleFilter OceanidFalcon = { app::EntityType__Enum_1::Monster, "_Oceanid_Falcon" };
+		SimpleFilter ThunderManifestation = { app::EntityType__Enum_1::Monster, "_Raijin" };
+		SimpleFilter HydroAbyssHerald = { app::EntityType__Enum_1::Monster, "_Invoker_Herald_Water" };
+		SimpleFilter ElectroAbyssLector = { app::EntityType__Enum_1::Monster, "_Invoker_Deacon_Electric" };
+		SimpleFilter PyroAbyssLector = { app::EntityType__Enum_1::Monster, "_Invoker_Deacon_Fire" };
+		SimpleFilter BlackSerpentKnight = { app::EntityType__Enum_1::Monster, "_Darkwraith_Strong_Wind" };
+		SimpleFilter GoldenWolflord = { app::EntityType__Enum_1::Monster, "_Hound_Planelurker" };
+		SimpleFilter RuinSerpent = { app::EntityType__Enum_1::Monster, "_Nithhoggr" };
+		SimpleFilter Millelith = { app::EntityType__Enum_1::Monster, "_Millelith_" };
+		SimpleFilter ShogunateInfantry = { app::EntityType__Enum_1::Monster, "_Aahigaru_" };
+		SimpleFilter SangonomiyaCohort = { app::EntityType__Enum_1::Monster, "_AahigaruTaisho_" };
+		SimpleFilter CryoRegisvine = { app::EntityType__Enum_1::Monster, "_Regisvine_Ice" };
+		SimpleFilter PyroRegisvine = { app::EntityType__Enum_1::Monster, "_Regisvine_Fire" };
+		SimpleFilter Cicin = { app::EntityType__Enum_1::Monster, "_Cicin" };
+		SimpleFilter Beisht = { app::EntityType__Enum_1::Monster, "_Eldritch" };
 	}
 
 	namespace plant
@@ -202,10 +257,10 @@ namespace cheat::game::filters
 		};
 		SimpleFilter MonsterEquips = { app::EntityType__Enum_1::MonsterEquip };
 		AdvancedFilter Doodads = {
-			std::vector<app::EntityType__Enum_1> { 
+			std::vector<app::EntityType__Enum_1> {
 				app::EntityType__Enum_1::Gadget
 			},
-				std::vector<std::string> { 
+				std::vector<std::string> {
 					"Monster_Effigy_Electric_01",
 					"Monster_Effigy_Electric_02",
 					"Monster_Effigy_Wind_01",
@@ -219,14 +274,14 @@ namespace cheat::game::filters
 					"Monster_Effigy_Water_Underling_Ooze_02",
 					"Monster_Effigy_Water_Underling_Ooze_03",
 					"Monster_Effigy_Water_Underling_Ooze_04",
-					"HiliWoodenBox", 
+					"HiliWoodenBox",
 					"HiliWoodenBarrel",
-					"HumanBox", 
+					"HumanBox",
 					"HumanJars",
 					"QQTotem",
 					"WatchTower01",
 					"WatchTower02"
-			}};
+			} };
 		AdvancedFilter Living = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster } };
 		AdvancedFilter Animals = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster }, std::vector<std::string> {"Animal" }};
 		//m0nkrel: We can choose the entities we need ourselves so as not to magnetize cats, dogs, etc.

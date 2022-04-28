@@ -12,10 +12,10 @@ namespace cheat::feature
 	static bool LCSelectPickup_IsOutPosition_Hook(void* __this, app::BaseEntity* entity, MethodInfo* method);
 
     AutoLoot::AutoLoot() : Feature(),
-        NF(m_Enabled,        "Auto loot",          "AutoLoot", false),
-        NF(m_DelayTime,      "Delay time (in ms)", "AutoLoot", 150),
-        NF(m_UseCustomRange, "Use custom pickup range",   "AutoLoot", false),
-        NF(m_CustomRange,    "Pickup Range",       "AutoLoot", 5.0f),
+        NF(f_Enabled,        "Auto loot",          "AutoLoot", false),
+        NF(f_DelayTime,      "Delay time (in ms)", "AutoLoot", 150),
+        NF(f_UseCustomRange, "Use custom pickup range",   "AutoLoot", false),
+        NF(f_CustomRange,    "Pickup Range",       "AutoLoot", 5.0f),
 		toBeLootedItems(), nextLootTime(0)
     {
 		// Auto loot
@@ -34,26 +34,26 @@ namespace cheat::feature
 
     void AutoLoot::DrawMain()
     {
-		ConfigWidget("Enabled", m_Enabled, "Loots dropped items.\n" \
+		ConfigWidget("Enabled", f_Enabled, "Loots dropped items.\n" \
             "Note: Custom range and low delay times are high-risk features.\n" \
 			"Abuse will definitely merit a ban.");
-		ConfigWidget("Delay Time (ms)", m_DelayTime, 1, 0, 1000, "Delay (in ms) beetwen looting items.\n" \
+		ConfigWidget("Delay Time (ms)", f_DelayTime, 1, 0, 1000, "Delay (in ms) beetwen looting items.\n" \
             "Values under 200ms are unsafe.");
-		ConfigWidget("Use Custom Pickup Range", m_UseCustomRange, "Enable custom pickup range.\n" \
+		ConfigWidget("Use Custom Pickup Range", f_UseCustomRange, "Enable custom pickup range.\n" \
             "Using this feature is not recommended, as it is easily detected by the server.");
-		ConfigWidget("Range (m)", m_CustomRange, 0.1f, 0.5f, 60.0f, "Modifies pickup range to this value (in meters).");
+		ConfigWidget("Range (m)", f_CustomRange, 0.1f, 0.5f, 60.0f, "Modifies pickup range to this value (in meters).");
     }
 
     bool AutoLoot::NeedStatusDraw() const
 {
-        return m_Enabled;
+        return f_Enabled;
     }
 
     void AutoLoot::DrawStatus() 
     {
 		ImGui::Text("Auto Loot [%dms%s]",
-			m_DelayTime.value(),
-			m_UseCustomRange ? fmt::format("|{:.1f}m ", m_CustomRange.value()).c_str() : "");
+			f_DelayTime.value(),
+			f_UseCustomRange ? fmt::format("|{:.1f}m ", f_CustomRange.value()).c_str() : "");
     }
 
     AutoLoot& AutoLoot::GetInstance()
@@ -64,7 +64,7 @@ namespace cheat::feature
 
 	bool AutoLoot::OnCreateButton(app::BaseEntity* entity)
 	{
-		if (!m_Enabled)
+		if (!f_Enabled)
 			return false;
 
 		auto itemModule = GET_SINGLETON(ItemModule);
@@ -72,7 +72,7 @@ namespace cheat::feature
 			return false;
 
 		auto entityId = entity->fields._runtimeID_k__BackingField;
-		if (m_DelayTime == 0)
+		if (f_DelayTime == 0)
 		{
 			app::ItemModule_PickItem(itemModule, entityId, nullptr);
 			return true;
@@ -105,15 +105,15 @@ namespace cheat::feature
 			return;
 
 		app::ItemModule_PickItem(itemModule, *entityId, nullptr);
-		nextLootTime = currentTime + (int)m_DelayTime;
+		nextLootTime = currentTime + (int)f_DelayTime;
 	}
 
 	void AutoLoot::OnCheckIsInPosition(bool& result, app::BaseEntity* entity)
 	{
-		if (m_Enabled && m_UseCustomRange)
+		if (f_Enabled && f_UseCustomRange)
 		{
 			auto& manager = game::EntityManager::instance();
-			result = manager.avatar()->distance(entity) < m_CustomRange;
+			result = manager.avatar()->distance(entity) < f_CustomRange;
 		}
 	}
 

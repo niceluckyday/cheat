@@ -138,17 +138,17 @@ namespace cheat::feature::esp::render
 		auto& esp = ESP::GetInstance();
 		auto gameObject = entity->gameObject();
 		if (gameObject == nullptr)
-			return GetEntityMinBounds(entity, esp.m_MinSize);
+			return GetEntityMinBounds(entity, esp.f_MinSize);
 
 		SAFE_BEGIN();
 
 		// Sometimes occurs access violation in UnityPlayer.dll
 		// Callow: Have no idea what to do with it unless just catch exception
 		auto bounds = app::Utils_1_GetBounds(nullptr, gameObject, nullptr);
-		if (bounds.m_Extents.x < esp.m_MinSize &&
-			bounds.m_Extents.y < esp.m_MinSize &&
-			bounds.m_Extents.z < esp.m_MinSize)
-			bounds.m_Extents = { esp.m_MinSize, esp.m_MinSize, esp.m_MinSize };
+		if (bounds.m_Extents.x < esp.f_MinSize &&
+			bounds.m_Extents.y < esp.f_MinSize &&
+			bounds.m_Extents.z < esp.f_MinSize)
+			bounds.m_Extents = { esp.f_MinSize, esp.f_MinSize, esp.f_MinSize };
 
 		auto min = bounds.m_Center - bounds.m_Extents;
 		auto max = bounds.m_Center + bounds.m_Extents;
@@ -162,7 +162,7 @@ namespace cheat::feature::esp::render
 		
 		SAFE_ERROR();
 		
-		return GetEntityMinBounds(entity, esp.m_MinSize);
+		return GetEntityMinBounds(entity, esp.f_MinSize);
 		
 		SAFE_END();
 	}
@@ -305,10 +305,10 @@ namespace cheat::feature::esp::render
 
 		auto pMin = ImVec2(entityRect.xMin, entityRect.yMin);
 		auto pMax = ImVec2(entityRect.xMax, entityRect.yMax);
-		if (esp.m_Fill)
+		if (esp.f_Fill)
 		{
 			ImColor newColor = color;
-			newColor.Value.w = 1.0f - esp.m_FillTransparency;
+			newColor.Value.w = 1.0f - esp.f_FillTransparency;
 			draw->AddRectFilled(pMin, pMax, newColor);
 		}
 		draw->AddRect(pMin, pMax, color);
@@ -327,10 +327,10 @@ namespace cheat::feature::esp::render
 		auto& esp = ESP::GetInstance();
 		auto draw = ImGui::GetBackgroundDrawList();
 
-		if (esp.m_Fill)
+		if (esp.f_Fill)
 		{
 			ImColor newColor = color;
-			newColor.Value.w = 1.0f - esp.m_FillTransparency;
+			newColor.Value.w = 1.0f - esp.f_FillTransparency;
 
 			float threshold = 2.0f;
 #define ADD_FIXED_QUAD(p1, p2, p3, p4, col) {\
@@ -402,16 +402,16 @@ namespace cheat::feature::esp::render
 		auto& manager = game::EntityManager::instance();
 		
 		std::string text;
-		if (esp.m_DrawName && esp.m_DrawDistance)
+		if (esp.f_DrawName && esp.f_DrawDistance)
 			text = fmt::format("{} | {:.1f}m", name, manager.avatar()->distance(entity));
-		else if (esp.m_DrawDistance)
+		else if (esp.f_DrawDistance)
 			text = fmt::format("{:.1f}m", manager.avatar()->distance(entity));
 		else
 			text = name;
 
 		ImVec2 namePosition;
 		if (!boxRect.empty())
-			namePosition = { boxRect.xMin, boxRect.yMin - esp.m_FontSize };
+			namePosition = { boxRect.xMin, boxRect.yMin - esp.f_FontSize };
 		else
 		{
 			auto screenPos = GetEntityScreenPos(entity);
@@ -422,13 +422,13 @@ namespace cheat::feature::esp::render
 			// Might need to be aware of performance hit but there shouldn't be any.
 			ImGuiContext& g = *GImGui;
 			ImFont* font = g.Font;
-			auto textSize = font->CalcTextSizeA(esp.m_FontSize, FLT_MAX, FLT_MAX, text.c_str());
+			auto textSize = font->CalcTextSizeA(esp.f_FontSize, FLT_MAX, FLT_MAX, text.c_str());
 			namePosition.x -= (textSize.x / 2.0f);
-			namePosition.y -= esp.m_FontSize;
+			namePosition.y -= esp.f_FontSize;
 		}
 
 		auto draw = ImGui::GetBackgroundDrawList();
-		draw->AddText(NULL, esp.m_FontSize, namePosition, color, text.c_str());
+		draw->AddText(NULL, esp.f_FontSize, namePosition, color, text.c_str());
 	}
 
 	bool DrawEntity(const std::string& name, game::Entity* entity, const ImColor& color)
@@ -437,7 +437,7 @@ namespace cheat::feature::esp::render
 		auto& esp = ESP::GetInstance();
 
 		Rect rect;
-		switch (esp.m_DrawBoxMode)
+		switch (esp.f_DrawBoxMode.value())
 		{
 		case ESP::DrawMode::Box:
 			rect = DrawBox(entity, color);
@@ -450,14 +450,14 @@ namespace cheat::feature::esp::render
 			break;
 		}
 
-		if (esp.m_DrawLine)
+		if (esp.f_DrawLine)
 			DrawLine(entity, color);
 
-		if (esp.m_DrawName)
+		if (esp.f_DrawName)
 		{
 			ImColor nameColor = color;
-			if (esp.m_ApplyGlobalFontColor)
-				nameColor = esp.m_FontColor;
+			if (esp.f_ApplyGlobalFontColor)
+				nameColor = esp.f_FontColor;
 			DrawName(rect, entity, name, nameColor);
 		}
 
@@ -473,7 +473,7 @@ namespace cheat::feature::esp::render
 		UpdateResolutionScale();
 
 		auto& esp = ESP::GetInstance();
-		if (esp.m_DrawLine)
+		if (esp.f_DrawLine)
 			UpdateAvatarPosition();
 	}
 }

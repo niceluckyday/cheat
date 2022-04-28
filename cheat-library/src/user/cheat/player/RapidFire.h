@@ -1,6 +1,6 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 
 #include <il2cpp-appdata.h>
 
@@ -10,15 +10,15 @@ namespace cheat::feature
 	class RapidFire : public Feature
     {
 	public:
-		config::field::ToggleField m_Enabled;
-		config::field::ToggleField m_MultiHit;
-		config::field::BaseField<int> m_Multiplier;
-		config::field::BaseField<bool> m_OnePunch;
-		config::field::ToggleField m_Randomize;
-		config::field::BaseField<int> m_minMultiplier;
-		config::field::BaseField<int> m_maxMultiplier;
-		config::field::ToggleField m_MultiTarget;
-		config::field::BaseField<float> m_MultiTargetRadius;
+		config::Field<config::ToggleHotkey> f_Enabled;
+		config::Field<config::ToggleHotkey> f_MultiHit;
+		config::Field<int> f_Multiplier;
+		config::Field<bool> f_OnePunch;
+		config::Field<config::ToggleHotkey> f_Randomize;
+		config::Field<int> f_minMultiplier;
+		config::Field<int> f_maxMultiplier;
+		config::Field<config::ToggleHotkey> f_MultiTarget;
+		config::Field<float> f_MultiTargetRadius;
 
 		static RapidFire& GetInstance();
 
