@@ -94,8 +94,7 @@ namespace cheat::feature
 			if (rigidBody == nullptr)
 				return;
 
-			if (!f_FreeflightMode)
-				app::Rigidbody_set_detectCollisions(rigidBody, true, nullptr);
+			app::Rigidbody_set_detectCollisions(rigidBody, true, nullptr);
 			
 			isApplied = false;
 		}
