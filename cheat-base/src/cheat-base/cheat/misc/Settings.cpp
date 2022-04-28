@@ -17,6 +17,8 @@ namespace cheat::feature
 		NF(m_FpsMove, "Move FPS Indicator", "General", false),
 		NF(m_FpsShow, "Show FPS Indicator", "General", true),
 
+		NF(m_NotificationsShow, "Show Notifications", "General", true), 
+
 		NF(m_ConsoleLogging, "Console Logging", "General", true),
 		NF(m_FileLogging,    "File Logging",    "General", false),
 		NF(m_HotkeysEnabled, "Hotkeys Enabled", "General", true)
@@ -79,6 +81,12 @@ namespace cheat::feature
 		{
 			ConfigWidget(m_FpsShow);
 			ConfigWidget(m_FpsMove, "Allow moving of 'FPS Indicator' window.");
+		}
+		EndGroupPanel();
+
+		BeginGroupPanel("Show Notifications", ImVec2(-1, 0));
+		{
+			ConfigWidget(m_NotificationsShow, "Notifications on the bottom-right corner of the window will be displayed.");
 		}
 		EndGroupPanel();
 	}

@@ -7,6 +7,9 @@
 #include <cheat-base/render/gui-util.h>
 #include <cheat-base/cheat/misc/Settings.h>
 
+#include "imgui_notify.h"
+#include "tahoma.h"
+
 namespace cheat 
 {
 	namespace events 
@@ -247,6 +250,11 @@ namespace cheat
 		}
 	}
 
+	void CheatManager::DrawNotifications()
+	{
+		ImGui::RenderNotifications();
+	}
+
 	void CheatManager::OnRender()
 	{
 		auto& settings = feature::Settings::GetInstance();
@@ -264,6 +272,9 @@ namespace cheat
 		
 		if (settings.m_FpsShow)
 			DrawFps();
+
+		if (settings.m_NotificationsShow)
+			DrawNotifications();
 
 		if (settings.m_MenuKey.value().IsReleased() && !ImGui::IsAnyItemActive())
 			ToggleMenuShow();
@@ -285,6 +296,15 @@ namespace cheat
 				bool& value = *field->valuePtr();
 				value = !value;
 				field->Check();
+				static ImGuiToastType type = ImGuiToastType_None;
+				// toastTitle is field->GetFriendlyName() + ": " + value
+				std::string toastTitle = field->GetFriendlyName();
+				std::string withValue = (value ? "Enabled" : "Disabled");
+				// toastTitle is toastTitle + ": " + withValue
+				toastTitle += ": " + withValue;
+				ImGuiToast toast(type, 20);
+				toast.set_title(toastTitle.c_str());
+				ImGui::InsertNotification(toast);
 			}
 		}
 	}
