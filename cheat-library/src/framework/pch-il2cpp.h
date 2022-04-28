@@ -29,7 +29,7 @@
 #include <Windows.h>
 
 #include <cheat-base/Logger.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 #include <cheat-base/util.h>
 #include <cheat-base/cheat/CheatManager.h>
 #include <cheat-base/cheat/Feature.h>

@@ -10,7 +10,7 @@ namespace cheat::feature
     static void VCHumanoidMove_NotifyLandVelocity_Hook(app::VCHumanoidMove* __this, app::Vector3 velocity, float reachMaxDownVelocityTime, MethodInfo* method);
 
     GodMode::GodMode() : Feature(),
-        NFF(m_Enabled, "God mode", "m_GodMode", "Player", false)
+        NFEX(f_Enabled, "God mode", "m_GodMode", "Player", false, false)
     {
 		// HookManager::install(app::LCBaseCombat_FireBeingHitEvent, LCBaseCombat_FireBeingHitEvent_Hook);
 		HookManager::install(app::VCHumanoidMove_NotifyLandVelocity, VCHumanoidMove_NotifyLandVelocity_Hook);
@@ -25,14 +25,14 @@ namespace cheat::feature
 
     void GodMode::DrawMain()
     {
-        ConfigWidget("God Mode", m_Enabled, 
+        ConfigWidget("God Mode", f_Enabled, 
                      "Enables god mode, i.e. no incoming damage.\n" \
                      "May not work with some types of damage.");
     }
 
     bool GodMode::NeedStatusDraw() const
 {
-        return m_Enabled;
+        return f_Enabled;
     }
 
     void GodMode::DrawStatus() 
@@ -52,7 +52,7 @@ namespace cheat::feature
         auto& gm = GodMode::GetInstance();
         auto& manager = game::EntityManager::instance();
         auto entity = manager.entity(target);
-		if (gm.m_Enabled && entity->isAvatar())
+		if (gm.f_Enabled && entity->isAvatar())
 			return false;
 
 		return callOrigin(Miscs_CheckTargetAttackable_Hook, __this, attacker, target, method);
@@ -64,7 +64,7 @@ namespace cheat::feature
 	static void VCHumanoidMove_NotifyLandVelocity_Hook(app::VCHumanoidMove* __this, app::Vector3 velocity, float reachMaxDownVelocityTime, MethodInfo* method)
 	{
         auto& gm = GodMode::GetInstance();
-		if (gm.m_Enabled && -velocity.y > 13)
+		if (gm.f_Enabled && -velocity.y > 13)
 		{
 			float randAdd = (float)(std::rand() % 1000) / 1000;
 			velocity.y = -8 - randAdd;

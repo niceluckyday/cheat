@@ -13,13 +13,13 @@ namespace cheat::feature
 	app::Vector3 zero;
 
     NoClip::NoClip() : Feature(),
-        NF(m_Enabled,            "No clip",              "NoClip", false),
-        NF(m_Speed,              "Speed",                "NoClip", 5.5f),
-        NF(m_CameraRelative,     "Relative to camera",   "NoClip", true),
-		NF(m_VelocityMode,       "Velocity mode",        "NoClip", false),
-		NF(m_FreeflightMode,     "Freeflight mode",      "NoClip", false),
-		NF(m_AltSpeedEnabled,	 "Alt speed enabled",    "NoClip", false),
-		NF(m_AltSpeed,			 "Alt speed",            "NoClip", 1.0f)
+        NF(f_Enabled,            "No clip",              "NoClip", false),
+        NF(f_Speed,              "Speed",                "NoClip", 5.5f),
+        NF(f_CameraRelative,     "Relative to camera",   "NoClip", true),
+		NF(f_VelocityMode,       "Velocity mode",        "NoClip", false),
+		NF(f_FreeflightMode,     "Freeflight mode",      "NoClip", false),
+		NF(f_AltSpeedEnabled,	 "Alt speed enabled",    "NoClip", false),
+		NF(f_AltSpeed,			 "Alt speed",            "NoClip", 1.0f)
     {
 		HookManager::install(app::HumanoidMoveFSM_LateTick, HumanoidMoveFSM_LateTick_Hook);
 
@@ -35,42 +35,42 @@ namespace cheat::feature
 
     void NoClip::DrawMain()
     {
-		ConfigWidget("Enabled", m_Enabled, "Enables no-clip (fast speed + no collision).\n" \
+		ConfigWidget("Enabled", f_Enabled, "Enables no-clip (fast speed + no collision).\n" \
             "To move, use WASD, Space (go up), and Shift (go down).");
 
-		ConfigWidget("Speed", m_Speed, 0.1f, 2.0f, 100.0f,
+		ConfigWidget("Speed", f_Speed, 0.1f, 2.0f, 100.0f,
 			"No-clip move speed.\n" \
 			"Not recommended setting above 5.0.");
 
-		ConfigWidget("Camera-relative movement", m_CameraRelative,
+		ConfigWidget("Camera-relative movement", f_CameraRelative,
 			"Move relative to camera view instead of avatar view/direction.");
 
-		ConfigWidget("Alternate No-clip", m_AltSpeedEnabled,
+		ConfigWidget("Alternate No-clip", f_AltSpeedEnabled,
 			"Allows usage of alternate speed when holding down LeftCtrl key.\n" \
 			"Useful if you want to temporarily go faster/slower than the no-clip speed setting.");
 			
-		if (m_AltSpeedEnabled) {
-			ConfigWidget("Alt Speed", m_AltSpeed, 0.1f, 2.0f, 100.0f,
+		if (f_AltSpeedEnabled) {
+			ConfigWidget("Alt Speed", f_AltSpeed, 0.1f, 2.0f, 100.0f,
 				"Alternate no-clip move speed.\n" \
 				"Not recommended setting above 5.0.");
 		
-		ConfigWidget("Velocity mode", m_VelocityMode,"Use velocity instead of position to move.");
-		ConfigWidget("Freeflight mode", m_FreeflightMode,"Don't remove collisions");
+		ConfigWidget("Velocity mode", f_VelocityMode,"Use velocity instead of position to move.");
+		ConfigWidget("Freeflight mode", f_FreeflightMode,"Don't remove collisions");
 		}
     }
 
     bool NoClip::NeedStatusDraw() const
 {
-        return m_Enabled;
+        return f_Enabled;
     }
 
     void NoClip::DrawStatus() 
     {
 		ImGui::Text("NoClip%s[%.01f%s%|%s]",
-			m_AltSpeedEnabled ? "+Alt " : " ",
-			m_Speed.value(),
-			m_AltSpeedEnabled ? fmt::format("|{:.1f}", m_AltSpeed.value()) : "",
-			m_CameraRelative ? "CR" : "PR");
+			f_AltSpeedEnabled ? "+Alt " : " ",
+			f_Speed.value(),
+			f_AltSpeedEnabled ? fmt::format("|{:.1f}", f_AltSpeed.value()) : "",
+			f_CameraRelative ? "CR" : "PR");
     }
 
     NoClip& NoClip::GetInstance()
@@ -87,20 +87,20 @@ namespace cheat::feature
 
 		auto& manager = game::EntityManager::instance();
 		
-		if (!m_Enabled && isApplied)
+		if (!f_Enabled && isApplied)
 		{
 			auto avatarEntity = manager.avatar();
 			auto rigidBody = avatarEntity->rigidbody();
 			if (rigidBody == nullptr)
 				return;
 
-			if (!m_FreeflightMode)
+			if (!f_FreeflightMode)
 				app::Rigidbody_set_detectCollisions(rigidBody, true, nullptr);
 			
 			isApplied = false;
 		}
 
-		if (!m_Enabled)
+		if (!f_Enabled)
 			return;
 
 		isApplied = true;
@@ -116,18 +116,18 @@ namespace cheat::feature
 		auto rigidBody = avatarEntity->rigidbody();
 		if (rigidBody == nullptr)
 			return;
-		if (!m_FreeflightMode)
+		if (!f_FreeflightMode)
 			app::Rigidbody_set_detectCollisions(rigidBody, false, nullptr);
 		
-		if (!m_VelocityMode)
+		if (!f_VelocityMode)
 			app::Rigidbody_set_velocity(rigidBody, zero,nullptr);
 
 		auto cameraEntity = game::Entity(reinterpret_cast<app::BaseEntity*>(manager.mainCamera()));
-		auto relativeEntity = m_CameraRelative ? &cameraEntity : avatarEntity;
+		auto relativeEntity = f_CameraRelative ? &cameraEntity : avatarEntity;
 
-		float speed = m_Speed.value();
-		if (m_AltSpeedEnabled && Hotkey(VK_LCONTROL).IsPressed())
-			speed = m_AltSpeed.value(); 
+		float speed = f_Speed.value();
+		if (f_AltSpeedEnabled && Hotkey(VK_LCONTROL).IsPressed())
+			speed = f_AltSpeed.value(); 
 
 		app::Vector3 dir = {};
 		if (Hotkey('W').IsPressed())
@@ -155,7 +155,7 @@ namespace cheat::feature
 		float deltaTime = app::Time_get_deltaTime(nullptr, nullptr);
 
 		app::Vector3 newPos = prevPos + dir * speed * deltaTime;
-		if (!m_VelocityMode)
+		if (!f_VelocityMode)
 			avatarEntity->setRelativePosition(newPos);
 		else
 			app::Rigidbody_set_velocity(rigidBody, dir * speed, nullptr);
@@ -167,7 +167,7 @@ namespace cheat::feature
 		static app::Vector3 prevPosition = {};
 		static int64_t prevSyncTime = 0;
 
-		if (!m_Enabled)
+		if (!f_Enabled)
 		{
 			prevSyncTime = 0;
 			return;
@@ -214,7 +214,7 @@ namespace cheat::feature
 	static void HumanoidMoveFSM_LateTick_Hook(void* __this, float deltaTime, MethodInfo* method)
 	{
 		NoClip& noClip = NoClip::GetInstance();
-		if (noClip.m_Enabled)
+		if (noClip.f_Enabled)
 			return;
 
 		callOrigin(HumanoidMoveFSM_LateTick_Hook, __this, deltaTime, method);

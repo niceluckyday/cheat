@@ -10,10 +10,10 @@
 namespace cheat::feature 
 {
     AutoFish::AutoFish() : Feature(),
-        NFF(m_Enabled, "Auto Fish", "m_AutoFish", "AutoFish", false),
-        NF(m_DelayBeforeCatch, "Delay before catch", "AutoFish", 2000),
-        NF(m_AutoRecastRod, "Recast rod", "AutoFish", true),
-        NF(m_DelayBeforeRecast, "Delay before recast", "AutoFish", 500)
+        NFEX(f_Enabled, "Auto Fish", "m_AutoFish", "AutoFish", false, false),
+        NF(f_DelayBeforeCatch, "Delay before catch", "AutoFish", 2000),
+        NF(f_AutoRecastRod, "Recast rod", "AutoFish", true),
+        NF(f_DelayBeforeRecast, "Delay before recast", "AutoFish", 500)
     {
         events::GameUpdateEvent += MY_METHOD_HANDLER(AutoFish::OnGameUpdate);
 
@@ -33,18 +33,18 @@ namespace cheat::feature
 
     void AutoFish::DrawMain()
     {
-        ConfigWidget("Enabled", m_Enabled, "Automatically catch fish.");
-        ConfigWidget(m_DelayBeforeCatch, 100, 500, 4000, "Fish will be catch after this delay.");
+        ConfigWidget("Enabled", f_Enabled, "Automatically catch fish.");
+        ConfigWidget(f_DelayBeforeCatch, 100, 500, 4000, "Fish will be catch after this delay.");
 
         ImGui::Spacing();
 
-        ConfigWidget(m_AutoRecastRod, "If enabled, rod will recasted. Without visualization.");
-        ConfigWidget(m_DelayBeforeRecast, 10, 100, 4000);
+        ConfigWidget(f_AutoRecastRod, "If enabled, rod will recasted. Without visualization.");
+        ConfigWidget(f_DelayBeforeRecast, 10, 100, 4000);
     }
 
     bool AutoFish::NeedStatusDraw() const
 	{
-        return m_Enabled;
+        return f_Enabled;
     }
 
     void AutoFish::DrawStatus() 
@@ -63,7 +63,7 @@ namespace cheat::feature
         callOrigin(FishingModule_onFishChosenNotify_Hook, __this, notify, method);
 
 		auto& autoFish = GetInstance();
-		if (!autoFish.m_Enabled)
+		if (!autoFish.f_Enabled)
 			return;
 
         app::FishingModule_RequestFishBite(__this, nullptr);
@@ -72,7 +72,7 @@ namespace cheat::feature
 	void AutoFish::FishingModule_OnFishBiteRsp_Hook(void* __this, app::FishBiteRsp* rsp, MethodInfo* method)
 	{   
         auto& autoFish = GetInstance();
-        if (!autoFish.m_Enabled)
+        if (!autoFish.f_Enabled)
         {
             callOrigin(FishingModule_OnFishBiteRsp_Hook, __this, rsp, method);
             return;
@@ -84,14 +84,14 @@ namespace cheat::feature
 	void AutoFish::FishingModule_OnFishBattleBeginRsp_Hook(void* __this, app::FishBattleBeginRsp* rsp, MethodInfo* method)
 	{
 		auto& autoFish = GetInstance();
-		if (!autoFish.m_Enabled)
+		if (!autoFish.f_Enabled)
 		{
             callOrigin(FishingModule_OnFishBattleBeginRsp_Hook, __this, rsp, method);
 			return;
 		}
 
 		std::lock_guard<std::mutex> catchLock(autoFish.m_BattleFinishTimestampMutex);
-		autoFish.m_BattleFinishTimestamp = app::GetTimestamp(nullptr, nullptr) + autoFish.m_DelayBeforeCatch;
+		autoFish.m_BattleFinishTimestamp = app::GetTimestamp(nullptr, nullptr) + autoFish.f_DelayBeforeCatch;
     }
 
 	void AutoFish::FishingModule_OnFishBattleEndRsp_Hook(void* __this, app::FishBattleEndRsp* rsp, MethodInfo* method)
@@ -108,22 +108,22 @@ namespace cheat::feature
             return;
         }
 
-        if (!autoFish.m_Enabled)
+        if (!autoFish.f_Enabled)
             return;
 
         if (rsp->fields.retcode_ != 0)
         {
-            LOG_WARNING("Failed to catch fish, retrying in %u ms", autoFish.m_DelayBeforeCatch);
+            LOG_WARNING("Failed to catch fish, retrying in %u ms", autoFish.f_DelayBeforeCatch);
 			std::lock_guard<std::mutex> catchLock(autoFish.m_BattleFinishTimestampMutex);
-			autoFish.m_BattleFinishTimestamp = app::GetTimestamp(nullptr, nullptr) + autoFish.m_DelayBeforeCatch;
+			autoFish.m_BattleFinishTimestamp = app::GetTimestamp(nullptr, nullptr) + autoFish.f_DelayBeforeCatch;
             return;
         }
 
-        if (!autoFish.m_AutoRecastRod)
+        if (!autoFish.f_AutoRecastRod)
             return;
 
         std::lock_guard<std::mutex> _lock(autoFish.m_RecastTimestampMutex);
-        autoFish.m_RecastTimestamp = app::GetTimestamp(nullptr, nullptr) + autoFish.m_DelayBeforeRecast;
+        autoFish.m_RecastTimestamp = app::GetTimestamp(nullptr, nullptr) + autoFish.f_DelayBeforeRecast;
 	}
 
 	void AutoFish::FishingModule_OnExitFishingRsp_Hook(void* __this, void* rsp, MethodInfo* method)
@@ -166,8 +166,8 @@ namespace cheat::feature
         {
             m_BattleFinishTimestamp = 0;
 
-            app::FishingModule_RequestFishBattleEnd(m_LastCastData.fishingModule, app::FishBattleResult__Enum::Succ, m_DelayBeforeCatch == 4.0f,
-                static_cast<float>(m_DelayBeforeCatch / 1000), nullptr);
+            app::FishingModule_RequestFishBattleEnd(m_LastCastData.fishingModule, app::FishBattleResult__Enum::Succ, f_DelayBeforeCatch == 4.0f,
+                static_cast<float>(f_DelayBeforeCatch / 1000), nullptr);
         }
 
 		if (m_RecastTimestamp != 0 && timestamp > m_RecastTimestamp)

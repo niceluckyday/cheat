@@ -10,10 +10,10 @@ namespace cheat::feature
     static void InLevelCutScenePageContext_ClearView_Hook(app::InLevelCutScenePageContext* __this, MethodInfo* method);
 
     DialogSkip::DialogSkip() : Feature(),
-        NF(m_Enabled,               "Auto talk",                "AutoTalk", false),
-        NF(m_AutoSelectDialog,      "Auto select dialog",       "AutoTalk", true),
-        NF(m_ExcludeImportant,      "Exclude Katheryne/Tubby",  "AutoTalk", true),
-        NF(m_FastDialog,            "Fast dialog",              "AutoTalk", false)
+        NF(f_Enabled,               "Auto talk",                "AutoTalk", false),
+        NF(f_AutoSelectDialog,      "Auto select dialog",       "AutoTalk", true),
+        NF(f_ExcludeImportant,      "Exclude Katheryne/Tubby",  "AutoTalk", true),
+        NF(f_FastDialog,            "Fast dialog",              "AutoTalk", false)
     {
         HookManager::install(app::InLevelCutScenePageContext_UpdateView, InLevelCutScenePageContext_UpdateView_Hook);
         HookManager::install(app::InLevelCutScenePageContext_ClearView, InLevelCutScenePageContext_ClearView_Hook);
@@ -27,30 +27,30 @@ namespace cheat::feature
 
     void DialogSkip::DrawMain()
     {
-        ConfigWidget("Enabled", m_Enabled, "Automatically continue the dialog.");
-        ConfigWidget("Auto-select Dialog", m_AutoSelectDialog, "Automatically select dialog choices.");
-        if (m_AutoSelectDialog)
+        ConfigWidget("Enabled", f_Enabled, "Automatically continue the dialog.");
+        ConfigWidget("Auto-select Dialog", f_AutoSelectDialog, "Automatically select dialog choices.");
+        if (f_AutoSelectDialog)
         {
             ImGui::Indent();
-            ConfigWidget("Exclude Katheryne/Tubby", m_ExcludeImportant, "Exclude Kath/Tubby from auto-select.");
+            ConfigWidget("Exclude Katheryne/Tubby", f_ExcludeImportant, "Exclude Kath/Tubby from auto-select.");
             ImGui::Unindent();
         }
-        ConfigWidget("Fast Dialog", m_FastDialog, "Speeds up dialog (includes crafting/cooking/cutscenes).");
+        ConfigWidget("Fast Dialog", f_FastDialog, "Speeds up dialog (includes crafting/cooking/cutscenes).");
     }
 
     bool DialogSkip::NeedStatusDraw() const
 {
-        return m_Enabled;
+        return f_Enabled;
     }
 
     void DialogSkip::DrawStatus() 
     {
         ImGui::Text("Dialog [%s%s%s%s%s]",
-            m_AutoSelectDialog ? "Auto" : "Manual",
-            m_AutoSelectDialog && (m_ExcludeImportant || m_FastDialog) ? "|" : "",
-            m_ExcludeImportant ? "Exc" : "",
-            m_ExcludeImportant && m_FastDialog ? "|" : "",
-            m_FastDialog ? "Fast" : "Normal");
+            f_AutoSelectDialog ? "Auto" : "Manual",
+            f_AutoSelectDialog && (f_ExcludeImportant || f_FastDialog) ? "|" : "",
+            f_ExcludeImportant ? "Exc" : "",
+            f_ExcludeImportant && f_FastDialog ? "|" : "",
+            f_FastDialog ? "Fast" : "Normal");
     }
 
     DialogSkip& DialogSkip::GetInstance()
@@ -64,18 +64,18 @@ namespace cheat::feature
     // When appear dialog choose we create notify with dialog select first item.
     void DialogSkip::OnCutScenePageUpdate(app::InLevelCutScenePageContext* context) 
     {
-        if (!m_Enabled)
+        if (!f_Enabled)
             return;
 
         auto talkDialog = context->fields._talkDialog;
         if (talkDialog == nullptr)
             return;
 
-        if (m_FastDialog)
+        if (f_FastDialog)
             app::Time_set_timeScale(nullptr, 5.0f, nullptr);
 
         bool isImportant = false;
-        if (m_ExcludeImportant)
+        if (f_ExcludeImportant)
         {
             // TODO: Add a custom filter in the future where users can
             // add their own name substrings of entities to avoid
@@ -98,7 +98,7 @@ namespace cheat::feature
             }
         }
 
-		if (talkDialog->fields._inSelect && m_AutoSelectDialog && !isImportant)
+		if (talkDialog->fields._inSelect && f_AutoSelectDialog && !isImportant)
 		{
 			int32_t value = 0;
 			auto object = il2cpp_value_box((Il2CppClass*)*app::Int32__TypeInfo, &value);

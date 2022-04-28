@@ -1,6 +1,6 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 
 #include <cheat/game/Entity.h>
 
@@ -12,13 +12,13 @@ namespace cheat::feature
 	class MobVacuum : public Feature
     {
 	public:
-		config::field::ToggleField m_Enabled;
-		config::field::ToggleField m_IncludeAnimals;
-		config::field::BaseField<float> m_Speed;
-		config::field::BaseField<float> m_Radius;
-		config::field::BaseField<float> m_Distance;
-		config::field::BaseField<bool> m_OnlyTarget;
-		config::field::BaseField<bool> m_Instantly;
+		config::Field<config::ToggleHotkey> f_Enabled;
+		config::Field<config::ToggleHotkey> f_IncludeAnimals;
+		config::Field<float> f_Speed;
+		config::Field<float> f_Radius;
+		config::Field<float> f_Distance;
+		config::Field<bool> f_OnlyTarget;
+		config::Field<bool> f_Instantly;
 
 		static MobVacuum& GetInstance();
 

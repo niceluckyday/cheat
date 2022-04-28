@@ -11,8 +11,8 @@ namespace cheat::feature
 		app::JKNLDEEBGLL value, MethodInfo* method);
 
     InfiniteStamina::InfiniteStamina() : Feature(),
-        NF(m_Enabled, "Infinite stamina", "InfiniteStamina", false),
-        NF(m_PacketReplacement, "Move sync packet replacement", "InfiniteStamina", false)
+        NF(f_Enabled, "Infinite stamina", "InfiniteStamina", false),
+        NF(f_PacketReplacement, "Move sync packet replacement", "InfiniteStamina", false)
     {
 		HookManager::install(app::AvatarPropDictionary_SetItem, AvatarPropDictionary_SetItem_Hook);
 
@@ -27,9 +27,9 @@ namespace cheat::feature
 
     void InfiniteStamina::DrawMain()
     {
-		ConfigWidget("Enabled", m_Enabled, "Enables infinite stamina option.");
+		ConfigWidget("Enabled", f_Enabled, "Enables infinite stamina option.");
 
-		ConfigWidget("Move Sync Packet Replacement", m_PacketReplacement,
+		ConfigWidget("Move Sync Packet Replacement", f_PacketReplacement,
 			"This mode prevents sending server packets with stamina cost actions,\n" \
 			"e.g. swim, climb, sprint, etc.\n" \
 			"NOTE: This is may be more safe than the standard method. More testing is needed.");
@@ -37,12 +37,12 @@ namespace cheat::feature
 
     bool InfiniteStamina::NeedStatusDraw() const
 {
-        return m_Enabled;
+        return f_Enabled;
     }
 
     void InfiniteStamina::DrawStatus() 
     { 
-        ImGui::Text("Inf. Stamina [%s]", m_PacketReplacement ? "Packet" : "Normal");
+        ImGui::Text("Inf. Stamina [%s]", f_PacketReplacement ? "Packet" : "Normal");
     }
 
     InfiniteStamina& InfiniteStamina::GetInstance()
@@ -59,7 +59,7 @@ namespace cheat::feature
 	{
 		using PT = app::PropType__Enum;
 
-		return !m_Enabled || m_PacketReplacement ||
+		return !f_Enabled || f_PacketReplacement ||
 					(propType != PT::PROP_MAX_STAMINA &&
 				     propType != PT::PROP_CUR_PERSIST_STAMINA &&
 					 propType != PT::PROP_CUR_TEMPORARY_STAMINA);
@@ -77,7 +77,7 @@ namespace cheat::feature
 			return;
 
 		// LOG_DEBUG("Movement packet: %s", magic_enum::enum_name(syncInfo->fields.motionState).data());
-		if (m_Enabled && m_PacketReplacement)
+		if (f_Enabled && f_PacketReplacement)
 		{
 			auto state = syncInfo->fields.motionState;
 			switch (state)

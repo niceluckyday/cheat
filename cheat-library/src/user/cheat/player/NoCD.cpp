@@ -15,9 +15,9 @@ namespace cheat::feature
 	static std::list<std::string> abilityLog;
 
     NoCD::NoCD() : Feature(),
-        NF(m_Ability,    "Ability CD",  "NoCD", false),
-        NF(m_Sprint,     "Sprint CD",   "NoCD", false),
-        NF(m_InstantBow, "Instant bow", "NoCD", false)
+        NF(f_Ability,    "Ability CD",  "NoCD", false),
+        NF(f_Sprint,     "Sprint CD",   "NoCD", false),
+        NF(f_InstantBow, "Instant bow", "NoCD", false)
     {
 		HookManager::install(app::LCAvatarCombat_IsEnergyMax, LCAvatarCombat_IsEnergyMax_Hook);
 		HookManager::install(app::LCAvatarCombat_IsSkillInCD_1, LCAvatarCombat_IsSkillInCD_1_Hook);
@@ -35,13 +35,13 @@ namespace cheat::feature
 
     void NoCD::DrawMain()
     {
-		ConfigWidget("No Skill/Burst Cooldown", m_Ability, "Disable cooldowns of elemental skills and bursts.\n" \
+		ConfigWidget("No Skill/Burst Cooldown", f_Ability, "Disable cooldowns of elemental skills and bursts.\n" \
 			"Removes energy requirement for elemental bursts.\n" \
 			"(Energy bubble may appear incomplete but still usable).");
-		ConfigWidget("No Sprint Cooldown", m_Sprint, "Removes delay in-between sprints.");
-		ConfigWidget("Instant Bow Charge", m_InstantBow, "Disable cooldown of bow charge.\n" \
+		ConfigWidget("No Sprint Cooldown", f_Sprint, "Removes delay in-between sprints.");
+		ConfigWidget("Instant Bow Charge", f_InstantBow, "Disable cooldown of bow charge.\n" \
 			"Known issues with Fischl.");
-		if (m_InstantBow) {
+		if (f_InstantBow) {
 			ImGui::Text("If Instant Bow Charge doesn't work:");
 			TextURL("Please contribute to issue on GitHub.", "https://github.com/CallowBlack/genshin-cheat/issues/47", false, false);
 			if (ImGui::TreeNode("Ability Log [DEBUG]"))
@@ -68,17 +68,17 @@ namespace cheat::feature
 
     bool NoCD::NeedStatusDraw() const
 {
-        return m_InstantBow || m_Ability || m_Sprint;
+        return f_InstantBow || f_Ability || f_Sprint;
     }
 
     void NoCD::DrawStatus() 
     {
 		ImGui::Text("NoCD [%s%s%s%s%s]", 
-			m_Ability ? "E/Q" : "", 
-			m_Ability && (m_InstantBow || m_Sprint) ? "|" : "",
-			m_InstantBow ? "Bow" : "", 
-			m_InstantBow && m_Sprint ? "|": "",
-			m_Sprint ? "Sprint" : "");
+			f_Ability ? "E/Q" : "", 
+			f_Ability && (f_InstantBow || f_Sprint) ? "|" : "",
+			f_InstantBow ? "Bow" : "", 
+			f_InstantBow && f_Sprint ? "|": "",
+			f_Sprint ? "Sprint" : "");
     }
 
     NoCD& NoCD::GetInstance()
@@ -90,7 +90,7 @@ namespace cheat::feature
 	static bool LCAvatarCombat_IsEnergyMax_Hook(void* __this, MethodInfo* method)
 	{
 		NoCD& noCD = NoCD::GetInstance();
-		if (noCD.m_Ability)
+		if (noCD.f_Ability)
 			return true;
 
 		return callOrigin(LCAvatarCombat_IsEnergyMax_Hook, __this, method);
@@ -99,7 +99,7 @@ namespace cheat::feature
 	static bool LCAvatarCombat_IsSkillInCD_1_Hook(void* __this, void* skillInfo, MethodInfo* method)
 	{
 		NoCD& noCD = NoCD::GetInstance();
-		if (noCD.m_Ability)
+		if (noCD.f_Ability)
 			return false;
 
 		return callOrigin(LCAvatarCombat_IsSkillInCD_1_Hook, __this, skillInfo, method);
@@ -109,7 +109,7 @@ namespace cheat::feature
 	static bool HumanoidMoveFSM_CheckSprintCooldown_Hook(void* __this, MethodInfo* method)
 	{
 		NoCD& noCD = NoCD::GetInstance();
-		if (noCD.m_Sprint)
+		if (noCD.f_Sprint)
 			return true;
 
 		return callOrigin(HumanoidMoveFSM_CheckSprintCooldown_Hook, __this, method);
@@ -131,7 +131,7 @@ namespace cheat::feature
 		NoCD& noCD = NoCD::GetInstance();
 		// This function is calling not only for bows, so if don't put key filter it cause various game mechanic bugs.
 		// For now only "_Enchanted_Time" found for bow charging, maybe there are more. Need to continue research.
-		if (noCD.m_InstantBow && il2cppi_to_string(key) == "_Enchanted_Time")
+		if (noCD.f_InstantBow && il2cppi_to_string(key) == "_Enchanted_Time")
 			value = maxValue;
 		callOrigin(ActorAbilityPlugin_AddDynamicFloatWithRange_Hook, __this, key, value, minValue, maxValue, forceDoAtRemote, method);
 	}

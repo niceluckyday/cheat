@@ -3,7 +3,7 @@
 #include <il2cpp-appdata.h>
 
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 
 namespace cheat::feature 
 {
@@ -11,10 +11,10 @@ namespace cheat::feature
 	class MapTeleport : public Feature
     {
 	public:
-		config::field::ToggleField m_Enabled;
-		config::field::BaseField<bool> m_DetectHeight;
-		config::field::BaseField<float> m_DefaultHeight;
-		config::field::HotkeyField m_Key;
+		config::Field<config::ToggleHotkey> f_Enabled;
+		config::Field<bool> f_DetectHeight;
+		config::Field<float> f_DefaultHeight;
+		config::Field<Hotkey> f_Key;
 
 		static MapTeleport& GetInstance();
 

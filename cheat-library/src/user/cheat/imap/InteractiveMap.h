@@ -1,11 +1,7 @@
 #pragma once
-#include <optional>
-#include <list>
-#include <set>
 
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
-#include <cheat-base/config/field/StringField.h>
+#include <cheat-base/config/config.h>
 #include <cheat/game/Entity.h>
 #include <cheat/game/IEntityFilter.h>
 
@@ -15,30 +11,30 @@ namespace cheat::feature
 	class InteractiveMap : public Feature
     {
 	public:
-		config::field::ToggleField m_Enabled;
-		config::field::BaseField<bool> m_SeparatedWindows;
-		config::field::BaseField<bool> m_CompletionLogShow;
+		config::Field<config::ToggleHotkey> f_Enabled;
+		config::Field<bool> f_SeparatedWindows;
+		config::Field<bool> f_CompletionLogShow;
 
-		config::field::BaseField<float> m_IconSize;
-		config::field::BaseField<float> m_MinimapIconSize;
-		config::field::BaseField<bool> m_DynamicSize;
-		config::field::BaseField<bool> m_ShowHDIcons;
+		config::Field<float> f_IconSize;
+		config::Field<float> f_MinimapIconSize;
+		config::Field<bool> f_DynamicSize;
+		config::Field<bool> f_ShowHDIcons;
 		
-		config::field::BaseField<bool> m_ShowCompleted;
-		config::field::BaseField<float> m_CompletePointTransparency;
+		config::Field<bool> f_ShowCompleted;
+		config::Field<float> f_CompletePointTransparency;
 
-		config::field::BaseField<bool> m_AutoDetectNewItems;
-		config::field::BaseField<bool> m_NewItemstDetectOnlyShowed;
-		config::field::BaseField<float> m_NewItemsDetectRange;
-		config::field::BaseField<int> m_NewItemsDetectingDelay;
+		config::Field<bool> f_AutoDetectNewItems;
+		config::Field<bool> f_NewItemsDetectOnlyShowed;
+		config::Field<float> f_NewItemsDetectRange;
+		config::Field<int> f_NewItemsDetectingDelay;
 
-		config::field::BaseField<bool> m_AutoDetectGatheredItems;
-		config::field::BaseField<float> m_GatheredItemsDetectRange;
+		config::Field<bool> f_AutoDetectGatheredItems;
+		config::Field<float> f_GatheredItemsDetectRange;
 		
-		config::field::HotkeyField m_CompleteNearestPoint;
-		config::field::HotkeyField m_RevertLatestCompletion;
-		config::field::BaseField<bool> m_CompleteOnlyViewed;
-		config::field::BaseField<float> m_PointFindRange;
+		config::Field<Hotkey> f_CompleteNearestPoint;
+		config::Field<Hotkey> f_RevertLatestCompletion;
+		config::Field<bool> f_CompleteOnlyViewed;
+		config::Field<float> f_PointFindRange;
 		
 		static InteractiveMap& GetInstance();
 
@@ -64,11 +60,11 @@ namespace cheat::feature
 		};
 
 		// std::optional<PointData> GetSelectedPoint();
-		InteractiveMap::PointData* GetHoveredPoint();
+		PointData* GetHoveredPoint();
 
-		std::vector<PointData*> GetEnitityPoints(game::Entity* entity, bool completed = false, uint32_t sceneID = 0);
-		InteractiveMap::PointData* FindNearestPoint(const app::Vector2& levelPosition, float range = 0.0f, bool onlyShowed = true, bool completed = false, uint32_t sceneID = 0);
-		InteractiveMap::PointData* FindEntityPoint(game::Entity* entity, float range = 0.0f, uint32_t sceneID = 0);
+		std::vector<PointData*> GetEntityPoints(game::Entity* entity, bool completed = false, uint32_t sceneID = 0);
+		PointData* FindNearestPoint(const app::Vector2& levelPosition, float range = 0.0f, bool onlyShowed = true, bool completed = false, uint32_t sceneID = 0);
+		PointData* FindEntityPoint(game::Entity* entity, float range = 0.0f, uint32_t sceneID = 0);
 
 		void CompletePoint(PointData* pointData);
 		void UncompletePoint(PointData* pointData);
@@ -88,7 +84,7 @@ namespace cheat::feature
 
 			std::string name;
 			std::string clearName;
-			config::field::BaseField<bool>* enabled;
+			config::Field<bool> enabled;
 
 			std::map<uint32_t, PointData> points;
 			uint32_t completedCount;
@@ -113,8 +109,8 @@ namespace cheat::feature
 		std::map<uint32_t, SceneData> m_ScenesData;
 
 		std::mutex m_UserDataMutex; // Support multithread
-		config::field::StringField m_UserPointsData;
-		config::field::BaseField<uint32_t> m_CustomPointIndex; // Stores last index for new custom points
+		config::Field<nlohmann::json> f_UserPointsData;
+		config::Field<uint32_t> f_CustomPointIndex; // Stores last index for new custom points
 		
 		std::unordered_set<PointData*> m_CustomPoints;
 		std::unordered_set<PointData*> m_CompletedPoints;
@@ -128,7 +124,7 @@ namespace cheat::feature
 		// Parsing map data
 		PointData ParsePointData(const nlohmann::json& data);
 		void LoadLabelData(const nlohmann::json& data, uint32_t sceneID, uint32_t labelID);
-		void LoadCategorieData(const nlohmann::json& data, uint32_t sceneID);
+		void LoadCategoriaData(const nlohmann::json& data, uint32_t sceneID);
 		void LoadSceneData(const nlohmann::json& data, uint32_t sceneID);
 		void LoadScenesData();
 
@@ -144,14 +140,14 @@ namespace cheat::feature
 		void SaveUserData();
 
 		void LoadCompletedPointData(LabelData* labelData, const nlohmann::json& data);
-		void SaveCompletedPointData(nlohmann::json& jObject, PointData* pointData);
+		static void SaveCompletedPointData(nlohmann::json& jObject, PointData* point);
 		
 		void LoadCustomPointData(LabelData* labelData, const nlohmann::json& data);
-		void SaveCustomPointData(nlohmann::json& jObject, PointData* pointData);
+		static void SaveCustomPointData(nlohmann::json& jObject, PointData* point);
 		
 		// Drawing
 		void DrawMenu();
-		void DrawFilters(bool searchFixed = true);
+		void DrawFilters(const bool searchFixed = true);
 		void DrawFilter(LabelData& label);
 
 		void DrawPoint(const PointData& pointData, const ImVec2& screenPosition, float radius, float radiusSquared, ImTextureID texture, bool selectable = true);
@@ -169,7 +165,7 @@ namespace cheat::feature
 		void OnItemGathered(game::Entity* entity);
 
 		// Utility
-		PointData* FindNearestPoint(const LabelData& label, const app::Vector2& levelPosition, float range = 0.0f, float checkUnlocked = false);
+		static PointData* FindNearestPoint(const LabelData& label, const app::Vector2& levelPosition, float range = 0.0f, bool completed = false);
 		std::vector<InteractiveMap::LabelData*> FindLabelsByClearName(const std::string& clearName);
 
 		// Hooks

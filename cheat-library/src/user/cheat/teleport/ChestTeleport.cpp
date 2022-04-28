@@ -11,49 +11,49 @@ namespace cheat::feature
 {
 
     ChestTeleport::ChestTeleport() : ItemTeleportBase("ChestTeleport", "Chest"),
-        NF(m_FilterChestLocked    , "Locked",       "ChestTeleport", true),
-		NF(m_FilterChestInRock    , "In rock",      "ChestTeleport", true),
-		NF(m_FilterChestFrozen    , "Frozen",       "ChestTeleport", true),
-		NF(m_FilterChestBramble   , "Bramble",      "ChestTeleport", true),
-		NF(m_FilterChestTrap      , "Trap",         "ChestTeleport", true),
+        NF(f_FilterChestLocked    , "Locked",       "ChestTeleport", true),
+		NF(f_FilterChestInRock    , "In rock",      "ChestTeleport", true),
+		NF(f_FilterChestFrozen    , "Frozen",       "ChestTeleport", true),
+		NF(f_FilterChestBramble   , "Bramble",      "ChestTeleport", true),
+		NF(f_FilterChestTrap      , "Trap",         "ChestTeleport", true),
 
-		NF(m_FilterChestCommon    , "Common",       "ChestTeleport", true),
-		NF(m_FilterChestExquisite , "Exquisite",    "ChestTeleport", true),
-		NF(m_FilterChestPrecious  , "Precious",     "ChestTeleport", true),
-		NF(m_FilterChestLuxurious , "Luxurious",    "ChestTeleport", true),
-		NF(m_FilterChestRemarkable, "Remarkable",   "ChestTeleport", true),
+		NF(f_FilterChestCommon    , "Common",       "ChestTeleport", true),
+		NF(f_FilterChestExquisite , "Exquisite",    "ChestTeleport", true),
+		NF(f_FilterChestPrecious  , "Precious",     "ChestTeleport", true),
+		NF(f_FilterChestLuxurious , "Luxurious",    "ChestTeleport", true),
+		NF(f_FilterChestRemarkable, "Remarkable",   "ChestTeleport", true),
 
-		NF(m_FilterChest          , "Chests",       "ChestTeleport", true),
-		NF(m_FilterInvestigates   , "Investigates", "ChestTeleport", false),
-		NF(m_FilterBookPage       , "Book pages",   "ChestTeleport", false),
-		NF(m_FilterBGM            , "BGMs",         "ChestTeleport", false),
-		NF(m_FilterQuestInt       , "Quest Interaction",  "ChestTeleport", false),
-		NF(m_FilterFloraChest     , "Flora chest",  "ChestTeleport", false),
+		NF(f_FilterChest          , "Chests",       "ChestTeleport", true),
+		NF(f_FilterInvestigates   , "Investigates", "ChestTeleport", false),
+		NF(f_FilterBookPage       , "Book pages",   "ChestTeleport", false),
+		NF(f_FilterBGM            , "BGMs",         "ChestTeleport", false),
+		NF(f_FilterQuestInt       , "Quest Interaction",  "ChestTeleport", false),
+		NF(f_FilterFloraChest     , "Flora chest",  "ChestTeleport", false),
 
-		NF(m_FilterUnknown        , "Unknowns",     "ChestTeleport", true)
+		NF(f_FilterUnknown        , "Unknowns",     "ChestTeleport", true)
 	{ }
 
 
     void cheat::feature::ChestTeleport::DrawFilterOptions()
     {
-		ConfigWidget(m_ShowInfo, "Show short info about nearest chest to the info window.");
+		ConfigWidget(f_ShowInfo, "Show short info about nearest chest to the info window.");
 
 		if (ImGui::TreeNode("Filters"))
 		{
 
 			ImGui::Text("Type filters");
 
-			ConfigWidget(m_FilterChest, "Enable chest detection and filters.");
-			ConfigWidget(m_FilterInvestigates);
-			ConfigWidget(m_FilterBookPage);
-			ConfigWidget(m_FilterBGM);
-			ConfigWidget(m_FilterQuestInt);
-			ConfigWidget(m_FilterFloraChest);
-			ConfigWidget(m_FilterUnknown, "Enable detection of unknown items.\nYou can see these items below, if they exist.");
+			ConfigWidget(f_FilterChest, "Enable chest detection and filters.");
+			ConfigWidget(f_FilterInvestigates);
+			ConfigWidget(f_FilterBookPage);
+			ConfigWidget(f_FilterBGM);
+			ConfigWidget(f_FilterQuestInt);
+			ConfigWidget(f_FilterFloraChest);
+			ConfigWidget(f_FilterUnknown, "Enable detection of unknown items.\nYou can see these items below, if they exist.");
 
 			ImGui::Spacing();
 
-			if (!m_FilterChest)
+			if (!f_FilterChest)
 				ImGui::BeginDisabled();
 
 			if (ImGui::BeginTable("Chest Filters", 2, ImGuiTableFlags_NoBordersInBody))
@@ -65,43 +65,43 @@ namespace cheat::feature
 				ImGui::Text("State Filter");
 
 				ImGui::TableNextColumn();
-				ConfigWidget(m_FilterChestCommon);
+				ConfigWidget(f_FilterChestCommon);
 
 				ImGui::TableNextColumn();
-				ConfigWidget(m_FilterChestLocked);
-
-
-				ImGui::TableNextColumn();
-				ConfigWidget(m_FilterChestExquisite);
-
-				ImGui::TableNextColumn();
-				ConfigWidget(m_FilterChestInRock);
+				ConfigWidget(f_FilterChestLocked);
 
 
 				ImGui::TableNextColumn();
-				ConfigWidget(m_FilterChestPrecious);
+				ConfigWidget(f_FilterChestExquisite);
 
 				ImGui::TableNextColumn();
-				ConfigWidget(m_FilterChestFrozen);
-
-
-				ImGui::TableNextColumn();
-				ConfigWidget(m_FilterChestLuxurious);
-
-				ImGui::TableNextColumn();
-				ConfigWidget(m_FilterChestBramble);
+				ConfigWidget(f_FilterChestInRock);
 
 
 				ImGui::TableNextColumn();
-				ConfigWidget(m_FilterChestRemarkable);
+				ConfigWidget(f_FilterChestPrecious);
 
 				ImGui::TableNextColumn();
-				ConfigWidget(m_FilterChestTrap);
+				ConfigWidget(f_FilterChestFrozen);
+
+
+				ImGui::TableNextColumn();
+				ConfigWidget(f_FilterChestLuxurious);
+
+				ImGui::TableNextColumn();
+				ConfigWidget(f_FilterChestBramble);
+
+
+				ImGui::TableNextColumn();
+				ConfigWidget(f_FilterChestRemarkable);
+
+				ImGui::TableNextColumn();
+				ConfigWidget(f_FilterChestTrap);
 
 				ImGui::EndTable();
 			}
 
-			if (!m_FilterChest)
+			if (!f_FilterChest)
 				ImGui::EndDisabled();
 
 			ImGui::TreePop();
@@ -128,7 +128,7 @@ namespace cheat::feature
 		auto chest = reinterpret_cast<game::Chest*>(entity);
 		auto filterResult = FilterChest(chest);
 		return filterResult == ChestTeleport::FilterStatus::Valid ||
-			(filterResult == ChestTeleport::FilterStatus::Unknown && m_FilterUnknown);
+			(filterResult == ChestTeleport::FilterStatus::Unknown && f_FilterUnknown);
 	}
 
 	cheat::feature::ChestTeleport::FilterStatus ChestTeleport::FilterChest(game::Chest* entity) const
@@ -138,18 +138,18 @@ namespace cheat::feature
 		{
 		case game::Chest::ItemType::Chest:
 		{
-			if (!m_FilterChest)
+			if (!f_FilterChest)
 				return FilterStatus::Invalid;
 			
 			auto chestRarity = entity->chestRarity();
 			if (chestRarity == game::Chest::ChestRarity::Unknown)
 				return FilterStatus::Unknown;
 			
-			bool rarityValid = (chestRarity == game::Chest::ChestRarity::Common && m_FilterChestCommon) ||
-				(chestRarity == game::Chest::ChestRarity::Exquisite  && m_FilterChestExquisite) ||
-				(chestRarity == game::Chest::ChestRarity::Precious   && m_FilterChestPrecious) ||
-				(chestRarity == game::Chest::ChestRarity::Luxurious  && m_FilterChestLuxurious) ||
-				(chestRarity == game::Chest::ChestRarity::Remarkable && m_FilterChestRemarkable);
+			bool rarityValid = (chestRarity == game::Chest::ChestRarity::Common && f_FilterChestCommon) ||
+				(chestRarity == game::Chest::ChestRarity::Exquisite  && f_FilterChestExquisite) ||
+				(chestRarity == game::Chest::ChestRarity::Precious   && f_FilterChestPrecious) ||
+				(chestRarity == game::Chest::ChestRarity::Luxurious  && f_FilterChestLuxurious) ||
+				(chestRarity == game::Chest::ChestRarity::Remarkable && f_FilterChestRemarkable);
 
 			if (!rarityValid)
 				return FilterStatus::Invalid;
@@ -159,11 +159,11 @@ namespace cheat::feature
 				return FilterStatus::Invalid;
 
 			bool chestStateValid = chestState == game::Chest::ChestState::None ||
-				(chestState == game::Chest::ChestState::Locked  && m_FilterChestLocked) ||
-				(chestState == game::Chest::ChestState::InRock  && m_FilterChestInRock) ||
-				(chestState == game::Chest::ChestState::Frozen  && m_FilterChestFrozen) ||
-				(chestState == game::Chest::ChestState::Bramble && m_FilterChestBramble) ||
-				(chestState == game::Chest::ChestState::Trap    && m_FilterChestTrap);
+				(chestState == game::Chest::ChestState::Locked  && f_FilterChestLocked) ||
+				(chestState == game::Chest::ChestState::InRock  && f_FilterChestInRock) ||
+				(chestState == game::Chest::ChestState::Frozen  && f_FilterChestFrozen) ||
+				(chestState == game::Chest::ChestState::Bramble && f_FilterChestBramble) ||
+				(chestState == game::Chest::ChestState::Trap    && f_FilterChestTrap);
 
 			if (!chestStateValid)
 				return FilterStatus::Invalid;
@@ -171,15 +171,15 @@ namespace cheat::feature
 			return FilterStatus::Valid;
 		}
 		case game::Chest::ItemType::Investigate:
-			return m_FilterInvestigates ? FilterStatus::Valid : FilterStatus::Invalid;
+			return f_FilterInvestigates ? FilterStatus::Valid : FilterStatus::Invalid;
 		case game::Chest::ItemType::BookPage:
-			return m_FilterBookPage ? FilterStatus::Valid : FilterStatus::Invalid;
+			return f_FilterBookPage ? FilterStatus::Valid : FilterStatus::Invalid;
 		case game::Chest::ItemType::BGM:
-			return m_FilterBGM ? FilterStatus::Valid : FilterStatus::Invalid;
+			return f_FilterBGM ? FilterStatus::Valid : FilterStatus::Invalid;
 		case game::Chest::ItemType::QuestInteract:
-			return m_FilterQuestInt ? FilterStatus::Valid : FilterStatus::Invalid;
+			return f_FilterQuestInt ? FilterStatus::Valid : FilterStatus::Invalid;
 		case game::Chest::ItemType::Flora:
-			return m_FilterFloraChest ? FilterStatus::Valid : FilterStatus::Invalid;
+			return f_FilterFloraChest ? FilterStatus::Valid : FilterStatus::Invalid;
 		case game::Chest::ItemType::None:
 		default:
 			return FilterStatus::Unknown;

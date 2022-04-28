@@ -1,6 +1,6 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 
 namespace cheat::feature 
 {
@@ -8,10 +8,10 @@ namespace cheat::feature
 	class AutoFish : public Feature
     {
 	public:
-		config::field::ToggleField m_Enabled;
-		config::field::BaseField<int> m_DelayBeforeCatch;
-		config::field::BaseField<bool> m_AutoRecastRod;
-		config::field::BaseField<int> m_DelayBeforeRecast;
+		config::Field<config::ToggleHotkey> f_Enabled;
+		config::Field<int> f_DelayBeforeCatch;
+		config::Field<bool> f_AutoRecastRod;
+		config::Field<int> f_DelayBeforeRecast;
 
 		static AutoFish& GetInstance();
 

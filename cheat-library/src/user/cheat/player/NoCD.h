@@ -1,15 +1,15 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 
 namespace cheat::feature 
 {
 	class NoCD : public Feature
     {
 	public:
-		config::field::ToggleField m_InstantBow;
-		config::field::ToggleField m_Ability;
-		config::field::ToggleField m_Sprint;
+		config::Field<config::ToggleHotkey> f_InstantBow;
+		config::Field<config::ToggleHotkey> f_Ability;
+		config::Field<config::ToggleHotkey> f_Sprint;
 
 		static NoCD& GetInstance();
 
