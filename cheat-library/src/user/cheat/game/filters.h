@@ -114,6 +114,7 @@ namespace cheat::game::filters
 		extern SimpleFilter Hilichurl;
 		extern SimpleFilter Mitachurl;
 		extern SimpleFilter Nobushi;
+		extern SimpleFilter Kairagi;
 		extern SimpleFilter RuinGuard;
 		extern SimpleFilter RuinHunter;
 		extern SimpleFilter RuinSentinel;
@@ -132,8 +133,8 @@ namespace cheat::game::filters
 		extern SimpleFilter Tartaglia;
 		extern SimpleFilter Azhdaha;
 		extern SimpleFilter Signora;
-		extern SimpleFilter Shougan;
-		extern SimpleFilter EyeoftheStorm;
+		extern SimpleFilter Shogun;
+		extern SimpleFilter EyeOfTheStorm;
 		extern SimpleFilter ElectroHypostasis;
 		extern SimpleFilter AnemoHypostasis;
 		extern SimpleFilter GeoHypostasis;
@@ -150,6 +151,10 @@ namespace cheat::game::filters
 		extern SimpleFilter OceanidSquirrel;
 		extern SimpleFilter OceanidFrog;
 		extern SimpleFilter OceanidFalcon;
+		extern SimpleFilter PerpetualMechanicalArray;
+		extern SimpleFilter PrimoGeovishap;
+		extern SimpleFilter CryoBathysmalVishap;
+		extern SimpleFilter ElectroBathysmalVishap;
 		extern SimpleFilter ThunderManifestation;
 		extern SimpleFilter HydroAbyssHerald;
 		extern SimpleFilter ElectroAbyssLector;
@@ -162,6 +167,7 @@ namespace cheat::game::filters
 		extern SimpleFilter SangonomiyaCohort;
 		extern SimpleFilter CryoRegisvine;
 		extern SimpleFilter PyroRegisvine;
+		extern SimpleFilter MaguuKenki;
 		extern SimpleFilter Cicin;
 		extern SimpleFilter Beisht;
 	}
@@ -245,8 +251,10 @@ namespace cheat::game::filters
 		extern SimpleFilter Oculies;
 		extern SimpleFilter Chests;
 		extern SimpleFilter Monsters;
+		extern SimpleFilter Bosses;
 		extern SimpleFilter Ores;
 		extern SimpleFilter MonsterEquips;
+		extern SimpleFilter Shielded;
 		extern AdvancedFilter Doodads;
 		extern AdvancedFilter Living;
 		extern AdvancedFilter Animals;
