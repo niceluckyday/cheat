@@ -189,9 +189,6 @@
     <ClInclude Include="vendor\imgui-notify-v2\imgui_notify.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\imgui-notify-v2\tahoma.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\cheat-base\util.cpp">

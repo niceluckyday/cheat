@@ -72,31 +72,29 @@ private:
 private:
 	// Setters
 
-	NOTIFY_INLINE auto set_title(const char* format, va_list args) { vsnprintf(this->title, sizeof(this->title), format, args); }
+	NOTIFY_INLINE void set_title(const char* format, va_list args) { vsnprintf(this->title, sizeof(this->title), format, args); }
 
-	NOTIFY_INLINE auto set_content(const char* format, va_list args) { vsnprintf(this->content, sizeof(this->content), format, args); }
+	NOTIFY_INLINE void set_content(const char* format, va_list args) { vsnprintf(this->content, sizeof(this->content), format, args); }
 
 public:
 
-	NOTIFY_INLINE auto set_title(const char* format, ...) -> void { NOTIFY_FORMAT(this->set_title, format); }
+	NOTIFY_INLINE void set_title(const char* format, ...) { NOTIFY_FORMAT(this->set_title, format); }
 
-	NOTIFY_INLINE auto set_content(const char* format, ...) -> void { NOTIFY_FORMAT(this->set_content, format); }
+	NOTIFY_INLINE void set_content(const char* format, ...) { NOTIFY_FORMAT(this->set_content, format); }
 
-	NOTIFY_INLINE auto set_type(const ImGuiToastType& type) -> void { IM_ASSERT(type < ImGuiToastType_COUNT); this->type = type; };
+	NOTIFY_INLINE void set_type(const ImGuiToastType& type) { IM_ASSERT(type < ImGuiToastType_COUNT); this->type = type; };
 
 public:
 	// Getters
 
-	NOTIFY_INLINE auto get_title() -> char* { return this->title; };
+	NOTIFY_INLINE char* get_title() { return this->title; };
 
-	NOTIFY_INLINE auto get_default_title() -> const char*
+	NOTIFY_INLINE const char* get_default_title()
 	{
 		if (!strlen(this->title))
 		{
 			switch (this->type)
 			{
-			case ImGuiToastType_None:
-				return NULL;
 			case ImGuiToastType_Success:
 				return "Success";
 			case ImGuiToastType_Warning:
@@ -105,20 +103,21 @@ public:
 				return "Error";
 			case ImGuiToastType_Info:
 				return "Info";
+			case ImGuiToastType_None:
+			default:
+				return NULL;
 			}
 		}
 
 		return this->title;
 	};
 
-	NOTIFY_INLINE auto get_type() -> const ImGuiToastType& { return this->type; };
+	NOTIFY_INLINE const ImGuiToastType get_type() { return this->type; };
 
-	NOTIFY_INLINE auto get_color() -> const ImVec4&
+	NOTIFY_INLINE const ImVec4 get_color()
 	{
 		switch (this->type)
 		{
-		case ImGuiToastType_None:
-			return { 255, 255, 255, 255 }; // White
 		case ImGuiToastType_Success:
 			return { 0, 255, 0, 255 }; // Green
 		case ImGuiToastType_Warning:
@@ -127,15 +126,16 @@ public:
 			return { 255, 0, 0, 255 }; // Error
 		case ImGuiToastType_Info:
 			return { 0, 157, 255, 255 }; // Blue
+		case ImGuiToastType_None:
+		default:
+			return { 255, 255, 255, 255 }; // White
 		}
 	}
 
-	NOTIFY_INLINE auto get_icon() -> const char*
+	NOTIFY_INLINE const char* get_icon()
 	{
 		switch (this->type)
 		{
-		case ImGuiToastType_None:
-			return NULL;
 		case ImGuiToastType_Success:
 			return ICON_FA_CHECK_CIRCLE;
 		case ImGuiToastType_Warning:
@@ -144,14 +144,17 @@ public:
 			return ICON_FA_TIMES_CIRCLE;
 		case ImGuiToastType_Info:
 			return ICON_FA_INFO_CIRCLE;
+		case ImGuiToastType_None:
+		default:
+			return NULL;
 		}
 	}
 
-	NOTIFY_INLINE auto get_content() -> char* { return this->content; };
+	NOTIFY_INLINE char* get_content() { return this->content; };
 
-	NOTIFY_INLINE auto get_elapsed_time() { return GetTickCount64() - this->creation_time; }
+	NOTIFY_INLINE uint64_t get_elapsed_time() { return GetTickCount64() - this->creation_time; }
 
-	NOTIFY_INLINE auto get_phase() -> const ImGuiToastPhase&
+	NOTIFY_INLINE const ImGuiToastPhase get_phase()
 	{
 		const auto elapsed = get_elapsed_time();
 
@@ -173,7 +176,7 @@ public:
 		}
 	}
 
-	NOTIFY_INLINE auto get_fade_percent() -> const float
+	NOTIFY_INLINE const float get_fade_percent()
 	{
 		const auto phase = get_phase();
 		const auto elapsed = get_elapsed_time();

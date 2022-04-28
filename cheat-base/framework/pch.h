@@ -29,6 +29,7 @@
 #include <imgui.h>
 #include <imconfig.h>
 #include <backends/imgui_impl_dx11.h>
+#include <imgui_notify.h>
 
 #include <SimpleIni.h>
 #include <fmt/format.h>

@@ -7,9 +7,6 @@
 #include <cheat-base/render/gui-util.h>
 #include <cheat-base/cheat/misc/Settings.h>
 
-#include "imgui_notify.h"
-#include "tahoma.h"
-
 namespace cheat 
 {
 	namespace events 
@@ -296,14 +293,10 @@ namespace cheat
 				bool& value = *field->valuePtr();
 				value = !value;
 				field->Check();
-				static ImGuiToastType type = ImGuiToastType_None;
-				std::string toastTitle = field->GetFriendlyName();
-				std::string withValue = (value ? "Enabled" : "Disabled");
-				toastTitle += ": " + withValue;
-				// std::string toastContent = "blablabla"
-				// toast.set_content(toastTitle.c_str());
-				ImGuiToast toast(type, settings.m_NotificationsDelay);
-				toast.set_title(toastTitle.c_str());
+
+				std::string title = fmt::format("{}: {}", field->GetFriendlyName(), (value ? "Enabled" : "Disabled"));
+				ImGuiToast toast(ImGuiToastType_None, settings.m_NotificationsDelay);
+				toast.set_title(title.c_str());
 				ImGui::InsertNotification(toast);
 			}
 		}
