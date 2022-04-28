@@ -14,11 +14,11 @@ namespace cheat::feature
 	static void LCAbilityElement_ReduceModifierDurability_Hook(app::LCAbilityElement* __this, int32_t modifierDurabilityIndex, float reduceDurability, app::Nullable_1_Single_ deltaTime, MethodInfo* method);
 
     AutoDestroy::AutoDestroy() : Feature(),
-        NF(m_Enabled,			"Auto Destroy",			"AutoDestroy", false),
-		NF(m_DestroyOres,		"Destroy Ores",			"AutoDestroy", false),
-		NF(m_DestroyShields,	"Destroy Shields",		"AutoDestroy", false),
-		NF(m_DestroyDoodads,	"Destroy Doodads",		"AutoDestroy", false),
-        NF(m_Range,				"Range",				"AutoDestroy", 10.0f)
+        NF(f_Enabled,			"Auto Destroy",			"AutoDestroy", false),
+		NF(f_DestroyOres,		"Destroy Ores",			"AutoDestroy", false),
+		NF(f_DestroyShields,	"Destroy Shields",		"AutoDestroy", false),
+		NF(f_DestroyDoodads,	"Destroy Doodads",		"AutoDestroy", false),
+        NF(f_Range,				"Range",				"AutoDestroy", 10.0f)
     { 
 		HookManager::install(app::LCAbilityElement_ReduceModifierDurability, LCAbilityElement_ReduceModifierDurability_Hook);
 	}
@@ -34,32 +34,32 @@ namespace cheat::feature
 		ImGui::TextColored(ImColor(255, 165, 0, 255), "Note. This feature is not fully tested detection-wise.\n"
 			"Not recommended for main accounts or used with high values.");
 		
-		ConfigWidget("Enabled", m_Enabled, "Instantly destroys non-living objects within range.");
+		ConfigWidget("Enabled", f_Enabled, "Instantly destroys non-living objects within range.");
 		ImGui::Indent();
-		ConfigWidget("Ores", m_DestroyOres, "Ores and variants, e.g. electro crystals, marrows, etc.");
-		ConfigWidget("Shields", m_DestroyShields, "Abyss mage/churl/slime shields.");
+		ConfigWidget("Ores", f_DestroyOres, "Ores and variants, e.g. electro crystals, marrows, etc.");
+		ConfigWidget("Shields", f_DestroyShields, "Abyss mage/churl/slime shields.");
 		ImGui::SameLine();
 		ImGui::TextColored(ImColor(255, 165, 0, 255), "Extremely risky!");
-		ConfigWidget("Doodads", m_DestroyDoodads, "Barrels, boxes, vases, etc.");
+		ConfigWidget("Doodads", f_DestroyDoodads, "Barrels, boxes, vases, etc.");
 		ImGui::SameLine();
 		ImGui::TextColored(ImColor(255, 165, 0, 255), "Extremely risky!");
 		ImGui::Unindent();
-		ConfigWidget("Range (m)", m_Range, 0.1f, 1.0f, 15.0f);
+		ConfigWidget("Range (m)", f_Range, 0.1f, 1.0f, 15.0f);
     }
 
     bool AutoDestroy::NeedStatusDraw() const
 	{
-        return m_Enabled;
+        return f_Enabled;
     }
 
     void AutoDestroy::DrawStatus() 
     { 
 		ImGui::Text("Destroy [%.01fm%s%s%s%s]",
-			m_Range.value(),
-			m_DestroyOres || m_DestroyShields || m_DestroyDoodads ? "|" : "",
-			m_DestroyOres ? "O" : "",
-			m_DestroyShields ? "S" : "",
-			m_DestroyDoodads ? "D" : "");
+			f_Range.value(),
+			f_DestroyOres || f_DestroyShields || f_DestroyDoodads ? "|" : "",
+			f_DestroyOres ? "O" : "",
+			f_DestroyShields ? "S" : "",
+			f_DestroyDoodads ? "D" : "");
     }
 
     AutoDestroy& AutoDestroy::GetInstance()
@@ -79,12 +79,12 @@ namespace cheat::feature
 		auto& manager = game::EntityManager::instance();
 		auto& autoDestroy = AutoDestroy::GetInstance();
 		auto entity = __this->fields._._._entity;
-		if (autoDestroy.m_Enabled && 
-			autoDestroy.m_Range > manager.avatar()->distance(entity) &&
+		if (autoDestroy.f_Enabled && 
+			autoDestroy.f_Range > manager.avatar()->distance(entity) &&
 			(
-				(autoDestroy.m_DestroyOres && game::filters::combined::Ores.IsValid(manager.entity(entity))) || 
-				(autoDestroy.m_DestroyDoodads && game::filters::combined::Doodads.IsValid(manager.entity(entity))) ||
-				(autoDestroy.m_DestroyShields && !game::filters::combined::Bosses.IsValid(manager.entity(entity)) && (
+				(autoDestroy.f_DestroyOres && game::filters::combined::Ores.IsValid(manager.entity(entity))) || 
+				(autoDestroy.f_DestroyDoodads && game::filters::combined::Doodads.IsValid(manager.entity(entity))) ||
+				(autoDestroy.f_DestroyShields && !game::filters::combined::Bosses.IsValid(manager.entity(entity)) && (
 												   game::filters::combined::Shielded.IsValid(manager.entity(entity)) ||      // For shields attached to monsters, e.g. abyss mage shields.
 												   game::filters::combined::MonsterEquips.IsValid(manager.entity(entity))    // For shields/weapons equipped by monsters, e.g. rock shield.
 												 ))

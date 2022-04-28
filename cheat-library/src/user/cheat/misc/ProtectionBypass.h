@@ -1,6 +1,6 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 #include <map>
 
 #include <il2cpp-appdata.h>
@@ -11,7 +11,7 @@ namespace cheat::feature
 	class ProtectionBypass : public Feature
     {
 	public:
-		config::field::BaseField<bool> m_Enabled;
+		config::Field<bool> f_Enabled;
 
 		static ProtectionBypass& GetInstance();
 

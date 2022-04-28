@@ -29,7 +29,7 @@
 #include <Windows.h>
 
 #include <cheat-base/Logger.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 #include <cheat-base/util.h>
 #include <cheat-base/cheat/CheatManager.h>
 #include <cheat-base/cheat/Feature.h>
@@ -41,8 +41,10 @@
 #include <cheat-base/Event.h>
 #include <cheat-base/render/gui-util.h>
 #include <cheat-base/render/ImageLoader.h>
+
 #include <cheat-base/ResourceLoader.h>
 
 #include <imgui.h>
+#include <imgui_notify.h>
 
 #endif //PCH_IL2CPP_H

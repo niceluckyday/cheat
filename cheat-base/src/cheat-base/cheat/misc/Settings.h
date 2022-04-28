@@ -1,7 +1,6 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
-#include <cheat-base/config/field/HotkeyField.h>
+#include <cheat-base/config/config.h>
 
 namespace cheat::feature 
 {
@@ -9,21 +8,24 @@ namespace cheat::feature
 	class Settings : public Feature
     {
 	public:
-		config::field::HotkeyField m_MenuKey;
+		config::Field<Hotkey> f_MenuKey;
 		
-		config::field::BaseField<bool> m_StatusMove;
-		config::field::BaseField<bool> m_StatusShow;
+		config::Field<bool> f_StatusMove;
+		config::Field<bool> f_StatusShow;
 
-		config::field::BaseField<bool> m_InfoMove;
-		config::field::BaseField<bool> m_InfoShow;
+		config::Field<bool> f_InfoMove;
+		config::Field<bool> f_InfoShow;
 		
-		config::field::BaseField<bool> m_FpsShow;
-		config::field::BaseField<bool> m_FpsMove;
+		config::Field<bool> f_FpsShow;
+		config::Field<bool> f_FpsMove;
+    
+		config::Field<bool> f_NotificationsShow;
+		config::Field<int> f_NotificationsDelay;
 
-		config::field::BaseField<bool> m_ConsoleLogging;
-		config::field::BaseField<bool> m_FileLogging;
+		config::Field<bool> f_ConsoleLogging;
+		config::Field<bool> f_FileLogging;
 
-		config::field::BaseField<bool> m_HotkeysEnabled;
+		config::Field<bool> f_HotkeysEnabled;
 
 		static Settings& GetInstance();
 

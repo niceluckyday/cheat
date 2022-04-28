@@ -1,6 +1,6 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 
 namespace cheat::feature 
 {
@@ -8,11 +8,11 @@ namespace cheat::feature
 	class AutoTreeFarm : public Feature
     {
 	public:
-		config::field::ToggleField m_Enabled;
-		config::field::BaseField<int> m_AttackDelay;
-		config::field::BaseField<int> m_RepeatDelay;
-		config::field::BaseField<int> m_AttackPerTree;
-		config::field::BaseField<float> m_Range;
+		config::Field<config::ToggleHotkey> m_Enabled;
+		config::Field<int> m_AttackDelay;
+		config::Field<int> m_RepeatDelay;
+		config::Field<int> m_AttackPerTree;
+		config::Field<float> m_Range;
 
 		static AutoTreeFarm& GetInstance();
 

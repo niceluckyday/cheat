@@ -1,6 +1,6 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
+#include <cheat-base/config/config.h>
 
 #include <il2cpp-appdata.h>
 
@@ -10,8 +10,8 @@ namespace cheat::feature
 	class InfiniteStamina : public Feature
     {
 	public:
-		config::field::ToggleField m_Enabled;
-		config::field::BaseField<bool> m_PacketReplacement;
+		config::Field<config::ToggleHotkey> f_Enabled;
+		config::Field<bool> f_PacketReplacement;
 
 		static InfiniteStamina& GetInstance();
 
