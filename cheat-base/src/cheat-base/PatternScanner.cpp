@@ -599,8 +599,6 @@ struct Signature
 	}
 };
 
-bool test = false;
-
 // Find signiture pattern in memory
 PBYTE FindSignatureAVX2(PBYTE data, size_t size, const Signature& sig)
 {

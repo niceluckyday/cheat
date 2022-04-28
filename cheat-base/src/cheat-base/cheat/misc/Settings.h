@@ -18,6 +18,9 @@ namespace cheat::feature
 		
 		config::Field<bool> f_FpsShow;
 		config::Field<bool> f_FpsMove;
+    
+		config::Field<bool> f_NotificationsShow;
+		config::Field<int> f_NotificationsDelay;
 
 		config::Field<bool> f_ConsoleLogging;
 		config::Field<bool> f_FileLogging;

@@ -246,6 +246,11 @@ namespace cheat
 		}
 	}
 
+	void CheatManager::DrawNotifications()
+	{
+		ImGui::RenderNotifications();
+	}
+
 	void CheatManager::OnRender()
 	{
 		auto& settings = feature::Settings::GetInstance();
@@ -263,6 +268,9 @@ namespace cheat
 		
 		if (settings.f_FpsShow)
 			DrawFps();
+
+		if (settings.f_NotificationsShow)
+			DrawNotifications();
 
 		if (settings.f_MenuKey.value().IsReleased() && !ImGui::IsAnyItemActive())
 			ToggleMenuShow();
@@ -282,8 +290,13 @@ namespace cheat
 			auto& value = field.value();
 			if (value.hotkey.IsPressed(key))
 			{
-				value.enabled = !value.enabled;
+  		  value.enabled = !value.enabled;
 				field.FireChanged();
+        
+				std::string title = fmt::format("{}: {}", field.friendName(), (value ? "Enabled" : "Disabled"));
+				ImGuiToast toast(ImGuiToastType_None, settings.f_NotificationsDelay);
+				toast.set_title(title.c_str());
+				ImGui::InsertNotification(toast);
 			}
 		}
 	}
