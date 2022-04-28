@@ -35,6 +35,7 @@
 #include <cheat/teleport/ChestTeleport.h>
 #include <cheat/teleport/MapTeleport.h>
 #include <cheat/teleport/OculiTeleport.h>
+#include <cheat/teleport/CustomTeleports.h>
 
 #include <cheat/esp/ESP.h>
 #include <cheat/imap/InteractiveMap.h>
@@ -85,6 +86,7 @@ namespace cheat
 			FEAT_INST(ChestTeleport),
 			FEAT_INST(OculiTeleport),
 			FEAT_INST(MapTeleport),
+			FEAT_INST(CustomTeleports),
 
 			FEAT_INST(ESP),
 			FEAT_INST(InteractiveMap),
