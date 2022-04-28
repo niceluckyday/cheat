@@ -20,6 +20,9 @@ namespace cheat::feature
 		config::field::BaseField<bool> m_FpsShow;
 		config::field::BaseField<bool> m_FpsMove;
 
+		config::field::BaseField<bool> m_NotificationsShow;
+		config::field::BaseField<int> m_NotificationsDelay;
+
 		config::field::BaseField<bool> m_ConsoleLogging;
 		config::field::BaseField<bool> m_FileLogging;
 
