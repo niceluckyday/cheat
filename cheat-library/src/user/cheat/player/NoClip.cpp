@@ -69,7 +69,7 @@ namespace cheat::feature
 		ImGui::Text("NoClip%s[%.01f%s%|%s]",
 			f_AltSpeedEnabled ? "+Alt " : " ",
 			f_Speed.value(),
-			f_AltSpeedEnabled ? fmt::format("|{:.1f}", f_AltSpeed.value()) : "",
+			f_AltSpeedEnabled ? fmt::format("|{:.1f}", f_AltSpeed.value()).c_str() : "",
 			f_CameraRelative ? "CR" : "PR");
     }
 

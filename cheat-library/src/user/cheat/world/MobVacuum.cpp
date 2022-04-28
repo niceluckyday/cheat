@@ -51,7 +51,7 @@ namespace cheat::feature
     { 
         ImGui::Text("Vacuum [%s]\n[%s|%.01fm|%.01fm|%s]", 
             f_IncludeAnimals ? "Living" : "Monsters",
-            f_Instantly ? "Instant" : fmt::format("Normal|{:.1f}", f_Speed.value()),
+            f_Instantly ? "Instant" : fmt::format("Normal|{:.1f}", f_Speed.value()).c_str(),
             f_Radius.value(),
             f_Distance.value(),
             f_OnlyTarget ? "Aggro" : "All"
