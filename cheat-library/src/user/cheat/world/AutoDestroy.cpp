@@ -38,7 +38,11 @@ namespace cheat::feature
 		ImGui::Indent();
 		ConfigWidget("Ores", f_DestroyOres, "Ores and variants, e.g. electro crystals, marrows, etc.");
 		ConfigWidget("Shields", f_DestroyShields, "Abyss mage/churl/slime shields.");
+		ImGui::SameLine();
+		ImGui::TextColored(ImColor(255, 165, 0, 255), "Extremely risky!");
 		ConfigWidget("Doodads", f_DestroyDoodads, "Barrels, boxes, vases, etc.");
+		ImGui::SameLine();
+		ImGui::TextColored(ImColor(255, 165, 0, 255), "Extremely risky!");
 		ImGui::Unindent();
 		ConfigWidget("Range (m)", f_Range, 0.1f, 1.0f, 15.0f);
     }
@@ -80,9 +84,9 @@ namespace cheat::feature
 			(
 				(autoDestroy.f_DestroyOres && game::filters::combined::Ores.IsValid(manager.entity(entity))) || 
 				(autoDestroy.f_DestroyDoodads && game::filters::combined::Doodads.IsValid(manager.entity(entity))) ||
-				(autoDestroy.f_DestroyShields && ( 
-												   game::filters::combined::Living.IsValid(manager.entity(entity)) ||      // For shields attached to monsters, e.g. abyss mage shields.
-												   game::filters::combined::MonsterEquips.IsValid(manager.entity(entity))  // For shields/weapons equipped by monsters, e.g. rock shield.
+				(autoDestroy.f_DestroyShields && !game::filters::combined::Bosses.IsValid(manager.entity(entity)) && (
+												   game::filters::combined::Shielded.IsValid(manager.entity(entity)) ||      // For shields attached to monsters, e.g. abyss mage shields.
+												   game::filters::combined::MonsterEquips.IsValid(manager.entity(entity))    // For shields/weapons equipped by monsters, e.g. rock shield.
 												 ))
 			)
 		)
