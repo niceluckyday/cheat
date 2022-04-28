@@ -1,10 +1,10 @@
+// ReSharper disable All
 #pragma once
 
 #include <filesystem>
 
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/config/Config.h>
-#include <cheat-base/config/field/StringField.h>
+#include <cheat-base/config/config.h>
 
 #include <cheat-base/PipeTransfer.h>
 #include <cheat-base/pipe/PacketData.h>
@@ -19,11 +19,11 @@ namespace cheat::feature
 	class PacketSniffer : public Feature
     {
 	public:
-		config::field::BaseField<bool> m_CapturingEnabled;
-		config::field::BaseField<bool> m_ManipulationEnabled;
-		config::field::BaseField<bool> m_PipeEnabled;
-		config::field::StringField m_ProtoDirPath;
-		config::field::StringField m_ProtoIDFilePath;
+		config::Field<bool> m_CapturingEnabled;
+		config::Field<bool> m_ManipulationEnabled;
+		config::Field<bool> m_PipeEnabled;
+		config::Field<std::string> m_ProtoDirPath;
+		config::Field<std::string> m_ProtoIDFilePath;
 
 		static PacketSniffer& GetInstance();
 

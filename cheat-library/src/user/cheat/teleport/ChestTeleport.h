@@ -10,28 +10,28 @@ namespace cheat::feature
 	public:
 
 		// Chest state filters
-		config::field::BaseField<bool> m_FilterChestLocked;
-		config::field::BaseField<bool> m_FilterChestInRock;
-		config::field::BaseField<bool> m_FilterChestFrozen;
-		config::field::BaseField<bool> m_FilterChestBramble;
-		config::field::BaseField<bool> m_FilterChestTrap;
+		config::Field<bool> f_FilterChestLocked;
+		config::Field<bool> f_FilterChestInRock;
+		config::Field<bool> f_FilterChestFrozen;
+		config::Field<bool> f_FilterChestBramble;
+		config::Field<bool> f_FilterChestTrap;
 
 		// Chest rarity filters
-		config::field::BaseField<bool> m_FilterChestCommon;
-		config::field::BaseField<bool> m_FilterChestExquisite;
-		config::field::BaseField<bool> m_FilterChestPrecious;
-		config::field::BaseField<bool> m_FilterChestLuxurious;
-		config::field::BaseField<bool> m_FilterChestRemarkable;
+		config::Field<bool> f_FilterChestCommon;
+		config::Field<bool> f_FilterChestExquisite;
+		config::Field<bool> f_FilterChestPrecious;
+		config::Field<bool> f_FilterChestLuxurious;
+		config::Field<bool> f_FilterChestRemarkable;
 
 		// Type filters
-		config::field::BaseField<bool> m_FilterChest;
-		config::field::BaseField<bool> m_FilterInvestigates;
-		config::field::BaseField<bool> m_FilterBookPage;
-		config::field::BaseField<bool> m_FilterBGM;
-		config::field::BaseField<bool> m_FilterQuestInt;
-		config::field::BaseField<bool> m_FilterFloraChest;
+		config::Field<bool> f_FilterChest;
+		config::Field<bool> f_FilterInvestigates;
+		config::Field<bool> f_FilterBookPage;
+		config::Field<bool> f_FilterBGM;
+		config::Field<bool> f_FilterQuestInt;
+		config::Field<bool> f_FilterFloraChest;
 
-		config::field::BaseField<bool> m_FilterUnknown;
+		config::Field<bool> f_FilterUnknown;
 
 		static ChestTeleport& GetInstance();
 

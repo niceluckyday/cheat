@@ -15,6 +15,9 @@ public:
 
 	void SearchAll() override;
 
+	void SaveJson(nlohmann::json& outObject) override;
+	bool LoadJson(const nlohmann::json& object) override;
+
 protected:
 
 	std::map<std::string, uintptr_t> m_MethodNameMap;
@@ -43,9 +46,6 @@ protected:
 
 	std::map<std::string, uintptr_t> LoadOffsetMap(const nlohmann::json& inObject);
 	void SaveOffsetMap(nlohmann::json& outObject, const std::map<std::string, uintptr_t>& map);
-
-	void SaveJson(nlohmann::json& outObject) override;
-	bool LoadJson(const nlohmann::json& object) override;
 
 	void LoadMetadata();
 	void LoadMethodPointers();

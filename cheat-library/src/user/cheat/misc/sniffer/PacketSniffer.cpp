@@ -61,8 +61,7 @@ namespace cheat::feature
 			bool result = OnCapturingChanged();
 			if (!result)
 			{
-				*m_CapturingEnabled = false;
-				m_CapturingEnabled.Check();
+				m_CapturingEnabled = false;
 				ImGui::OpenPopup("Error");
 			}
 		}

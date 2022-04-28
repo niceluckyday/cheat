@@ -319,7 +319,7 @@ bool Hotkey::IsEmpty() const
     return keys.size() == 0;
 }
 
-std::vector<short> Hotkey::GetKeys()
+std::vector<short> Hotkey::GetKeys() const
 {
     return std::vector<short>(keys.begin(), keys.end());
 }

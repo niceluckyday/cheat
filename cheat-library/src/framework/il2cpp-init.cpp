@@ -7,7 +7,6 @@
 #include "helpers.h"
 
 #include <cheat/ILPatternScanner.h>
-#include <cheat-base/config/field/StringField.h>
 
 // IL2CPP APIs
 #define DO_API(r, n, p) r (*n) p
@@ -74,14 +73,13 @@ void init_scanned_offsets()
 
 #define SELECT_OR(container, type, val, def) { auto value = val; if (value == 0) container = (type)(def); else container = (type)val; }
 
-	static config::field::StringField offsetDataField("OffsetData", "m_OffsetData", "PatternScanner", "{}");
-	config::AddField(offsetDataField);
+	static config::Field<nlohmann::json> offsetDataField = config::CreateField<nlohmann::json>("OffsetData", "OffsetData", "PatternScanner", true, nlohmann::json::object());
 
 	std::string signatures = ResourceLoader::Load("Signatures", RT_RCDATA);
 
 	auto scanner = ILPatternScanner();
 	scanner.ParseSignatureFile(signatures);
-	scanner.Load(offsetDataField.value());
+	scanner.LoadJson(offsetDataField);
 
 	using namespace app;
 
@@ -114,8 +112,8 @@ void init_scanned_offsets()
 
 	if (scanner.IsUpdated())
 	{
-		scanner.Save(*offsetDataField.valuePtr());
-		offsetDataField.Check();
+		scanner.SaveJson(offsetDataField);
+		offsetDataField.FireChanged();
 
 		LOG_INFO("Seems like some offsets was found for a first time. Recommend to restart game for correct cheat and game work.");
 	}
@@ -135,22 +133,15 @@ bool IsStaticCheckSumValid()
 		return false;
 	}
 
-	static config::field::StringField checksumTimestampsField("ChecksumTimestamp", "m_CheckSumTimestamp", "PatternScanner", "{}");
-	config::AddField(checksumTimestampsField);
-
-	nlohmann::json checksumTimestamps = nlohmann::json::parse(checksumTimestampsField.value(), nullptr, false);
-	if (assemblyChecksumJson.is_discarded())
-	{
-		LOG_ERROR("Failed to parse saved checksum timestamps.");
-		return false;
-	}
+	static config::Field<nlohmann::json> checksumTimestamps = 
+		config::CreateField<nlohmann::json>("ChecksumTimestamp", "m_CheckSumTimestamp", "PatternScanner", true, nlohmann::json::object());
 	
 	std::string version = assemblyChecksumJson["game_version"];
 
 	for (auto& [moduleName, checksumData] : assemblyChecksumJson["modules"].items())
 	{
-		if (checksumTimestamps.contains(moduleName))
-			checksumData["timestamp"] = checksumTimestamps[moduleName];
+		if (checksumTimestamps.value().contains(moduleName))
+			checksumData["timestamp"] = checksumTimestamps.value()[moduleName];
 
 		if (!scanner.IsValidModuleHash(moduleName, checksumData))
 		{
@@ -158,8 +149,10 @@ bool IsStaticCheckSumValid()
 			return false;
 		}
 
-		checksumTimestamps[moduleName] = scanner.GetModuleTimestamp(moduleName);
+		checksumTimestamps.value()[moduleName] = scanner.GetModuleTimestamp(moduleName);
 	}
+	//std::system("pause");
+	checksumTimestamps.FireChanged();
 
 	return true;
 }

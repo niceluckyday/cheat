@@ -69,7 +69,7 @@ namespace cheat::feature::sniffer
 		bool windowShowed = ImGui::Begin("Packet sniffer", m_Show);
 		
 		if (showPrev != m_Show)
-			m_Show.Check();
+			m_Show.FireChanged();
 		
 		if (!windowShowed)
 		{

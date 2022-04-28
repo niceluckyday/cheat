@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -167,25 +167,27 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\cheat-base\config\converters.h" />
+    <ClInclude Include="src\cheat-base\config\Field.h" />
+    <ClInclude Include="src\cheat-base\config\fields.h" />
+    <ClInclude Include="src\cheat-base\config\FieldSerialize.h" />
+    <ClInclude Include="src\cheat-base\config\fields\Enum.h" />
+    <ClInclude Include="src\cheat-base\config\fields\ToggleHotkey.h" />
+    <ClInclude Include="src\cheat-base\config\internal\FieldBase.h" />
+    <ClInclude Include="src\cheat-base\config\internal\FieldEntry.h" />
+    <ClInclude Include="src\cheat-base\config\internal\FieldSerialize.h" />
+    <ClInclude Include="src\cheat-base\config\Serializable.h" />
+    <ClInclude Include="src\cheat-base\config\FieldBase.h" />
     <ClInclude Include="framework\framework.h" />
     <ClInclude Include="framework\pch.h" />
+    <ClInclude Include="src\cheat-base\config\config.h" />
     <ClInclude Include="src\cheat-base\ResourceLoader.h" />
-    <ClInclude Include="src\cheat-base\config\field\ColorField.h" />
-    <ClInclude Include="src\cheat-base\config\field\EnumField.h" />
     <ClInclude Include="src\cheat-base\Hotkey.h" />
     <ClInclude Include="src\cheat-base\render\ImageLoader.h" />
     <ClInclude Include="src\cheat-base\PatternScanner.h" />
     <ClInclude Include="src\cheat-base\cheat\CheatManager.h" />
     <ClInclude Include="src\cheat-base\cheat\Feature.h" />
     <ClInclude Include="src\cheat-base\cheat\misc\Settings.h" />
-    <ClInclude Include="src\cheat-base\config\Config.h" />
-    <ClInclude Include="src\cheat-base\config\ConfigEntry.h" />
-    <ClInclude Include="src\cheat-base\config\FieldBase.h" />
-    <ClInclude Include="src\cheat-base\config\FieldHeader.h" />
-    <ClInclude Include="src\cheat-base\config\field\BaseField.h" />
-    <ClInclude Include="src\cheat-base\config\field\HotkeyField.h" />
-    <ClInclude Include="src\cheat-base\config\field\StringField.h" />
-    <ClInclude Include="src\cheat-base\config\field\ToggleField.h" />
     <ClInclude Include="src\cheat-base\render\backend\dx11-hook.h" />
     <ClInclude Include="src\cheat-base\Event.h" />
     <ClInclude Include="src\cheat-base\render\gui-util.h" />
@@ -227,8 +229,8 @@
     <ClInclude Include="vendor\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\cheat-base\config\config.cpp" />
     <ClCompile Include="src\cheat-base\ResourceLoader.cpp" />
-    <ClCompile Include="src\cheat-base\config\field\ColorField.cpp" />
     <ClCompile Include="src\cheat-base\Hotkey.cpp" />
     <ClCompile Include="src\cheat-base\render\ImageLoader.cpp" />
     <ClCompile Include="src\cheat-base\PatternScanner.cpp" />
@@ -240,11 +242,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\cheat-base\cheat\misc\Settings.cpp" />
-    <ClCompile Include="src\cheat-base\config\Config.cpp" />
-    <ClCompile Include="src\cheat-base\config\FieldHeader.cpp" />
-    <ClCompile Include="src\cheat-base\config\field\HotkeyField.cpp" />
-    <ClCompile Include="src\cheat-base\config\field\StringField.cpp" />
-    <ClCompile Include="src\cheat-base\config\field\ToggleField.cpp" />
     <ClCompile Include="src\cheat-base\render\backend\dx11-hook.cpp" />
     <ClCompile Include="src\cheat-base\render\gui-util.cpp" />
     <ClCompile Include="src\cheat-base\render\renderer.cpp" />

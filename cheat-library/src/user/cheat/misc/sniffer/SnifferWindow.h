@@ -73,7 +73,7 @@ namespace cheat::feature::sniffer
 	class SnifferWindow
 	{
 	public:
-		config::field::BaseField<bool> m_Show;
+		config::Field<bool> m_Show;
 
 		SnifferWindow(SnifferWindow const&) = delete;
 		void operator=(SnifferWindow const&) = delete;

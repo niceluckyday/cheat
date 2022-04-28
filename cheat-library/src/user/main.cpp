@@ -8,9 +8,7 @@
 
 #include <cheat/ILPatternScanner.h>
 #include <resource.h>
-#include <cheat-base/config/field/StringField.h>
 
-bool InitMetadata();
 bool StubTerminateProcess();
 
 void Run(HMODULE* phModule)
@@ -20,18 +18,18 @@ void Run(HMODULE* phModule)
 	ResourceLoader::SetModuleHandle(*phModule);
 
 	// Init config
-	std::string configPath = (std::filesystem::current_path() / "cfg.ini").string();
-	config::Init(configPath);
+	std::string configPath = (std::filesystem::current_path() / "cfg.json").string();
+	config::Initialize(configPath);
 
 	// Init logger
 	auto& settings = cheat::feature::Settings::GetInstance();
-	if (settings.m_FileLogging)
+	if (settings.f_FileLogging)
 	{
 		Logger::PrepareFileLogging((std::filesystem::current_path() / "logs").string());
 		Logger::SetLevel(Logger::Level::Trace, Logger::LoggerType::FileLogger);
 	}
 
-	if (settings.m_ConsoleLogging)
+	if (settings.f_ConsoleLogging)
 	{
 		Logger::SetLevel(Logger::Level::Debug, Logger::LoggerType::ConsoleLogger);
 		il2cppi_new_console();

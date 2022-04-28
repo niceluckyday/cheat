@@ -40,7 +40,7 @@ namespace cheat
 
 	private:
 
-		config::field::BaseField<int> m_SelectedSection;
+		config::Field<int> m_SelectedSection;
 
 		std::vector<Feature*> m_Features;
 		std::vector<std::string> m_ModuleOrder;

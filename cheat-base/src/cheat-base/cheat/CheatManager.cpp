@@ -67,8 +67,7 @@ namespace cheat
 				if (ImGui::Selectable(moduleName.c_str(), is_selected))
 				{
 					current = &moduleName;
-					*m_SelectedSection.valuePtr() = index;
-					m_SelectedSection.Check();
+					m_SelectedSection = index;
 				}
 
 				if (is_selected)
@@ -132,7 +131,7 @@ namespace cheat
 			ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse;
 
 		auto& settings = feature::Settings::GetInstance();
-		if (!settings.m_StatusMove)
+		if (!settings.f_StatusMove)
 			flags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
 
 		ImGui::Begin("Cheat status", 0, flags);
@@ -175,12 +174,12 @@ namespace cheat
 			ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus |
 			ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse;
 
-		if (!settings.m_InfoMove)
+		if (!settings.f_InfoMove)
 			flags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
 
 		auto checkLambda = [](const Feature* feat) { return feat->NeedInfoDraw(); };
 		bool showAny = std::any_of(m_Features.begin(), m_Features.end(), checkLambda);
-		if (!showAny && !settings.m_StatusMove)
+		if (!showAny && !settings.f_StatusMove)
 			return;
 
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.04f, 0.05f, 0.05f, 0.90f));
@@ -237,7 +236,7 @@ namespace cheat
 		ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoFocusOnAppearing 
 			| ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize;
 
-		if (!settings.m_FpsMove)
+		if (!settings.f_FpsMove)
 			flags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
 
 		if (ImGui::Begin("FPS", nullptr, flags))
@@ -261,19 +260,19 @@ namespace cheat
 		if (m_IsMenuShowed)
 			DrawMenu();
 
-		if (settings.m_StatusShow)
+		if (settings.f_StatusShow)
 			DrawStatus();
 
-		if (settings.m_InfoShow)
+		if (settings.f_InfoShow)
 			DrawInfo();
 		
-		if (settings.m_FpsShow)
+		if (settings.f_FpsShow)
 			DrawFps();
 
-		if (settings.m_NotificationsShow)
+		if (settings.f_NotificationsShow)
 			DrawNotifications();
 
-		if (settings.m_MenuKey.value().IsReleased() && !ImGui::IsAnyItemActive())
+		if (settings.f_MenuKey.value().IsReleased() && !ImGui::IsAnyItemActive())
 			ToggleMenuShow();
 	}
 
@@ -283,19 +282,19 @@ namespace cheat
 			return;
 		
 		auto& settings = feature::Settings::GetInstance();
-		if (!settings.m_HotkeysEnabled)
+		if (!settings.f_HotkeysEnabled)
 			return;
 
-		for (auto& field : config::GetToggleFields())
+		for (auto& field : config::GetFields<config::ToggleHotkey>())
 		{
-			if (field->GetHotkeyField().value().IsPressed(key))
+			auto& value = field.value();
+			if (value.hotkey.IsPressed(key))
 			{
-				bool& value = *field->valuePtr();
-				value = !value;
-				field->Check();
-
-				std::string title = fmt::format("{}: {}", field->GetFriendlyName(), (value ? "Enabled" : "Disabled"));
-				ImGuiToast toast(ImGuiToastType_None, settings.m_NotificationsDelay);
+  		  value.enabled = !value.enabled;
+				field.FireChanged();
+        
+				std::string title = fmt::format("{}: {}", field.friendName(), (value ? "Enabled" : "Disabled"));
+				ImGuiToast toast(ImGuiToastType_None, settings.f_NotificationsDelay);
 				toast.set_title(title.c_str());
 				ImGui::InsertNotification(toast);
 			}
@@ -313,7 +312,7 @@ namespace cheat
 	void CheatManager::OnKeyUp(short key, bool& cancelled)
 	{
 		auto& settings = feature::Settings::GetInstance();
-		if (!settings.m_MenuKey.value().IsPressed(key))
+		if (!settings.f_MenuKey.value().IsPressed(key))
 		{
 			CheckToggles(key);
 			return;

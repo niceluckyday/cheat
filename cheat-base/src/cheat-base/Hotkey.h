@@ -17,7 +17,7 @@ public:
 
     bool IsEmpty() const;
 
-    std::vector<short> GetKeys();
+    std::vector<short> GetKeys() const;
 
     friend bool operator== (const Hotkey& c1, const Hotkey& c2) {
         return c1.keys == c2.keys;

@@ -17,22 +17,22 @@ namespace cheat::feature
 {
 
 	ESP::ESP() : Feature(),
-		NF(m_Enabled, "ESP", "ESP", false),
+		NF(f_Enabled, "ESP", "ESP", false),
 
-        NF(m_DrawBoxMode, "Draw Mode", "ESP", DrawMode::Box),
-        NF(m_Fill, "Fill Box/Rectangle", "ESP", false),
-        NF(m_FillTransparency, "Fill Transparency", "ESP", 0.5f),
+        NF(f_DrawBoxMode, "Draw Mode", "ESP", DrawMode::Box),
+        NF(f_Fill, "Fill Box/Rectangle", "ESP", false),
+        NF(f_FillTransparency, "Fill Transparency", "ESP", 0.5f),
 
-		NF(m_DrawLine, "Draw Line", "ESP", false),
-        NF(m_DrawDistance, "Draw Distance", "ESP", false),
-        NF(m_DrawName, "Draw Name", "ESP", false),
+		NF(f_DrawLine, "Draw Line", "ESP", false),
+        NF(f_DrawDistance, "Draw Distance", "ESP", false),
+        NF(f_DrawName, "Draw Name", "ESP", false),
 
-        NF(m_FontSize, "Font Size", "ESP", 12.0f),
-        NF(m_FontColor, "Font Color", "ESP", ImColor(255, 255, 255)),
-		NF(m_ApplyGlobalFontColor, "Apply Global Font Colors", "ESP", false),
+        NF(f_FontSize, "Font Size", "ESP", 12.0f),
+        NF(f_FontColor, "Font Color", "ESP", ImColor(255, 255, 255)),
+		NF(f_ApplyGlobalFontColor, "Apply Global Font Colors", "ESP", false),
 
-        NF(m_MinSize, "Min. Entity Size", "ESP", 0.5f),
-		NF(m_Range, "Range", "ESP", 100.0f),
+        NF(f_MinSize, "Min. Entity Size", "ESP", 0.5f),
+		NF(f_Range, "Range", "ESP", 100.0f),
 		m_Search({})
     {
 		cheat::events::KeyUpEvent += MY_METHOD_HANDLER(ESP::OnKeyUp);
@@ -50,25 +50,25 @@ namespace cheat::feature
     {
 		BeginGroupPanel("General", ImVec2(-1, 0));
 
-		ConfigWidget("ESP Enabled", m_Enabled, "Show filtered object through obstacles.");
-        ConfigWidget("Range (m)", m_Range, 1.0f, 1.0f, 200.0f);
+		ConfigWidget("ESP Enabled", f_Enabled, "Show filtered object through obstacles.");
+        ConfigWidget("Range (m)", f_Range, 1.0f, 1.0f, 200.0f);
         
-        ConfigWidget(m_DrawBoxMode, "Select the mode of box drawing.");
-		ConfigWidget(m_Fill);
-		ConfigWidget(m_FillTransparency, 0.01f, 0.0f, 1.0f, "Transparency of filled part.");
+        ConfigWidget(f_DrawBoxMode, "Select the mode of box drawing.");
+		ConfigWidget(f_Fill);
+		ConfigWidget(f_FillTransparency, 0.01f, 0.0f, 1.0f, "Transparency of filled part.");
 
         ImGui::Spacing();
-        ConfigWidget(m_DrawLine,     "Show line from character to object on screen.");
-        ConfigWidget(m_DrawName,     "Draw name of object.");
-        ConfigWidget(m_DrawDistance, "Draw distance of object.");
+        ConfigWidget(f_DrawLine,     "Show line from character to object on screen.");
+        ConfigWidget(f_DrawName,     "Draw name of object.");
+        ConfigWidget(f_DrawDistance, "Draw distance of object.");
 
         ImGui::Spacing();
-        ConfigWidget(m_FontSize, 0.05f, 1.0f, 100.0f, "Font size of name or distance.");
-        ConfigWidget(m_FontColor, "Color of line, name, or distance text font.");
-		ConfigWidget(m_ApplyGlobalFontColor, "Override all color settings with above font color setting.\n" \
+        ConfigWidget(f_FontSize, 0.05f, 1.0f, 100.0f, "Font size of name or distance.");
+        ConfigWidget(f_FontColor, "Color of line, name, or distance text font.");
+		ConfigWidget(f_ApplyGlobalFontColor, "Override all color settings with above font color setting.\n" \
 			"Turn off to revert to custom settings.");
 
-        ConfigWidget(m_MinSize, 0.05f, 0.1f, 200.0f, "Minimum entity size as measured in-world.\n" \
+        ConfigWidget(f_MinSize, 0.05f, 0.1f, 200.0f, "Minimum entity size as measured in-world.\n" \
             "Some entities have either extremely small or no bounds at all.\n" \
 			"This parameter helps filter out entities that don't meet this condition.");
 		
@@ -87,18 +87,18 @@ namespace cheat::feature
 
     bool ESP::NeedStatusDraw() const
 	{
-        return m_Enabled;
+        return f_Enabled;
     }
 
     void ESP::DrawStatus() 
     { 
         ImGui::Text("ESP [%.01fm|%s|%s%s%s%s]", 
-			m_Range.value(), 
-            m_DrawBoxMode == DrawMode::Box ? "Box" : m_DrawBoxMode == DrawMode::Rectangle ? "Rect" : "None",
-            m_Fill ? "F" : "", 
-            m_DrawLine ? "L" : "",
-			m_DrawName ? "N" : "",
-			m_DrawDistance ? "D" : ""
+			f_Range.value(), 
+            f_DrawBoxMode.value() == DrawMode::Box ? "Box" : f_DrawBoxMode.value() == DrawMode::Rectangle ? "Rect" : "None",
+            f_Fill ? "F" : "", 
+            f_DrawLine ? "L" : "",
+			f_DrawName ? "N" : "",
+			f_DrawDistance ? "D" : ""
 		);
     }
 
@@ -114,22 +114,21 @@ namespace cheat::feature
 			m_Sections[section] = {};
 
 		auto& filters = m_Sections[section];
-		filters.push_back({ new config::field::ESPItemField(name, name, section), filter });
-		
-		auto& last = filters.back();
-		config::AddField(*last.first);
+		esp::ESPItem newItem(name, ImColor(120, 120, 120, 255), {}, name);
+		filters.push_back({ config::CreateField<esp::ESPItem>(name, name, fmt::format("ESP::Filters::{}", section), false, newItem), filter});
 	}
 
 	void ESP::DrawSection(const std::string& section, const Filters& filters)
 	{
 		std::vector<const FilterInfo*> validFilters;
 				
-		for (auto& info : filters)
+		for (auto& info: filters)
 		{
 			//m0nkrel : We making a string copies and lowercase them to avoid case sensitive search
 			//Yes, it's shitcode and maybe it break something, but it works.
-			std::string name = info.first->value().m_Name;
+			std::string name = info.first.name();
 			std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+
 			std::string search = m_Search;
 			std::transform(search.begin(), search.end(), search.begin(), ::tolower);
 			if (name.find(search) != std::string::npos) 
@@ -141,7 +140,7 @@ namespace cheat::feature
 
 		SelectData selData
 		{
-			std::all_of(validFilters.begin(), validFilters.end(), [](const FilterInfo* filter) { return filter->first->value().m_Enabled; }),
+			std::all_of(validFilters.begin(), validFilters.end(), [](const FilterInfo* filter) {  return filter->first.value().m_Enabled; }),
 			false
 		};
 
@@ -149,8 +148,8 @@ namespace cheat::feature
 		{
 			for (auto& info : validFilters)
 			{
-				ImGui::PushID(info->first);
-				DrawFilterField(*info->first);
+				ImGui::PushID(info);
+				DrawFilterField(info->first);
 				ImGui::PopID();
 			}
 
@@ -161,11 +160,11 @@ namespace cheat::feature
 				for (auto& info : validFilters)
 				{
 					auto& field = info->first;
-					ImGui::PushID(field);
+					ImGui::PushID(info);
 
-					auto& hotkey = field->valuePtr()->m_EnabledHotkey;
-					if (InputHotkey(field->GetName().c_str(), &hotkey, true))
-						field->Check();
+					auto& hotkey = field.value().m_Hotkey;
+					if (InputHotkey(field.name().c_str(), &hotkey, true))
+						field.FireChanged();
 
 					ImGui::PopID();
 				}
@@ -179,9 +178,9 @@ namespace cheat::feature
 		{
 			for (auto& info : validFilters)
 			{
-				info->first->valuePtr()->m_Enabled = selData.toggle;
+				info->first.value().m_Enabled = selData.toggle;
+				info->first.FireChanged();
 			}
-			config::UpdateAll();
 		}
 	}
 
@@ -195,9 +194,9 @@ namespace cheat::feature
 		return out.str();
 	}
 
-	void FilterItemSelector(const char* label, ImTextureID image, config::field::ESPItemField& field, const ImVec2& size = ImVec2(200, 0), float icon_size = 30);
+	void FilterItemSelector(const char* label, ImTextureID image, const config::Field<esp::ESPItem>& field, const ImVec2& size = ImVec2(200, 0), float icon_size = 30);
 
-	void ESP::DrawFilterField(config::field::ESPItemField& field)
+	void ESP::DrawFilterField(const config::Field<esp::ESPItem>& field)
 	{
 		auto imageInfo = ImageLoader::GetImage(Unsplit(field.value().m_Name));
 		FilterItemSelector(field.value().m_Name.c_str(), imageInfo ? imageInfo->textureID : nullptr, field);
@@ -206,7 +205,7 @@ namespace cheat::feature
 	void ESP::DrawExternal()
 	{
 		auto& esp = ESP::GetInstance();
-		if (!esp.m_Enabled)
+		if (!esp.f_Enabled)
 			return;
 
 		esp::render::PrepareFrame();
@@ -215,14 +214,14 @@ namespace cheat::feature
 
 		for (auto& entity : entityManager.entities())
 		{
-			if (entityManager.avatar()->distance(entity) > esp.m_Range)
+			if (entityManager.avatar()->distance(entity) > esp.f_Range)
 				continue;
 
 			for (auto& [section, filters] : m_Sections)
 			{
 				for (auto& [field, filter] : filters)
 				{
-					auto& entry = *field->valuePtr();
+					auto& entry = field.value();
 					if (!entry.m_Enabled || !m_FilterExecutor.ApplyFilter(entity, filter))
 						continue;
 
@@ -240,17 +239,17 @@ namespace cheat::feature
 		{
 			for (auto& [field, filter] : filters)
 			{
-				auto& entry = *field->valuePtr();
-				if (entry.m_EnabledHotkey.IsPressed(key))
+				auto& entry = field.value();
+				if (entry.m_Hotkey.IsPressed(key))
 				{
 					entry.m_Enabled = !entry.m_Enabled;
-					field->Check();
+					field.FireChanged();
 				}
 			}
 		}
 	}
 
-	void FilterItemSelector(const char* label, ImTextureID image, config::field::ESPItemField& field, const ImVec2& size, float icon_size)
+	void FilterItemSelector(const char* label, ImTextureID image, const config::Field<esp::ESPItem>& field, const ImVec2& size, float icon_size)
 	{
 
 		// Init ImGui
@@ -289,9 +288,8 @@ namespace cheat::feature
 		const bool lmb_click = hovered && io.MouseClicked[0];
 		if (lmb_click)
 		{
-			auto& value = field.valuePtr()->m_Enabled;
-			value = !value;
-			field.Check();
+			field.value().m_Enabled = !field.value().m_Enabled;
+			field.FireChanged();
 			ImGui::FocusWindow(window);
 			memset(io.MouseDown, 0, sizeof(io.MouseDown));
 		}
@@ -304,9 +302,8 @@ namespace cheat::feature
 		static ImGuiID opened_id = 0;
 		if (rmb_click)
 		{
-			auto& col = field.valuePtr()->m_Color;
 			// Store current color and open a picker
-			g.ColorPickerRef = ImVec4(col);
+			g.ColorPickerRef = ImVec4(field.value().m_Color);
 			ImGui::OpenPopup("picker");
 			ImGui::SetNextWindowPos(g.LastItemData.Rect.GetBL() + ImVec2(0.0f, style.ItemSpacing.y));
 			opened_id = id;
@@ -319,7 +316,7 @@ namespace cheat::feature
 			ImGuiColorEditFlags picker_flags_to_forward = ImGuiColorEditFlags_DataTypeMask_ | ImGuiColorEditFlags_PickerMask_ | ImGuiColorEditFlags_InputMask_ | ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_AlphaBar;
 			ImGuiColorEditFlags picker_flags = ImGuiColorEditFlags_DisplayMask_ | ImGuiColorEditFlags_NoLabel | ImGuiColorEditFlags_AlphaPreviewHalf;
 			ImGui::SetNextItemWidth(ImGui::GetFrameHeight() * 12.0f); // Use 256 + bar sizes?
-			color_changed |= ImGui::ColorPicker4("##picker", reinterpret_cast<float*>(&field.valuePtr()->m_Color), picker_flags, &g.ColorPickerRef.x);
+			color_changed |= ImGui::ColorPicker4("##picker", reinterpret_cast<float*>(&field.value().m_Color), picker_flags, &g.ColorPickerRef.x);
 			ImGui::EndPopup();
 		}
 
@@ -329,7 +326,7 @@ namespace cheat::feature
 			opened_id = 0;
 			if (color_changed)
 			{
-				field.Check();
+				field.FireChanged();
 				color_changed = false;
 			}
 		}
@@ -443,7 +440,24 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(living, LuminescentSpine);
 		ADD_FILTER_FIELD(living, Onikabuto);
 		ADD_FILTER_FIELD(living, Starconch);
-		ADD_FILTER_FIELD(living, UnagiMeat);
+		ADD_FILTER_FIELD(living, Eel);
+		ADD_FILTER_FIELD(living, Inu);
+		ADD_FILTER_FIELD(living, Boar);
+		ADD_FILTER_FIELD(living, Fox);
+		ADD_FILTER_FIELD(living, Squirrel);
+		ADD_FILTER_FIELD(living, Crane);
+		ADD_FILTER_FIELD(living, Falcon);
+		ADD_FILTER_FIELD(living, LucklightFly);
+		ADD_FILTER_FIELD(living, Salamander);
+		ADD_FILTER_FIELD(living, Pigeon);
+		ADD_FILTER_FIELD(living, Crow);
+		ADD_FILTER_FIELD(living, Finch);
+		ADD_FILTER_FIELD(living, Wigeon);
+		ADD_FILTER_FIELD(living, Dog);
+		ADD_FILTER_FIELD(living, Cat);
+		ADD_FILTER_FIELD(living, Weasel);
+		ADD_FILTER_FIELD(living, Kitsune);
+		ADD_FILTER_FIELD(living, BakeDanuki);
 
 		ADD_FILTER_FIELD(mineral, AmethystLump);
 		ADD_FILTER_FIELD(mineral, ArchaicStone);
@@ -478,7 +492,45 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(monster, TreasureHoarder);
 		ADD_FILTER_FIELD(monster, UnusualHilichurl);
 		ADD_FILTER_FIELD(monster, Whopperflower);
-		ADD_FILTER_FIELD(monster, WolvesOfTheRift);
+		ADD_FILTER_FIELD(monster, RifthoundWhelp);
+		ADD_FILTER_FIELD(monster, Rifthound);
+		ADD_FILTER_FIELD(monster, Dvalin);
+		ADD_FILTER_FIELD(monster, Andrius);
+		ADD_FILTER_FIELD(monster, Tartaglia);
+		ADD_FILTER_FIELD(monster, Azhdaha);
+		ADD_FILTER_FIELD(monster, Signora);
+		ADD_FILTER_FIELD(monster, Shougan);
+		ADD_FILTER_FIELD(monster, EyeoftheStorm);
+		ADD_FILTER_FIELD(monster, ElectroHypostasis);
+		ADD_FILTER_FIELD(monster, AnemoHypostasis);
+		ADD_FILTER_FIELD(monster, GeoHypostasis);
+		ADD_FILTER_FIELD(monster, HydroHypostasis);
+		ADD_FILTER_FIELD(monster, CryoHypostasis);
+		ADD_FILTER_FIELD(monster, PyroHypostasis);
+		ADD_FILTER_FIELD(monster, HydroHypostasisSummon);
+		ADD_FILTER_FIELD(monster, Oceanid);
+		ADD_FILTER_FIELD(monster, OceanidBoar);
+		ADD_FILTER_FIELD(monster, OceanidCrane);
+		ADD_FILTER_FIELD(monster, OceanidCrab);
+		ADD_FILTER_FIELD(monster, OceanidFinch);
+		ADD_FILTER_FIELD(monster, OceanidWigeon);
+		ADD_FILTER_FIELD(monster, OceanidSquirrel);
+		ADD_FILTER_FIELD(monster, OceanidFrog);
+		ADD_FILTER_FIELD(monster, OceanidFalcon);
+		ADD_FILTER_FIELD(monster, ThunderManifestation);
+		ADD_FILTER_FIELD(monster, HydroAbyssHerald);
+		ADD_FILTER_FIELD(monster, ElectroAbyssLector);
+		ADD_FILTER_FIELD(monster, PyroAbyssLector);
+		ADD_FILTER_FIELD(monster, BlackSerpentKnight);
+		ADD_FILTER_FIELD(monster, GoldenWolflord);
+		ADD_FILTER_FIELD(monster, ShadowyHusk);
+		ADD_FILTER_FIELD(monster, RuinSerpent);
+		ADD_FILTER_FIELD(monster, Millelith);
+		ADD_FILTER_FIELD(monster, ShogunateInfantry);
+		ADD_FILTER_FIELD(monster, SangonomiyaCohort);
+		ADD_FILTER_FIELD(monster, CryoRegisvine);
+		ADD_FILTER_FIELD(monster, PyroRegisvine);
+		ADD_FILTER_FIELD(monster, Cicin);
 
 		ADD_FILTER_FIELD(plant, AmakumoFruit);
 		ADD_FILTER_FIELD(plant, Apple);

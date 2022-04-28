@@ -8,7 +8,7 @@ namespace cheat::feature
     static void VCMonsterAIController_TryDoSkill_Hook(void* __this, uint32_t skillID, MethodInfo* method);
 
     DumbEnemies::DumbEnemies() : Feature(),
-        NF(m_Enabled, "Dumb Enemies", "DumbEnemies", false)
+        NF(f_Enabled, "Dumb Enemies", "DumbEnemies", false)
     {
 		HookManager::install(app::VCMonsterAIController_TryDoSkill, VCMonsterAIController_TryDoSkill_Hook);
     }
@@ -21,13 +21,13 @@ namespace cheat::feature
 
     void DumbEnemies::DrawMain()
     {
-        ConfigWidget(m_Enabled, "Enemies don't attack or use abilities against player. \n"
+        ConfigWidget(f_Enabled, "Enemies don't attack or use abilities against player. \n"
             "May not work with some enemies or enemy abilites.");
     }
 
     bool DumbEnemies::NeedStatusDraw() const
 {
-        return m_Enabled;
+        return f_Enabled;
     }
 
     void DumbEnemies::DrawStatus() 
@@ -46,7 +46,7 @@ namespace cheat::feature
 	static void VCMonsterAIController_TryDoSkill_Hook(void* __this, uint32_t skillID, MethodInfo* method)
 	{
         DumbEnemies& dumbEnemies = DumbEnemies::GetInstance();
-		if (dumbEnemies.m_Enabled)
+		if (dumbEnemies.f_Enabled)
 			return;
 		callOrigin(VCMonsterAIController_TryDoSkill_Hook, __this, skillID, method);
 	}

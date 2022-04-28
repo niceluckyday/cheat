@@ -12,15 +12,15 @@ namespace cheat::feature
 		bool ignoreCheckCanBeHitInMP, MethodInfo* method);
 
     RapidFire::RapidFire() : Feature(),
-        NF(m_Enabled,			"Attack Multiplier",	"RapidFire", false),
-		NF(m_MultiHit,			"Multi-hit",			"RapidFire", false),
-        NF(m_Multiplier,		"Hit Multiplier",		"RapidFire", 2),
-        NF(m_OnePunch,			"One Punch Mode",		"RapidFire", false),
-		NF(m_Randomize,			"Randomize",			"RapidFire", false),
-		NF(m_minMultiplier,		"Min Multiplier",		"RapidFire", 1),
-		NF(m_maxMultiplier,		"Max Multiplier",		"RapidFire", 3),
-		NF(m_MultiTarget,		"Multi-target",			"RapidFire", false),
-		NF(m_MultiTargetRadius, "Multi-target Radius",	"RapidFire", 20.0f)
+        NF(f_Enabled,			"Attack Multiplier",	"RapidFire", false),
+		NF(f_MultiHit,			"Multi-hit",			"RapidFire", false),
+        NF(f_Multiplier,		"Hit Multiplier",		"RapidFire", 2),
+        NF(f_OnePunch,			"One Punch Mode",		"RapidFire", false),
+		NF(f_Randomize,			"Randomize",			"RapidFire", false),
+		NF(f_minMultiplier,		"Min Multiplier",		"RapidFire", 1),
+		NF(f_maxMultiplier,		"Max Multiplier",		"RapidFire", 3),
+		NF(f_MultiTarget,		"Multi-target",			"RapidFire", false),
+		NF(f_MultiTargetRadius, "Multi-target Radius",	"RapidFire", 20.0f)
     {
 		HookManager::install(app::LCBaseCombat_DoHitEntity, LCBaseCombat_DoHitEntity_Hook);
     }
@@ -33,11 +33,11 @@ namespace cheat::feature
 
     void RapidFire::DrawMain()
     {
-		ConfigWidget("Enabled", m_Enabled, "Enables attack multipliers. Need to choose a mode to work.");
+		ConfigWidget("Enabled", f_Enabled, "Enables attack multipliers. Need to choose a mode to work.");
 		ImGui::SameLine();
 		ImGui::TextColored(ImColor(255, 165, 0, 255), "Choose any or both modes below.");
 
-		ConfigWidget("Multi-hit Mode", m_MultiHit, "Enables multi-hit.\n" \
+		ConfigWidget("Multi-hit Mode", f_MultiHit, "Enables multi-hit.\n" \
             "Multiplies your attack count.\n" \
             "This is not well tested, and can be detected by anticheat.\n" \
             "Not recommended to be used with main accounts or used with high values.\n" \
@@ -45,56 +45,56 @@ namespace cheat::feature
 
 		ImGui::Indent();
 
-		ConfigWidget("One-Punch Mode", m_OnePunch, "Calculate how many attacks needed to kill an enemy based on their HP\n" \
+		ConfigWidget("One-Punch Mode", f_OnePunch, "Calculate how many attacks needed to kill an enemy based on their HP\n" \
 			"and uses that to set the multiplier accordingly.\n" \
 			"May be safer, but multiplier calculation may not be on-point.");
 
-		ConfigWidget("Randomize Multiplier", m_Randomize, "Randomize multiplier between min and max multiplier.");
+		ConfigWidget("Randomize Multiplier", f_Randomize, "Randomize multiplier between min and max multiplier.");
 		ImGui::SameLine();
 		ImGui::TextColored(ImColor(255, 165, 0, 255), "This will override One-Punch Mode!");
 
-		if (!m_OnePunch) {
-			if (!m_Randomize)
+		if (!f_OnePunch) {
+			if (!f_Randomize)
 			{
-				ConfigWidget("Multiplier", m_Multiplier, 1, 2, 1000, "Attack count multiplier.");
+				ConfigWidget("Multiplier", f_Multiplier, 1, 2, 1000, "Attack count multiplier.");
 			}
 			else
 			{
-				ConfigWidget("Min Multiplier", m_minMultiplier, 1, 2, 1000, "Attack count minimum multiplier.");
-				ConfigWidget("Max Multiplier", m_maxMultiplier, 1, 2, 1000, "Attack count maximum multiplier.");
+				ConfigWidget("Min Multiplier", f_minMultiplier, 1, 2, 1000, "Attack count minimum multiplier.");
+				ConfigWidget("Max Multiplier", f_maxMultiplier, 1, 2, 1000, "Attack count maximum multiplier.");
 			}
 		}
 
 		ImGui::Unindent();
 
-		ConfigWidget("Multi-target", m_MultiTarget, "Enables multi-target attacks within specified radius of target.\n" \
+		ConfigWidget("Multi-target", f_MultiTarget, "Enables multi-target attacks within specified radius of target.\n" \
 			"All valid targets around initial target will be hit based on setting.\n" \
 			"This can cause EXTREME lag and quick bans if used with multi-hit. You are warned."
 		);
 	
 		ImGui::Indent();
-		ConfigWidget("Radius (m)", m_MultiTargetRadius, 0.1f, 5.0f, 50.0f, "Radius to check for valid targets.");
+		ConfigWidget("Radius (m)", f_MultiTargetRadius, 0.1f, 5.0f, 50.0f, "Radius to check for valid targets.");
 		ImGui::Unindent();
     }
 
     bool RapidFire::NeedStatusDraw() const
 {
-        return m_Enabled && (m_MultiHit || m_MultiTarget);
+        return f_Enabled && (f_MultiHit || f_MultiTarget);
     }
 
     void RapidFire::DrawStatus() 
     {
-		if (m_MultiHit) 
+		if (f_MultiHit) 
 		{
-			if (m_Randomize)
-				ImGui::Text("Multi-Hit Random[%d|%d]", m_minMultiplier.value(), m_maxMultiplier.value());
-			else if (m_OnePunch)
+			if (f_Randomize)
+				ImGui::Text("Multi-Hit Random[%d|%d]", f_minMultiplier.value(), f_maxMultiplier.value());
+			else if (f_OnePunch)
 				ImGui::Text("Multi-Hit [OnePunch]");
 			else
-				ImGui::Text("Multi-Hit [%d]", m_Multiplier.value());
+				ImGui::Text("Multi-Hit [%d]", f_Multiplier.value());
 		}
-		if (m_MultiTarget)
-			ImGui::Text("Multi-Target [%.01fm]", m_MultiTargetRadius.value());
+		if (f_MultiTarget)
+			ImGui::Text("Multi-Target [%.01fm]", f_MultiTargetRadius.value());
     }
 
     RapidFire& RapidFire::GetInstance()
@@ -107,16 +107,16 @@ namespace cheat::feature
 	int RapidFire::CalcCountToKill(float attackDamage, uint32_t targetID)
 	{
 		if (attackDamage == 0)
-			return m_Multiplier;
+			return f_Multiplier;
 		
 		auto& manager = game::EntityManager::instance();
 		auto targetEntity = manager.entity(targetID);
 		if (targetEntity == nullptr)
-			return m_Multiplier;
+			return f_Multiplier;
 
 		auto baseCombat = targetEntity->combat();
 		if (baseCombat == nullptr)
-			return m_Multiplier;
+			return f_Multiplier;
 
 		auto safeHP = baseCombat->fields._combatProperty_k__BackingField->fields.HP;
 		auto HP = app::SafeFloat_GetValue(nullptr, safeHP, nullptr);
@@ -126,7 +126,7 @@ namespace cheat::feature
 
 	int RapidFire::GetAttackCount(app::LCBaseCombat* combat, uint32_t targetID, app::AttackResult* attackResult)
 	{
-		if (!m_MultiHit)
+		if (!f_MultiHit)
 			return 1;
 
 		auto& manager = game::EntityManager::instance();
@@ -135,17 +135,17 @@ namespace cheat::feature
 		if (baseCombat == nullptr)
 			return 1;
 
-		int countOfAttacks = m_Multiplier;
-		if (m_OnePunch)
+		int countOfAttacks = f_Multiplier;
+		if (f_OnePunch)
 		{
 			app::Formula_CalcAttackResult(targetEntity, combat->fields._combatProperty_k__BackingField,
 				baseCombat->fields._combatProperty_k__BackingField,
 				attackResult, manager.avatar()->raw(), targetEntity->raw(), nullptr);
 			countOfAttacks = CalcCountToKill(attackResult->fields.damage, targetID);
 		}
-		if (m_Randomize)
+		if (f_Randomize)
 		{
-			countOfAttacks = rand() % (m_maxMultiplier.value() - m_minMultiplier.value()) + m_minMultiplier.value();
+			countOfAttacks = rand() % (f_maxMultiplier.value() - f_minMultiplier.value()) + f_minMultiplier.value();
 			return countOfAttacks;
 		}
 
@@ -190,7 +190,7 @@ namespace cheat::feature
 		//SAFE_BEGIN();
 		auto attacker = game::Entity(__this->fields._._._entity);
 		RapidFire& rapidFire = RapidFire::GetInstance();
-		if (!IsAttackByAvatar(attacker) || !rapidFire.m_Enabled)
+		if (!IsAttackByAvatar(attacker) || !rapidFire.f_Enabled)
 			return callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, targetID, attackResult, ignoreCheckCanBeHitInMP, method);
 
 		auto& manager = game::EntityManager::instance();
@@ -201,18 +201,18 @@ namespace cheat::feature
 		std::vector<cheat::game::Entity*> validEntities;
 		validEntities.push_back(originalTarget);
 		
-		if (rapidFire.m_MultiTarget)
+		if (rapidFire.f_MultiTarget)
 		{
 			auto filteredEntities = manager.entities(game::filters::combined::Monsters);
 			for (const auto& entity : filteredEntities) {
 				auto distance = originalTarget->distance(entity);
-				if (distance <= rapidFire.m_MultiTargetRadius)
+				if (distance <= rapidFire.f_MultiTargetRadius)
 					validEntities.push_back(entity);
 			}
 		}
 
 		for (const auto& entity : validEntities) {
-			if (rapidFire.m_MultiHit) {
+			if (rapidFire.f_MultiHit) {
 				int attackCount = rapidFire.GetAttackCount(__this, entity->runtimeID(), attackResult);
 				for (int i = 0; i < attackCount; i++)
 					callOrigin(LCBaseCombat_DoHitEntity_Hook, __this, entity->runtimeID(), attackResult, ignoreCheckCanBeHitInMP, method);
