@@ -67,12 +67,8 @@ namespace cheat::feature
     // Check if entity valid for mob vacuum.
     bool MobVacuum::IsEntityForVac(game::Entity* entity)
     {
-        if (!game::filters::combined::Living.IsValid(entity) && m_IncludeAnimals)
-            return false;
-
-        if (!game::filters::combined::Monsters.IsValid(entity))
-            return false;
-
+        if (!game::filters::combined::Living.IsValid(entity)) return false;
+            
         auto& manager = game::EntityManager::instance();
         if (m_OnlyTarget && game::filters::combined::Monsters.IsValid(entity))
         {

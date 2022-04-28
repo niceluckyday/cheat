@@ -224,7 +224,7 @@ namespace cheat::game::filters
 					"HumanBox", 
 					"HumanJars",
 					"QQTotem",
-					"WatchTower01"
+					"WatchTower01",
 					"WatchTower02"
 			}};
 		AdvancedFilter Living = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster } };
