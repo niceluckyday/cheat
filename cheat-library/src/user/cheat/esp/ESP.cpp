@@ -443,7 +443,24 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(living, LuminescentSpine);
 		ADD_FILTER_FIELD(living, Onikabuto);
 		ADD_FILTER_FIELD(living, Starconch);
-		ADD_FILTER_FIELD(living, UnagiMeat);
+		ADD_FILTER_FIELD(living, Eel);
+		ADD_FILTER_FIELD(living, Inu);
+		ADD_FILTER_FIELD(living, Boar);
+		ADD_FILTER_FIELD(living, Fox);
+		ADD_FILTER_FIELD(living, Squirrel);
+		ADD_FILTER_FIELD(living, Crane);
+		ADD_FILTER_FIELD(living, Falcon);
+		ADD_FILTER_FIELD(living, LucklightFly);
+		ADD_FILTER_FIELD(living, Salamander);
+		ADD_FILTER_FIELD(living, Pigeon);
+		ADD_FILTER_FIELD(living, Crow);
+		ADD_FILTER_FIELD(living, Finch);
+		ADD_FILTER_FIELD(living, Wigeon);
+		ADD_FILTER_FIELD(living, Dog);
+		ADD_FILTER_FIELD(living, Cat);
+		ADD_FILTER_FIELD(living, Weasel);
+		ADD_FILTER_FIELD(living, Kitsune);
+		ADD_FILTER_FIELD(living, BakeDanuki);
 
 		ADD_FILTER_FIELD(mineral, AmethystLump);
 		ADD_FILTER_FIELD(mineral, ArchaicStone);

@@ -64,7 +64,24 @@ namespace cheat::game::filters
 		SimpleFilter LuminescentSpine = { app::EntityType__Enum_1::EnvAnimal, "FireFly" };
 		SimpleFilter Onikabuto = { app::EntityType__Enum_1::GatherObject, "Electrohercules" };
 		SimpleFilter Starconch = { app::EntityType__Enum_1::GatherObject, "_Shell" };
-		SimpleFilter UnagiMeat = { app::EntityType__Enum_1::EnvAnimal, "_Eel_" };
+		SimpleFilter Eel = { app::EntityType__Enum_1::EnvAnimal, "_Eel_" };
+		SimpleFilter Inu = { app::EntityType__Enum_1::EnvAnimal, "Inu_Shihandai" };
+		SimpleFilter Boar = { app::EntityType__Enum_1::EnvAnimal, "Boar" };
+		SimpleFilter Fox = { app::EntityType__Enum_1::EnvAnimal, "Fox" };
+		SimpleFilter Squirrel = { app::EntityType__Enum_1::EnvAnimal, "Squirrel" };
+		SimpleFilter Crane = { app::EntityType__Enum_1::EnvAnimal, "Crane" };
+		SimpleFilter Falcon = { app::EntityType__Enum_1::EnvAnimal, "Falcon" };
+		SimpleFilter LucklightFly = { app::EntityType__Enum_1::EnvAnimal, "Boltbug_" };
+		SimpleFilter Salamander = { app::EntityType__Enum_1::EnvAnimal, "Salamander" };
+		SimpleFilter Pigeon = { app::EntityType__Enum_1::EnvAnimal, "Pigeon" };
+		SimpleFilter Crow = { app::EntityType__Enum_1::EnvAnimal, "Crow" };
+		SimpleFilter Finch = { app::EntityType__Enum_1::EnvAnimal, "Tit" };
+		SimpleFilter Wigeon = { app::EntityType__Enum_1::EnvAnimal, "Wigeon" };
+		SimpleFilter Dog = { app::EntityType__Enum_1::EnvAnimal, "DogPrick" };
+		SimpleFilter Cat = { app::EntityType__Enum_1::EnvAnimal, "Cat" };
+		SimpleFilter Weasel = { app::EntityType__Enum_1::EnvAnimal, "Marten" };
+		SimpleFilter Kitsune = { app::EntityType__Enum_1::EnvAnimal, "Vulpes" };
+		SimpleFilter BakeDanuki = { app::EntityType__Enum_1::EnvAnimal, "Inu_Tanuki" };
 	}
 
 	namespace mineral

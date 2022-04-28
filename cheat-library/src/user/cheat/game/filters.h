@@ -67,7 +67,24 @@ namespace cheat::game::filters
 		extern SimpleFilter LuminescentSpine;
 		extern SimpleFilter Onikabuto;
 		extern SimpleFilter Starconch;
-		extern SimpleFilter UnagiMeat;
+		extern SimpleFilter Eel;
+		extern SimpleFilter Inu;
+		extern SimpleFilter Boar;
+		extern SimpleFilter Fox;
+		extern SimpleFilter Squirrel;
+		extern SimpleFilter Crane;
+		extern SimpleFilter Falcon;
+		extern SimpleFilter LucklightFly;
+		extern SimpleFilter Salamander;
+		extern SimpleFilter Pigeon;
+		extern SimpleFilter Crow;
+		extern SimpleFilter Finch;
+		extern SimpleFilter Wigeon;
+		extern SimpleFilter Dog;
+		extern SimpleFilter Cat;
+		extern SimpleFilter Weasel;
+		extern SimpleFilter Kitsune;
+		extern SimpleFilter BakeDanuki;
 	}
 
 	namespace mineral
