@@ -126,14 +126,15 @@ namespace cheat::feature
 				
 		for (auto& info: filters)
 		{
-			//m0nkrel : We making a string copies and lowercase them to avoid case sensitive search
-			//Yes, it's shitcode and maybe it break something, but it works.
-			std::string name = info.first.name();
-			std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+            const auto& filterName = info.first.value().m_Name;
 
-			std::string search = m_Search;
-			std::transform(search.begin(), search.end(), search.begin(), ::tolower);
-			if (name.find(search) != std::string::npos) 
+            auto it = std::search(
+                filterName.begin(), filterName.end(),
+                m_Search.begin(), m_Search.end(),
+                [](char ch1, char ch2) { return std::tolower(ch1) == std::tolower(ch2); }
+            );
+
+            if (it != filterName.end())
 				validFilters.push_back(&info);
 		}
 
