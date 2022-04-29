@@ -9,16 +9,14 @@ namespace cheat::game
     namespace filter::mode {
         inline bool whitelist(const std::vector<std::string>& names, cheat::game::Entity* entity) {
             const auto& name = entity->name();
-            bool name_found = names.size() == 0 || std::any_of(names.cbegin(), names.cend(),
+            bool name_found = std::any_of(names.cbegin(), names.cend(),
                 [&name](const std::string& pattern) { return name.find(pattern) != std::string::npos; });
 
             return name_found;
         }
 
         inline bool blacklist(const std::vector<std::string>& names, cheat::game::Entity* entity) {
-            const auto& name = entity->name();
-            bool name_not_found = names.size() == 0 || !std::any_of(names.cbegin(), names.cend(),
-                [&name](const std::string& pattern) { return name.find(pattern) != std::string::npos; });
+            bool name_not_found = !whitelist(names, entity);
             return name_not_found;
         }
     }
@@ -42,7 +40,7 @@ namespace cheat::game
             if (!type_found)
                 return false;
 
-            return nameFilterFn(m_Names, entity);
+            return names.size() == 0 || nameFilterFn(m_Names, entity);
         }
 
     private:
