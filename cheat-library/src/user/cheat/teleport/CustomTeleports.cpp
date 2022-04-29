@@ -15,7 +15,7 @@
 namespace cheat::feature
 {
     CustomTeleports::CustomTeleports() : Feature(),
-     NF(m_DebugMode, "Debug Mode", "CustomTeleports", false) // Soon to be added
+     NF(f_DebugMode, "Debug Mode", "CustomTeleports", false) // Soon to be added
     { }
     const FeatureGUIInfo &CustomTeleports::GetGUIInfo() const
     {

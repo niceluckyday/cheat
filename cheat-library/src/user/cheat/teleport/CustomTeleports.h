@@ -10,7 +10,7 @@ namespace cheat::feature
     class CustomTeleports : public Feature
     {
     public:
-        config::field::ToggleField m_DebugMode;
+        config::Field<config::ToggleHotkey> f_DebugMode;
         static CustomTeleports& GetInstance();
         const FeatureGUIInfo& GetGUIInfo() const override;
 		void DrawMain() override;
