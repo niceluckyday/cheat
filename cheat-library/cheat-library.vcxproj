@@ -92,7 +92,6 @@
     <ClCompile Include="src\user\cheat\GenshinCM.cpp" />
     <ClCompile Include="src\user\cheat\world\AutoFish.cpp" />
     <ClCompile Include="src\user\cheat\world\ElementalSight.cpp" />
-    <ClCompile Include="src\user\cheat\game\AdvancedFilter.cpp" />
     <ClCompile Include="src\user\cheat\game\Chest.cpp" />
     <ClCompile Include="src\user\cheat\game\ChestFilter.cpp" />
     <ClCompile Include="src\user\cheat\game\Entity.cpp" />
