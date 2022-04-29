@@ -216,10 +216,10 @@ namespace cheat::game::filters
 		SimpleFilter AncientRime = { app::EntityType__Enum_1::Gadget, "_IceSolidBulk" };
 		SimpleFilter BakeDanuki = { app::EntityType__Enum_1::Monster, "Animal_Inu_Tanuki_" };
 		SimpleFilter BloattyFloatty = { app::EntityType__Enum_1::Field, "_Flower_PongPongTree_" };
-		AdvancedFilter CubeDevices = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::Gadget, app::EntityType__Enum_1::Platform }, std::vector<std::string> {"_ElecStone", "_ElecSwitch" }};
+		WhitelistFilter CubeDevices = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::Gadget, app::EntityType__Enum_1::Platform }, std::vector<std::string> {"_ElecStone", "_ElecSwitch" }};
 		SimpleFilter EightStoneTablets = { app::EntityType__Enum_1::Gadget, "_HistoryBoard" };
 		SimpleFilter ElectricConduction = { app::EntityType__Enum_1::Gear, "_ElectricPowerSource" };
-		AdvancedFilter ElectroSeelie = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::Field, app::EntityType__Enum_1::Platform }, std::vector<std::string> {"_ElectricSeelie"} };
+		WhitelistFilter ElectroSeelie = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::Field, app::EntityType__Enum_1::Platform }, std::vector<std::string> {"_ElectricSeelie"} };
 		SimpleFilter ElementalMonument = { app::EntityType__Enum_1::Gear, "_ElemTablet" };
 		SimpleFilter FloatingAnemoSlime = { app::EntityType__Enum_1::Platform, "_WindSlime" };
 		SimpleFilter Geogranum = { app::EntityType__Enum_1::Gadget, "_Property_Prop_RockFragment" };
@@ -306,7 +306,7 @@ namespace cheat::game::filters
 			monster::Cicin +
 			monster::Whopperflower
 		};
-		AdvancedFilter Doodads = {
+		WhitelistFilter Doodads = {
 			std::vector<app::EntityType__Enum_1> {
 				app::EntityType__Enum_1::Gadget
 			},
@@ -332,8 +332,18 @@ namespace cheat::game::filters
 					"WatchTower01",
 					"WatchTower02"
 			} };
-		AdvancedFilter Living = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster } };
-		AdvancedFilter Animals = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster }, std::vector<std::string> {"Animal" }};
+		BlacklistFilter Living = {
+			std::vector<app::EntityType__Enum_1> {
+				app::EntityType__Enum_1::EnvAnimal,
+				app::EntityType__Enum_1::Monster
+			},
+			std::vector<std::string> {
+				// Environmental mobs
+				"Cat", "DogPrick", "Vulpues", "Inu_Tanuki",
+				// Overworld bosses
+				"Ningyo", "Regisvine", "Hypostasis", "Planelurker", "Nithhoggr"
+			}
+		};
 		//m0nkrel: We can choose the entities we need ourselves so as not to magnetize cats, dogs, etc.
 		//AdvancedFilter Animals = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::EnvAnimal, app::EntityType__Enum_1::Monster }, std::vector<std::string> {"Crane","Tit", "Boar" , "Squirrel", "Fox", "Pigeon", "Wigeon", "Falcon" ,"Marten" } };
 	}

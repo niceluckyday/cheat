@@ -320,9 +320,6 @@
     <ClCompile Include="src\user\cheat\imap\InteractiveMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\game\AdvancedFilter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\user\cheat\world\ElementalSight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
