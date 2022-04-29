@@ -39,7 +39,7 @@ namespace cheat::game::filters
 		extern SimpleFilter Electrogranum;
 		extern SimpleFilter FishingPoint;
 		extern SimpleFilter Geoculus;
-		extern AdvancedFilter ItemDrops;
+		extern WhitelistFilter ItemDrops;
 		extern SimpleFilter Lumenspar;
 		extern SimpleFilter KeySigil;
 		extern SimpleFilter ShrineOfDepth;
@@ -238,7 +238,7 @@ namespace cheat::game::filters
 		extern SimpleFilter MistBubble;
 		extern SimpleFilter OozingConcretions;
 		extern SimpleFilter PirateHelm;
-		extern AdvancedFilter PressurePlate;
+		extern WhitelistFilter PressurePlate;
 		extern SimpleFilter SeelieLamp;
 		extern SimpleFilter Seelie;
 		extern SimpleFilter SmallRockPile;

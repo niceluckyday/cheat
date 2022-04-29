@@ -36,7 +36,7 @@ namespace cheat::game::filters
 		SimpleFilter Electrogranum = { app::EntityType__Enum_1::Gadget, "ThunderSeedCreate" };
 		SimpleFilter FishingPoint = { app::EntityType__Enum_1::FishPool, "_FishingShoal" };
 		SimpleFilter Geoculus = { app::EntityType__Enum_1::GatherObject, "RockCrystalShell" };
-		AdvancedFilter ItemDrops = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::GatherObject, app::EntityType__Enum_1::DropItem }, std::vector<std::string> {"_Food_BirdMeat", "_Food_Meat", "_DropItem" } };
+		WhitelistFilter ItemDrops = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::GatherObject, app::EntityType__Enum_1::DropItem }, std::vector<std::string> {"_Food_BirdMeat", "_Food_Meat", "_DropItem" } };
 		SimpleFilter Lumenspar = { app::EntityType__Enum_1::GatherObject, "CelestiaSplinter" };
 		SimpleFilter KeySigil = { app::EntityType__Enum_1::GatherObject, "RuneContent" };
 		SimpleFilter ShrineOfDepth = { app::EntityType__Enum_1::Gadget, "Temple" };
@@ -234,7 +234,7 @@ namespace cheat::game::filters
 		SimpleFilter MistBubble = { app::EntityType__Enum_1::Platform, "_Suspiciousbubbles" };
 		SimpleFilter OozingConcretions = { app::EntityType__Enum_1::Gadget, "_AbyssCoreLv" };
 		SimpleFilter PirateHelm = { app::EntityType__Enum_1::Field, "_PirateHelm" };
-		AdvancedFilter PressurePlate = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::Field, app::EntityType__Enum_1::Gadget }, std::vector<std::string> {"Gear_Gravity", "_LitPathPlate" } };
+		WhitelistFilter PressurePlate = { std::vector<app::EntityType__Enum_1> {app::EntityType__Enum_1::Field, app::EntityType__Enum_1::Gadget }, std::vector<std::string> {"Gear_Gravity", "_LitPathPlate" } };
 		SimpleFilter SeelieLamp = { app::EntityType__Enum_1::Field, "Gear_SeeliaLamp" };
 		SimpleFilter Seelie = { app::EntityType__Enum_1::Platform, "Gear_Seelie" };
 		SimpleFilter SmallRockPile = { app::EntityType__Enum_1::Gadget, "_StonePile_01" };
