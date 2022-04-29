@@ -106,14 +106,15 @@ namespace cheat::game::filters
 		SimpleFilter FatuiCicinMage = { app::EntityType__Enum_1::Monster, "_Fatuus_Summoner" };
 		SimpleFilter FatuiMirrorMaiden = { app::EntityType__Enum_1::Monster, "_Fatuus_Maiden" };
 		SimpleFilter FatuiSkirmisher = { app::EntityType__Enum_1::Monster, "_Skirmisher" };
-		SimpleFilter Geovishap = { app::EntityType__Enum_1::Monster, "_Drake" };
-		SimpleFilter GeovishapHatchling = { app::EntityType__Enum_1::Monster, "_Wyrm" };
+		SimpleFilter Geovishap = { app::EntityType__Enum_1::Monster, "_Drake_Rock" };
+		SimpleFilter GeovishapHatchling = { app::EntityType__Enum_1::Monster, "_Wyrm_Rock" };
 		SimpleFilter Hilichurl = { app::EntityType__Enum_1::Monster, "_Hili" };
 		SimpleFilter Mitachurl = { app::EntityType__Enum_1::Monster, "_Brute" };
-		SimpleFilter Nobushi = { app::EntityType__Enum_1::Monster, "_Samurai" };
+		SimpleFilter Nobushi = { app::EntityType__Enum_1::Monster, "_Ronin" };
+		SimpleFilter Kairagi = { app::EntityType__Enum_1::Monster, "_Kairagi" };
 		SimpleFilter RuinGuard = { app::EntityType__Enum_1::Monster, "_Defender" };
 		SimpleFilter RuinHunter = { app::EntityType__Enum_1::Monster, "_Formathr" };
-		SimpleFilter RuinSentinel = { app::EntityType__Enum_1::Monster, std::vector<std::string> {"_Konungmathr", "_Apparatus" } };
+		SimpleFilter RuinSentinel = { app::EntityType__Enum_1::Monster, std::vector<std::string> {"_Konungmathr", "_Apparatus_Enigma" } };
 		SimpleFilter Samachurl = { app::EntityType__Enum_1::Monster, "_Shaman" };
 	    SimpleFilter ShadowyHusk = { app::EntityType__Enum_1::Monster, "ForlornVessel_Strong" };
 		SimpleFilter Slime = { app::EntityType__Enum_1::Monster, "_Slime" };
@@ -129,8 +130,8 @@ namespace cheat::game::filters
 		SimpleFilter Tartaglia = { app::EntityType__Enum_1::Monster, "_Tartaglia" };
 		SimpleFilter Azhdaha = { app::EntityType__Enum_1::Monster, "_Dahaka" };
 		SimpleFilter Signora = { app::EntityType__Enum_1::Monster, "_LaSignora" };
-		SimpleFilter Shougan = { app::EntityType__Enum_1::Monster, "_Shougan" };
-		SimpleFilter EyeoftheStorm = { app::EntityType__Enum_1::Monster, "_Elemental_Wind" };
+		SimpleFilter Shogun = { app::EntityType__Enum_1::Monster, "_Shougan" };
+		SimpleFilter EyeOfTheStorm = { app::EntityType__Enum_1::Monster, "_Elemental_Wind" };
 		SimpleFilter ElectroHypostasis = { app::EntityType__Enum_1::Monster, "_Effigy_Electric" };
 		SimpleFilter AnemoHypostasis = { app::EntityType__Enum_1::Monster, "_Effigy_Wind" };
 		SimpleFilter GeoHypostasis = { app::EntityType__Enum_1::Monster, "_Effigy_Rock" };
@@ -147,6 +148,10 @@ namespace cheat::game::filters
 		SimpleFilter OceanidSquirrel = { app::EntityType__Enum_1::Monster, "_Oceanid_Squirrel" };
 		SimpleFilter OceanidFrog = { app::EntityType__Enum_1::Monster, "_Oceanid_Frog" };
 		SimpleFilter OceanidFalcon = { app::EntityType__Enum_1::Monster, "_Oceanid_Falcon" };
+		SimpleFilter PerpetualMechanicalArray = { app::EntityType__Enum_1::Monster, "_Apparatus_Perpetual" };
+		SimpleFilter PrimoGeovishap = { app::EntityType__Enum_1::Monster, "_Drake_Primo_Rock" };
+		SimpleFilter CryoBathysmalVishap = { app::EntityType__Enum_1::Monster, "_Drake_Deepsea_Ice" };
+		SimpleFilter ElectroBathysmalVishap = { app::EntityType__Enum_1::Monster, "_Drake_Deepsea_Electric" };
 		SimpleFilter ThunderManifestation = { app::EntityType__Enum_1::Monster, "_Raijin" };
 		SimpleFilter HydroAbyssHerald = { app::EntityType__Enum_1::Monster, "_Invoker_Herald_Water" };
 		SimpleFilter ElectroAbyssLector = { app::EntityType__Enum_1::Monster, "_Invoker_Deacon_Electric" };
@@ -159,6 +164,7 @@ namespace cheat::game::filters
 		SimpleFilter SangonomiyaCohort = { app::EntityType__Enum_1::Monster, "_AahigaruTaisho_" };
 		SimpleFilter CryoRegisvine = { app::EntityType__Enum_1::Monster, "_Regisvine_Ice" };
 		SimpleFilter PyroRegisvine = { app::EntityType__Enum_1::Monster, "_Regisvine_Fire" };
+		SimpleFilter MaguuKenki = { app::EntityType__Enum_1::Monster, "_Ningyo" };
 		SimpleFilter Cicin = { app::EntityType__Enum_1::Monster, "_Cicin" };
 		SimpleFilter Beisht = { app::EntityType__Enum_1::Monster, "_Eldritch" };
 	}
@@ -242,6 +248,36 @@ namespace cheat::game::filters
 			featured::Geoculus + featured::Lumenspar + featured::KeySigil;
 		SimpleFilter Chests = { app::EntityType__Enum_1::Chest };
 		SimpleFilter Monsters = { app::EntityType__Enum_1::Monster };
+		SimpleFilter Bosses = {
+			// Adding these comments for better tracking.
+			// Trounce
+			monster::Dvalin +
+			monster::Azhdaha +
+			monster::Signora +
+			monster::Shogun +
+			monster::Andrius +
+			monster::Tartaglia +
+			// Mondstadt
+			monster::CryoRegisvine +
+			monster::ElectroHypostasis +
+			monster::AnemoHypostasis +
+			monster::CryoHypostasis +
+			// Liyue
+			monster::PyroRegisvine +
+			monster::Oceanid +
+			monster::GeoHypostasis +
+			monster::RuinSerpent +
+			monster::PrimoGeovishap +
+			// Inazuma
+			monster::PerpetualMechanicalArray +
+			monster::PyroHypostasis +
+			monster::MaguuKenki +
+			monster::ThunderManifestation +
+			monster::GoldenWolflord +
+			monster::HydroHypostasis +
+			monster::CryoBathysmalVishap +
+			monster::ElectroBathysmalVishap
+		};
 		SimpleFilter Ores = {
 			mineral::AmethystLump +
 			mineral::ArchaicStone +
@@ -256,6 +292,20 @@ namespace cheat::game::filters
 			mineral::WhiteIronChunk
 		};
 		SimpleFilter MonsterEquips = { app::EntityType__Enum_1::MonsterEquip };
+		SimpleFilter Shielded = {
+			// Taken from https://genshin-impact.fandom.com/wiki/Shields/Enemy.
+			// We won't be including Regisvines and enemy objects here,
+			// just regular monsters.
+			monster::AbyssMage +
+			monster::Slime +
+			monster::Mitachurl +
+			monster::ElectroAbyssLector +
+			monster::HydroAbyssHerald +
+			monster::PyroAbyssLector +
+			monster::FatuiCicinMage +
+			monster::Cicin +
+			monster::Whopperflower
+		};
 		AdvancedFilter Doodads = {
 			std::vector<app::EntityType__Enum_1> {
 				app::EntityType__Enum_1::Gadget
