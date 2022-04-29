@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
     Logger::SetLevel(Logger::Level::Debug, Logger::LoggerType::ConsoleLogger);
 
     auto path = std::filesystem::path(argv[0]).parent_path();
-    std::filesystem::current_path(path);
+    current_path(path);
     
     WaitForCloseProcess(GlobalGenshinProcName);
     WaitForCloseProcess(ChinaGenshinProcName);
@@ -38,11 +38,13 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    std::filesystem::current_path(path);
+    current_path(path);
     ini.SaveFile("cfg.ini");
 
     std::string filename = (argc == 2 ? argv[1] : "CLibrary.dll");
     std::filesystem::path currentDllPath = std::filesystem::current_path() / filename;
+
+#ifdef _DEBUG
     std::filesystem::path tempDllPath = std::filesystem::temp_directory_path() / filename;
 
     std::error_code ec;
@@ -54,6 +56,9 @@ int main(int argc, char* argv[])
     }
 
     InjectDLL(hProcess, tempDllPath.string());
+#else
+    InjectDLL(hProcess, currentDllPath.string());
+#endif
 
     CloseHandle(hProcess);
 }
