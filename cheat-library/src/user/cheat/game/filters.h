@@ -219,11 +219,11 @@ namespace cheat::game::filters
 		extern SimpleFilter AncientRime;
 		extern SimpleFilter BakeDanuki;
 		extern SimpleFilter BloattyFloatty;
-		extern AdvancedFilter CubeDevices;
+		extern AdvancedFilter<> CubeDevices;
 
 		extern SimpleFilter EightStoneTablets;
 		extern SimpleFilter ElectricConduction;
-		extern AdvancedFilter ElectroSeelie;
+		extern AdvancedFilter<> ElectroSeelie;
 		extern SimpleFilter ElementalMonument;
 		extern SimpleFilter FloatingAnemoSlime;
 		extern SimpleFilter Geogranum;
@@ -255,8 +255,7 @@ namespace cheat::game::filters
 		extern SimpleFilter Ores;
 		extern SimpleFilter MonsterEquips;
 		extern SimpleFilter Shielded;
-		extern AdvancedFilter Doodads;
-		extern AdvancedFilter Living;
-		extern AdvancedFilter Animals;
+		extern AdvancedFilter<> Doodads;
+        extern BlacklistFilter Living;
 	}
 }

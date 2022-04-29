@@ -67,13 +67,16 @@ namespace cheat::feature
     // Check if entity valid for mob vacuum.
     bool MobVacuum::IsEntityForVac(game::Entity* entity)
     {
-        bool isMonster = game::filters::combined::Monsters.IsValid(entity);
-        if (!isMonster && 
-            !(f_IncludeAnimals && game::filters::combined::Living.IsValid(entity)))
+        const auto filter = f_IncludeAnimals ?
+            (game::IEntityFilter*)&game::filters::combined::Living :
+            &game::filters::combined::Monsters;
+
+        if (!filter->IsValid(entity))
             return false;
 
         auto& manager = game::EntityManager::instance();
-        if (f_OnlyTarget && isMonster)
+        //bool isMonster = game::filters::combined::Monsters.IsValid(entity);
+        if (f_OnlyTarget && game::filters::combined::Monsters.IsValid(entity))
         {
             auto monsterCombat = entity->combat();
             if (monsterCombat == nullptr || monsterCombat->fields._attackTarget.runtimeID != manager.avatar()->runtimeID())
