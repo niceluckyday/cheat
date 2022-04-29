@@ -120,7 +120,7 @@
     <ClInclude Include="src\cheat-base\render\backend\dx11-hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\cheat-base\cheat\CheatManager.h">
+    <ClInclude Include="src\cheat-base\cheat\CheatManagerBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\cheat-base\cheat\Feature.h">
@@ -245,7 +245,7 @@
     <ClCompile Include="src\cheat-base\render\backend\dx11-hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\cheat-base\cheat\CheatManager.cpp">
+    <ClCompile Include="src\cheat-base\cheat\CheatManagerBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vendor\fmt\src\os.cc">
@@ -255,9 +255,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\cheat-base\cheat\misc\Settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cheat-base\cheat\IGameMisc.h">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vendor\imgui\backends\imgui_impl_win32.cpp">

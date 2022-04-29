@@ -13,6 +13,8 @@
 #include "imgui_internal.h"
 #include <misc/cpp/imgui_stdlib.h>
 
+#include "cheat-base/cheat/CheatManagerBase.h"
+
 namespace cheat::feature
 {
 

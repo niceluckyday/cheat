@@ -47,6 +47,15 @@ namespace config
 		}
 	}
 
+	void UpdateProfilesNames()
+	{
+		s_ProfilesNames.clear();
+		for (auto& [name, _] : s_Profiles->items())
+		{
+			s_ProfilesNames.push_back(name);
+		}
+	}
+
 	void Initialize(const std::string& filePath)
 	{
 		s_ConfigRoot = {};
@@ -69,6 +78,8 @@ namespace config
 			CreateProfile("default");
 		else
 			ChangeProfile(s_ConfigRoot["current_profile"]);
+
+		UpdateProfilesNames();
 	}
 
 	void OnUpdate();
@@ -248,15 +259,6 @@ namespace config
 		}
 	}
 
-	void UpdateProfilesNames()
-	{
-		s_ProfilesNames.clear();
-		for (auto& [name, _] : s_Profiles->items())
-		{
-			s_ProfilesNames.push_back(name);
-		}
-	}
-
 	void CreateProfile(const std::string& profileName, bool moveAfterCreate)
 	{
 		if (s_Profiles->contains(profileName))
@@ -271,6 +273,7 @@ namespace config
 
 		if (moveAfterCreate)
 			ChangeProfile(profileName);
+		Save();
 	}
 
 	void RemoveProfile(const std::string& profileName)
@@ -295,6 +298,7 @@ namespace config
 
 		s_Profiles->erase(profileName);
 		UpdateProfilesNames();
+		Save();
 	}
 
 	void RenameProfile(const std::string& oldProfileName, const std::string& newProfileName)
@@ -319,6 +323,7 @@ namespace config
 			ChangeProfile(newProfileName);
 		}
 		UpdateProfilesNames();
+		Save();
 	}
 
 	void ChangeProfile(const std::string& profileName)
@@ -334,6 +339,7 @@ namespace config
 		
 		s_ConfigRoot["current_profile"] = profileName;
 		UpdateNotShared();
+		Save();
 	}
 
 	std::vector<std::string> const& GetProfiles()

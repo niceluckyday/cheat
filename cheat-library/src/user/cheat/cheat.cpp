@@ -2,10 +2,8 @@
 #include "cheat.h"
 
 #include <helpers.h>
-#include <resource.h>
 
 #include <cheat/events.h>
-#include <cheat/GenshinMisc.h>
 
 #include <cheat-base/cheat/misc/Settings.h>
 
@@ -41,7 +39,7 @@
 
 #include <cheat/world/AutoFish.h>
 
-#include <cheat/ILPatternScanner.h>
+#include "GenshinCM.h"
 
 namespace cheat 
 {
@@ -56,7 +54,7 @@ namespace cheat
 
 		InstallEventHooks();
 
-		CheatManager& manager = CheatManager::GetInstance();
+		GenshinCM& manager = GenshinCM::instance();
 
 #define FEAT_INST(name) &feature::##name##::GetInstance()
 		manager.AddFeatures({
@@ -111,7 +109,7 @@ namespace cheat
 		if (!ResourceLoader::LoadEx("ImGui_Font", RT_RCDATA, pFontData, dFontSize))
 			LOG_WARNING("Failed to get font from resources.");
 
-		manager.Init(pFontData, dFontSize, &GenshinMisc::GetInstance());
+		manager.Init(pFontData, dFontSize);
 	}
 
 	static void GameManager_Update_Hook(app::GameManager* __this, MethodInfo* method)

@@ -13,6 +13,8 @@
 #include <imgui_internal.h>
 #include <misc/cpp/imgui_stdlib.h>
 
+#include "cheat-base/cheat/CheatManagerBase.h"
+
 namespace cheat::feature 
 {
 
@@ -135,7 +137,7 @@ namespace cheat::feature
 				validFilters.push_back(&info);
 		}
 
-		if (validFilters.size() == 0)
+		if (validFilters.empty())
 			return;
 
 		SelectData selData

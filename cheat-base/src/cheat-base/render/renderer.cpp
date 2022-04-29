@@ -7,7 +7,7 @@
 #include <cheat-base/util.h>
 #include <cheat-base/render/backend/dx11-hook.h>
 
-#include <cheat-base/cheat/CheatManager.h>
+#include <cheat-base/cheat/CheatManagerBase.h>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 

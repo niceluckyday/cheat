@@ -15,6 +15,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\user\cheat\GenshinCM.h" />
     <ClInclude Include="src\user\cheat\world\AutoFish.h" />
     <ClInclude Include="src\user\cheat\world\ElementalSight.h" />
     <ClInclude Include="src\user\cheat\game\AdvancedFilter.h" />
@@ -44,7 +45,6 @@
     <ClInclude Include="src\user\cheat\game\IEntityFilter.h" />
     <ClInclude Include="src\user\cheat\game\SimpleFilter.h" />
     <ClInclude Include="src\user\cheat\game\util.h" />
-    <ClInclude Include="src\user\cheat\GenshinMisc.h" />
     <ClInclude Include="src\user\cheat\ILPatternScanner.h" />
     <ClInclude Include="src\user\cheat\imap\InteractiveMap.h" />
     <ClInclude Include="src\user\cheat\misc\Debug.h" />
@@ -89,6 +89,7 @@
     <Font Include="res\Ruda-Bold.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\user\cheat\GenshinCM.cpp" />
     <ClCompile Include="src\user\cheat\world\AutoFish.cpp" />
     <ClCompile Include="src\user\cheat\world\ElementalSight.cpp" />
     <ClCompile Include="src\user\cheat\game\AdvancedFilter.cpp" />
@@ -116,7 +117,6 @@
     <ClCompile Include="src\user\cheat\game\filters.cpp" />
     <ClCompile Include="src\user\cheat\game\SimpleFilter.cpp" />
     <ClCompile Include="src\user\cheat\game\util.cpp" />
-    <ClCompile Include="src\user\cheat\GenshinMisc.cpp" />
     <ClCompile Include="src\user\cheat\ILPatternScanner.cpp" />
     <ClCompile Include="src\user\cheat\imap\InteractiveMap.cpp" />
     <ClCompile Include="src\user\cheat\misc\Debug.cpp" />

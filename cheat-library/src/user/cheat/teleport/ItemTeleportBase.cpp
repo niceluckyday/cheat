@@ -3,10 +3,10 @@
 
 #include <helpers.h>
 #include <cheat/teleport/MapTeleport.h>
-#include <cheat-base/cheat/CheatManager.h>
+#include <cheat-base/cheat/CheatManagerBase.h>
 #include <cheat/game/EntityManager.h>
 #include <cheat/game/util.h>
-#include <cheat/events.h>
+#include <cheat/GenshinCM.h>
 
 namespace cheat::feature 
 {
@@ -50,7 +50,7 @@ namespace cheat::feature
 
 	void ItemTeleportBase::OnKeyUp(short key, bool& cancelled)
 	{
-		if (CheatManager::IsMenuShowed())
+		if (GenshinCM::instance().IsMenuShowed())
 			return;
 
 		if (f_Key.value().IsPressed(key))

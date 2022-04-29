@@ -537,7 +537,7 @@ bool ImGui::HotkeyWidget(const char* label, Hotkey& hotkey, const ImVec2& size)
 	ImGui::RenderFrame(frame_bb.Min, frame_bb.Max, frame_col, true, style.FrameRounding);
 
 	if ((g.ActiveId == id && !_currHotkey.IsEmpty()) || g.ActiveId != id)
-		strcpy_s(buf_display, ((std::string)hotkey).c_str());
+		strcpy_s(buf_display, static_cast<std::string>(hotkey).c_str());
 	else if (g.ActiveId == id) 
 		strcpy_s(buf_display, "<Press a key>");
 

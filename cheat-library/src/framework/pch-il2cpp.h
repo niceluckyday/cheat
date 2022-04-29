@@ -31,9 +31,8 @@
 #include <cheat-base/Logger.h>
 #include <cheat-base/config/config.h>
 #include <cheat-base/util.h>
-#include <cheat-base/cheat/CheatManager.h>
+#include <cheat-base/cheat/CheatManagerBase.h>
 #include <cheat-base/cheat/Feature.h>
-#include <cheat-base/cheat/IGameMisc.h>
 #include <cheat-base/cheat/misc/Settings.h>
 #include <cheat-base/PipeTransfer.h>
 #include <cheat-base/HookManager.h>

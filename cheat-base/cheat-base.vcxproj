@@ -185,7 +185,7 @@
     <ClInclude Include="src\cheat-base\Hotkey.h" />
     <ClInclude Include="src\cheat-base\render\ImageLoader.h" />
     <ClInclude Include="src\cheat-base\PatternScanner.h" />
-    <ClInclude Include="src\cheat-base\cheat\CheatManager.h" />
+    <ClInclude Include="src\cheat-base\cheat\CheatManagerBase.h" />
     <ClInclude Include="src\cheat-base\cheat\Feature.h" />
     <ClInclude Include="src\cheat-base\cheat\misc\Settings.h" />
     <ClInclude Include="src\cheat-base\render\backend\dx11-hook.h" />
@@ -234,13 +234,7 @@
     <ClCompile Include="src\cheat-base\Hotkey.cpp" />
     <ClCompile Include="src\cheat-base\render\ImageLoader.cpp" />
     <ClCompile Include="src\cheat-base\PatternScanner.cpp" />
-    <ClCompile Include="src\cheat-base\cheat\CheatManager.cpp" />
-    <ClCompile Include="src\cheat-base\cheat\IGameMisc.h">
-      <FileType>CppHeader</FileType>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="src\cheat-base\cheat\CheatManagerBase.cpp" />
     <ClCompile Include="src\cheat-base\cheat\misc\Settings.cpp" />
     <ClCompile Include="src\cheat-base\render\backend\dx11-hook.cpp" />
     <ClCompile Include="src\cheat-base\render\gui-util.cpp" />
