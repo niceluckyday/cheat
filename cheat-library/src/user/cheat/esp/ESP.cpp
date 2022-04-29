@@ -421,6 +421,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(featured, Electrogranum);
 		ADD_FILTER_FIELD(featured, FishingPoint);
 		ADD_FILTER_FIELD(featured, Geoculus);
+		ADD_FILTER_FIELD(featured, ItemDrops);
 		ADD_FILTER_FIELD(featured, KeySigil);
 		ADD_FILTER_FIELD(featured, Lumenspar);
 		ADD_FILTER_FIELD(featured, ShrineOfDepth);
@@ -471,6 +472,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(mineral, IronChunk);
 		ADD_FILTER_FIELD(mineral, NoctilucousJade);
 		ADD_FILTER_FIELD(mineral, MagicalCrystalChunk);
+		ADD_FILTER_FIELD(mineral, ScarletQuartz);
 		ADD_FILTER_FIELD(mineral, StarSilver);
 		ADD_FILTER_FIELD(mineral, WhiteIronChunk);
 
@@ -603,8 +605,10 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(puzzle, LargeRockPile);
 		ADD_FILTER_FIELD(puzzle, LightUpTilePuzzle);
 		ADD_FILTER_FIELD(puzzle, LightningStrikeProbe);
+		ADD_FILTER_FIELD(puzzle, LumenCage);
 		ADD_FILTER_FIELD(puzzle, LuminousSeelie);
 		ADD_FILTER_FIELD(puzzle, MistBubble);
+		ADD_FILTER_FIELD(puzzle, OozingConcretions);
 		ADD_FILTER_FIELD(puzzle, PirateHelm);
 		ADD_FILTER_FIELD(puzzle, PressurePlate);
 		ADD_FILTER_FIELD(puzzle, Seelie);
@@ -612,6 +616,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(puzzle, SmallRockPile);
 		ADD_FILTER_FIELD(puzzle, StormBarrier);
 		ADD_FILTER_FIELD(puzzle, SwordHilt);
+		ADD_FILTER_FIELD(puzzle, Temari);
 		ADD_FILTER_FIELD(puzzle, TorchPuzzle);
 		ADD_FILTER_FIELD(puzzle, UniqueRocks);
 		ADD_FILTER_FIELD(puzzle, WarmingSeelie);

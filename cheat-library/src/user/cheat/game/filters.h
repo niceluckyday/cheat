@@ -39,6 +39,7 @@ namespace cheat::game::filters
 		extern SimpleFilter Electrogranum;
 		extern SimpleFilter FishingPoint;
 		extern SimpleFilter Geoculus;
+		extern AdvancedFilter ItemDrops;
 		extern SimpleFilter Lumenspar;
 		extern SimpleFilter KeySigil;
 		extern SimpleFilter ShrineOfDepth;
@@ -98,6 +99,7 @@ namespace cheat::game::filters
 		extern SimpleFilter IronChunk;
 		extern SimpleFilter NoctilucousJade;
 		extern SimpleFilter MagicalCrystalChunk;
+		extern SimpleFilter ScarletQuartz;
 		extern SimpleFilter StarSilver;
 		extern SimpleFilter WhiteIronChunk;
 	}
@@ -231,15 +233,18 @@ namespace cheat::game::filters
 		extern SimpleFilter LargeRockPile;
 		extern SimpleFilter LightUpTilePuzzle;
 		extern SimpleFilter LightningStrikeProbe;
+		extern SimpleFilter LumenCage;
 		extern SimpleFilter LuminousSeelie;
 		extern SimpleFilter MistBubble;
+		extern SimpleFilter OozingConcretions;
 		extern SimpleFilter PirateHelm;
-		extern SimpleFilter PressurePlate;
+		extern AdvancedFilter PressurePlate;
 		extern SimpleFilter SeelieLamp;
 		extern SimpleFilter Seelie;
 		extern SimpleFilter SmallRockPile;
 		extern SimpleFilter StormBarrier;
 		extern SimpleFilter SwordHilt;
+		extern SimpleFilter Temari;
 		extern SimpleFilter TorchPuzzle;
 		extern SimpleFilter UniqueRocks;
 		extern SimpleFilter WarmingSeelie;
