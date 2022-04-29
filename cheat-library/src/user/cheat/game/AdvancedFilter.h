@@ -40,7 +40,7 @@ namespace cheat::game
             if (!type_found)
                 return false;
 
-            return names.empty() || nameFilterFn(m_Names, entity);
+            return m_Names.empty() || nameFilterFn(m_Names, entity);
         }
 
     private:
