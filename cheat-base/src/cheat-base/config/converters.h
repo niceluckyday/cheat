@@ -17,7 +17,7 @@ namespace config::converters
 	template<typename T>
 	inline void FromJson(T& value, const nlohmann::json& jObject)
 	{
-		value = jObject;
+		value = jObject.get<T>();
 	}
 
 	// Here is storing all simple converters json<->class

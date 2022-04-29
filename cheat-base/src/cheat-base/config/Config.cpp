@@ -17,7 +17,8 @@ namespace config
 	static nlohmann::json* s_ProfileRoot = nullptr;
 	static nlohmann::json* s_Profiles = nullptr;
 	static nlohmann::json* s_SharedRoot = nullptr;
-	
+
+	static std::mutex s_ProfileMutex;
 	static std::string s_ProfileName;
 	static std::vector<std::string> s_ProfilesNames;
 
@@ -49,6 +50,7 @@ namespace config
 
 	void UpdateProfilesNames()
 	{
+		std::lock_guard _lock(s_ProfileMutex);
 		s_ProfilesNames.clear();
 		for (auto& [name, _] : s_Profiles->items())
 		{
@@ -333,6 +335,8 @@ namespace config
 
 		if (!s_Profiles->contains(profileName))
 			return;
+
+		std::lock_guard _lock(s_ProfileMutex);
 
 		s_ProfileRoot = &(*s_Profiles)[profileName];
 		s_ProfileName = profileName;

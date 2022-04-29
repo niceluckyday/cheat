@@ -9236,9 +9236,89 @@ namespace app {
 		struct Dictionary_2_System_UInt32_Dictionary_2_System_Int32_List_1_CFKBGDNLDGP_* MFEPPBMCAGP;
 	};
 
+    enum class NLBBPJJMEGB__Enum : int32_t {
+        Normal = 0x00000000,
+        Cold = 0x00000001,
+        Hot = 0x00000002,
+        ColdMonster = 0x00000003,
+        HotMonster = 0x00000004,
+        SeaMist = 0x00000005,
+        HeroCourse = 0x00000006,
+        SeaMistSurrounding = 0x00000007,
+        TatariRegion = 0x00000008,
+        TransClimate = 0x00000009,
+        SeiraiStorm = 0x0000000a,
+        TsurumiMist = 0x0000000b,
+        TsurumiThunder = 0x0000000c,
+        TsurumiRegionalMist = 0x0000000d,
+        Count = 0x0000000e,
+    };
+
+
+    struct __declspec(align(8)) DataItem__Fields {
+        uint32_t _entityId_k__BackingField;
+        struct Dictionary_2_KFEENBPGJJA_JMOFLAAALOE_* _cacheNormalPropValueDic;
+        struct Dictionary_2_KFEENBPGJJA_IPEPPEAIJEC_* _cacheFightPropValueDic;
+        bool _isToBeRemoved;
+        bool _unCacheEntity;
+        NLBBPJJMEGB__Enum NDLLPHLDHBJ;
+        uint32_t climateAreaID;
+    };
+
+
+    struct BEKFICFOHKL__Fields {
+        struct DataItem__Fields _;
+        uint32_t accountType;
+        uint32_t channelID;
+        bool isGuest;
+        struct String* accountUid;
+        struct String* accountToken;
+        uint32_t userId;
+        uint32_t regionId;
+        struct String* deviceUUID;
+        struct String* onlineID;
+        struct String* psnID;
+        uint32_t nameCardID;
+        struct String* token;
+        struct String* nickName;
+        uint64_t chooseAvatarGuid;
+        uint64_t lastChangeAvatarTime;
+        uint32_t level;
+        uint32_t exp;
+        uint32_t maxExp;
+        uint32_t fullCost;
+        bool isFirstLogin;
+        bool isFirstShare;
+        uint32_t cookGrade;
+        struct Dictionary_2_System_UInt32_CJJDPGJPGJB_* cookRecipeDic;
+        struct List_1_System_UInt32_* compoundList;
+        struct Dictionary_2_System_UInt32_HBAOILFEMEH_* compoundItemDic;
+        struct List_1_System_UInt32_* rewardLevelList;
+        struct Dictionary_2_System_UInt32_System_Int32_* newCombineDic;
+        struct Dictionary_2_System_UInt32_System_Int32_* newForgeDic;
+        uint32_t currForgePoint;
+        struct HashSet_1_System_UInt32_* unlockedCombineSet;
+        struct HashSet_1_System_UInt32_* unlockedForgetSet;
+        //struct IIJPJKLFKBK headPortrait;
+        //struct String* signature;
+        //struct isShowAvatar birthday;
+        //bool IPDELLPNFLE;
+        //struct List_1_System_UInt32_* showAvatarIdList;
+        //struct List_1_System_UInt32_* showNameCardIdList;
+        //struct List_1_System_UInt32_* ownedFlyCloakList;
+        //struct List_1_System_UInt32_* ownedCostumeList;
+        //uint32_t curAvatarEntityID;
+    };
+
+	struct AccountDataItem {
+        struct AccountDataItem__Class* klass;
+        MonitorData* monitor;
+        struct BEKFICFOHKL__Fields fields;
+    };
+
 	struct NEOGDEDNDHF__Fields {
 		struct GMNHONOINDB__Fields _;
-		struct BEKFICFOHKL* _accountData_k__BackingField;
+		struct AccountDataItem* _accountData_k__BackingField;
 		struct HBFICKPEILE* openState;
 		uint32_t curWorldType;
 		uint32_t curSceneID;
