@@ -159,52 +159,31 @@ namespace cheat
 
 	void CheatManagerBase::DrawProfileEntryActivities(const std::string& profileName)
 	{
-		bool isPopupOpen = ImGui::IsPopupOpen("RenamePopup");
+		bool isPopupOpen = ImGui::IsRenamePopupOpened();
 
 		if (isPopupOpen)
 			ImGui::BeginDisabled();
 
-		static std::string nameBuffer;
-
-		if (ImGui::Button("Rename"))
-		{
-			ImGui::OpenPopup("RenamePopup", ImGuiPopupFlags_NoOpenOverExistingPopup);
-			if (ImGui::IsPopupOpen("RenamePopup"))
-				nameBuffer = profileName;
-		}
+		if (ImGui::SmallButton("Rnm"))
+			ImGui::OpenRenamePopup(profileName);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Rename");
 
 		if (isPopupOpen)
 			ImGui::EndDisabled();
 
-		if (ImGui::BeginPopup("RenamePopup", ImGuiWindowFlags_AlwaysAutoResize))
+		std::string nameBuffer;
+		if (ImGui::DrawRenamePopup(nameBuffer))
 		{
-			ImGui::Text("To save press `Enter`.\nTo close without saving press `Esc`.");
-
-			if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0))
-				ImGui::SetKeyboardFocusHere(0);
-
-			ImGui::InputText("Name", &nameBuffer);
-
-			if (ImGui::IsKeyPressed(ImGuiKey_Enter, false))
-			{
-				config::RenameProfile(profileName, nameBuffer);
-				ImGui::CloseCurrentPopup();
-			}
-
-			if (ImGui::IsKeyPressed(ImGuiKey_Escape, false))
-			{
-				ImGui::CloseCurrentPopup();
-			}
-
-			ImGui::EndPopup();
+			config::RenameProfile(profileName, nameBuffer);
 		}
 
 		ImGui::SameLine();
 
-		if (ImGui::Button("Remove"))
-		{
+		if (ImGui::SmallButton("Del"))
 			config::RemoveProfile(profileName);
-		}
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Delete");
 	}
 
 	void CheatManagerBase::DrawProfileEntry(const std::string& profileName)
@@ -224,13 +203,6 @@ namespace cheat
 
 	void CheatManagerBase::DrawProfileConfiguration()
 	{
-		ImGui::SetNextWindowSize({ 0, ImGui::GetTextLineHeightWithSpacing() * 11 }, ImGuiCond_FirstUseEver);
-		if (!ImGui::Begin("Config profile configuration", &m_IsProfileConfigurationShowed))
-		{
-			ImGui::End();
-			return;
-		}
-
 		static ImGuiTableFlags flags =
 			ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable
 			| ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_NoBordersInBody
@@ -260,8 +232,8 @@ namespace cheat
 
 			ImGui::EndTable();
 		}
+
 		DrawProfileGlobalActivities();
-		ImGui::End();
 	}
 
 	void CheatManagerBase::DrawProfileLine()
@@ -442,7 +414,13 @@ namespace cheat
 			DrawMenu();
 
 		if (m_IsProfileConfigurationShowed)
-			DrawProfileConfiguration();
+		{
+			ImGui::SetNextWindowSize({ 0, ImGui::GetTextLineHeightWithSpacing() * 11 }, ImGuiCond_FirstUseEver);
+			if (ImGui::Begin("Config profile configuration", &m_IsProfileConfigurationShowed))
+				DrawProfileConfiguration();
+
+			ImGui::End();
+		}
 
 		if (settings.f_StatusShow)
 			DrawStatus();

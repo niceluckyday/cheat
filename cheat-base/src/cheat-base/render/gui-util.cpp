@@ -589,3 +589,46 @@ bool ImGui::PushStyleColorWithContrast(ImU32 backGroundColor, ImGuiCol foreGroun
 	}
 	return false;
 }
+
+static std::string nameBuffer;
+void ImGui::OpenRenamePopup(const std::string& initName)
+{
+    ImGui::OpenPopup("RenamePopup");
+    if (IsRenamePopupOpened())
+        nameBuffer = initName;
+}
+
+bool ImGui::IsRenamePopupOpened()
+{
+    return ImGui::IsPopupOpen("RenamePopup");
+}
+
+bool ImGui::DrawRenamePopup(std::string& out)
+{
+    if (ImGui::BeginPopup("RenamePopup", ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        ImGui::Text("To save press `Enter`.\nTo close without saving press `Esc`.");
+
+        if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0))
+            ImGui::SetKeyboardFocusHere(0);
+
+        ImGui::InputText("Name", &nameBuffer);
+
+        bool changed = false;
+        if (ImGui::IsKeyPressed(ImGuiKey_Enter, false))
+        {
+            changed = true;
+            out = nameBuffer;
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::IsKeyPressed(ImGuiKey_Escape, false))
+        {
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+        return changed;
+    }
+    return false;
+}

@@ -9,45 +9,51 @@ namespace config
 	class Enum
 	{
 	public:
+		Enum()
+		{
+			static_assert(std::is_enum<T>::value, "Must be an enum type");
+			m_Value = T();
+		}
+
 		Enum(T enumValue)
 		{
 			static_assert(std::is_enum<T>::value, "Must be an enum type");
 			m_Value = enumValue;
 		}
 
-		T value() const
+		inline T value() const
 		{
 			return m_Value;
 		}
 
-		T* pointer() const
+		inline T* pointer() const
 		{
 			return const_cast<T*>(&m_Value);
 		}
 
-		operator T()
+		inline operator T()
 		{
 			return value();
 		}
 
-		T* operator&()
+		inline T* operator&()
 		{
 			return pointer();
 		}
 
-		uint32_t raw() const
+		inline uint32_t raw() const
 		{
 			return static_cast<uint32_t>(m_Value);
 		}
 
-		Enum& operator=(const T& other)
+		inline Enum& operator=(const T& other)
 		{
 			static_assert(std::is_enum<T>::value, "Must be an enum type");
 			m_Value = other;
 			return *this;
 		}
 
-		Enum& operator=(const uint32_t& other)
+		inline Enum& operator=(const uint32_t& other)
 		{
 			m_Value = static_cast<T>(other);
 			return *this;
@@ -57,10 +63,6 @@ namespace config
 		T m_Value;
 	};
 
-	namespace converters
-	{
-
-	}
 
 	//// Okay, close your eyes and don't look at this mess. (Please)
 	//template <typename K>

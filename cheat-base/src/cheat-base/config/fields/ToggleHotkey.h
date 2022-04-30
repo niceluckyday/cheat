@@ -11,21 +11,20 @@ namespace config
 		bool enabled;
 		Hotkey hotkey;
 
-		operator bool&()
+		ToggleHotkey(const Hotkey& hotkey) : enabled(false), hotkey(hotkey) { }
+
+		ToggleHotkey(bool enabled) : enabled(enabled), hotkey() { }
+
+		ToggleHotkey() : enabled(false), hotkey() { }
+
+		inline operator bool&()
 		{
 			return enabled;
 		}
 
-		bool operator==(const ToggleHotkey& rhs)
+		inline bool operator==(const ToggleHotkey& rhs)
 		{
 			return rhs.enabled == enabled && rhs.hotkey == hotkey;
-		}
-
-		inline explicit ToggleHotkey(const Hotkey& hotkey) : enabled(false), hotkey(hotkey) { }
-
-		ToggleHotkey(bool enabled) : enabled(enabled), hotkey()
-		{
-
 		}
 	};
 

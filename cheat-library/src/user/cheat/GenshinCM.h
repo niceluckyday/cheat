@@ -10,52 +10,48 @@ namespace cheat
 		{
 		public:
 			uint32_t userID;
-			//uint32_t regionID;
 			std::string nickName;
-			std::string pseudo;
 
-			AccountData() : userID(0), /*regionID(0),*/ nickName(), pseudo() {}
+			AccountData() : userID(0), nickName() {}
 		};
 
-		struct AccountsData
+		struct AccountConfig
 		{
 		public:
 
+			std::unordered_map<uint32_t, std::string> pseudos;
 			std::unordered_map<uint32_t, AccountData> accounts;
-			std::unordered_map<uint32_t, std::string> profiles;
+			std::unordered_map<uint32_t, std::string> id2Profiles;
+			std::unordered_map<std::string, std::unordered_set<uint32_t>> profiles2id;
 
-			bool operator==(const AccountsData& other)
+			inline bool operator==(const AccountConfig& other)
 			{
-				return accounts.size() == other.accounts.size() && profiles.size() == other.profiles.size();
+				return accounts.size() == other.accounts.size() && pseudos.size() == other.pseudos.size();
 			}
 
-			AccountsData() : accounts(), profiles() {}
+			AccountConfig() : pseudos(), accounts(), id2Profiles() { }
 		};
 
-		inline void to_json(nlohmann::json& j, const AccountData& p)
+		NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(AccountData, nickName, userID)
+
+		inline void to_json(nlohmann::json& nlohmann_json_j, const AccountConfig& nlohmann_json_t)
 		{
-			j = nlohmann::json{ { "nickName", p.nickName }, { "pseudo", p.pseudo }, { "userID", p.userID }/*,  {"regionID", p.regionID} */ };
+			NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(NLOHMANN_JSON_TO, accounts, pseudos, id2Profiles))
 		}
 
-		inline void from_json(const nlohmann::json& j, AccountData& p)
+		inline void from_json(const nlohmann::json& nlohmann_json_j, AccountConfig& nlohmann_json_t)
 		{
-			j.at("nickName").get_to(p.nickName);
-			j.at("pseudo").get_to(p.pseudo);
-			j.at("userID").get_to(p.userID);
-			//j.at("regionID").get_to(p.regionID);
+			NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(NLOHMANN_JSON_FROM, accounts, pseudos, id2Profiles))
+
+			for (auto& [userID, profileName] : nlohmann_json_t.id2Profiles)
+			{
+				auto& profileIDs = nlohmann_json_t.profiles2id[profileName];
+				profileIDs.insert(userID);
+			}
 		}
 
-		inline void to_json(nlohmann::json& j, const AccountsData& p)
-		{
-			j = nlohmann::json{ { "accounts", nlohmann::json(p.accounts) }, { "profiles", nlohmann::json(p.profiles) } };
-		}
-
-		inline void from_json(const nlohmann::json& j, AccountsData& p)
-		{
-			j.at("accounts").get_to(p.accounts);
-			j.at("profiles").get_to(p.profiles);
-		}
 	}
+
 
 	class GenshinCM : public CheatManagerBase
 	{
@@ -66,15 +62,34 @@ namespace cheat
 		bool CursorGetVisibility() final;
 
 	protected:
+		enum class ShowType
+		{
+			Pseudo,
+			UserID,
+			Nickname
+		};
+
+		config::Field<config::Enum<ShowType>> f_ShowType;
 
 		internal::AccountData m_CurrentAccount;
-		config::Field<internal::AccountsData> f_AccountsData;
+		config::Field<internal::AccountConfig> f_AccConfig;
+
 		GenshinCM();
 
-		bool IsCurrentAccountAttached();
+		bool IsAccountAttached(uint32_t userID, const std::string& profileName);
+		std::string GetAccountDisplayName(uint32_t uid);
 
+		void DetachAccount(uint32_t uid, const std::string& profileName);
+		void AttachAccount(uint32_t uid, const std::string& profileName);
+
+		void DrawProfileEntryActivities(const std::string& profileName) final;
+		void DrawProfileEntry(const std::string& profileName) final;
+		void DrawProfileTableHeader() final;
+		int GetProfileTableColumnCount() final;
+		void DrawAccountsList(const std::string& profileName);
+		void DrawProfileConfiguration() final;
 		void DrawProfileLine() final;
-		void DrawAttachAccountToProfile(const std::string& profileName);
+		void DrawPseudoRename(uint32_t userID);
 
 		void OnAccountChanged();
 		void OnGameUpdate();

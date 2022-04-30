@@ -5,6 +5,25 @@
 #include <imgui.h>
 #include "fields/Enum.h"
 
+namespace nlohmann
+{
+	template <typename T>
+	struct adl_serializer<config::Enum<T>> {
+		static void to_json(json& j, const config::Enum<T>& enumValue)
+		{
+			j = {
+				{ "name", magic_enum::enum_name(enumValue.value()) },
+				{ "value", enumValue.raw() }
+			};
+		}
+
+		static void from_json(const json& j, config::Enum<T>& value)
+		{
+			value = j["value"].get<uint32_t>();
+		}
+	};
+}
+
 namespace config::converters
 {
 
@@ -65,18 +84,5 @@ namespace config::converters
 	}
 
 	// Enum
-	template<typename T>
-	inline nlohmann::json ToJson(const Enum<T>& enumValue)
-	{
-		return {
-			{ "name", magic_enum::enum_name(enumValue.value()) },
-			{ "value", enumValue.raw() }
-		};
-	}
 
-	template<typename T>
-	inline void FromJson(Enum<T>& value, const nlohmann::json& jObject)
-	{
-		value = jObject["value"].get<uint32_t>();
-	}
 }

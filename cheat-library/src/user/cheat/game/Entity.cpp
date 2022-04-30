@@ -11,15 +11,28 @@ namespace cheat::game
 	{
 	}
 
+	app::String* GetRawName(game::Entity* entity)
+	{
+		SAFE_BEGIN();
+		return app::BaseEntity_ToStringRelease(entity->raw(), nullptr);
+		SAFE_ERROR();
+		return nullptr;
+		SAFE_END();
+	}
 	std::string& Entity::name()
 	{
 		if (m_HasName || m_RawEntity == nullptr || !isLoaded())
 			return m_Name;
 
-		auto name = il2cppi_to_string(app::BaseEntity_ToStringRelease(m_RawEntity, nullptr));
+		auto rawName = GetRawName(this);
+		if (rawName == nullptr)
+			return m_Name;
+
+		auto name = il2cppi_to_string(rawName);
 		m_Name = name;
 		m_HasName = true;
 		return m_Name;
+
 	}
 
 	app::BaseEntity* Entity::raw()
