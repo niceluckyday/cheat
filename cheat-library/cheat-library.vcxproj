@@ -17,6 +17,8 @@
   <ItemGroup>
     <ClInclude Include="src\user\cheat\GenshinCM.h" />
     <ClInclude Include="src\user\cheat\teleport\CustomTeleports.h" />
+    <ClInclude Include="src\user\cheat\visuals\FPSUnlock.h" />
+    <ClInclude Include="src\user\cheat\visuals\NoFog.h" />
     <ClInclude Include="src\user\cheat\world\AutoFish.h" />
     <ClInclude Include="src\user\cheat\world\ElementalSight.h" />
     <ClInclude Include="src\user\cheat\game\AdvancedFilter.h" />
@@ -92,6 +94,8 @@
   <ItemGroup>
     <ClCompile Include="src\user\cheat\teleport\CustomTeleports.cpp" />
     <ClCompile Include="src\user\cheat\GenshinCM.cpp" />
+    <ClCompile Include="src\user\cheat\visuals\FPSUnlock.cpp" />
+    <ClCompile Include="src\user\cheat\visuals\NoFog.cpp" />
     <ClCompile Include="src\user\cheat\world\AutoFish.cpp" />
     <ClCompile Include="src\user\cheat\world\ElementalSight.cpp" />
     <ClCompile Include="src\user\cheat\game\Chest.cpp" />
