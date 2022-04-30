@@ -125,6 +125,11 @@ DO_APP_FUNC(0x036B8AA0, void, FishingModule_OnExitFishingRsp, (void* __this, voi
 DO_APP_FUNC(0x036BB0B0, void, FishingModule_onFishChosenNotify, (void* __this, void* notify, MethodInfo* method));
 
 
+// UnityEngine
+DO_APP_FUNC(0x073C1A30, void, RenderSettings_set_fog, (void* __this, bool value, MethodInfo* method));
+DO_APP_FUNC(0x07436CF0, void, Application_set_targetFrameRate, (void* __this, int32_t value, MethodInfo* method));
+
+
 // Utility
 DO_APP_FUNC(0x015DD910, float,   Miscs_CalcCurrentGroundWaterHeight, (void* __this, float x, float z, MethodInfo* method));
 DO_APP_FUNC(0x015DD1D0, float,   Miscs_CalcCurrentGroundHeight,      (void* __this, float x, float z, MethodInfo* method));
