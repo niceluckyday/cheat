@@ -440,23 +440,39 @@ namespace cheat::feature::esp::render
 		switch (esp.f_DrawBoxMode.value())
 		{
 		case ESP::DrawMode::Box:
-			rect = DrawBox(entity, color);
+		{
+			ImColor boxColor = color;
+			if (esp.f_ApplyGlobalColor)
+				boxColor = esp.f_BoxColor;
+			rect = DrawBox(entity, boxColor);
+
 			break;
+		}
 		case ESP::DrawMode::Rectangle:
-			rect = DrawRect(entity, color);
+		{
+			ImColor boxColor = color;
+			if (esp.f_ApplyGlobalColor)
+				boxColor = esp.f_RectColor;
+			rect = DrawRect(entity, boxColor);
 			break;
+		}
 		default:
 			rect = {};
 			break;
 		}
 
 		if (esp.f_DrawLine)
-			DrawLine(entity, color);
+		{
+			ImColor lineColor = color;
+			if (esp.f_ApplyGlobalColor)
+				lineColor = esp.f_LineColor;
+			DrawLine(entity, lineColor);
+		}
 
 		if (esp.f_DrawName)
 		{
 			ImColor nameColor = color;
-			if (esp.f_ApplyGlobalFontColor)
+			if (esp.f_ApplyGlobalColor)
 				nameColor = esp.f_FontColor;
 			DrawName(rect, entity, name, nameColor);
 		}
@@ -476,4 +492,4 @@ namespace cheat::feature::esp::render
 		if (esp.f_DrawLine)
 			UpdateAvatarPosition();
 	}
-}
+		}
