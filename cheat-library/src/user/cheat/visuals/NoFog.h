@@ -5,23 +5,24 @@
 namespace cheat::feature
 {
 
-	class Fog : public Feature
+	class NoFog : public Feature
 	{
 	public:
 		config::Field<config::ToggleHotkey> f_Enabled;
-		config::Field<int> f_Fps;
 
-		static Fog& GetInstance();
+		static NoFog& GetInstance();
 
 		const FeatureGUIInfo& GetGUIInfo() const override;
 		void DrawMain() override;
 
 		virtual bool NeedStatusDraw() const override;
 		void DrawStatus() override;
-		void OnGameUpdate();
 
 	private:
-		Fog();
+
+		void OnGameUpdate();
+
+		NoFog();
 	};
 }
 

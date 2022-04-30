@@ -189,7 +189,10 @@
     <ClInclude Include="src\user\cheat\teleport\CustomTeleports.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\cheat\visuals\Fog.h">
+    <ClInclude Include="src\user\cheat\visuals\NoFog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\visuals\FPSUnlock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -338,7 +341,10 @@
     <ClCompile Include="src\user\cheat\teleport\CustomTeleports.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\visuals\Fog.cpp">
+    <ClCompile Include="src\user\cheat\visuals\NoFog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\visuals\FPSUnlock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
