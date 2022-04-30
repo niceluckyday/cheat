@@ -954,33 +954,48 @@ namespace cheat::feature
         return scalingData;
     }
 
+
+	void InteractiveMap::ApplySceneScalling(uint32_t sceneId, const ScallingInput& input)
+    {
+		ScalingData xScale = ComputeScaling({ input.normal1.x, input.normal2.x }, { input.scalled1.x, input.scalled2.x });
+		ScalingData yScale = ComputeScaling({ input.normal1.y, input.normal2.y }, { input.scalled1.y, input.scalled2.y });
+
+		app::Vector2 scale = { xScale.scale, yScale.scale };
+		app::Vector2 offset = { xScale.offset, yScale.offset };
+
+		LOG_DEBUG("Position scaling for scene %u: scale %0.3f %0.3f, offset %0.3f %0.3f", sceneId, scale.x, scale.y, offset.x, offset.y);
+		auto& sceneData = m_ScenesData[sceneId];
+		for (auto& [labelID, labelData] : sceneData.labels)
+		{
+			for (auto& [pointID, point] : labelData.points)
+			{
+				point.levelPosition = point.levelPosition * scale + offset;
+			}
+		}
+		
+    }
+
 	void InteractiveMap::ApplyScaling()
 	{
-        // For find scaling we need two objects' correct & scaled coordinates
-        // Better find objects with one point on map
-        app::Vector2 NormalPos1 = { 1301.2f, 2908.4f }; // AnemoHypostasis
-        app::Vector2 NormalPos2 = { 1942.3f, 1308.9f }; // ElectroHypostasis
+#define APPLY_SCENE_OFFSETS(sceneID, name1, normal1x, normal1y, name2, normal2x, normal2y) {\
+			app::Vector2 NormalPos1 = { normal1x, normal1y }; \
+			app::Vector2 NormalPos2 = { normal2x, normal2y }; \
+			app::Vector2 ScalledPos1 = m_ScenesData[sceneID].nameToLabel[name1]->points.begin()->second.levelPosition; \
+			app::Vector2 ScalledPos2 = m_ScenesData[sceneID].nameToLabel[name2]->points.begin()->second.levelPosition; \
+			ApplySceneScalling(sceneID, {NormalPos1, NormalPos2, ScalledPos1, ScalledPos2}); \
+		}
 
-        app::Vector2 ScalledPos1 = m_ScenesData[3].nameToLabel["AnemoHypostasis"]->points.begin()->second.levelPosition;
-        app::Vector2 ScalledPos2 = m_ScenesData[3].nameToLabel["ElectroHypostasis"]->points.begin()->second.levelPosition;
+		// For find scaling we need two objects' correct & scaled coordinates
+		// Better find objects with one point on map
+		APPLY_SCENE_OFFSETS(3,
+			"AnemoHypostasis", 1301.2f, 2908.4f,
+			"ElectroHypostasis", 1942.3f, 1308.9f);
 
-        ScalingData xScale = ComputeScaling({ NormalPos1.x, NormalPos2.x }, { ScalledPos1.x, ScalledPos2.x });
-        ScalingData yScale = ComputeScaling({ NormalPos1.y, NormalPos2.y }, { ScalledPos1.y, ScalledPos2.y });
+		APPLY_SCENE_OFFSETS(5,
+			"RuinHunter", -54.4f, -53.7f,
+			"RuinGrader", 428.9f, 505.0f);
+#undef APPLY_SCENE_OFFSETS
 
-        app::Vector2 scale = { xScale.scale, yScale.scale };
-        app::Vector2 offset = { xScale.offset, yScale.offset };
-
-        LOG_DEBUG("Position scaling: scale %0.3f %0.3f, offset %0.3f %0.3f", scale.x, scale.y, offset.x, offset.y);
-        for (auto& [sceneID, sceneData] : m_ScenesData)
-        {
-            for (auto& [labelID, labelData] : sceneData.labels)
-            {
-                for (auto& [pointID, point] : labelData.points)
-                {
-                    point.levelPosition = point.levelPosition * scale + offset;
-                }
-            }
-        }
 	}
 
 	static bool IsMapActive()
