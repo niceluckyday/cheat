@@ -40,6 +40,9 @@
 
 #include <cheat/world/AutoFish.h>
 
+#include <cheat/visuals/NoFog.h>
+#include <cheat/visuals/FPSUnlock.h>
+
 #include "GenshinCM.h"
 
 namespace cheat 
@@ -91,7 +94,10 @@ namespace cheat
 			FEAT_INST(ESP),
 			FEAT_INST(InteractiveMap),
 
-			FEAT_INST(AutoFish)
+			FEAT_INST(AutoFish),
+
+			FEAT_INST(NoFog),
+			FEAT_INST(FPSUnlock)
 
 			});
 #undef FEAT_INST
@@ -101,6 +107,7 @@ namespace cheat
 			"World",
 			"Teleport",
 			"ESP",
+			"Visuals",
 			"Hotkeys",
 			"Settings",
 			"Debug"

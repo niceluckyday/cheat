@@ -137,11 +137,69 @@ DO_APP_FUNC(0x01601D90, int32_t, Miscs_GetSceneGroundLayerMask,      (void* __th
 DO_APP_FUNC(0x060F0AA0, Vector3, WorldShiftManager_GetRelativePosition, (void* __this, Vector3 pos, MethodInfo* method));
 DO_APP_FUNC(0x060F0810, Vector3, WorldShiftManager_GetAbsolutePosition, (void* __this, Vector3 pos, MethodInfo* method));
 
-DO_APP_FUNC(0x083C28B0, bool,    RectTransformUtility_ScreenPointToLocalPointInRectangle, (void* __this, void* rect, Vector2 screenPoint, void* cam, Vector2* localPoint, MethodInfo* method));
-
 DO_APP_FUNC(0x014BC6D0, Vector3, ActorUtils_GetAvatarPos,     (void* __this, MethodInfo* method));
 DO_APP_FUNC(0x014C3BF0, void,    ActorUtils_SetAvatarPos,     (void* __this, Vector3 pos, MethodInfo* method));
 DO_APP_FUNC(0x014C88B0, void,    ActorUtils_SyncAvatarMotion, (void* __this, int32_t state, MethodInfo* method));
+
+DO_APP_FUNC(0x02ECCFE0, Notify, Notify_CreateNotify_1, (void* __this, AJAPIFPNFKP__Enum type, Object* body, MethodInfo* method));
+
+DO_APP_FUNC(0x04D3A960, float, SafeFloat_GetValue, (void* __this, SafeFloat safeFloat, MethodInfo* method));
+
+DO_APP_FUNC(0x01645B20, void, Entity_SetPosition, (BaseEntity* __this, Vector3 position, bool someBool, MethodInfo* method));
+DO_APP_FUNC(0x05102970, LCBaseCombat*, BaseEntity_GetBaseCombat, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x0164DC50, String*, BaseEntity_ToStringRelease, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x01659210, void, BaseEntity_SetRelativePosition, (BaseEntity* __this, Vector3 position, bool forceSyncToRigidbody, MethodInfo* method));
+DO_APP_FUNC(0x01645B20, void, BaseEntity_SetAbsolutePosition, (BaseEntity* __this, Vector3 abpos, bool forceSyncToRigidbody, MethodInfo* method));
+DO_APP_FUNC(0x01650C50, Vector3, BaseEntity_GetAbsolutePosition, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x0164C3F0, Vector3, BaseEntity_GetRelativePosition, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x0163D480, Vector3, BaseEntity_GetForward, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x0163F7E0, Vector3, BaseEntity_GetForwardFast, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x01655C20, Vector3, BaseEntity_GetRight, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x01634200, Vector3, BaseEntity_GetUp, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x0165E590, bool, BaseEntity_IsActive, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x016425C0, Rigidbody*, BaseEntity_GetRigidbody, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x05102780, VCBaseMove*, BaseEntity_GetMoveComponent_1, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x01659D20, List_1_MoleMole_BaseComponent_*, BaseEntity_GetAllLogicComponents, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x0163DCF0, GameObject*, BaseEntity_get_gameObject, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC(0x013B9810, GameObject*, BaseEntity_get_rootGameObject, (BaseEntity* __this, MethodInfo* method));
+DO_APP_FUNC_METHODINFO(0x0B2BBB98, BaseEntity_GetMoveComponent_1__MethodInfo);
+DO_APP_FUNC_METHODINFO(0x0B2DB248, BaseEntity_GetBaseCombat__MethodInfo);
+
+DO_APP_FUNC(0x01555150, BaseEntity*, EntityManager_GetCurrentAvatar, (EntityManager* __this, MethodInfo* method));
+DO_APP_FUNC(0x0155F060, CameraEntity*, EntityManager_GetMainCameraEntity, (EntityManager* __this, MethodInfo* method));
+DO_APP_FUNC(0x0154A660, BaseEntity*, EntityManager_GetValidEntity, (EntityManager* __this, uint32_t runtimeID, MethodInfo* method));
+DO_APP_FUNC(0x0155A580, bool, EntityManager_RemoveEntity, (EntityManager* __this, BaseEntity* entity, uint32_t specifiedRuntimeID, MethodInfo* method));
+DO_APP_FUNC(0x0154F520, bool, EntityManager_IsCachedEntity, (EntityManager* __this, BaseEntity* entity, MethodInfo* method));
+DO_APP_FUNC(0x01560F70, List_1_MoleMole_BaseEntity_*, EntityManager_GetEntities, (EntityManager* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x05D07B50, Bounds, Utils_1_GetBounds, (void* __this, GameObject* go, MethodInfo* method));
+
+DO_APP_FUNC(0x024E0BA0, void, HumanoidMoveFSM_LateTick, (void* __this, float deltaTime, MethodInfo* method));
+DO_APP_FUNC(0x03511760, bool, ScenePropManager_GetTreeTypeByPattern, (ScenePropManager* __this, String* pattern, ECGLPBEEEAA__Enum* treeType, MethodInfo* method));
+
+DO_APP_FUNC(0x01997D90, void, NetworkManager_1_RequestHitTreeDropNotify, (NetworkManager_1* __this, Vector3 position, Vector3 hitPostion, ECGLPBEEEAA__Enum treeType, MethodInfo* method));
+DO_APP_FUNC(0x0332CD30, uint64_t, GetTimestamp, (void* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x017F43F0, bool, LoadingManager_IsLoaded, (LoadingManager* __this, MethodInfo* method));
+
+// Thanks to @RyujinZX
+DO_APP_FUNC(0x019C5D50, void, LCAbilityElement_ReduceModifierDurability, (LCAbilityElement* __this, int32_t modifierDurabilityIndex, float reduceDurability, Nullable_1_Single_ deltaTime, MethodInfo* method));
+
+DO_APP_FUNC(0x035D8B70, BaseEntity*, GadgetEntity_GetOwnerEntity, (GadgetEntity* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x0136FBD0, void, InLevelMapPageContext_ZoomMap, (InLevelMapPageContext* __this, float value, MethodInfo* method));
+DO_APP_FUNC(0x013B7F90, void, InLevelMapPageContext_UpdateView, (InLevelMapPageContext* __this, MethodInfo* method));
+DO_APP_FUNC(0x01C6A530, bool, UIManager_1_HasEnableMapCamera, (UIManager_1* __this, MethodInfo* method));
+DO_APP_FUNC(0x03D64A80, void, MonoMiniMap_Update, (MonoMiniMap* __this, MethodInfo* method));
+DO_APP_FUNC(0x03992EB0, MonoMiniMap*, MonoInLevelMainPage_get_miniMap, (void* __this, MethodInfo* method));
+DO_APP_FUNC(0x02702190, void, GadgetModule_OnGadgetInteractRsp, (void* __this, GadgetInteractRsp* notify, MethodInfo* method));
+
+// UnityEngine
+DO_APP_FUNC(0x073C1A30, void, RenderSettings_set_fog, (void* __this, bool value, MethodInfo* method));
+DO_APP_FUNC(0x07436CF0, void, Application_set_targetFrameRate, (void* __this, int32_t value, MethodInfo* method));
+DO_APP_FUNC(0x07436840, int32_t, Application_get_targetFrameRate, (void* __this, MethodInfo* method));
+
+DO_APP_FUNC(0x083C28B0, bool, RectTransformUtility_ScreenPointToLocalPointInRectangle, (void* __this, void* rect, Vector2 screenPoint, void* cam, Vector2* localPoint, MethodInfo* method));
 
 DO_APP_FUNC(0x073D7190, Vector3, Transform_get_position, (Transform* __this, MethodInfo* method));
 DO_APP_FUNC(0x073D4A90, void,    Transform_set_position, (Transform* __this, Vector3 value, MethodInfo* method));
@@ -152,49 +210,11 @@ DO_APP_FUNC(0x074450A0, void, Cursor_set_visible,   (void* __this, bool value, M
 DO_APP_FUNC(0x07445050, void, Cursor_set_lockState, (void* __this, CursorLockMode__Enum value, MethodInfo* method));
 DO_APP_FUNC(0x07445000, bool, Cursor_get_visible,   (void* __this, MethodInfo* method));
 
-DO_APP_FUNC(0x02ECCFE0, Notify, Notify_CreateNotify_1, (void* __this, AJAPIFPNFKP__Enum type, Object* body, MethodInfo* method));
-
-DO_APP_FUNC(0x04D3A960, float, SafeFloat_GetValue, (void* __this, SafeFloat safeFloat, MethodInfo* method));
-
-DO_APP_FUNC(0x01645B20, void,          Entity_SetPosition,             (BaseEntity* __this, Vector3 position, bool someBool, MethodInfo* method));
-DO_APP_FUNC(0x05102970, LCBaseCombat*, BaseEntity_GetBaseCombat,       (BaseEntity* __this, MethodInfo* method));
-DO_APP_FUNC(0x0164DC50, String*,       BaseEntity_ToStringRelease,     (BaseEntity* __this, MethodInfo* method));
-DO_APP_FUNC(0x01659210, void,          BaseEntity_SetRelativePosition, (BaseEntity* __this, Vector3 position, bool forceSyncToRigidbody, MethodInfo* method));
-DO_APP_FUNC(0x01645B20, void,          BaseEntity_SetAbsolutePosition, (BaseEntity* __this, Vector3 abpos, bool forceSyncToRigidbody, MethodInfo* method));
-DO_APP_FUNC(0x01650C50, Vector3,       BaseEntity_GetAbsolutePosition, (BaseEntity* __this, MethodInfo* method));
-DO_APP_FUNC(0x0164C3F0, Vector3,       BaseEntity_GetRelativePosition, (BaseEntity* __this, MethodInfo* method));
-DO_APP_FUNC(0x0163D480, Vector3,       BaseEntity_GetForward,          (BaseEntity* __this, MethodInfo* method));
-DO_APP_FUNC(0x0163F7E0, Vector3,       BaseEntity_GetForwardFast,      (BaseEntity* __this, MethodInfo* method));
-DO_APP_FUNC(0x01655C20, Vector3,       BaseEntity_GetRight,            (BaseEntity* __this, MethodInfo* method));
-DO_APP_FUNC(0x01634200, Vector3,       BaseEntity_GetUp,               (BaseEntity* __this, MethodInfo* method));
-DO_APP_FUNC(0x0165E590, bool,          BaseEntity_IsActive,            (BaseEntity* __this, MethodInfo* method));
-DO_APP_FUNC(0x016425C0, Rigidbody*,    BaseEntity_GetRigidbody,        (BaseEntity* __this, MethodInfo* method));
-DO_APP_FUNC(0x05102780, VCBaseMove*,   BaseEntity_GetMoveComponent_1,  (BaseEntity* __this, MethodInfo* method));
-DO_APP_FUNC(0x01659D20, List_1_MoleMole_BaseComponent_*, BaseEntity_GetAllLogicComponents, (BaseEntity* __this, MethodInfo* method));
-// v 2.6
-// DO_APP_FUNC(0x01667880, List_1_System_UInt32_*, BaseEntity_GetChildrenRuntimeIds, (BaseEntity* __this, MethodInfo* method));
-DO_APP_FUNC(0x0163DCF0, GameObject*, BaseEntity_get_gameObject, (BaseEntity* __this, MethodInfo* method));
-
-DO_APP_FUNC_METHODINFO(0x0B2BBB98,     BaseEntity_GetMoveComponent_1__MethodInfo);
-DO_APP_FUNC_METHODINFO(0x0B2DB248,     BaseEntity_GetBaseCombat__MethodInfo);
-
-DO_APP_FUNC(0x01555150, BaseEntity*,   EntityManager_GetCurrentAvatar,    (EntityManager* __this, MethodInfo* method));
-DO_APP_FUNC(0x0155F060, CameraEntity*, EntityManager_GetMainCameraEntity, (EntityManager* __this, MethodInfo* method));
-DO_APP_FUNC(0x0154A660, BaseEntity*,   EntityManager_GetValidEntity,      (EntityManager* __this, uint32_t runtimeID, MethodInfo* method));
-DO_APP_FUNC(0x01560F70, List_1_MoleMole_BaseEntity_*, EntityManager_GetEntities, (EntityManager* __this, MethodInfo* method));
-
 DO_APP_FUNC(0x08334350, void, Rigidbody_set_detectCollisions, (Rigidbody* __this, bool value, MethodInfo* method));
 DO_APP_FUNC(0x08334530, void, Rigidbody_set_isKinematic,      (Rigidbody* __this, bool value, MethodInfo* method));
 DO_APP_FUNC(0x08333840, void, Rigidbody_set_velocity,         (Rigidbody* __this, Vector3 value, MethodInfo * method));
 
 DO_APP_FUNC(0x073D3140, float, Time_get_deltaTime, (void* __this, MethodInfo* method));
-
-DO_APP_FUNC(0x024E0BA0, void, HumanoidMoveFSM_LateTick, (void* __this, float deltaTime, MethodInfo* method));
-
-DO_APP_FUNC(0x03511760, bool, ScenePropManager_GetTreeTypeByPattern, (ScenePropManager* __this, String* pattern, ECGLPBEEEAA__Enum* treeType, MethodInfo* method));
-
-DO_APP_FUNC(0x01997D90, void, NetworkManager_1_RequestHitTreeDropNotify, (NetworkManager_1* __this, Vector3 position, Vector3 hitPostion, ECGLPBEEEAA__Enum treeType, MethodInfo* method));
-DO_APP_FUNC(0x0332CD30, uint64_t, GetTimestamp, (void* __this, MethodInfo* method));
 
 DO_APP_FUNC(0x0743D0A0, app::Vector3, Camera_WorldToScreenPoint, (app::Camera* __this, app::Vector3 position, MethodInfo* method));
 DO_APP_FUNC(0x0743DBF0, Camera*, Camera_get_main, (void* __this, MethodInfo* method));
@@ -204,28 +224,12 @@ DO_APP_FUNC(0x0743DE60, int32_t, Camera_get_pixelHeight, (Camera* __this, Method
 DO_APP_FUNC(0x073C9A50, int32_t, Screen_get_width, (void* __this, MethodInfo* method));
 DO_APP_FUNC(0x073C98F0, int32_t, Screen_get_height, (void* __this, MethodInfo* method));
 
-DO_APP_FUNC(0x05D07B50, Bounds, Utils_1_GetBounds, (void* __this, GameObject* go, MethodInfo* method));
 DO_APP_FUNC(0x07438F50, bool, Behaviour_get_isActiveAndEnabled, (Behaviour* __this, MethodInfo* method));
 
-DO_APP_FUNC(0x017F43F0, bool, LoadingManager_IsLoaded, (LoadingManager* __this, MethodInfo* method));
-DO_APP_FUNC(0x0155A580, bool, EntityManager_RemoveEntity, (EntityManager* __this, BaseEntity* entity, uint32_t specifiedRuntimeID, MethodInfo* method));
-DO_APP_FUNC(0x0154F520, bool, EntityManager_IsCachedEntity, (EntityManager* __this, BaseEntity* entity, MethodInfo* method));
-DO_APP_FUNC(0x013B9810, GameObject*, BaseEntity_get_rootGameObject, (BaseEntity* __this, MethodInfo* method));
-// Thanks to @RyujinZX
-DO_APP_FUNC(0x019C5D50, void, LCAbilityElement_ReduceModifierDurability, (LCAbilityElement* __this, int32_t modifierDurabilityIndex, float reduceDurability, Nullable_1_Single_ deltaTime, MethodInfo* method));
-
-DO_APP_FUNC(0x035D8B70, BaseEntity*, GadgetEntity_GetOwnerEntity, (GadgetEntity* __this, MethodInfo* method));
-
-DO_APP_FUNC(0x0136FBD0, void, InLevelMapPageContext_ZoomMap, (InLevelMapPageContext* __this, float value, MethodInfo* method));
-DO_APP_FUNC(0x013B7F90, void, InLevelMapPageContext_UpdateView, (InLevelMapPageContext* __this, MethodInfo* method));
-DO_APP_FUNC(0x01C6A530, bool, UIManager_1_HasEnableMapCamera, (UIManager_1* __this, MethodInfo* method));
-DO_APP_FUNC(0x03D64A80, void, MonoMiniMap_Update, (MonoMiniMap* __this, MethodInfo* method));
-DO_APP_FUNC(0x073BFD20, Rect, RectTransform_get_rect, (RectTransform* __this, MethodInfo* method));
-DO_APP_FUNC(0x083C1430, float, Canvas_get_scaleFactor, (void* __this, MethodInfo* method));
-DO_APP_FUNC(0x03992EB0, MonoMiniMap*, MonoInLevelMainPage_get_miniMap, (void* __this, MethodInfo* method));
 DO_APP_FUNC(0x074E9960, Vector3, Quaternion_get_eulerAngles, (Quaternion__Boxed* __this, MethodInfo* method));
 DO_APP_FUNC(0x073D73E0, Quaternion, Transform_get_rotation, (Transform* __this, MethodInfo* method));
-DO_APP_FUNC(0x02702190, void, GadgetModule_OnGadgetInteractRsp, (void* __this, GadgetInteractRsp* notify, MethodInfo* method));
+DO_APP_FUNC(0x073BFD20, Rect, RectTransform_get_rect, (RectTransform* __this, MethodInfo* method));
+DO_APP_FUNC(0x083C1430, float, Canvas_get_scaleFactor, (void* __this, MethodInfo* method));
 
 // Singletons
 DO_APP_FUNC(0x07626D40, void*, Singleton_GetInstance, (void* __this, MethodInfo* method));
