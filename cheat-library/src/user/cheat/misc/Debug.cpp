@@ -365,7 +365,6 @@ namespace cheat::feature
 
     std::vector<game::Entity*> SortEntities(std::vector<game::Entity*> entities, Debug::EntitySortCondition condition)
     {
-        LOG_DEBUG("Condition Sort %d", condition);
         switch (condition) {
         case Debug::EntitySortCondition::RuntimeID: {
                 std::sort(entities.begin(),
@@ -508,7 +507,9 @@ namespace cheat::feature
             ImGui::BeginDisabled();
             
         ImGui::SameLine();
+        ImGui::PushItemWidth(200.0);
         ImGui::SliderFloat("Radius", &radius, 0.0f, 100.0f);
+        ImGui::PopItemWidth();
         if (!useRadius)
             ImGui::EndDisabled();
 
