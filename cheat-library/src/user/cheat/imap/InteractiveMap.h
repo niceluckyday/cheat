@@ -95,6 +95,14 @@ namespace cheat::feature
 
 		InteractiveMap();
 
+		struct ScallingInput
+		{
+			app::Vector2 normal1;
+			app::Vector2 normal2;
+			app::Vector2 scalled1;
+			app::Vector2 scalled2;
+		};
+
 		struct LabelData
 		{
 			uint32_t id;
@@ -151,6 +159,8 @@ namespace cheat::feature
 		void LoadSceneData(const nlohmann::json& data, uint32_t sceneID);
 		void LoadScenesData();
 
+		
+		void ApplySceneScalling(uint32_t sceneId, const ScallingInput& input);
 		void ApplyScaling();
 
 		void InitializeEntityFilter(game::IEntityFilter* filter, const std::string& clearName);
