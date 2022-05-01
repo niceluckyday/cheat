@@ -22,10 +22,11 @@ namespace cheat::feature
 		NF(f_Enabled, "ESP", "ESP", false),
 
         NF(f_DrawBoxMode, "Draw Mode", "ESP", DrawMode::Box),
-        NF(f_Fill, "Fill Box/Rectangle", "ESP", false),
+		NF(f_DrawTracerMode, "Tracer Mode", "ESP", DrawTracerMode::Line),
+        NF(f_Fill, "Fill Box/Rectangle/Arrows", "ESP", false),
         NF(f_FillTransparency, "Fill Transparency", "ESP", 0.5f),
 
-		NF(f_DrawLine, "Draw Line", "ESP", false),
+		NF(f_DrawTracers, "Draw Line", "ESP", false),
         NF(f_DrawDistance, "Draw Distance", "ESP", false),
         NF(f_DrawName, "Draw Name", "ESP", false),
 
@@ -56,15 +57,15 @@ namespace cheat::feature
         ConfigWidget("Range (m)", f_Range, 1.0f, 1.0f, 200.0f);
         
         ConfigWidget(f_DrawBoxMode, "Select the mode of box drawing.");
-		ConfigWidget(f_Fill);
+		ConfigWidget(f_DrawTracerMode, "Select the mode of tracer drawing.");
 		ConfigWidget(f_FillTransparency, 0.01f, 0.0f, 1.0f, "Transparency of filled part.");
 
         ImGui::Spacing();
-        ConfigWidget(f_DrawLine,     "Show line from character to object on screen.");
+        ConfigWidget(f_DrawTracers,     "Show line from character to object on screen.");
         ConfigWidget(f_DrawName,     "Draw name of object.");
         ConfigWidget(f_DrawDistance, "Draw distance of object.");
 
-        ImGui::Spacing();
+		ImGui::Spacing();
         ConfigWidget(f_FontSize, 0.05f, 1.0f, 100.0f, "Font size of name or distance.");
         ConfigWidget(f_FontColor, "Color of line, name, or distance text font.");
 		ConfigWidget(f_ApplyGlobalFontColor, "Override all color settings with above font color setting.\n" \
@@ -98,7 +99,7 @@ namespace cheat::feature
 			f_Range.value(), 
             f_DrawBoxMode.value() == DrawMode::Box ? "Box" : f_DrawBoxMode.value() == DrawMode::Rectangle ? "Rect" : "None",
             f_Fill ? "F" : "", 
-            f_DrawLine ? "L" : "",
+            f_DrawTracers ? "L" : "",
 			f_DrawName ? "N" : "",
 			f_DrawDistance ? "D" : ""
 		);

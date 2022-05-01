@@ -7,7 +7,6 @@
 #include <helpers.h>
 #include <cheat/game/EntityManager.h>
 #include <sys/timeb.h>
-
 #include "ESP.h"
 
 namespace cheat::feature::esp::render
@@ -17,9 +16,17 @@ namespace cheat::feature::esp::render
 	static ImVec2 s_ScreenResolution = ImVec2(0, 0);
 	static ImVec2 s_AvatarPosition = ImVec2(0, 0);
 
+// Adding delaying helps to improve performance
+#define UPDATE_DELAY_VAR(delay) static ULONGLONG s_LastUpdate = 0;\
+                            ULONGLONG currentTime = GetTickCount();\
+                            if (s_LastUpdate + delay > currentTime)\
+                                return;\
+                            s_LastUpdate = currentTime;
+
+
 	static void UpdateMainCamera()
 	{
-		UPDATE_DELAY(1000);
+		UPDATE_DELAY_VAR(1000);
 
 		s_Camera = nullptr;
 
@@ -39,7 +46,7 @@ namespace cheat::feature::esp::render
 
 	static void UpdateResolutionScale()
 	{
-		UPDATE_DELAY(1000);
+		UPDATE_DELAY_VAR(1000);
 
 		SAFE_BEGIN();
 		s_ResolutionScale = { 0, 0 };
@@ -388,6 +395,37 @@ namespace cheat::feature::esp::render
 		draw->AddLine(s_AvatarPosition, *screenPos, color);
 	}
 
+	auto PI = 3.14159265358979323846f;
+    static void DrawOffscreenArrows(game::Entity* entity, const ImColor& color)
+	{
+		auto screen_center_x = ImGui::GetIO().DisplaySize.x / 2;
+		auto screen_center_y = ImGui::GetIO().DisplaySize.y / 2;
+		auto entity_pos = WorldToScreenPosScalled(entity->relativePosition());
+		app::Vector3 angle = {};
+		angle.x = atan2(screen_center_y - entity_pos.y, screen_center_x - entity_pos.x);
+		auto angle_yaw_rad = angle.x + (entity_pos.z > 0 ? PI : 0.0f);
+		auto new_point_x = screen_center_x + 100.0f * cosf(angle_yaw_rad);
+		auto new_point_y = screen_center_y + 100.0f * sinf(angle_yaw_rad);
+		std::array<ImVec2, 3> points{ImVec2(-10.0f, -10.0f),
+									 ImVec2(25.0f, 0.0f),
+									 ImVec2(-10.0f, 10.0f)};
+		for (auto &point : points)
+		{
+			auto x = point.x;
+			auto y = point.y;
+			point.x = new_point_x + x * cosf(angle_yaw_rad) - y * sinf(angle_yaw_rad);
+			point.y = new_point_y + x * sinf(angle_yaw_rad) + y * cosf(angle_yaw_rad);
+		}
+		// Draw the triangle
+		auto draw = ImGui::GetBackgroundDrawList();
+		draw->AddTriangleFilled(points[0], points[1], points[2], color);
+	}
+
+	static void DrawDots(game::Entity* entity, const ImColor& color)
+	{
+		
+	}
+
 	static void DrawName(const Rect& boxRect, game::Entity* entity, const std::string& name, const ImColor& color)
 	{
 		auto& esp = ESP::GetInstance();
@@ -442,8 +480,24 @@ namespace cheat::feature::esp::render
 			break;
 		}
 
-		if (esp.f_DrawLine)
-			DrawLine(entity, color);
+		if (esp.f_DrawTracers)
+		{
+			switch (esp.f_DrawTracerMode.value())
+			{
+			case ESP::DrawTracerMode::Line:
+				DrawLine(entity, color);
+				break;
+			case ESP::DrawTracerMode::OffscreenArrows:
+				DrawOffscreenArrows(entity, color);
+				break;
+			case ESP::DrawTracerMode::Dots:
+				DrawDots(entity, color);
+				break;
+			default:
+				break;
+			}
+
+		}
 
 		if (esp.f_DrawName)
 		{
@@ -465,7 +519,7 @@ namespace cheat::feature::esp::render
 		UpdateResolutionScale();
 
 		auto& esp = ESP::GetInstance();
-		if (esp.f_DrawLine)
+		if (esp.f_DrawTracers)
 			UpdateAvatarPosition();
 	}
 }
