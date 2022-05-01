@@ -22,6 +22,8 @@ namespace cheat::feature
 
     static bool ActorAbilityPlugin_OnEvent_Hook(void* __this, app::BaseEvent* e, MethodInfo* method);
     void OnGameUpdate();
+    static bool csvFriendly = true;
+    static bool includeHeaders = true;
 
 	Debug::Debug() : Feature()
 	{
@@ -196,9 +198,12 @@ namespace cheat::feature
     void CopyEntityDetailsToClipboard(std::vector<game::Entity*> entities)
     {
         std::string entitiesDetails = "";
+        if (csvFriendly && includeHeaders)
+            entitiesDetails.append("Entity,RuntimeID,Name,PosX,PosY,PosZ\n");
         for (auto entity : entities) {
             auto entityPos = entity->absolutePosition();
-            auto entityDetails = fmt::format("{} {} {} x={} y={} z={}",
+            std::string baseString = csvFriendly ? "{},{},{},{},{},{}" : "{} {} {} x={} y={} z={}";
+            auto entityDetails = fmt::format(baseString,
                 fmt::ptr(entity),
                 entity->runtimeID(),
                 entity->name().c_str(),
@@ -213,7 +218,11 @@ namespace cheat::feature
     void CopyEntityDetailsToClipboard(game::Entity* entity)
     {
         auto entityPos = entity->absolutePosition();
-        auto entityDetails = fmt::format("{} {} {} x={} y={} z={}",
+        std::string headerString = "Entity,RuntimeID,Name,PosX,PosY,PosZ\n";
+        std::string baseString = csvFriendly ? "{},{},{},{},{},{}" : "{} {} {} x={} y={} z={}";
+        if (csvFriendly && includeHeaders)
+            baseString = headerString.append(baseString);
+        auto entityDetails = fmt::format(baseString,
             fmt::ptr(entity),
             entity->runtimeID(),
             entity->name().c_str(),
@@ -241,9 +250,10 @@ namespace cheat::feature
         }
     }
 
-    void DrawEntityActionButtons(game::Entity* entity)
+    void DrawEntityActionButtons(game::Entity* entity, bool& csvFriendly)
     {
         auto& manager = game::EntityManager::instance();
+
         if (ImGui::SmallButton("T"))
         {
             auto& mapTeleport = MapTeleport::GetInstance();
@@ -265,9 +275,8 @@ namespace cheat::feature
             ImGui::SetTooltip("Banish");
 
         ImGui::SameLine();
-        if (ImGui::SmallButton("C")) {
+        if (ImGui::SmallButton("C"))
             CopyEntityDetailsToClipboard(entity);
-        }
         if (ImGui::IsItemHovered())
             ImGui::SetTooltip("Copy Details");
     }
@@ -340,9 +349,10 @@ namespace cheat::feature
             BanishEntities(entity);
     }
 
-    void DrawEntityGroupActionButtons(std::vector<game::Entity*> entities)
+    void DrawEntityGroupActionButtons(std::vector<game::Entity*> entities, bool& csvFriendly, bool& includeHeaders)
     {
         auto& manager = game::EntityManager::instance();
+
         if (ImGui::Button("Teleport: Closest"))
             TeleportByCondition(entities, Debug::TeleportCondition::Closest);
 
@@ -361,6 +371,18 @@ namespace cheat::feature
         ImGui::SameLine();
         if (ImGui::Button("Copy All Details"))
             CopyEntityDetailsToClipboard(entities);
+
+        ImGui::SameLine();
+        ImGui::Checkbox("CSV Friendly", &csvFriendly);
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("Uses comma separation and removes xyz from pos on copy.");
+
+        if (csvFriendly) {
+            ImGui::SameLine();
+            ImGui::Checkbox("Include Headers", &includeHeaders);
+            if (ImGui::IsItemHovered())
+                ImGui::SetTooltip("Includes headers when copying.");
+        }
     }
 
     std::vector<game::Entity*> SortEntities(std::vector<game::Entity*> entities, Debug::EntitySortCondition condition)
@@ -435,7 +457,7 @@ namespace cheat::feature
                     ImGui::TableNextRow();
                     ImGui::TableNextColumn();
 
-                    DrawEntityActionButtons(entity);
+                    DrawEntityActionButtons(entity, csvFriendly);
                     ImGui::TableNextColumn();
 
                     ImGui::Text("0x%p", entity);
@@ -586,86 +608,89 @@ namespace cheat::feature
             }
             ImGui::PopItemWidth();
 
-            if (groupByType) {
-                if (ImGui::BeginTabBar("EntityListTabBar", tab_bar_flags))
-                {
-                    for (const auto& [currentType, typeName] : sortedEntries) {
-                        if (!typeFilters[int(currentType)])
-                            continue;
-
-                        auto filteredEntities = manager.entities(game::SimpleFilter(currentType));
-                        if (!showEmptyTypes && filteredEntities.size() == 0)
-                            continue;
-
-                        std::vector<cheat::game::Entity*> validEntities;
-                        for (const auto& entity : filteredEntities)
-                        {
-                            if (entity == nullptr)
+            if (entities.size() > 0) {
+                if (groupByType) {
+                    if (ImGui::BeginTabBar("EntityListTabBar", tab_bar_flags))
+                    {
+                        for (const auto& [currentType, typeName] : sortedEntries) {
+                            if (!typeFilters[int(currentType)])
                                 continue;
 
-                            if (entity->type() != currentType)
+                            auto filteredEntities = manager.entities(game::SimpleFilter(currentType));
+                            if (!showEmptyTypes && filteredEntities.size() == 0)
                                 continue;
 
-                            if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
-                                continue;
-
-                            if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
-                                continue;
-
-                            if (useRadius)
+                            std::vector<cheat::game::Entity*> validEntities;
+                            for (const auto& entity : filteredEntities)
                             {
-                                auto dist = manager.avatar()->distance(entity);
-                                if (dist > radius)
+                                if (entity == nullptr)
                                     continue;
+
+                                if (entity->type() != currentType)
+                                    continue;
+
+                                if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
+                                    continue;
+
+                                if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
+                                    continue;
+
+                                if (useRadius)
+                                {
+                                    auto dist = manager.avatar()->distance(entity);
+                                    if (dist > radius)
+                                        continue;
+                                }
+
+                                validEntities.push_back(entity);
                             }
 
-                            validEntities.push_back(entity);
-                        }
-
-                        if (validEntities.size() == 0 && !showEmptyTypes)
-                            continue;
+                            if (validEntities.size() == 0 && !showEmptyTypes)
+                                continue;
 
 
-                        if (ImGui::BeginTabItem(typeName.data()))
-                        {
-                            auto sortedEntities = SortEntities(validEntities, sortCondition);
-                            DrawEntityGroupActionButtons(sortedEntities);
-                            DrawEntitiesTable(sortedEntities);
-                            ImGui::EndTabItem();
+                            if (ImGui::BeginTabItem(typeName.data()))
+                            {
+                                auto sortedEntities = SortEntities(validEntities, sortCondition);
+                                DrawEntityGroupActionButtons(sortedEntities, csvFriendly, includeHeaders);
+                                DrawEntitiesTable(sortedEntities);
+                                ImGui::EndTabItem();
+                            }
                         }
                     }
+                    ImGui::EndTabBar();
                 }
-                ImGui::EndTabBar();
-            } else {
-                std::vector<cheat::game::Entity*> validEntities;
-                for (const auto& entity : entities)
-                {
-                    if (entity == nullptr)
-                        continue;
-
-                    if (!typeFilters[int(entity->type())])
-                        continue;
-
-                    if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
-                        continue;
-
-                    if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
-                        continue;
-
-                    if (useRadius)
+                else {
+                    std::vector<cheat::game::Entity*> validEntities;
+                    for (const auto& entity : entities)
                     {
-                        auto dist = manager.avatar()->distance(entity);
-                        if (dist > radius)
+                        if (entity == nullptr)
                             continue;
+
+                        if (!typeFilters[int(entity->type())])
+                            continue;
+
+                        if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
+                            continue;
+
+                        if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
+                            continue;
+
+                        if (useRadius)
+                        {
+                            auto dist = manager.avatar()->distance(entity);
+                            if (dist > radius)
+                                continue;
+                        }
+
+                        validEntities.push_back(entity);
                     }
 
-                    validEntities.push_back(entity);
+                    auto sortedEntities = SortEntities(validEntities, sortCondition);
+                    DrawEntityGroupActionButtons(sortedEntities, csvFriendly, includeHeaders);
+                    DrawEntitiesTable(sortedEntities);
+                    ImGui::TreePop();
                 }
-
-                auto sortedEntities = SortEntities(validEntities, sortCondition);
-                DrawEntityGroupActionButtons(sortedEntities);
-                DrawEntitiesTable(sortedEntities);
-                ImGui::TreePop();
             }
             ImGui::TreePop();
         }
