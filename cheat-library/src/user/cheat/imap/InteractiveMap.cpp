@@ -8,6 +8,7 @@
 #include <cheat/game/filters.h>
 #include <cheat/events.h>
 #include <cheat/game/CacheFilterExecutor.h>
+#include <cheat/GenshinCM.h>
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui_internal.h"
@@ -1312,13 +1313,29 @@ namespace cheat::feature
 		return _monoMiniMap->fields._areaMinDistance;
 	}
 
+	static void MapToggled(bool showed)
+	{
+		auto& cheatManager = GenshinCM::instance();
+		bool isCursorVisible = cheatManager.CursorGetVisibility();
+		if ((showed && !isCursorVisible) || (!showed && isCursorVisible && !cheatManager.IsMenuShowed()))
+			cheatManager.CursorSetVisibility(showed);
+	}
+
 	void InteractiveMap::DrawExternal()
 	{
 
 		if (IsMiniMapActive() && f_Enabled)
 			DrawMinimapPoints();
 
-        if (!IsMapActive())
+		static bool _lastMapActive = false;
+		bool mapActive = IsMapActive();
+
+		if (mapActive != _lastMapActive)
+			MapToggled(mapActive);
+
+		_lastMapActive = mapActive;
+
+		if (!mapActive)
             return;
 
 		auto mapManager = GET_SINGLETON(MapManager);
