@@ -46,8 +46,9 @@ DO_APP_FUNC(0x015E1C90, bool, Miscs_CheckTargetAttackable, (void* __this, BaseEn
 DO_APP_FUNC(0x024D5450, bool, HumanoidMoveFSM_CheckSprintCooldown, (/* HumanoidMoveFSM */void* __this, MethodInfo* method));
 DO_APP_FUNC(0x02548810, bool, LCAvatarCombat_IsEnergyMax, (void* __this, MethodInfo* method));
 DO_APP_FUNC(0x02546C10, bool, LCAvatarCombat_IsSkillInCD_1, (void* __this, void* skillInfo, MethodInfo* method));
+DO_APP_FUNC(0x0254A170, void, LCAvatarCombat_ChangeEnergy_1, (LCAvatarCombat* __this, ElementType__Enum type, float value, DataPropOp__Enum state, MethodInfo* method));
+DO_APP_FUNC(0x0254D660, bool, LCAvatarCombat_OnSkillStart, (LCAvatarCombat* __this, uint32_t skillID, float cdMultipler, MethodInfo* method));
 DO_APP_FUNC(0x0112A110, void, ActorAbilityPlugin_AddDynamicFloatWithRange, (void* __this, String* key, float value, float min, float max, bool forceDoAtRemote, MethodInfo* method));
-
 
 // Rapid fire
 DO_APP_FUNC(0x0318B070, void, LCBaseCombat_DoHitEntity, (LCBaseCombat* __this, uint32_t targetID, AttackResult* attackResult, bool ignoreCheckCanBeHitInMP, MethodInfo* method));
