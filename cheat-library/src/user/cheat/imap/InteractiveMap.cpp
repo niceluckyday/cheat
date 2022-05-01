@@ -171,8 +171,15 @@ namespace cheat::feature
 		if (m_ScenesData.count(sceneID) == 0)
 			ImGui::Text("Sorry. Current scene is not supported.");
 
-		ImGui::InputText("Search", &m_SearchText);
-
+		ImGui::InputText("Search", &m_SearchText); ImGui::SameLine();
+		HelpMarker(
+			"This page following with filters for items.\n"
+			"Items what was activated will be appear on mini/global map. (Obviously)\n"
+			"Each filter have options, you can access to it by clicking RMB on filter.\n"
+			"Filters can be marked with colored lines,\n"
+			"\tthey indicate that filter support some features. (Hover it)\n"
+			"Thats all for now. Happy using ^)"
+		);
 		if (searchFixed)
 			ImGui::BeginChild("FiltersList", ImVec2(-1, 0), false, ImGuiWindowFlags_NoBackground);
 
@@ -214,7 +221,9 @@ namespace cheat::feature
 					for (const auto& label : validLabels)
 					{
 						ImGui::TableNextColumn();
+						ImGui::PushID(label);
 						DrawFilter(*label);
+						ImGui::PopID();
 					}
 					ImGui::EndTable();
 				}
@@ -375,6 +384,26 @@ namespace cheat::feature
 
 		if (!markHovered && ImGui::IsItemHovered())
 			ShowHelpText(label.name.c_str());
+
+		// -- Filter options
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
+			ImGui::OpenPopup("Filter options");
+
+		if (ImGui::BeginPopup("Filter options", ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			if (ImGui::Button("Drop progress"))
+			{
+				for (auto& [pointID, point] : label.points)
+				{
+					if (point.completed)
+						UncompletePoint(&point);
+				}
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+		// --
 
 		IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags | ImGuiItemStatusFlags_Checkable | (*v ? ImGuiItemStatusFlags_Checked : 0));
 		return;
