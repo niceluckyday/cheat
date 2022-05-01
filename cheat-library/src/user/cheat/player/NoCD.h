@@ -8,9 +8,12 @@ namespace cheat::feature
     {
 	public:
 		config::Field<config::ToggleHotkey> f_InstantBow;
-		config::Field<config::ToggleHotkey> f_Ability;
+		config::Field<config::ToggleHotkey> f_AbilityReduce;
+		config::Field<config::ToggleHotkey> f_MinimumBarUltimate;
+		config::Field<float> f_Reduce;
+		config::Field<float> f_MinBarUltimate;
 		config::Field<config::ToggleHotkey> f_Sprint;
-
+		
 		static NoCD& GetInstance();
 
 		const FeatureGUIInfo& GetGUIInfo() const override;

@@ -7,23 +7,25 @@
 namespace cheat::feature 
 {
 	static bool HumanoidMoveFSM_CheckSprintCooldown_Hook(void* __this, MethodInfo* method);
-	static bool LCAvatarCombat_IsEnergyMax_Hook(void* __this, MethodInfo* method);
-	static bool LCAvatarCombat_IsSkillInCD_1_Hook(void* __this, void* skillInfo, MethodInfo* method);
+	static void LCAvatarCombat_ChangeEnergy_1(app::LCAvatarCombat* __this, app::ElementType__Enum type, float value, app::DataPropOp__Enum state, MethodInfo* method);
+	static bool LCAvatarCombat_OnSkillStart(app::LCAvatarCombat* __this, uint32_t skillID, float cdMultipler, MethodInfo* method);
 	static void ActorAbilityPlugin_AddDynamicFloatWithRange_Hook(void* __this, app::String* key, float value, float minValue, float maxValue,
 		bool forceDoAtRemote, MethodInfo* method);
-
+	 
 	static std::list<std::string> abilityLog;
 
     NoCD::NoCD() : Feature(),
-        NF(f_Ability,    "Ability CD",  "NoCD", false),
+        NF(f_AbilityReduce,    "Reduce CD",  "NoCD", false),
+		NF(f_Reduce, "Reduce", "NoCD", 0.1f),
+		NF(f_MinimumBarUltimate, "MinimumBarUltimate", "NoCD", 0.1f),
+		NF(f_MinBarUltimate, "BarUltimateValue", "NoCD", 0.1f),
         NF(f_Sprint,     "Sprint CD",   "NoCD", false),
         NF(f_InstantBow, "Instant bow", "NoCD", false)
     {
-		HookManager::install(app::LCAvatarCombat_IsEnergyMax, LCAvatarCombat_IsEnergyMax_Hook);
-		HookManager::install(app::LCAvatarCombat_IsSkillInCD_1, LCAvatarCombat_IsSkillInCD_1_Hook);
+		HookManager::install(app::LCAvatarCombat_ChangeEnergy_1, LCAvatarCombat_ChangeEnergy_1);	
+		HookManager::install(app::LCAvatarCombat_OnSkillStart, LCAvatarCombat_OnSkillStart);
 
 		HookManager::install(app::HumanoidMoveFSM_CheckSprintCooldown, HumanoidMoveFSM_CheckSprintCooldown_Hook);
-
 		HookManager::install(app::ActorAbilityPlugin_AddDynamicFloatWithRange, ActorAbilityPlugin_AddDynamicFloatWithRange_Hook);
     }
 
@@ -35,9 +37,11 @@ namespace cheat::feature
 
     void NoCD::DrawMain()
     {
-		ConfigWidget("No Skill/Burst Cooldown", f_Ability, "Disable cooldowns of elemental skills and bursts.\n" \
-			"Removes energy requirement for elemental bursts.\n" \
-			"(Energy bubble may appear incomplete but still usable).");
+		ConfigWidget("Reduce Skill/Burst Cooldown", f_AbilityReduce, "Reduce cooldowns of elemental skills and bursts.\n"\
+			"The greater the value, the greater the cooldown.");
+		ConfigWidget("Reduce Value", f_Reduce, 0.1f, 0.2f, 1.0f);		
+		ConfigWidget("Minumum Ultimate", f_MinimumBarUltimate, "Holds the ultimates charge.\n");
+		ConfigWidget("Ultimate Value", f_MinBarUltimate, 0.1f, 10.0f, 80.0f);
 		ConfigWidget("No Sprint Cooldown", f_Sprint, "Removes delay in-between sprints.");
 		ConfigWidget("Instant Bow Charge", f_InstantBow, "Disable cooldown of bow charge.\n" \
 			"Known issues with Fischl.");
@@ -68,16 +72,18 @@ namespace cheat::feature
 
     bool NoCD::NeedStatusDraw() const
 {
-        return f_InstantBow || f_Ability || f_Sprint;
+        return f_InstantBow || f_AbilityReduce || f_Sprint || f_MinimumBarUltimate;
     }
 
     void NoCD::DrawStatus() 
     {
-		ImGui::Text("NoCD [%s%s%s%s%s]", 
-			f_Ability ? "E/Q" : "", 
-			f_Ability && (f_InstantBow || f_Sprint) ? "|" : "",
-			f_InstantBow ? "Bow" : "", 
-			f_InstantBow && f_Sprint ? "|": "",
+		ImGui::Text("NoCD [%s%s%s%s%s%s%s]",
+			f_AbilityReduce ? "Reduce" : "",
+			f_AbilityReduce && (f_InstantBow || f_Sprint || f_MinimumBarUltimate) ? "|" : "",
+			f_MinimumBarUltimate ? "Ult" : "",
+			f_MinimumBarUltimate && (f_InstantBow || f_Sprint) ? "|" : "",
+			f_InstantBow ? "Bow" : "",
+			f_InstantBow && f_Sprint ? "|" : "",
 			f_Sprint ? "Sprint" : "");
     }
 
@@ -87,22 +93,31 @@ namespace cheat::feature
         return instance;
     }
 
-	static bool LCAvatarCombat_IsEnergyMax_Hook(void* __this, MethodInfo* method)
-	{
+	// Energy Ultimate | RyujinZX#6666
+	static void LCAvatarCombat_ChangeEnergy_1(app::LCAvatarCombat* __this, app::ElementType__Enum type, float value, app::DataPropOp__Enum state, MethodInfo* method) {
 		NoCD& noCD = NoCD::GetInstance();
-		if (noCD.f_Ability)
-			return true;
+		if (noCD.f_MinimumBarUltimate)
+		{
+			if (value < noCD.f_MinBarUltimate)
+				value = noCD.f_MinBarUltimate; /* Float:80 Fullbar ? */
+		}
 
-		return callOrigin(LCAvatarCombat_IsEnergyMax_Hook, __this, method);
+		return callOrigin(LCAvatarCombat_ChangeEnergy_1, __this, type, value, state, method);
 	}
-
-	static bool LCAvatarCombat_IsSkillInCD_1_Hook(void* __this, void* skillInfo, MethodInfo* method)
-	{
+	
+	// Multipler CoolDown Timer | RyujinZX#6666
+	static bool LCAvatarCombat_OnSkillStart(app::LCAvatarCombat* __this, uint32_t skillID, float cdMultipler, MethodInfo* method) {
 		NoCD& noCD = NoCD::GetInstance();
-		if (noCD.f_Ability)
-			return false;
-
-		return callOrigin(LCAvatarCombat_IsSkillInCD_1_Hook, __this, skillInfo, method);
+		if (noCD.f_AbilityReduce)
+		{
+			if (__this->fields._targetFixTimer->fields._._timer_k__BackingField > 0) {
+				cdMultipler = noCD.f_Reduce / 3;
+			}
+			else {
+				cdMultipler = noCD.f_Reduce / 1;
+			}
+		}		
+		return callOrigin(LCAvatarCombat_OnSkillStart, __this, skillID, cdMultipler, method);
 	}
 
 	// Check sprint cooldown, we just return true if sprint no cooldown enabled.
