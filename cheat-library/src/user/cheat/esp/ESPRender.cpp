@@ -432,10 +432,10 @@ namespace cheat::feature::esp::render
 		switch (esp.f_DrawBoxMode.value())
 		{
 		case ESP::DrawMode::Box:
-			rect = DrawBox(entity, color);
+			rect = DrawBox(entity, esp.f_ApplyGlobalColor ? esp.f_BoxColor : color);
 			break;
 		case ESP::DrawMode::Rectangle:
-			rect = DrawRect(entity, color);
+			rect = DrawRect(entity, esp.f_ApplyGlobalColor ? esp.f_RectColor : color);
 			break;
 		default:
 			rect = {};
@@ -443,15 +443,10 @@ namespace cheat::feature::esp::render
 		}
 
 		if (esp.f_DrawLine)
-			DrawLine(entity, color);
+			DrawLine(entity, esp.f_ApplyGlobalColor ? esp.f_LineColor : color);
 
 		if (esp.f_DrawName)
-		{
-			ImColor nameColor = color;
-			if (esp.f_ApplyGlobalFontColor)
-				nameColor = esp.f_FontColor;
-			DrawName(rect, entity, name, nameColor);
-		}
+			DrawName(rect, entity, name, esp.f_ApplyGlobalColor ? esp.f_FontColor : color);
 
 		return HasCenter(rect);
 		SAFE_ERROR();
