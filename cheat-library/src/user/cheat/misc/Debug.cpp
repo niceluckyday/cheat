@@ -405,6 +405,7 @@ namespace cheat::feature
     void DrawEntitiesTable(std::vector<game::Entity*> entities)
     {
         auto& manager = game::EntityManager::instance();
+        auto clipSize = min(entities.size(), 15); // Number of rows in table as initial view. Past this is scrollbar territory.
 
         static ImGuiTableFlags flags =
             ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable // | ImGuiTableFlags_Sortable | ImGuiTableFlags_SortMulti
@@ -480,6 +481,7 @@ namespace cheat::feature
         static char objectNameFilter[128] = {};
         static float radius = 0.0f;
         static bool useRadius = false;
+        static bool groupByType = true;
 
         static bool checkOnlyShells = false;
         static bool showEmptyTypes = false;
@@ -491,17 +493,17 @@ namespace cheat::feature
         ImGuiContext& g = *GImGui;
         ImGuiIO& io = g.IO;
 
-        ImGui::Text("Entity count %d", entities.size());
+        ImGui::Text("Entity Count %d", entities.size());
 
-        ImGui::Checkbox("## Enable object name filter", &useObjectNameFilter); ImGui::SameLine();
+        ImGui::Checkbox("## Enable Object Name Filter", &useObjectNameFilter); ImGui::SameLine();
         if (!useObjectNameFilter)
             ImGui::BeginDisabled();
-        ImGui::InputText("Entity name filter", objectNameFilter, 128);
+        ImGui::InputText("Entity Name Filter", objectNameFilter, 128);
         if (!useObjectNameFilter)
             ImGui::EndDisabled();
 
 
-        ImGui::Checkbox("Filter by radius", &useRadius);
+        ImGui::Checkbox("Filter by Radius", &useRadius);
         if (!useRadius)
             ImGui::BeginDisabled();
             
@@ -509,21 +511,18 @@ namespace cheat::feature
         ImGui::SliderFloat("Radius", &radius, 0.0f, 100.0f);
         if (!useRadius)
             ImGui::EndDisabled();
-            
-        ImGui::Checkbox("Show empty types", &showEmptyTypes);
-        ImGui::Checkbox("Show only oculi", &checkOnlyShells);
 
         if (ImGui::TreeNode("Type Filter"))
         {
-            if (ImGui::Button("Select all"))
+            if (ImGui::Button("Select All"))
                 std::fill_n(typeFilters, 0x63, true);
             ImGui::SameLine();
 
-            if (ImGui::Button("Deselect all"))
+            if (ImGui::Button("Deselect All"))
                 std::fill_n(typeFilters, 0x63, false);
 
             int columns = 2;
-            if (ImGui::BeginTable("Type filter table", columns, ImGuiTableFlags_NoBordersInBody))
+            if (ImGui::BeginTable("Type Filter Table", columns, ImGuiTableFlags_NoBordersInBody))
             {
                 auto entries = magic_enum::enum_entries<app::EntityType__Enum_1>();
                 for (const auto& [value, name] : entries)
@@ -539,10 +538,24 @@ namespace cheat::feature
 
         if (ImGui::TreeNode("Entity List"))
         {
+            // Checkbox: Group by Type.
+            ImGui::Checkbox("Group by Type", &groupByType);
+            ImGui::SameLine();
+
+            if (groupByType) {
+                ImGui::Checkbox("Show Empty Types", &showEmptyTypes);
+                ImGui::SameLine();
+            }
+
+            ImGui::Checkbox("Show Only Oculi", &checkOnlyShells);
+            ImGui::SameLine();
+
+            // Combobox: Sorting logic.
             static ImGuiComboFlags flags = 0;
-            const char* sortChoices[] = {"RuntimeID", "Name", "Distance"};
+            const char* sortChoices[] = { "RuntimeID", "Name", "Distance" };
             static int sortChoice_idx = 2;
             const char* sortChoice_preview = sortChoices[sortChoice_idx];
+            ImGui::PushItemWidth(200);
             if (ImGui::BeginCombo("Sort Mode", sortChoice_preview, flags))
             {
                 for (int n = 0; n < IM_ARRAYSIZE(sortChoices); n++)
@@ -557,24 +570,65 @@ namespace cheat::feature
                 }
                 ImGui::EndCombo();
             }
+            ImGui::PopItemWidth();
 
             auto entries = magic_enum::enum_entries<app::EntityType__Enum_1>();
-            for (const auto& [currentType, typeName] : entries)
-            {
-                if (!typeFilters[int(currentType)])
-                    continue;
 
-                auto filteredEntities = manager.entities(game::SimpleFilter(currentType));
-                if (!showEmptyTypes && filteredEntities.size() == 0)
-                    continue;
+            if (groupByType) {
+                for (const auto& [currentType, typeName] : entries)
+                {
+                    if (!typeFilters[int(currentType)])
+                        continue;
 
+                    auto filteredEntities = manager.entities(game::SimpleFilter(currentType));
+                    if (!showEmptyTypes && filteredEntities.size() == 0)
+                        continue;
+
+                    std::vector<cheat::game::Entity*> validEntities;
+                    for (const auto& entity : filteredEntities)
+                    {
+                        if (entity == nullptr)
+                            continue;
+
+                        if (entity->type() != currentType)
+                            continue;
+
+                        if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
+                            continue;
+
+                        if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
+                            continue;
+
+                        if (useRadius)
+                        {
+                            auto dist = manager.avatar()->distance(entity);
+                            if (dist > radius)
+                                continue;
+                        }
+
+                        validEntities.push_back(entity);
+                    }
+
+                    if (validEntities.size() == 0 && !showEmptyTypes)
+                        continue;
+
+                    if (ImGui::TreeNode(typeName.data()))
+                    {
+                        auto sortedEntities = SortEntities(validEntities, sortCondition);
+                        DrawEntityGroupActionButtons(sortedEntities);
+                        DrawEntitiesTable(sortedEntities);
+                        ImGui::TreePop();
+                    }
+                }
+            }
+            else {
                 std::vector<cheat::game::Entity*> validEntities;
-                for (const auto& entity : filteredEntities)
+                for (const auto& entity : entities)
                 {
                     if (entity == nullptr)
                         continue;
 
-                    if (entity->type() != currentType)
+                    if (!typeFilters[int(entity->type())])
                         continue;
 
                     if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
@@ -582,10 +636,10 @@ namespace cheat::feature
 
                     if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
                         continue;
-                    
+
                     if (useRadius)
                     {
-                        auto dist  = manager.avatar()->distance(entity);
+                        auto dist = manager.avatar()->distance(entity);
                         if (dist > radius)
                             continue;
                     }
@@ -593,16 +647,10 @@ namespace cheat::feature
                     validEntities.push_back(entity);
                 }
 
-                if (validEntities.size() == 0)
-                    continue;
-
                 auto sortedEntities = SortEntities(validEntities, sortCondition);
-                if (ImGui::TreeNode(typeName.data()))
-                {
-                    DrawEntityGroupActionButtons(sortedEntities);
-                    DrawEntitiesTable(sortedEntities);
-                    ImGui::TreePop();
-                }
+                DrawEntityGroupActionButtons(sortedEntities);
+                DrawEntitiesTable(sortedEntities);
+                ImGui::TreePop();
             }
             ImGui::TreePop();
         }
@@ -1169,7 +1217,7 @@ namespace cheat::feature
 
     void Debug::DrawMain()
 	{
-		if (ImGui::CollapsingHeader("Entity manager", ImGuiTreeNodeFlags_None))
+		if (ImGui::CollapsingHeader("Entity Manager", ImGuiTreeNodeFlags_None))
 			DrawEntitiesData();
 
 		if (ImGui::CollapsingHeader("Position", ImGuiTreeNodeFlags_None))
@@ -1187,7 +1235,7 @@ namespace cheat::feature
 		//if (ImGui::CollapsingHeader("Interaction manager", ImGuiTreeNodeFlags_None))
 		//	DrawInteractionManagerInfo();
 
-		if (ImGui::CollapsingHeader("Map manager", ImGuiTreeNodeFlags_None))
+		if (ImGui::CollapsingHeader("Map Manager", ImGuiTreeNodeFlags_None))
 			DrawManagerData();
         if (ImGui::CollapsingHeader("FPS Graph", ImGuiTreeNodeFlags_None))
             DrawFPSGraph();
