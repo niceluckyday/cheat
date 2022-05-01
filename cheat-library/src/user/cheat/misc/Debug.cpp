@@ -481,13 +481,23 @@ namespace cheat::feature
         static float radius = 0.0f;
         static bool useRadius = false;
         static bool groupByType = true;
+        static int typeFiltersColCount = 5;
 
         static bool checkOnlyShells = false;
         static bool showEmptyTypes = false;
         static Debug::EntitySortCondition sortCondition = Debug::EntitySortCondition::Distance;
+        static ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_Reorderable | ImGuiTabBarFlags_FittingPolicyScroll | 
+            ImGuiTabBarFlags_NoCloseWithMiddleMouseButton | ImGuiTabBarFlags_TabListPopupButton;
 
         auto& manager = game::EntityManager::instance();
         auto entities = manager.entities();
+        auto entries = magic_enum::enum_entries<app::EntityType__Enum_1>();
+
+        std::vector<std::pair<app::EntityType__Enum_1, std::string_view>> sortedEntries;
+        sortedEntries.insert(sortedEntries.begin(), std::begin(entries), std::end(entries));
+        std::sort(sortedEntries.begin(), sortedEntries.end(), [](auto a1, auto a2) {
+            return a1.second < a2.second;
+            });
 
         ImGuiContext& g = *GImGui;
         ImGuiIO& io = g.IO;
@@ -521,12 +531,15 @@ namespace cheat::feature
 
             if (ImGui::Button("Deselect All"))
                 std::fill_n(typeFilters, 0x63, false);
+            ImGui::SameLine();
 
-            int columns = 2;
-            if (ImGui::BeginTable("Type Filter Table", columns, ImGuiTableFlags_NoBordersInBody))
+            ImGui::PushItemWidth(100.0);
+            ImGui::SliderInt("No. of Columns", &typeFiltersColCount, 2, 5);
+            ImGui::PopItemWidth();
+
+            if (ImGui::BeginTable("Type Filter Table", typeFiltersColCount, ImGuiTableFlags_NoBordersInBody))
             {
-                auto entries = magic_enum::enum_entries<app::EntityType__Enum_1>();
-                for (const auto& [value, name] : entries)
+                for (const auto& [value, name] : sortedEntries)
                 {
                     ImGui::TableNextColumn();
                     ImGui::Checkbox(name.data(), &typeFilters[(int)value]);
@@ -573,56 +586,57 @@ namespace cheat::feature
             }
             ImGui::PopItemWidth();
 
-            auto entries = magic_enum::enum_entries<app::EntityType__Enum_1>();
-
             if (groupByType) {
-                for (const auto& [currentType, typeName] : entries)
+                if (ImGui::BeginTabBar("EntityListTabBar", tab_bar_flags))
                 {
-                    if (!typeFilters[int(currentType)])
-                        continue;
-
-                    auto filteredEntities = manager.entities(game::SimpleFilter(currentType));
-                    if (!showEmptyTypes && filteredEntities.size() == 0)
-                        continue;
-
-                    std::vector<cheat::game::Entity*> validEntities;
-                    for (const auto& entity : filteredEntities)
-                    {
-                        if (entity == nullptr)
+                    for (const auto& [currentType, typeName] : sortedEntries) {
+                        if (!typeFilters[int(currentType)])
                             continue;
 
-                        if (entity->type() != currentType)
+                        auto filteredEntities = manager.entities(game::SimpleFilter(currentType));
+                        if (!showEmptyTypes && filteredEntities.size() == 0)
                             continue;
 
-                        if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
-                            continue;
-
-                        if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
-                            continue;
-
-                        if (useRadius)
+                        std::vector<cheat::game::Entity*> validEntities;
+                        for (const auto& entity : filteredEntities)
                         {
-                            auto dist = manager.avatar()->distance(entity);
-                            if (dist > radius)
+                            if (entity == nullptr)
                                 continue;
+
+                            if (entity->type() != currentType)
+                                continue;
+
+                            if (checkOnlyShells && !game::filters::combined::Oculies.IsValid(entity))
+                                continue;
+
+                            if (useObjectNameFilter && entity->name().find(objectNameFilter) == -1)
+                                continue;
+
+                            if (useRadius)
+                            {
+                                auto dist = manager.avatar()->distance(entity);
+                                if (dist > radius)
+                                    continue;
+                            }
+
+                            validEntities.push_back(entity);
                         }
 
-                        validEntities.push_back(entity);
-                    }
+                        if (validEntities.size() == 0 && !showEmptyTypes)
+                            continue;
 
-                    if (validEntities.size() == 0 && !showEmptyTypes)
-                        continue;
 
-                    if (ImGui::TreeNode(typeName.data()))
-                    {
-                        auto sortedEntities = SortEntities(validEntities, sortCondition);
-                        DrawEntityGroupActionButtons(sortedEntities);
-                        DrawEntitiesTable(sortedEntities);
-                        ImGui::TreePop();
+                        if (ImGui::BeginTabItem(typeName.data()))
+                        {
+                            auto sortedEntities = SortEntities(validEntities, sortCondition);
+                            DrawEntityGroupActionButtons(sortedEntities);
+                            DrawEntitiesTable(sortedEntities);
+                            ImGui::EndTabItem();
+                        }
                     }
                 }
-            }
-            else {
+                ImGui::EndTabBar();
+            } else {
                 std::vector<cheat::game::Entity*> validEntities;
                 for (const auto& entity : entities)
                 {
