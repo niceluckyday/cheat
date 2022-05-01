@@ -193,6 +193,279 @@ namespace cheat::feature
         ImGui::Text("Entity name: %s", entity->name().c_str());
     }
 
+    void CopyEntityDetailsToClipboard(std::vector<game::Entity*> entities)
+    {
+        std::string entitiesDetails = "";
+        for (auto entity : entities) {
+            auto entityPos = entity->absolutePosition();
+            auto entityDetails = fmt::format("{} {} {} x={} y={} z={}",
+                fmt::ptr(entity),
+                entity->runtimeID(),
+                entity->name().c_str(),
+                entityPos.x, entityPos.y, entityPos.z
+            );
+            entitiesDetails.append(entityDetails);
+            entitiesDetails.append("\n");
+        }
+        ImGui::SetClipboardText(entitiesDetails.c_str());
+    }
+
+    void CopyEntityDetailsToClipboard(game::Entity* entity)
+    {
+        auto entityPos = entity->absolutePosition();
+        auto entityDetails = fmt::format("{} {} {} x={} y={} z={}",
+            fmt::ptr(entity),
+            entity->runtimeID(),
+            entity->name().c_str(),
+            entityPos.x, entityPos.y, entityPos.z
+        );
+        ImGui::SetClipboardText(entityDetails.c_str());
+    }
+
+    void DrawCombatDetails(game::Entity* entity)
+    {
+        auto combat = entity->combat();
+        if (combat != nullptr) {
+            auto combatProp = combat->fields._combatProperty_k__BackingField;
+            auto maxHP = app::SafeFloat_GetValue(nullptr, combatProp->fields.maxHP, nullptr);
+            auto HP = app::SafeFloat_GetValue(nullptr, combatProp->fields.HP, nullptr);
+            auto isLockHp = combatProp->fields.islockHP == nullptr || app::FixedBoolStack_get_value(combatProp->fields.islockHP, nullptr);
+            auto isInvincible = combatProp->fields.isInvincible == nullptr || app::FixedBoolStack_get_value(combatProp->fields.isInvincible, nullptr);
+            ImGui::BeginTooltip();
+            ImGui::Text("Combat: %s", combat == nullptr ? "No" : "Yes");
+            ImGui::Text("Combat Prop: %s", combatProp == nullptr ? "No" : "Yes");
+            ImGui::Text("HP Curr/Max: %.01f/%.01f", HP, maxHP);
+            ImGui::Text("Locked HP: %s", isLockHp ? "Yes" : "No");
+            ImGui::Text("Invincible: %s", isInvincible ? "Yes" : "No");
+            ImGui::EndTooltip();
+        }
+    }
+
+    void DrawEntityActionButtons(game::Entity* entity)
+    {
+        auto& manager = game::EntityManager::instance();
+        if (ImGui::SmallButton("T"))
+        {
+            auto& mapTeleport = MapTeleport::GetInstance();
+            mapTeleport.TeleportTo(entity->absolutePosition());
+        };
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("Teleport");
+
+        ImGui::SameLine();
+        if (ImGui::SmallButton("S"))
+            entity->setRelativePosition(manager.avatar()->relativePosition());
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("Summon");
+
+        ImGui::SameLine();
+        if (ImGui::SmallButton("B"))
+            entity->setRelativePosition({ 0, 0, 0 });
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("Banish");
+
+        ImGui::SameLine();
+        if (ImGui::SmallButton("C")) {
+            CopyEntityDetailsToClipboard(entity);
+        }
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("Copy Details");
+    }
+
+    void TeleportByCondition(std::vector<game::Entity*> entities, Debug::TeleportCondition condition)
+    {
+        auto& manager = game::EntityManager::instance();
+        auto& mapTeleport = MapTeleport::GetInstance();
+
+        switch (condition) {
+        case Debug::TeleportCondition::Closest: {
+            cheat::game::Entity* closest = nullptr;
+            float closestDist = FLT_MAX;
+            for (const auto& entity : entities)
+            {
+                auto dist = manager.avatar()->distance(entity);
+                if (dist < closestDist)
+                {
+                    closestDist = dist;
+                    closest = entity;
+                }
+            }
+            if (closest != nullptr)
+            {
+                if (closestDist > 30.0f)
+                    mapTeleport.TeleportTo(closest->absolutePosition());
+                else manager.avatar()->setRelativePosition(closest->relativePosition());
+            }
+            break;
+        }
+        case Debug::TeleportCondition::Farthest: {
+            cheat::game::Entity* farthest = nullptr;
+            float farthestDist = 0.0f;
+            for (const auto& entity : entities)
+            {
+                auto dist = manager.avatar()->distance(entity);
+                if (dist > farthestDist)
+                {
+                    farthestDist = dist;
+                    farthest = entity;
+                }
+            }
+            if (farthest != nullptr)
+                mapTeleport.TeleportTo(farthest->absolutePosition());
+            break;
+        }
+        }
+    }
+
+    void SummonEntities(game::Entity* entity)
+    {
+        auto& manager = game::EntityManager::instance();
+        entity->setRelativePosition(manager.avatar()->relativePosition());
+    }
+
+    void SummonEntities(std::vector<game::Entity*> entities)
+    {
+        for (auto entity : entities)
+            SummonEntities(entity);
+    }
+
+    void BanishEntities(game::Entity* entity)
+    {
+        entity->setRelativePosition({ 0, 0, 0 });
+    }
+
+    void BanishEntities(std::vector<game::Entity*> entities)
+    {
+        for (auto entity : entities)
+            BanishEntities(entity);
+    }
+
+    void DrawEntityGroupActionButtons(std::vector<game::Entity*> entities)
+    {
+        auto& manager = game::EntityManager::instance();
+        if (ImGui::Button("Teleport: Closest"))
+            TeleportByCondition(entities, Debug::TeleportCondition::Closest);
+
+        ImGui::SameLine();
+        if (ImGui::Button("Teleport: Farthest"))
+            TeleportByCondition(entities, Debug::TeleportCondition::Farthest);
+
+        ImGui::SameLine();
+        if (ImGui::Button("Summon All"))
+            SummonEntities(entities);
+
+        ImGui::SameLine();
+        if (ImGui::Button("Banish All"))
+            BanishEntities(entities);
+
+        ImGui::SameLine();
+        if (ImGui::Button("Copy All Details"))
+            CopyEntityDetailsToClipboard(entities);
+    }
+
+    std::vector<game::Entity*> SortEntities(std::vector<game::Entity*> entities, Debug::EntitySortCondition condition)
+    {
+        LOG_DEBUG("Condition Sort %d", condition);
+        switch (condition) {
+        case Debug::EntitySortCondition::RuntimeID: {
+                std::sort(entities.begin(),
+                    entities.end(),
+                    [](game::Entity* e1, game::Entity* e2) {
+                        auto s1 = e1->runtimeID();
+                        auto s2 = e2->runtimeID();
+                        return s1 < s2;
+                    });
+                break;
+            }
+        case Debug::EntitySortCondition::Name: {
+                std::sort(entities.begin(),
+                    entities.end(),
+                    [](game::Entity* e1, game::Entity* e2) {
+                        auto s1 = fmt::format("%s", e1->name().c_str());
+                        auto s2 = fmt::format("%s", e2->name().c_str());
+                        return s1 < s2;
+                    });
+                break;
+            }
+        case Debug::EntitySortCondition::Distance: {
+                std::sort(entities.begin(),
+                    entities.end(),
+                    [](game::Entity* e1, game::Entity* e2) {
+                        auto& manager = game::EntityManager::instance();
+                        return manager.avatar()->distance(e1) < manager.avatar()->distance(e2);
+                    });
+                break;
+            }
+            default:
+                break;
+        }
+        return entities;
+    }
+
+    void DrawEntitiesTable(std::vector<game::Entity*> entities)
+    {
+        auto& manager = game::EntityManager::instance();
+
+        static ImGuiTableFlags flags =
+            ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable // | ImGuiTableFlags_Sortable | ImGuiTableFlags_SortMulti
+            | ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_NoBordersInBody
+            | ImGuiTableFlags_ScrollY;
+        if (ImGui::BeginTable("EntityTable", 8, flags, ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 15), 0.0f))
+        {
+            ImGui::TableSetupColumn("Commands", ImGuiTableColumnFlags_NoSort | ImGuiTableColumnFlags_WidthFixed, 0.0, 0);
+            ImGui::TableSetupColumn("ID", ImGuiTableColumnFlags_WidthFixed, 0.0f, 1);
+            ImGui::TableSetupColumn("RuntimeID", ImGuiTableColumnFlags_WidthFixed, 0.0f, 2);
+            ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 0.0f, 3);
+            ImGui::TableSetupColumn("Distance", ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_PreferSortAscending | ImGuiTableColumnFlags_WidthFixed, 0.0, 4);
+            ImGui::TableSetupColumn("Pos.x", ImGuiTableColumnFlags_WidthFixed, 0.0, 5);
+            ImGui::TableSetupColumn("Pos.y", ImGuiTableColumnFlags_WidthFixed, 0.0, 6);
+            ImGui::TableSetupColumn("Pos.z", ImGuiTableColumnFlags_WidthFixed, 0.0, 7);
+            ImGui::TableSetupScrollFreeze(0, 1);
+            ImGui::TableHeadersRow();
+
+            ImGuiListClipper clipper;
+            clipper.Begin(entities.size());
+            while (clipper.Step())
+                for (int row_n = clipper.DisplayStart; row_n < clipper.DisplayEnd; row_n++)
+                {
+                    auto entity = entities[row_n];
+                    auto entityPos = entity->absolutePosition();
+
+                    ImGui::PushID(entity->runtimeID());
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+
+                    DrawEntityActionButtons(entity);
+                    ImGui::TableNextColumn();
+
+                    ImGui::Text("0x%p", entity);
+                    if (ImGui::IsItemHovered())
+                        DrawCombatDetails(entity);
+                    ImGui::TableNextColumn();
+
+                    ImGui::Text("%u", entity->runtimeID());
+                    ImGui::TableNextColumn();
+
+                    ImGui::Text("%s", entity->name().c_str());
+                    ImGui::TableNextColumn();
+
+                    ImGui::Text("%.3fm", manager.avatar()->distance(entity));
+                    ImGui::TableNextColumn();
+
+                    ImGui::Text("%.04f", entityPos.x);
+                    ImGui::TableNextColumn();
+
+                    ImGui::Text("%.04f", entityPos.y);
+                    ImGui::TableNextColumn();
+
+                    ImGui::Text("%.04f", entityPos.z);
+
+                    ImGui::PopID();
+                }
+            ImGui::EndTable();
+        }
+    }
+
     static void DrawEntitiesData()
     {
         static bool typeFilters[0x63] = {};
@@ -210,6 +483,7 @@ namespace cheat::feature
 
         static bool checkOnlyShells = false;
         static bool showEmptyTypes = false;
+        static Debug::EntitySortCondition sortCondition = Debug::EntitySortCondition::Distance;
 
         auto& manager = game::EntityManager::instance();
         auto entities = manager.entities();
@@ -265,6 +539,25 @@ namespace cheat::feature
 
         if (ImGui::TreeNode("Entity List"))
         {
+            static ImGuiComboFlags flags = 0;
+            const char* sortChoices[] = {"RuntimeID", "Name", "Distance"};
+            static int sortChoice_idx = 2;
+            const char* sortChoice_preview = sortChoices[sortChoice_idx];
+            if (ImGui::BeginCombo("Sort Mode", sortChoice_preview, flags))
+            {
+                for (int n = 0; n < IM_ARRAYSIZE(sortChoices); n++)
+                {
+                    const bool is_selected = (sortChoice_idx == n);
+                    if (ImGui::Selectable(sortChoices[n], is_selected)) {
+                        sortChoice_idx = n;
+                        sortCondition = Debug::EntitySortCondition(n);
+                    }
+                    if (is_selected)
+                        ImGui::SetItemDefaultFocus();
+                }
+                ImGui::EndCombo();
+            }
+
             auto entries = magic_enum::enum_entries<app::EntityType__Enum_1>();
             for (const auto& [currentType, typeName] : entries)
             {
@@ -303,155 +596,11 @@ namespace cheat::feature
                 if (validEntities.size() == 0)
                     continue;
 
+                auto sortedEntities = SortEntities(validEntities, sortCondition);
                 if (ImGui::TreeNode(typeName.data()))
                 {
-                    if (ImGui::Button("Teleport: Closest"))
-                    {
-                        cheat::game::Entity *closest = nullptr;
-                        float closestDist = FLT_MAX;
-                        for (const auto &entity : validEntities)
-                        {
-                            auto dist = manager.avatar()->distance(entity);
-                            if (dist < closestDist)
-                            {
-                                closestDist = dist;
-                                closest = entity;
-                            }
-                        }
-
-                        if (closest != nullptr)
-                        {
-                            if (closestDist > 30.0f)
-                            {
-                                auto& mapTeleport = MapTeleport::GetInstance();
-                                mapTeleport.TeleportTo(closest->absolutePosition());
-                            }
-                            else
-                            {
-                                manager.avatar()->setRelativePosition(closest->relativePosition());
-                            }
-                        }
-                    }
-
-                    ImGui::SameLine();
-                    if (ImGui::Button("Teleport: Farthest"))
-                    {
-                        cheat::game::Entity *farthest = nullptr;
-                        float farthestDist = 0.0f;
-                        for (const auto &entity : validEntities)
-                        {
-                            auto dist = manager.avatar()->distance(entity);
-                            if (dist > farthestDist)
-                            {
-                                farthestDist = dist;
-                                farthest = entity;
-                            }
-                        }
-
-                        if (farthest != nullptr)
-                        {
-                            auto& mapTeleport = MapTeleport::GetInstance();
-                            mapTeleport.TeleportTo(farthest->absolutePosition());
-                        }
-                    }
-
-                    ImGui::SameLine();
-                    if (ImGui::Button("Summon All"))
-                    {
-                        for (const auto& entity : validEntities)
-                        {
-                            entity->setRelativePosition(manager.avatar()->relativePosition());
-                        }
-                    }
-
-                    ImGui::SameLine();
-                    if (ImGui::Button("Banish All"))
-                    {
-                        for (const auto &entity : validEntities)
-                        {
-                            entity->setRelativePosition({0, 0, 0});
-                        }
-                    }
-                    
-                    static ImGuiTableFlags flags =
-                        ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable // | ImGuiTableFlags_Sortable | ImGuiTableFlags_SortMulti
-                        | ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_NoBordersInBody
-                        | ImGuiTableFlags_ScrollY;
-                    if (ImGui::BeginTable("EntityTable", 5, flags, ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 15), 0.0f))
-                    {
-                        ImGui::TableSetupColumn("ID", ImGuiTableColumnFlags_WidthFixed, 0.0f, 0);
-                        ImGui::TableSetupColumn("RuntimeID", ImGuiTableColumnFlags_WidthFixed, 0.0f, 1);
-                        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 0.0f, 2);
-                        ImGui::TableSetupColumn("Distance", ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_PreferSortAscending | ImGuiTableColumnFlags_WidthStretch, 0.0, 3);
-                        ImGui::TableSetupColumn("Commands", ImGuiTableColumnFlags_NoSort | ImGuiTableColumnFlags_WidthStretch, 0.0, 4);
-                        ImGui::TableSetupScrollFreeze(0, 1);
-                        ImGui::TableHeadersRow();
-
-                        if (validEntities.size() > 1) 
-                        {
-                            std::sort(validEntities.begin(), 
-                                validEntities.end(), 
-                                [](game::Entity* i1, game::Entity* i2) {
-                                    auto& manager = game::EntityManager::instance();
-                                    return manager.avatar()->distance(i1) < manager.avatar()->distance(i2);
-                                });
-                        }
-
-                        ImGuiListClipper clipper;
-                        clipper.Begin(validEntities.size());
-                        while (clipper.Step())
-                            for (int row_n = clipper.DisplayStart; row_n < clipper.DisplayEnd; row_n++)
-                            {
-                                auto entity = validEntities[row_n];
-
-                                ImGui::PushID(entity->runtimeID());
-                                ImGui::TableNextRow();
-                                ImGui::TableNextColumn();
-
-                                ImGui::Text("0x%p", entity);
-                                ImGui::TableNextColumn();
-
-                                ImGui::Text("%u", entity->runtimeID());
-                                ImGui::TableNextColumn();
-
-                                ImGui::Text("%s", entity->name().c_str());
-                                ImGui::TableNextColumn();
-
-                                ImGui::Text("%.3fm", manager.avatar()->distance(entity));
-                                ImGui::TableNextColumn();
-
-                                if (ImGui::SmallButton("T")) 
-                                {
-                                    auto& mapTeleport = MapTeleport::GetInstance();
-                                    mapTeleport.TeleportTo(entity->absolutePosition());
-                                };
-                                if (ImGui::IsItemHovered())
-                                    ImGui::SetTooltip("Teleport");
-
-                                ImGui::SameLine();
-                                if (ImGui::SmallButton("S"))
-                                    entity->setRelativePosition(manager.avatar()->relativePosition());
-                                if (ImGui::IsItemHovered())
-                                    ImGui::SetTooltip("Summon");
-
-                                ImGui::SameLine();
-                                if (ImGui::SmallButton("B"))
-                                    entity->setRelativePosition({ 0, 0, 0 });
-                                if (ImGui::IsItemHovered())
-                                    ImGui::SetTooltip("Banish");
-
-                                ImGui::SameLine();
-                                if (ImGui::SmallButton("C")) {
-                                    auto entityDetails = fmt::format("{} {} {}", fmt::ptr(entity), entity->runtimeID(), entity->name().c_str());
-                                    ImGui::SetClipboardText(entityDetails.c_str());
-                                }
-                                if (ImGui::IsItemHovered())
-                                    ImGui::SetTooltip("Copy Details");
-
-                                ImGui::PopID();
-                            }
-                        ImGui::EndTable();
-                    }
+                    DrawEntityGroupActionButtons(sortedEntities);
+                    DrawEntitiesTable(sortedEntities);
                     ImGui::TreePop();
                 }
             }
