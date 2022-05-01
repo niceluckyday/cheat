@@ -14,11 +14,11 @@ namespace cheat::feature
 	static bool LCSelectPickup_IsOutPosition_Hook(void* __this, app::BaseEntity* entity, MethodInfo* method);
 
     AutoLoot::AutoLoot() : Feature(),
-        NF(f_Enabled,        "Auto loot",          "AutoLoot", false),
-		NF(f_OpenChest, "Open Chest", "AutoLoot", false),
-        NF(f_DelayTime,      "Delay time (in ms)", "AutoLoot", 150),
-        NF(f_UseCustomRange, "Use custom pickup range",   "AutoLoot", false),
-        NF(f_CustomRange,    "Pickup Range",       "AutoLoot", 5.0f),
+        NF(f_AutoLoot,       "Auto loot",               "AutoLoot", false),
+		NF(f_OpenChest,      "Open Chest",              "AutoLoot", false),
+        NF(f_DelayTime,      "Delay time (in ms)",      "AutoLoot", 150),
+        NF(f_UseCustomRange, "Use custom pickup range", "AutoLoot", false),
+        NF(f_CustomRange,    "Pickup Range",            "AutoLoot", 5.0f),
 		toBeLootedItems(), nextLootTime(0)
     {
 		// Auto loot
@@ -37,12 +37,13 @@ namespace cheat::feature
 
     void AutoLoot::DrawMain()
     {
-		ConfigWidget("Enabled", f_Enabled, "Loots dropped items.\n" \
+		ConfigWidget("Auto loot", f_AutoLoot, "Loots dropped items.\n" \
             "Note: Custom range and low delay times are high-risk features.\n" \
 			"Abuse will definitely merit a ban.");
 		ConfigWidget("Open Chest", f_OpenChest, "Auto Open Chest.\n" \
 			"Note: Custom range and low delay times are high-risk features.\n" \
 			"Abuse will definitely merit a ban.");
+
 		ConfigWidget("Delay Time (ms)", f_DelayTime, 1, 0, 1000, "Delay (in ms) beetwen looting items.\n" \
             "Values under 200ms are unsafe.");
 		ConfigWidget("Use Custom Pickup Range", f_UseCustomRange, "Enable custom pickup range.\n" \
@@ -52,7 +53,7 @@ namespace cheat::feature
 
     bool AutoLoot::NeedStatusDraw() const
 {
-        return f_Enabled;
+        return f_AutoLoot;
     }
 
     void AutoLoot::DrawStatus() 
@@ -63,7 +64,6 @@ namespace cheat::feature
 
 		if (f_OpenChest)
 			ImGui::Text("Auto Open Chest");
-
     }
 
     AutoLoot& AutoLoot::GetInstance()
@@ -74,7 +74,7 @@ namespace cheat::feature
 
 	bool AutoLoot::OnCreateButton(app::BaseEntity* entity)
 	{
-		if (!f_Enabled)
+		if (!f_AutoLoot)
 			return false;
 
 		auto itemModule = GET_SINGLETON(ItemModule);
@@ -103,13 +103,14 @@ namespace cheat::feature
 			return;
 
 		// RyujinZX#6666
-		if (f_OpenChest) {
+		if (f_OpenChest) 
+		{
 			auto& manager = game::EntityManager::instance();
-			for (auto& entity : manager.entities(game::filters::combined::Chests)) {
-				if (f_UseCustomRange) {
-					if (manager.avatar()->distance(entity) >= f_CustomRange)
-						continue;
-				}
+			for (auto& entity : manager.entities(game::filters::combined::Chests)) 
+			{
+				float range = f_UseCustomRange ? f_CustomRange : 3.5f;
+				if (manager.avatar()->distance(entity) >= range)
+					continue;
 
 				auto chest = reinterpret_cast<game::Chest*>(entity);
 
@@ -140,7 +141,7 @@ namespace cheat::feature
 
 	void AutoLoot::OnCheckIsInPosition(bool& result, app::BaseEntity* entity)
 	{
-		if (f_Enabled && f_UseCustomRange)
+		if (f_AutoLoot && f_UseCustomRange)
 		{
 			auto& manager = game::EntityManager::instance();
 			result = manager.avatar()->distance(entity) < f_CustomRange;
