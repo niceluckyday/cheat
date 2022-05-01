@@ -10125,13 +10125,13 @@ namespace app {
 		struct RectTransform* _grpMiniBackRotate;
 		struct Image* _imgMiniBack;
 		float _areaMinDistance;
-		struct Queue_1_MoleMole_MonoMapMark_* LMMANOILMOH;
-		struct MonoMapMark* EBLFANFFMGM;
+		struct Queue_1_MoleMole_MonoMapMark_* _unusedMarkPool;
+		struct MonoMapMark* _markPrefab;
 		struct RectTransform* _hazardousArea;
-		float KJNIFJIIJBC;
-		float HOODCADEJHE;
-		bool CODJAKHFFLB;
-		struct IGKEDHHIDMA* DLJNLLBFMCP;
+        float _warningCooldown;
+        float _warningTime;
+        bool _isWarning;
+		struct InLevelMainPageContext* context;
 	};
 
 	struct MonoMiniMap {

@@ -193,6 +193,7 @@ DO_APP_FUNC(0x01C6A530, bool, UIManager_1_HasEnableMapCamera, (UIManager_1* __th
 DO_APP_FUNC(0x03D64A80, void, MonoMiniMap_Update, (MonoMiniMap* __this, MethodInfo* method));
 DO_APP_FUNC(0x03992EB0, MonoMiniMap*, MonoInLevelMainPage_get_miniMap, (void* __this, MethodInfo* method));
 DO_APP_FUNC(0x02702190, void, GadgetModule_OnGadgetInteractRsp, (void* __this, GadgetInteractRsp* notify, MethodInfo* method));
+DO_APP_FUNC(0x010A60C0, float, InLevelMainPageContext_get_miniMapScale, (InLevelMainPageContext* __this, MethodInfo* method));
 
 // UnityEngine
 DO_APP_FUNC(0x073C1A30, void, RenderSettings_set_fog, (void* __this, bool value, MethodInfo* method));

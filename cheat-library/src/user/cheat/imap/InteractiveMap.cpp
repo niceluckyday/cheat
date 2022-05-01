@@ -797,6 +797,8 @@ namespace cheat::feature
 
 		point->fixed = false;
 		point->originPosition = {};
+
+		return false;
 	}
 
 	void InteractiveMap::LoadUserData(const nlohmann::json& data, LoadElementFunc func)
@@ -1508,6 +1510,14 @@ namespace cheat::feature
 		return _miniMapCircle;
 	}
 
+	static float GetMinimapScale()
+	{
+		if (_monoMiniMap == nullptr || _monoMiniMap->fields.context == nullptr)
+			return 1.0f;
+
+		return app::InLevelMainPageContext_get_miniMapScale(_monoMiniMap->fields.context, nullptr);
+	}
+
 	static float GetMinimapRotation()
 	{
 		if (_monoMiniMap == nullptr)
@@ -1543,7 +1553,7 @@ namespace cheat::feature
 
 		ImCircle minimapCircle = GetMinimapCircle();
 		auto avatarLevelPos = game::EntityManager::instance().avatar()->levelPosition();
-		auto scale = minimapCircle.radius / minimapAreaLevelRadius;
+		auto scale = minimapCircle.radius * GetMinimapScale() / minimapAreaLevelRadius;
 		
 		auto iconRadius = f_MinimapIconSize / 2;
 
