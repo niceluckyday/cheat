@@ -1224,6 +1224,10 @@ namespace cheat::feature
 		APPLY_SCENE_OFFSETS(5,
 			"RuinHunter", -54.4f, -53.7f,
 			"RuinGrader", 428.9f, 505.0f);
+
+		APPLY_SCENE_OFFSETS(6,
+			"Medaka", -649.27f, 776.9f,
+			"SweetFlowerMedaka", -720.16f, 513.55f);
 #undef APPLY_SCENE_OFFSETS
 
 	}
