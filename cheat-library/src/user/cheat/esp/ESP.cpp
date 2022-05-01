@@ -31,7 +31,7 @@ namespace cheat::feature
 
 		NF(f_FontSize, "Font Size", "ESP", 12.0f),
 		NF(f_FontColor, "Font Color", "ESP", ImColor(255, 255, 255)),
-		NF(f_ApplyGlobalColor, "Apply Global Font Colors", "ESP", false),
+		NF(f_ApplyGlobalColor, "Apply Global Colors", "ESP", false),
 
 		NF(f_BoxColor, "Box Color", "ESP", ImColor(255, 255, 255)),
 		NF(f_LineColor, "Line Color", "ESP", ImColor(255, 255, 255)),

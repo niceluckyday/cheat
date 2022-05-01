@@ -440,42 +440,21 @@ namespace cheat::feature::esp::render
 		switch (esp.f_DrawBoxMode.value())
 		{
 		case ESP::DrawMode::Box:
-		{
-			ImColor boxColor = color;
-			if (esp.f_ApplyGlobalColor)
-				boxColor = esp.f_BoxColor;
-			rect = DrawBox(entity, boxColor);
-
+			rect = DrawBox(entity, esp.f_ApplyGlobalColor ? esp.f_BoxColor : color);
 			break;
-		}
 		case ESP::DrawMode::Rectangle:
-		{
-			ImColor boxColor = color;
-			if (esp.f_ApplyGlobalColor)
-				boxColor = esp.f_RectColor;
-			rect = DrawRect(entity, boxColor);
+			rect = DrawRect(entity, esp.f_ApplyGlobalColor ? esp.f_RectColor : color);
 			break;
-		}
 		default:
 			rect = {};
 			break;
 		}
 
 		if (esp.f_DrawLine)
-		{
-			ImColor lineColor = color;
-			if (esp.f_ApplyGlobalColor)
-				lineColor = esp.f_LineColor;
-			DrawLine(entity, lineColor);
-		}
+			DrawLine(entity, esp.f_ApplyGlobalColor ? esp.f_LineColor : color);
 
 		if (esp.f_DrawName)
-		{
-			ImColor nameColor = color;
-			if (esp.f_ApplyGlobalColor)
-				nameColor = esp.f_FontColor;
-			DrawName(rect, entity, name, nameColor);
-		}
+			DrawName(rect, entity, name, esp.f_ApplyGlobalColor ? esp.f_FontColor : color);
 
 		return HasCenter(rect);
 		SAFE_ERROR();
@@ -492,4 +471,4 @@ namespace cheat::feature::esp::render
 		if (esp.f_DrawLine)
 			UpdateAvatarPosition();
 	}
-		}
+}
