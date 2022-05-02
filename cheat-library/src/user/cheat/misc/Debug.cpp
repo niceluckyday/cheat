@@ -281,48 +281,78 @@ namespace cheat::feature
             ImGui::SetTooltip("Copy Details");
     }
 
+    std::vector<game::Entity*> SortEntities(std::vector<game::Entity*> entities, Debug::EntitySortCondition condition)
+    {
+        switch (condition) {
+        case Debug::EntitySortCondition::RuntimeID: {
+            std::sort(entities.begin(),
+                entities.end(),
+                [](game::Entity* e1, game::Entity* e2) {
+                    auto s1 = e1->runtimeID();
+                    auto s2 = e2->runtimeID();
+                    return s1 < s2;
+                });
+            break;
+        }
+        case Debug::EntitySortCondition::Name: {
+            std::sort(entities.begin(),
+                entities.end(),
+                [](game::Entity* e1, game::Entity* e2) {
+                    auto s1 = e1->name().c_str();
+                    auto s2 = e2->name().c_str();
+                    return s1 < s2;
+                });
+            break;
+        }
+        case Debug::EntitySortCondition::Distance: {
+            std::sort(entities.begin(),
+                entities.end(),
+                [](game::Entity* e1, game::Entity* e2) {
+                    auto& manager = game::EntityManager::instance();
+                    return manager.avatar()->distance(e1) < manager.avatar()->distance(e2);
+                });
+            break;
+        }
+        default:
+            break;
+        }
+        return entities;
+    }
+
     void TeleportByCondition(std::vector<game::Entity*> entities, Debug::TeleportCondition condition)
     {
         auto& manager = game::EntityManager::instance();
         auto& mapTeleport = MapTeleport::GetInstance();
 
+        // Opted for this instead of min_/max_element to guarantee no voodoo magic happens.
+        // We'll go for min_/max_element later on if we want to implement weird sorts like
+        // lowest HP/highest HP/etc. Even then, that will be in SortEntities, not here.
+        // Like so: SortEntities(entities, Debug::EntitySortCondition::Health);
+        auto sortedEntities = SortEntities(entities, Debug::EntitySortCondition::Distance);
+        // Always have a default target!
+        auto target = sortedEntities.front();
+
+        // Keeping this as a switch statement instead of ternary. We don't know yet how
+        // many cases we want to keep supporting. Ternary is cleaner, but not a big
+        // performance hit if we keep a switch statement.
         switch (condition) {
-        case Debug::TeleportCondition::Closest: {
-            cheat::game::Entity* closest = nullptr;
-            float closestDist = FLT_MAX;
-            for (const auto& entity : entities)
-            {
-                auto dist = manager.avatar()->distance(entity);
-                if (dist < closestDist)
-                {
-                    closestDist = dist;
-                    closest = entity;
-                }
+            case Debug::TeleportCondition::Closest: {
+                // We've already selected this.
+                break;
             }
-            if (closest != nullptr)
-            {
-                if (closestDist > 30.0f)
-                    mapTeleport.TeleportTo(closest->absolutePosition());
-                else manager.avatar()->setRelativePosition(closest->relativePosition());
+            case Debug::TeleportCondition::Farthest: {
+                target = sortedEntities.back();
+                break;
             }
-            break;
         }
-        case Debug::TeleportCondition::Farthest: {
-            cheat::game::Entity* farthest = nullptr;
-            float farthestDist = 0.0f;
-            for (const auto& entity : entities)
-            {
-                auto dist = manager.avatar()->distance(entity);
-                if (dist > farthestDist)
-                {
-                    farthestDist = dist;
-                    farthest = entity;
-                }
-            }
-            if (farthest != nullptr)
-                mapTeleport.TeleportTo(farthest->absolutePosition());
-            break;
-        }
+        
+        // Separating this logic to keep it clean and consistent.
+        if (target != nullptr)
+        {
+            auto targetDist = manager.avatar()->distance(target);
+            if (targetDist > 30.0f)
+                mapTeleport.TeleportTo(target->absolutePosition());
+            else manager.avatar()->setRelativePosition(target->relativePosition());
         }
     }
 
@@ -383,44 +413,6 @@ namespace cheat::feature
             if (ImGui::IsItemHovered())
                 ImGui::SetTooltip("Includes headers when copying.");
         }
-    }
-
-    std::vector<game::Entity*> SortEntities(std::vector<game::Entity*> entities, Debug::EntitySortCondition condition)
-    {
-        switch (condition) {
-        case Debug::EntitySortCondition::RuntimeID: {
-                std::sort(entities.begin(),
-                    entities.end(),
-                    [](game::Entity* e1, game::Entity* e2) {
-                        auto s1 = e1->runtimeID();
-                        auto s2 = e2->runtimeID();
-                        return s1 < s2;
-                    });
-                break;
-            }
-        case Debug::EntitySortCondition::Name: {
-                std::sort(entities.begin(),
-                    entities.end(),
-                    [](game::Entity* e1, game::Entity* e2) {
-                        auto s1 = fmt::format("%s", e1->name().c_str());
-                        auto s2 = fmt::format("%s", e2->name().c_str());
-                        return s1 < s2;
-                    });
-                break;
-            }
-        case Debug::EntitySortCondition::Distance: {
-                std::sort(entities.begin(),
-                    entities.end(),
-                    [](game::Entity* e1, game::Entity* e2) {
-                        auto& manager = game::EntityManager::instance();
-                        return manager.avatar()->distance(e1) < manager.avatar()->distance(e2);
-                    });
-                break;
-            }
-            default:
-                break;
-        }
-        return entities;
     }
 
     void DrawEntitiesTable(std::vector<game::Entity*> entities)
@@ -586,27 +578,7 @@ namespace cheat::feature
             ImGui::Checkbox("Show Only Oculi", &checkOnlyShells);
             ImGui::SameLine();
 
-            // Combobox: Sorting logic.
-            static ImGuiComboFlags flags = 0;
-            const char* sortChoices[] = { "RuntimeID", "Name", "Distance" };
-            static int sortChoice_idx = 2;
-            const char* sortChoice_preview = sortChoices[sortChoice_idx];
-            ImGui::PushItemWidth(200);
-            if (ImGui::BeginCombo("Sort Mode", sortChoice_preview, flags))
-            {
-                for (int n = 0; n < IM_ARRAYSIZE(sortChoices); n++)
-                {
-                    const bool is_selected = (sortChoice_idx == n);
-                    if (ImGui::Selectable(sortChoices[n], is_selected)) {
-                        sortChoice_idx = n;
-                        sortCondition = Debug::EntitySortCondition(n);
-                    }
-                    if (is_selected)
-                        ImGui::SetItemDefaultFocus();
-                }
-                ImGui::EndCombo();
-            }
-            ImGui::PopItemWidth();
+            bool sortConditionChanged = ComboEnum("Sort Mode", &sortCondition);
 
             if (entities.size() > 0) {
                 if (groupByType) {
