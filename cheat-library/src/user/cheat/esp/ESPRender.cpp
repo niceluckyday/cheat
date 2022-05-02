@@ -16,19 +16,9 @@ namespace cheat::feature::esp::render
 	static ImVec2 s_ScreenResolution = ImVec2(0, 0);
 	static ImVec2 s_AvatarPosition = ImVec2(0, 0);
 
-// Adding delaying helps to improve performance
-#define UPDATE_DELAY_VAR(delay) static ULONGLONG s_LastUpdate = 0;\
-                            ULONGLONG currentTime = GetTickCount();\
-                            if (s_LastUpdate + delay > currentTime)\
-                                return;\
-                            s_LastUpdate = currentTime;
-#define PI 3.14159265358979323846
-
-
-
 	static void UpdateMainCamera()
 	{
-		UPDATE_DELAY_VAR(1000);
+		UPDATE_DELAY(1000);
 
 		s_Camera = nullptr;
 
@@ -48,7 +38,7 @@ namespace cheat::feature::esp::render
 
 	static void UpdateResolutionScale()
 	{
-		UPDATE_DELAY_VAR(1000);
+		UPDATE_DELAY(1000);
 
 		SAFE_BEGIN();
 		s_ResolutionScale = { 0, 0 };
@@ -397,23 +387,7 @@ namespace cheat::feature::esp::render
 		draw->AddLine(s_AvatarPosition, *screenPos, color);
 	}
 
-	static void DrawDots(game::Entity* entity, const ImColor& color)
-	{
-		auto& manager = game::EntityManager::instance();
-		auto screenPos = GetEntityScreenPos(entity);
-		if (!screenPos)
-			return;
-		auto& esp = ESP::GetInstance();
-		auto dist  = manager.avatar()->distance(entity);
-		auto numDots = static_cast<int>(dist / 10.0f);
-
-		auto draw = ImGui::GetBackgroundDrawList();
-		for (int i = 0; i < numDots; i++)
-		{
-			auto dotPos = ImVec2(screenPos->x + esp.f_OffsetX, screenPos->y + esp.f_OffsetY);
-			draw->AddCircleFilled(dotPos, esp.f_TracerSize, color);
-		}
-	}
+#define PI 3.14159265358979323846
 
 	static void DrawOffscreenArrows(game::Entity* entity, const ImColor& color)
 	{
@@ -442,14 +416,14 @@ namespace cheat::feature::esp::render
 
 		for (auto& point : points)
 		{
-			auto x = point.x * esp.f_TracerSize;
+			auto x = point.x * esp.f_TracerSize ;
 			auto y = point.y * esp.f_TracerSize;
 
 			point.x = arrow_center.x + x * cosf(angle) - y * sinf(angle);
 			point.y = arrow_center.y + x * sinf(angle) + y * cosf(angle);
 		}
 
-		// Draw the triangle
+		
 		auto draw = ImGui::GetBackgroundDrawList();
 
 		float alpha = 1.0f;
@@ -465,12 +439,8 @@ namespace cheat::feature::esp::render
 		}
 		auto arrowColor = color;
 		arrowColor.Value.w = std::min(alpha, 1.0f);
-		
-		for (auto& point : points)
-		{
-			point.x *= esp.f_OffsetX;
-			point.y *= esp.f_OffsetY;
-		}
+
+		// Draw the arrow
 		draw->AddTriangleFilled(points[0], points[1], points[3], arrowColor);
 		draw->AddTriangleFilled(points[2], points[1], points[3], arrowColor);
 		// draw->AddQuad(points[0], points[1], points[2], points[3], ImColor(0.0f, 0.0f, 0.0f, alpha), 0.6f);
@@ -540,9 +510,6 @@ namespace cheat::feature::esp::render
 				break;
 			case ESP::DrawTracerMode::OffscreenArrows:
 				DrawOffscreenArrows(entity, color);
-				break;
-			case ESP::DrawTracerMode::Dots:
-				DrawDots(entity, color);
 				break;
 			default:
 				break;

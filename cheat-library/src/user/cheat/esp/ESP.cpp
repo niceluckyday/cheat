@@ -30,8 +30,6 @@ namespace cheat::feature
 		NF(f_ArrowRadius, "Arrow Radius", "ESP", 100.0f),
 		NF(f_OutlineThickness, "Outline Thickness", "ESP", 1.0f),
 		NF(f_TracerSize, "Tracer Size", "ESP", 1.0f),
-		NF(f_OffsetX, "Offset X", "ESP", 1.0f),
-		NF(f_OffsetY, "Offset Y", "ESP", 1.0f),
         NF(f_DrawDistance, "Draw Distance", "ESP", false),
         NF(f_DrawName, "Draw Name", "ESP", false),
 
@@ -66,20 +64,22 @@ namespace cheat::feature
 		ConfigWidget(f_FillTransparency, 0.01f, 0.0f, 1.0f, "Transparency of filled part.");
 
         ImGui::Spacing();
-        ConfigWidget(f_DrawTracers,     "Show line from character to object on screen.");
         ConfigWidget(f_DrawName,     "Draw name of object.");
         ConfigWidget(f_DrawDistance, "Draw distance of object.");
-		BeginGroupPanel("Line", ImVec2(-1, 0));
+
+		if (f_DrawTracerMode.value() == DrawTracerMode::OffscreenArrows &&
+			BeginGroupPanel("Arrow tracer options", ImVec2(-1, 0), true))
+		{
+			ConfigWidget(f_TracerSize, 0.005f, 0.1f, 10.0f, "Size of tracer.");
 			ConfigWidget(f_ArrowRadius, 0.5f, 50.0f, 300.0f, "Radius of arrow.");
-			ConfigWidget(f_TracerSize, 0.02f, 0.1f, 10.0f, "Size of tracer.");
-			ConfigWidget(f_OutlineThickness, 0.0f, 0.0f, 10.0f, "Outline thickness of tracer.");
-			ConfigWidget(f_OffsetX, 0.0f, -10.0f, 10.0f, "X Offset of Tracers.");
-			ConfigWidget(f_OffsetY, 0.0f, -10.0f, 10.0f, "Y Offset of Tracers.");
-		EndGroupPanel();
+			ConfigWidget(f_OutlineThickness, 0.005f, 0.0f, 10.0f, "Outline thickness of arrow.");
+			
+			EndGroupPanel();
+		}
 
 		ImGui::Spacing();
         ConfigWidget(f_FontSize, 0.05f, 1.0f, 100.0f, "Font size of name or distance.");
-        ConfigWidget(f_FontColor, "Color of line, name, or distance text font.");
+        ConfigWidget(f_FontColor, "Color of name, or distance text font.");
 		ConfigWidget(f_ApplyGlobalFontColor, "Override all color settings with above font color setting.\n" \
 			"Turn off to revert to custom settings.");
 

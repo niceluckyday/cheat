@@ -21,8 +21,8 @@ namespace cheat::feature
 
 		enum class DrawTracerMode
 		{
+			None,
 			Line,
-			Dots,
 			OffscreenArrows
 		};
 
@@ -38,8 +38,6 @@ namespace cheat::feature
 		config::Field<float> f_ArrowRadius;
 		config::Field<float> f_OutlineThickness;
 		config::Field<float> f_TracerSize;
-		config::Field<float> f_OffsetX;
-		config::Field<float> f_OffsetY;
 
 		config::Field<float> f_FontSize;
 		config::Field<ImColor> f_FontColor;
