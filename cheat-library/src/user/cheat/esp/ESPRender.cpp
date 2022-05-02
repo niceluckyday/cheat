@@ -11,7 +11,6 @@
 
 
 #include <sys/timeb.h>
-
 #include "ESP.h"
 
 namespace cheat::feature::esp::render
@@ -391,6 +390,66 @@ namespace cheat::feature::esp::render
 		auto draw = ImGui::GetBackgroundDrawList();
 		draw->AddLine(s_AvatarPosition, *screenPos, color);
 	}
+  
+#define PI 3.14159265358979323846
+
+	static void DrawOffscreenArrows(game::Entity* entity, const ImColor& color)
+	{
+		ImRect screen_rect = { 0.0f, 0.0f, ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y };
+		auto entity_pos = WorldToScreenPosScalled(entity->relativePosition());
+		if (entity_pos.z > 0 && screen_rect.Contains({ entity_pos.x, entity_pos.y }))
+			return;
+
+		auto screen_center = screen_rect.GetCenter();
+		auto angle = atan2(screen_center.y - entity_pos.y, screen_center.x - entity_pos.x);
+		angle += entity_pos.z > 0 ? PI : 0.0f;
+
+		auto& esp = ESP::GetInstance();
+		ImVec2 arrow_center {
+			screen_center.x + esp.f_ArrowRadius * cosf(angle),
+			screen_center.y + esp.f_ArrowRadius * sinf(angle)
+		};
+
+		// Triangle
+		std::array<ImVec2, 4> points {
+			ImVec2(-22.0f, -8.6f),
+			ImVec2(0.0f, 0.0f),
+			ImVec2(-22.0f, 8.6f),
+			ImVec2(-18.0f, 0.0f)
+		};
+
+		for (auto& point : points)
+		{
+			auto x = point.x * esp.f_TracerSize ;
+			auto y = point.y * esp.f_TracerSize;
+
+			point.x = arrow_center.x + x * cosf(angle) - y * sinf(angle);
+			point.y = arrow_center.y + x * sinf(angle) + y * cosf(angle);
+		}
+
+		
+		auto draw = ImGui::GetBackgroundDrawList();
+
+		float alpha = 1.0f;
+		if (entity_pos.z > 0)
+		{
+			constexpr float nearThreshold = 200.0f * 200.0f;
+			ImVec2 screen_outer_diff = {
+				entity_pos.x < 0 ? abs(entity_pos.x) : (entity_pos.x > screen_rect.Max.x ? entity_pos.x - screen_rect.Max.x : 0.0f),
+				entity_pos.y < 0 ? abs(entity_pos.y) : (entity_pos.y > screen_rect.Max.y ? entity_pos.y - screen_rect.Max.y : 0.0f),
+			};
+			auto distance = std::pow(screen_outer_diff.x, 2) + std::pow(screen_outer_diff.y, 2);
+			alpha = entity_pos.z < 0 ? 1.0f : (distance / nearThreshold);
+		}
+		auto arrowColor = color;
+		arrowColor.Value.w = std::min(alpha, 1.0f);
+
+		// Draw the arrow
+		draw->AddTriangleFilled(points[0], points[1], points[3], arrowColor);
+		draw->AddTriangleFilled(points[2], points[1], points[3], arrowColor);
+		// draw->AddQuad(points[0], points[1], points[2], points[3], ImColor(0.0f, 0.0f, 0.0f, alpha), 0.6f);
+		draw->AddQuad(points[0], points[1], points[2], points[3], ImColor(0.0f, 0.0f, 0.0f, alpha), esp.f_OutlineThickness);
+	}
 
 	static void DrawName(const Rect& boxRect, game::Entity* entity, const std::string& name, const ImColor& color, const ImColor& contrastColor)
 	{
@@ -452,8 +511,20 @@ namespace cheat::feature::esp::render
 			break;
 		}
 
-		if (esp.f_DrawLine)
-			DrawLine(entity, esp.f_GlobalLineColor ? esp.f_GlobalLineColor : color);
+		if (esp.f_DrawTracers)
+		{
+			switch (esp.f_DrawTracerMode.value())
+			{
+			case ESP::DrawTracerMode::Line:
+				DrawLine(entity, esp.f_GlobalLineColor ? esp.f_GlobalLineColor : color);
+				break;
+			case ESP::DrawTracerMode::OffscreenArrows:
+				DrawOffscreenArrows(entity, esp.f_GlobalLineColor ? esp.f_GlobalLineColor : color);
+				break;
+			default:
+				break;
+			}
+		}
 
 		if (esp.f_DrawName || esp.f_DrawDistance)
 			DrawName(rect, entity, name, esp.f_GlobalFontColor ? esp.f_GlobalFontColor : color,
@@ -471,7 +542,7 @@ namespace cheat::feature::esp::render
 		UpdateResolutionScale();
 
 		auto& esp = ESP::GetInstance();
-		if (esp.f_DrawLine)
+		if (esp.f_DrawTracers)
 			UpdateAvatarPosition();
 	}
 }

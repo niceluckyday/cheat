@@ -19,14 +19,26 @@ namespace cheat::feature
 			Box
 		};
 
+		enum class DrawTracerMode
+		{
+			None,
+			Line,
+			OffscreenArrows
+		};
+
 		config::Field<config::Toggle<Hotkey>> f_Enabled;
+    
 		config::Field<config::Enum<DrawMode>> f_DrawBoxMode;
+		config::Field<config::Enum<DrawTracerMode>> f_DrawTracerMode;
 		config::Field<bool> f_Fill;
 		config::Field<float> f_FillTransparency;
 
-		config::Field<bool> f_DrawLine;
+		config::Field<bool> f_DrawTracers;
 		config::Field<bool> f_DrawDistance;
 		config::Field<bool> f_DrawName;
+		config::Field<float> f_ArrowRadius;
+		config::Field<float> f_OutlineThickness;
+		config::Field<float> f_TracerSize;
 
 		config::Field<int> f_FontSize;
 		config::Field<bool> f_FontOutline;
