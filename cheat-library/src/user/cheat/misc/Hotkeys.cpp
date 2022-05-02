@@ -15,7 +15,7 @@ namespace cheat::feature
 
     void Hotkeys::DrawMain()
     {
-        for (auto& field : config::GetFields<config::ToggleHotkey>())
+        for (auto& field : config::GetFields<config::Toggle<Hotkey>>())
         {
             ConfigWidget(field, nullptr, true);
         }

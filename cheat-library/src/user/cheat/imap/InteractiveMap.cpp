@@ -8,6 +8,7 @@
 #include <cheat/game/filters.h>
 #include <cheat/events.h>
 #include <cheat/game/CacheFilterExecutor.h>
+#include <cheat/GenshinCM.h>
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui_internal.h"
@@ -170,8 +171,15 @@ namespace cheat::feature
 		if (m_ScenesData.count(sceneID) == 0)
 			ImGui::Text("Sorry. Current scene is not supported.");
 
-		ImGui::InputText("Search", &m_SearchText);
-
+		ImGui::InputText("Search", &m_SearchText); ImGui::SameLine();
+		HelpMarker(
+			"This page following with filters for items.\n"
+			"Items what was activated will be appear on mini/global map. (Obviously)\n"
+			"Each filter have options, you can access to it by clicking RMB on filter.\n"
+			"Filters can be marked with colored lines,\n"
+			"\tthey indicate that filter support some features. (Hover it)\n"
+			"Thats all for now. Happy using ^)"
+		);
 		if (searchFixed)
 			ImGui::BeginChild("FiltersList", ImVec2(-1, 0), false, ImGuiWindowFlags_NoBackground);
 
@@ -213,7 +221,9 @@ namespace cheat::feature
 					for (const auto& label : validLabels)
 					{
 						ImGui::TableNextColumn();
+						ImGui::PushID(label);
 						DrawFilter(*label);
+						ImGui::PopID();
 					}
 					ImGui::EndTable();
 				}
@@ -374,6 +384,26 @@ namespace cheat::feature
 
 		if (!markHovered && ImGui::IsItemHovered())
 			ShowHelpText(label.name.c_str());
+
+		// -- Filter options
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
+			ImGui::OpenPopup("Filter options");
+
+		if (ImGui::BeginPopup("Filter options", ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			if (ImGui::Button("Drop progress"))
+			{
+				for (auto& [pointID, point] : label.points)
+				{
+					if (point.completed)
+						UncompletePoint(&point);
+				}
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+		// --
 
 		IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags | ImGuiItemStatusFlags_Checkable | (*v ? ImGuiItemStatusFlags_Checked : 0));
 		return;
@@ -1223,6 +1253,10 @@ namespace cheat::feature
 		APPLY_SCENE_OFFSETS(5,
 			"RuinHunter", -54.4f, -53.7f,
 			"RuinGrader", 428.9f, 505.0f);
+
+		APPLY_SCENE_OFFSETS(6,
+			"Medaka", -649.27f, 776.9f,
+			"SweetFlowerMedaka", -720.16f, 513.55f);
 #undef APPLY_SCENE_OFFSETS
 
 	}
@@ -1312,13 +1346,29 @@ namespace cheat::feature
 		return _monoMiniMap->fields._areaMinDistance;
 	}
 
+	static void MapToggled(bool showed)
+	{
+		auto& cheatManager = GenshinCM::instance();
+		bool isCursorVisible = cheatManager.CursorGetVisibility();
+		if ((showed && !isCursorVisible) || (!showed && isCursorVisible && !cheatManager.IsMenuShowed()))
+			cheatManager.CursorSetVisibility(showed);
+	}
+
 	void InteractiveMap::DrawExternal()
 	{
 
 		if (IsMiniMapActive() && f_Enabled)
 			DrawMinimapPoints();
 
-        if (!IsMapActive())
+		static bool _lastMapActive = false;
+		bool mapActive = IsMapActive();
+
+		if (mapActive != _lastMapActive)
+			MapToggled(mapActive);
+
+		_lastMapActive = mapActive;
+
+		if (!mapActive)
             return;
 
 		auto mapManager = GET_SINGLETON(MapManager);

@@ -4,8 +4,12 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui_internal.h"
 
+#include <cheat-base/render/gui-util.h>
+#include <cheat-base/render/renderer.h>
 #include <helpers.h>
 #include <cheat/game/EntityManager.h>
+
+
 #include <sys/timeb.h>
 #include "ESP.h"
 
@@ -386,7 +390,7 @@ namespace cheat::feature::esp::render
 		auto draw = ImGui::GetBackgroundDrawList();
 		draw->AddLine(s_AvatarPosition, *screenPos, color);
 	}
-
+  
 #define PI 3.14159265358979323846
 
 	static void DrawOffscreenArrows(game::Entity* entity, const ImColor& color)
@@ -447,7 +451,7 @@ namespace cheat::feature::esp::render
 		draw->AddQuad(points[0], points[1], points[2], points[3], ImColor(0.0f, 0.0f, 0.0f, alpha), esp.f_OutlineThickness);
 	}
 
-	static void DrawName(const Rect& boxRect, game::Entity* entity, const std::string& name, const ImColor& color)
+	static void DrawName(const Rect& boxRect, game::Entity* entity, const std::string& name, const ImColor& color, const ImColor& contrastColor)
 	{
 		auto& esp = ESP::GetInstance();
 		auto& manager = game::EntityManager::instance();
@@ -478,11 +482,17 @@ namespace cheat::feature::esp::render
 			namePosition.y -= esp.f_FontSize;
 		}
 
+
 		auto draw = ImGui::GetBackgroundDrawList();
-		draw->AddText(NULL, esp.f_FontSize, namePosition, color, text.c_str());
+		auto font = renderer::GetFontBySize(esp.f_FontSize);
+		// Outline
+		if (esp.f_FontOutline)
+			DrawTextWithOutline(draw, font, esp.f_FontSize, namePosition, text.c_str(), color, esp.f_FontOutlineSize, OutlineSide::All, contrastColor);
+		else
+			draw->AddText(font, esp.f_FontSize, namePosition, color, text.c_str());
 	}
 
-	bool DrawEntity(const std::string& name, game::Entity* entity, const ImColor& color)
+	bool DrawEntity(const std::string& name, game::Entity* entity, const ImColor& color, const ImColor& contrastColor)
 	{
 		SAFE_BEGIN();
 		auto& esp = ESP::GetInstance();
@@ -491,10 +501,10 @@ namespace cheat::feature::esp::render
 		switch (esp.f_DrawBoxMode.value())
 		{
 		case ESP::DrawMode::Box:
-			rect = DrawBox(entity, color);
+			rect = DrawBox(entity, esp.f_GlobalBoxColor ? esp.f_GlobalBoxColor : color);
 			break;
 		case ESP::DrawMode::Rectangle:
-			rect = DrawRect(entity, color);
+			rect = DrawRect(entity, esp.f_GlobalRectColor ? esp.f_GlobalRectColor : color);
 			break;
 		default:
 			rect = {};
@@ -506,24 +516,19 @@ namespace cheat::feature::esp::render
 			switch (esp.f_DrawTracerMode.value())
 			{
 			case ESP::DrawTracerMode::Line:
-				DrawLine(entity, color);
+				DrawLine(entity, esp.f_GlobalLineColor ? esp.f_GlobalLineColor : color);
 				break;
 			case ESP::DrawTracerMode::OffscreenArrows:
-				DrawOffscreenArrows(entity, color);
+				DrawOffscreenArrows(entity, esp.f_GlobalLineColor ? esp.f_GlobalLineColor : color);
 				break;
 			default:
 				break;
 			}
-
 		}
 
-		if (esp.f_DrawName)
-		{
-			ImColor nameColor = color;
-			if (esp.f_ApplyGlobalFontColor)
-				nameColor = esp.f_FontColor;
-			DrawName(rect, entity, name, nameColor);
-		}
+		if (esp.f_DrawName || esp.f_DrawDistance)
+			DrawName(rect, entity, name, esp.f_GlobalFontColor ? esp.f_GlobalFontColor : color,
+				esp.m_FontContrastColor ? esp.m_FontContrastColor : contrastColor);
 
 		return HasCenter(rect);
 		SAFE_ERROR();

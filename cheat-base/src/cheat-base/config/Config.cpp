@@ -153,6 +153,8 @@ namespace config
 
 	void RemoveFieldContainer(internal::FieldEntry* field, const std::string& section, const std::string& name, bool shared)
 	{
+		field->SetContainer(nullptr);
+
 		nlohmann::json* rootContainer = s_ProfileRoot;
 		if (shared)
 			rootContainer = s_SharedRoot;
@@ -161,11 +163,16 @@ namespace config
 		std::list<std::pair<std::string, nlohmann::json*>> nodePath;
 		for (auto& part : sectionParts)
 		{
+			if (!(*rootContainer).contains(part))
+				return;
+
 			nodePath.push_front({ part, rootContainer });
 			rootContainer = &(*rootContainer)[part];
 		}
 
-		field->SetContainer(nullptr);
+		if (!rootContainer->contains(name))
+			return;
+
 		rootContainer->erase(name);
 		for (auto& [key, node] : nodePath)
 		{
