@@ -26,7 +26,6 @@ namespace cheat::feature
         NF(f_Fill, "Fill Box/Rectangle/Arrows", "ESP", false),
         NF(f_FillTransparency, "Fill Transparency", "ESP", 0.5f),
 
-		NF(f_DrawTracers, "Draw Line", "ESP", false),
 		NF(f_ArrowRadius, "Arrow Radius", "ESP", 100.0f),
 		NF(f_OutlineThickness, "Outline Thickness", "ESP", 1.0f),
 		NF(f_TracerSize, "Tracer Size", "ESP", 1.0f),
@@ -132,7 +131,7 @@ namespace cheat::feature
 			f_Range.value(),
 			f_DrawBoxMode.value() == DrawMode::Box ? "Box" : f_DrawBoxMode.value() == DrawMode::Rectangle ? "Rect" : "None",
 			f_Fill ? "F" : "",
-			f_DrawTracers ? "L" : "",
+			f_DrawTracerMode.value() == DrawTracerMode::Line ? "L" : f_DrawTracerMode.value() == DrawTracerMode::OffscreenArrows ? "A" : "",
 			f_DrawName ? "N" : "",
 			f_DrawDistance ? "D" : ""
 		);

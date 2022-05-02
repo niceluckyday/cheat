@@ -33,7 +33,6 @@ namespace cheat::feature
 		config::Field<bool> f_Fill;
 		config::Field<float> f_FillTransparency;
 
-		config::Field<bool> f_DrawTracers;
 		config::Field<bool> f_DrawDistance;
 		config::Field<bool> f_DrawName;
 		config::Field<float> f_ArrowRadius;

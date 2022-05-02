@@ -511,19 +511,16 @@ namespace cheat::feature::esp::render
 			break;
 		}
 
-		if (esp.f_DrawTracers)
+		switch (esp.f_DrawTracerMode.value())
 		{
-			switch (esp.f_DrawTracerMode.value())
-			{
-			case ESP::DrawTracerMode::Line:
-				DrawLine(entity, esp.f_GlobalLineColor ? esp.f_GlobalLineColor : color);
-				break;
-			case ESP::DrawTracerMode::OffscreenArrows:
-				DrawOffscreenArrows(entity, esp.f_GlobalLineColor ? esp.f_GlobalLineColor : color);
-				break;
-			default:
-				break;
-			}
+		case ESP::DrawTracerMode::Line:
+			DrawLine(entity, esp.f_GlobalLineColor ? esp.f_GlobalLineColor : color);
+			break;
+		case ESP::DrawTracerMode::OffscreenArrows:
+			DrawOffscreenArrows(entity, esp.f_GlobalLineColor ? esp.f_GlobalLineColor : color);
+			break;
+		default:
+			break;
 		}
 
 		if (esp.f_DrawName || esp.f_DrawDistance)
@@ -542,7 +539,7 @@ namespace cheat::feature::esp::render
 		UpdateResolutionScale();
 
 		auto& esp = ESP::GetInstance();
-		if (esp.f_DrawTracers)
+		if (esp.f_DrawTracerMode.value() != ESP::DrawTracerMode::None)
 			UpdateAvatarPosition();
 	}
 }
