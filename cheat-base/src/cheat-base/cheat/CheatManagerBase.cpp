@@ -97,9 +97,6 @@ namespace cheat
 		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
 		ImGui::BeginChild("ChildR", ImVec2(0, 0), true, window_flags);
 
-		ImGui::Text(current->c_str());
-		ImGui::Separator();
-
 		auto& sections = m_FeatureMap[*current];
 		auto emptyName = std::string();
 		if (sections.count(emptyName) > 0)
