@@ -22,6 +22,8 @@ namespace cheat::feature::esp::render
                             if (s_LastUpdate + delay > currentTime)\
                                 return;\
                             s_LastUpdate = currentTime;
+#define PI 3.14159265358979323846
+
 
 
 	static void UpdateMainCamera()
@@ -395,35 +397,84 @@ namespace cheat::feature::esp::render
 		draw->AddLine(s_AvatarPosition, *screenPos, color);
 	}
 
-	auto PI = 3.14159265358979323846f;
-    static void DrawOffscreenArrows(game::Entity* entity, const ImColor& color)
-	{
-		auto screen_center_x = ImGui::GetIO().DisplaySize.x / 2;
-		auto screen_center_y = ImGui::GetIO().DisplaySize.y / 2;
-		auto entity_pos = WorldToScreenPosScalled(entity->relativePosition());
-		app::Vector3 angle = {};
-		angle.x = atan2(screen_center_y - entity_pos.y, screen_center_x - entity_pos.x);
-		auto angle_yaw_rad = angle.x + (entity_pos.z > 0 ? PI : 0.0f);
-		auto new_point_x = screen_center_x + 100.0f * cosf(angle_yaw_rad);
-		auto new_point_y = screen_center_y + 100.0f * sinf(angle_yaw_rad);
-		std::array<ImVec2, 3> points{ImVec2(-10.0f, -10.0f),
-									 ImVec2(25.0f, 0.0f),
-									 ImVec2(-10.0f, 10.0f)};
-		for (auto &point : points)
-		{
-			auto x = point.x;
-			auto y = point.y;
-			point.x = new_point_x + x * cosf(angle_yaw_rad) - y * sinf(angle_yaw_rad);
-			point.y = new_point_y + x * sinf(angle_yaw_rad) + y * cosf(angle_yaw_rad);
-		}
-		// Draw the triangle
-		auto draw = ImGui::GetBackgroundDrawList();
-		draw->AddTriangleFilled(points[0], points[1], points[2], color);
-	}
-
 	static void DrawDots(game::Entity* entity, const ImColor& color)
 	{
+		auto& manager = game::EntityManager::instance();
+		auto screenPos = GetEntityScreenPos(entity);
+		if (!screenPos)
+			return;
+		auto& esp = ESP::GetInstance();
+		auto dist  = manager.avatar()->distance(entity);
+		auto numDots = static_cast<int>(dist / 10.0f);
+
+		auto draw = ImGui::GetBackgroundDrawList();
+		for (int i = 0; i < numDots; i++)
+		{
+			auto dotPos = ImVec2(screenPos->x + esp.f_OffsetX, screenPos->y + esp.f_OffsetY);
+			draw->AddCircleFilled(dotPos, esp.f_TracerSize, color);
+		}
+	}
+
+	static void DrawOffscreenArrows(game::Entity* entity, const ImColor& color)
+	{
+		ImRect screen_rect = { 0.0f, 0.0f, ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y };
+		auto entity_pos = WorldToScreenPosScalled(entity->relativePosition());
+		if (entity_pos.z > 0 && screen_rect.Contains({ entity_pos.x, entity_pos.y }))
+			return;
+
+		auto screen_center = screen_rect.GetCenter();
+		auto angle = atan2(screen_center.y - entity_pos.y, screen_center.x - entity_pos.x);
+		angle += entity_pos.z > 0 ? PI : 0.0f;
+
+		auto& esp = ESP::GetInstance();
+		ImVec2 arrow_center {
+			screen_center.x + esp.f_ArrowRadius * cosf(angle),
+			screen_center.y + esp.f_ArrowRadius * sinf(angle)
+		};
+
+		// Triangle
+		std::array<ImVec2, 4> points {
+			ImVec2(-22.0f, -8.6f),
+			ImVec2(0.0f, 0.0f),
+			ImVec2(-22.0f, 8.6f),
+			ImVec2(-18.0f, 0.0f)
+		};
+
+		for (auto& point : points)
+		{
+			auto x = point.x * esp.f_TracerSize;
+			auto y = point.y * esp.f_TracerSize;
+
+			point.x = arrow_center.x + x * cosf(angle) - y * sinf(angle);
+			point.y = arrow_center.y + x * sinf(angle) + y * cosf(angle);
+		}
+
+		// Draw the triangle
+		auto draw = ImGui::GetBackgroundDrawList();
+
+		float alpha = 1.0f;
+		if (entity_pos.z > 0)
+		{
+			constexpr float nearThreshold = 200.0f * 200.0f;
+			ImVec2 screen_outer_diff = {
+				entity_pos.x < 0 ? abs(entity_pos.x) : (entity_pos.x > screen_rect.Max.x ? entity_pos.x - screen_rect.Max.x : 0.0f),
+				entity_pos.y < 0 ? abs(entity_pos.y) : (entity_pos.y > screen_rect.Max.y ? entity_pos.y - screen_rect.Max.y : 0.0f),
+			};
+			auto distance = std::pow(screen_outer_diff.x, 2) + std::pow(screen_outer_diff.y, 2);
+			alpha = entity_pos.z < 0 ? 1.0f : (distance / nearThreshold);
+		}
+		auto arrowColor = color;
+		arrowColor.Value.w = std::min(alpha, 1.0f);
 		
+		for (auto& point : points)
+		{
+			point.x *= esp.f_OffsetX;
+			point.y *= esp.f_OffsetY;
+		}
+		draw->AddTriangleFilled(points[0], points[1], points[3], arrowColor);
+		draw->AddTriangleFilled(points[2], points[1], points[3], arrowColor);
+		// draw->AddQuad(points[0], points[1], points[2], points[3], ImColor(0.0f, 0.0f, 0.0f, alpha), 0.6f);
+		draw->AddQuad(points[0], points[1], points[2], points[3], ImColor(0.0f, 0.0f, 0.0f, alpha), esp.f_OutlineThickness);
 	}
 
 	static void DrawName(const Rect& boxRect, game::Entity* entity, const std::string& name, const ImColor& color)

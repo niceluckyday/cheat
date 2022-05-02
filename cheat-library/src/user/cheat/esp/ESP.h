@@ -35,6 +35,11 @@ namespace cheat::feature
 		config::Field<bool> f_DrawTracers;
 		config::Field<bool> f_DrawDistance;
 		config::Field<bool> f_DrawName;
+		config::Field<float> f_ArrowRadius;
+		config::Field<float> f_OutlineThickness;
+		config::Field<float> f_TracerSize;
+		config::Field<float> f_OffsetX;
+		config::Field<float> f_OffsetY;
 
 		config::Field<float> f_FontSize;
 		config::Field<ImColor> f_FontColor;

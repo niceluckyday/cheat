@@ -27,6 +27,11 @@ namespace cheat::feature
         NF(f_FillTransparency, "Fill Transparency", "ESP", 0.5f),
 
 		NF(f_DrawTracers, "Draw Line", "ESP", false),
+		NF(f_ArrowRadius, "Arrow Radius", "ESP", 100.0f),
+		NF(f_OutlineThickness, "Outline Thickness", "ESP", 1.0f),
+		NF(f_TracerSize, "Tracer Size", "ESP", 1.0f),
+		NF(f_OffsetX, "Offset X", "ESP", 1.0f),
+		NF(f_OffsetY, "Offset Y", "ESP", 1.0f),
         NF(f_DrawDistance, "Draw Distance", "ESP", false),
         NF(f_DrawName, "Draw Name", "ESP", false),
 
@@ -64,6 +69,13 @@ namespace cheat::feature
         ConfigWidget(f_DrawTracers,     "Show line from character to object on screen.");
         ConfigWidget(f_DrawName,     "Draw name of object.");
         ConfigWidget(f_DrawDistance, "Draw distance of object.");
+		BeginGroupPanel("Line", ImVec2(-1, 0));
+			ConfigWidget(f_ArrowRadius, 0.5f, 50.0f, 300.0f, "Radius of arrow.");
+			ConfigWidget(f_TracerSize, 0.02f, 0.1f, 10.0f, "Size of tracer.");
+			ConfigWidget(f_OutlineThickness, 0.0f, 0.0f, 10.0f, "Outline thickness of tracer.");
+			ConfigWidget(f_OffsetX, 0.0f, -10.0f, 10.0f, "X Offset of Tracers.");
+			ConfigWidget(f_OffsetY, 0.0f, -10.0f, 10.0f, "Y Offset of Tracers.");
+		EndGroupPanel();
 
 		ImGui::Spacing();
         ConfigWidget(f_FontSize, 0.05f, 1.0f, 100.0f, "Font size of name or distance.");
