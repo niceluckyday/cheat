@@ -85,7 +85,7 @@ namespace cheat::feature
 
     void NoCD::DrawStatus() 
     {
-		ImGui::Text("NoCD [%s%s%s%s%s%s%s]",
+		ImGui::Text("NoCD [%s%s%s%s%s]",
 			f_AbilityReduce ? "Reduce" : "",
 			f_AbilityReduce && (f_InstantBow || f_Sprint) ? "|" : "",
 			f_InstantBow ? "Bow" : "",
