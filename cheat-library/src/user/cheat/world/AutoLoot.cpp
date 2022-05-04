@@ -37,18 +37,18 @@ namespace cheat::feature
 
     void AutoLoot::DrawMain()
     {
-		ConfigWidget("Auto loot", f_AutoLoot, "Loots dropped items.\n" \
+		ConfigWidget("Auto-pickup Drops", f_AutoLoot, "Automatically picks up dropped items.\n" \
             "Note: Custom range and low delay times are high-risk features.\n" \
 			"Abuse will definitely merit a ban.");
-		ConfigWidget("Open Chest", f_OpenChest, "Auto Open Chest.\n" \
+		ConfigWidget("Auto-open Chest", f_OpenChest, "Automatically opens chests.\n" \
 			"Note: Custom range and low delay times are high-risk features.\n" \
 			"Abuse will definitely merit a ban.");
 
-		ConfigWidget("Delay Time (ms)", f_DelayTime, 1, 0, 1000, "Delay (in ms) beetwen looting items.\n" \
+		ConfigWidget("Delay Time (ms)", f_DelayTime, 1, 0, 1000, "Delay (in ms) between loot/open actions.\n" \
             "Values under 200ms are unsafe.");
 		ConfigWidget("Use Custom Pickup Range", f_UseCustomRange, "Enable custom pickup range.\n" \
-            "Using this feature is not recommended, as it is easily detected by the server.");
-		ConfigWidget("Range (m)", f_CustomRange, 0.1f, 0.5f, 60.0f, "Modifies pickup range to this value (in meters).");
+            "High values are not recommended, as it is easily detected by the server.");
+		ConfigWidget("Range (m)", f_CustomRange, 0.1f, 0.5f, 60.0f, "Modifies pickup/open range to this value (in meters).");
     }
 
     bool AutoLoot::NeedStatusDraw() const
@@ -60,7 +60,7 @@ namespace cheat::feature
     {
 		ImGui::Text("Auto Loot [%dms%s]",
 			f_DelayTime.value(),
-			f_UseCustomRange ? fmt::format("|{:.1f}m ", f_CustomRange.value()).c_str() : "");
+			f_UseCustomRange ? fmt::format("|{:.1f}m", f_CustomRange.value()).c_str() : "");
 
 		if (f_OpenChest)
 			ImGui::Text("Auto Open Chest");
