@@ -14,7 +14,7 @@ namespace cheat::feature
         NF(f_AutoSelectDialog,      "Auto select dialog",       "AutoTalk", true),
         NF(f_ExcludeImportant,      "Exclude Katheryne/Tubby",  "AutoTalk", true),
         NF(f_FastDialog,            "Fast dialog",              "AutoTalk", false),
-        NF(f_TimeSpeedup,           "Time Speed",        "AutoTalk", 5.0f)
+        NF(f_TimeSpeedup,           "Time Speed",               "AutoTalk", 5.0f)
     {
         HookManager::install(app::InLevelCutScenePageContext_UpdateView, InLevelCutScenePageContext_UpdateView_Hook);
         HookManager::install(app::InLevelCutScenePageContext_ClearView, InLevelCutScenePageContext_ClearView_Hook);
