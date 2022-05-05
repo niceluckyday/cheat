@@ -116,8 +116,21 @@ namespace cheat::feature
 
 			if (!f_FastExitEnable)
 				ImGui::EndDisabled();
+
+			FastExit();
 		}
 		EndGroupPanel();
+	}
+
+	void Settings::FastExit()
+	{
+		if (!f_FastExitEnable)
+			return;
+
+		if (f_HotkeyExit.value().IsPressed())
+		{
+			ExitProcess(0);
+		}
 	}
 
     Settings& Settings::GetInstance()

@@ -34,6 +34,8 @@ namespace cheat::feature
 
 		const FeatureGUIInfo& GetGUIInfo() const override;
 		void DrawMain() override;
+		void FastExit();
+
 	
 	private:
 		Settings();

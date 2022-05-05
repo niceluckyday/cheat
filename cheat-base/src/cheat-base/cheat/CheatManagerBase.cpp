@@ -401,17 +401,7 @@ namespace cheat
 		ImGui::RenderNotifications();
 	}
 
-	void CheatManagerBase::FastExit()
-	{
-		auto& settings = feature::Settings::GetInstance();
-		//if (!settings.f_FastExitEnable)
-		//	return;
-
-		if (!settings.f_HotkeyExit.value().IsPressed())
-		{
-			ExitProcess(0);
-		}
-	}
+	
 	void CheatManagerBase::OnRender()
 	{
 		auto& settings = feature::Settings::GetInstance();
@@ -429,9 +419,6 @@ namespace cheat
 
 			ImGui::End();
 		}
-
-		if (settings.f_FastExitEnable)
-			FastExit();
 
 		if (settings.f_StatusShow)
 			DrawStatus();
