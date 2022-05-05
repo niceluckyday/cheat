@@ -401,6 +401,7 @@ namespace cheat
 		ImGui::RenderNotifications();
 	}
 
+	
 	void CheatManagerBase::OnRender()
 	{
 		auto& settings = feature::Settings::GetInstance();

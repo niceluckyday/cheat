@@ -23,7 +23,10 @@ namespace cheat::feature
 		NF(f_NotificationsDelay, "Notifications Delay", "General::Notify", 500),
   
 		NF(f_FileLogging,    "File Logging",    "General::Logging", false),
-		NF(f_ConsoleLogging, "Console Logging", "General::Logging", true)
+		NF(f_ConsoleLogging, "Console Logging", "General::Logging", true),
+
+		NF(f_FastExitEnable, "Fast Exit", "General::FastExit", false),
+		NF(f_HotkeyExit, "Hotkeys", "General::FastExit", Hotkey(VK_F12))
 		
     {
 		renderer::SetGlobalFontSize(f_FontSize);
@@ -98,6 +101,36 @@ namespace cheat::feature
 			ConfigWidget(f_NotificationsDelay, 1,1,10000, "Delay in milliseconds between notifications.");
 		}
 		EndGroupPanel();
+
+		BeginGroupPanel("Fast Exit", ImVec2(-1, 0));
+		{
+			ConfigWidget("Enabled",
+				f_FastExitEnable,
+				"Enable Fast Exit.\n" 
+			);
+			if (!f_FastExitEnable)
+				ImGui::BeginDisabled();
+
+			ConfigWidget("Key", f_HotkeyExit, true,
+				"Key to exit the game.");
+
+			if (!f_FastExitEnable)
+				ImGui::EndDisabled();
+
+			FastExit();
+		}
+		EndGroupPanel();
+	}
+
+	void Settings::FastExit()
+	{
+		if (!f_FastExitEnable)
+			return;
+
+		if (f_HotkeyExit.value().IsPressed())
+		{
+			ExitProcess(0);
+		}
 	}
 
     Settings& Settings::GetInstance()
