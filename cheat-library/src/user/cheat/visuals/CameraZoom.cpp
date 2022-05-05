@@ -23,8 +23,12 @@ namespace cheat::feature
 
     void CameraZoom::DrawMain()
     {
-        ConfigWidget(f_Enabled, "Increases camera zoom.");
-        ConfigWidget(f_Zoom, 1.0f, 1.0f, 500.0f, "Zoom distance");
+        ConfigWidget("", f_Enabled); ImGui::SameLine();
+        ConfigWidget("Camera zoom", f_Zoom, 0.01f, 1.0f, 500.0f, "Custom camera zooming.\n"
+            "Specified value is multiplier for default zoom distance.\n"
+			"For example:\n"
+            "\t2.0 = 2.0 * defaultZoom"
+        );
     }
 
     bool CameraZoom::NeedStatusDraw() const
@@ -34,7 +38,7 @@ namespace cheat::feature
 
     void CameraZoom::DrawStatus()
     {
-        ImGui::Text("CameraZoom: %1.f", f_Zoom.value());
+        ImGui::Text("Camera zoom [%.1fx]", f_Zoom.value());
     }
 
     CameraZoom& CameraZoom::GetInstance()
