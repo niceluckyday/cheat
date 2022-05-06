@@ -87,11 +87,13 @@ namespace cheat::feature
 					"If using with custom range, make sure this is turned on FIRST.");
 				ImGui::SameLine();
 				ImGui::TextColored(ImColor(255, 165, 0, 255), "Read the note!");
+				ImGui::Indent();
 				ConfigWidget("Chests", f_Chest, "Common, precious, luxurious, etc.");
 				ConfigWidget("Leyline", f_Leyline, "Mora/XP, overworld/Trounce bosses, etc.");
 				ConfigWidget("Search Points", f_Investigate, "Marked as Investigate/Search, etc.");
 				ConfigWidget("Quest Interacts", f_QuestInteract, "Valid quest interact points.");
 				ConfigWidget("Others", f_Others, "Book Pages, Spincrystals, etc.");
+				ImGui::Unindent();
 			}
 			EndGroupPanel();
 			ImGui::EndTable();
