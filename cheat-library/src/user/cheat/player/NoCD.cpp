@@ -41,7 +41,7 @@ namespace cheat::feature
 
 		ConfigWidget("Max Burst Energy", f_UtimateMaxEnergy,
 			"Removes energy requirement for elemental bursts.\n" \
-			"(Energy bubble may appear incomplete but still usable).");
+			"(Energy bubble may appear incomplete but still usable.)");
 
 		ConfigWidget("## AbilityReduce", f_AbilityReduce); ImGui::SameLine();
 		ConfigWidget("Reduce Skill/Burst Cooldown", f_AbilityReduceValue, 0.1f, 0.2f, 1.0f, 

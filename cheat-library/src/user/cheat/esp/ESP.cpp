@@ -447,6 +447,7 @@ namespace cheat::feature
 		ADD_FILTER_FIELD(chest, PreciousChest);
 		ADD_FILTER_FIELD(chest, LuxuriousChest);
 		ADD_FILTER_FIELD(chest, RemarkableChest);
+		ADD_FILTER_FIELD(chest, SearchPoint);
 
 		ADD_FILTER_FIELD(featured, Anemoculus);
 		ADD_FILTER_FIELD(featured, CrimsonAgate);
