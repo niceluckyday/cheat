@@ -72,7 +72,6 @@ namespace cheat
 		virtual void DrawInfo();
 		void DrawFps();
 		static void DrawNotifications();
-
 		void PushFeature(Feature* feature);
 		void CheckToggles(short key) const;
 

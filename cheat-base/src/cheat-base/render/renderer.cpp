@@ -169,12 +169,12 @@ namespace renderer
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		io.FontDefault = GetFontBySize(_globalFontSize);
 		ImGui::NewFrame();
-		ImGui::PushFont(GetFontBySize(_globalFontSize));
 
 		renderer::events::RenderEvent();
 
-		ImGui::PopFont();
 		ImGui::EndFrame();
 		ImGui::Render();
 
