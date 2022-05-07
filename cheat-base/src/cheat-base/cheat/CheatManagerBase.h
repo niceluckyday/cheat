@@ -15,7 +15,7 @@ namespace cheat
 	{
 	public:
 		
-		bool IsMenuShowed() const;
+		static bool IsMenuShowed();
 
 		//static CheatManagerBase& GetInstance();
 		CheatManagerBase(CheatManagerBase const&) = delete;
@@ -42,7 +42,7 @@ namespace cheat
 		std::vector<std::string> m_ModuleOrder;
 		std::map<std::string, std::map<std::string, std::vector<Feature*>>> m_FeatureMap;
 
-		bool m_IsMenuShowed;
+		inline static bool s_IsMenuShowed = false;
 		bool m_IsBlockingInput;
 		bool m_IsPrevCursorActive;
 		bool m_IsProfileConfigurationShowed;

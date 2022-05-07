@@ -50,7 +50,7 @@ namespace cheat::feature
 
 	void ItemTeleportBase::OnTeleportKeyPressed()
 	{
-		if (GenshinCM::instance().IsMenuShowed())
+		if (GenshinCM::IsMenuShowed())
 			return;
 
 		auto entity = game::FindNearestEntity(*this);

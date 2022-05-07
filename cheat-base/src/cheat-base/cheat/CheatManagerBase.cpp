@@ -21,7 +21,6 @@ namespace cheat
 
 	CheatManagerBase::CheatManagerBase():
 		NF(m_SelectedSection, "", "General", 0),
-		m_IsMenuShowed(false),
 		m_IsBlockingInput(true),
 		m_IsPrevCursorActive(false)
 	{
@@ -401,7 +400,7 @@ namespace cheat
 
 		DrawExternal();
 
-		if (m_IsMenuShowed)
+		if (s_IsMenuShowed)
 			DrawMenu();
 
 		if (m_IsProfileConfigurationShowed)
@@ -431,7 +430,7 @@ namespace cheat
 
 	void CheatManagerBase::CheckToggles(short key) const
 	{
-		if (m_IsMenuShowed || renderer::IsInputLocked())
+		if (s_IsMenuShowed || renderer::IsInputLocked())
 			return;
 
 		auto& settings = feature::Settings::GetInstance();
@@ -458,8 +457,8 @@ namespace cheat
 
 	void CheatManagerBase::ToggleMenuShow()
 	{
-		m_IsMenuShowed = !m_IsMenuShowed;
-		renderer::SetInputLock(this, m_IsMenuShowed && m_IsBlockingInput);
+		s_IsMenuShowed = !s_IsMenuShowed;
+		renderer::SetInputLock(this, s_IsMenuShowed && m_IsBlockingInput);
 		menuToggled = true;
 	}
 
@@ -480,7 +479,7 @@ namespace cheat
 
 		menuToggled = false;
 
-		if (m_IsMenuShowed)
+		if (s_IsMenuShowed)
 		{
 			m_IsPrevCursorActive = CursorGetVisibility();
 			if (!m_IsPrevCursorActive)
@@ -490,9 +489,9 @@ namespace cheat
 			CursorSetVisibility(false);
 	}
 
-	bool CheatManagerBase::IsMenuShowed() const
+	bool CheatManagerBase::IsMenuShowed()
 	{
-		return m_IsMenuShowed;
+		return s_IsMenuShowed;
 	}
 
 	void CheatManagerBase::PushFeature(Feature* feature)
