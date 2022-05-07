@@ -1,7 +1,7 @@
 #pragma once
 #include <cheat-base/cheat/Feature.h>
 #include <cheat-base/config/Config.h>
-#include <cheat-base/Event.h>
+#include <cheat-base/events/event.hpp>
 
 #include <vector>
 #include <map>

@@ -15,6 +15,12 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 namespace renderer
 {
+	namespace events
+	{
+		TEvent<> RenderEvent = {};
+	}
+	
+
 	struct Data
 	{
 		LPBYTE data;
@@ -45,8 +51,8 @@ namespace renderer
 
 		LOG_DEBUG("Initialize IMGui...");
 
-		backend::DX11Events::RenderEvent += FREE_METHOD_HANDLER(OnRender);
-		backend::DX11Events::InitializeEvent += FREE_METHOD_HANDLER(OnDX11Initialize);
+		backend::DX11Events::RenderEvent += FUNCTION_HANDLER(OnRender);
+		backend::DX11Events::InitializeEvent += FUNCTION_HANDLER(OnDX11Initialize);
 
 		backend::InitializeDX11Hooks();
 	}

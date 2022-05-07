@@ -1,11 +1,10 @@
 #pragma once
 #include <Windows.h>
-#include <cheat-base/Event.h>
+#include <cheat-base/events/event.hpp>
 #include <imgui.h>
 
 namespace renderer
 {
-
 	void Init(LPBYTE pFontData, DWORD dFontDataSize);
 
 	// Font sizing
@@ -21,9 +20,9 @@ namespace renderer
 	void RemoveInputLocker(void* id);
 	bool IsInputLocked();
 
-	class events 
+	namespace events 
 	{
-	public:
-		inline static TEvent<> RenderEvent{};
+		extern TEvent<> RenderEvent;
+		// extern TCancelableEvent<HWND, UINT, WPARAM, LPARAM> WndProcEvent{};
 	};
 }

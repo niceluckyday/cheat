@@ -27,7 +27,7 @@ namespace cheat::feature
 
 	Debug::Debug() : Feature()
 	{
-        events::GameUpdateEvent += FREE_METHOD_HANDLER(OnGameUpdate);
+        events::GameUpdateEvent += FUNCTION_HANDLER(OnGameUpdate);
 		HookManager::install(app::ActorAbilityPlugin_OnEvent, ActorAbilityPlugin_OnEvent_Hook);
 		// HookManager::install(app::LuaShellManager_ReportLuaShellResult, LuaShellManager_ReportLuaShellResult_Hook);
 		// HookManager::install(app::LuaShellManager_DoString, LuaShellManager_DoString_Hook);

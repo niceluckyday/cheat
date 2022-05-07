@@ -37,4 +37,9 @@
 
 #include <cheat-base/Logger.h>
 
+#include <cheat-base/events/event.hpp>
+#include <cheat-base/events/handlers/methodeventhandler.hpp>
+#include <cheat-base/events/handlers/functoreventhandler.hpp>
+#include <cheat-base/events/joins/handlereventjoin.hpp>
+#include <cheat-base/events/joins/eventjoinwrapper.hpp>
 #endif //PCH_H

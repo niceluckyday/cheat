@@ -181,6 +181,20 @@
     <ClInclude Include="framework\framework.h" />
     <ClInclude Include="framework\pch.h" />
     <ClInclude Include="src\cheat-base\config\config.h" />
+    <ClInclude Include="src\cheat-base\events\event.hpp" />
+    <ClInclude Include="src\cheat-base\events\handlers\abstracteventhandler.hpp" />
+    <ClInclude Include="src\cheat-base\events\handlers\eventhandlerptr.h" />
+    <ClInclude Include="src\cheat-base\events\handlers\functoreventhandler.hpp" />
+    <ClInclude Include="src\cheat-base\events\handlers\handlercast.hpp" />
+    <ClInclude Include="src\cheat-base\events\handlers\helpers\innerholder.hpp" />
+    <ClInclude Include="src\cheat-base\events\handlers\helpers\objectsaver.hpp" />
+    <ClInclude Include="src\cheat-base\events\handlers\methodeventhandler.hpp" />
+    <ClInclude Include="src\cheat-base\events\helpers\is_equatable.hpp" />
+    <ClInclude Include="src\cheat-base\events\joins\abstracteventjoin.h" />
+    <ClInclude Include="src\cheat-base\events\joins\eventjoinwrapper.h" />
+    <ClInclude Include="src\cheat-base\events\joins\eventjoinwrapper.hpp" />
+    <ClInclude Include="src\cheat-base\events\joins\handlereventjoin.h" />
+    <ClInclude Include="src\cheat-base\events\joins\handlereventjoin.hpp" />
     <ClInclude Include="src\cheat-base\ResourceLoader.h" />
     <ClInclude Include="src\cheat-base\Hotkey.h" />
     <ClInclude Include="src\cheat-base\render\ImageLoader.h" />
@@ -189,7 +203,6 @@
     <ClInclude Include="src\cheat-base\cheat\Feature.h" />
     <ClInclude Include="src\cheat-base\cheat\misc\Settings.h" />
     <ClInclude Include="src\cheat-base\render\backend\dx11-hook.h" />
-    <ClInclude Include="src\cheat-base\Event.h" />
     <ClInclude Include="src\cheat-base\render\gui-util.h" />
     <ClInclude Include="src\cheat-base\render\renderer.h" />
     <ClInclude Include="src\cheat-base\HookManager.h" />
@@ -230,6 +243,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\cheat-base\config\config.cpp" />
+    <ClCompile Include="src\cheat-base\events\joins\abstracteventjoin.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\cheat-base\events\joins\eventjoinwrapper.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\cheat-base\ResourceLoader.cpp" />
     <ClCompile Include="src\cheat-base\Hotkey.cpp" />
     <ClCompile Include="src\cheat-base\render\ImageLoader.cpp" />

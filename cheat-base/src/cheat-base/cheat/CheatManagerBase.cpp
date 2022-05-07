@@ -3,8 +3,6 @@
 
 #include <misc/cpp/imgui_stdlib.h>
 
-#include <cheat-base/Event.h>
-
 #include <cheat-base/render/renderer.h>
 #include <cheat-base/render/gui-util.h>
 #include <cheat-base/cheat/misc/Settings.h>
