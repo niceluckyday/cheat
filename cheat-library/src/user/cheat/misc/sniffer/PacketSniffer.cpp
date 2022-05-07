@@ -333,7 +333,7 @@ namespace cheat::feature
 
 	static bool KcpClient_TryDequeueEvent_Hook(void* __this, app::ClientKcpEvent* evt, MethodInfo* method)
 	{
-		auto result = callOrigin(KcpClient_TryDequeueEvent_Hook, __this, evt, method);
+		auto result = CALL_ORIGIN(KcpClient_TryDequeueEvent_Hook, __this, evt, method);
 
 		if (!result || evt->_evt.type != app::KcpEventType__Enum::EventRecvMsg ||
 			evt->_evt.packet == nullptr || evt->_evt.packet->data == nullptr)
@@ -349,7 +349,7 @@ namespace cheat::feature
 		if (!sniffer.OnPacketIO(packet, PacketType::Send))
 			return 0;
 
-		return callOrigin(KcpNative_kcp_client_send_packet_Hook, __this, kcp_client, packet, method);
+		return CALL_ORIGIN(KcpNative_kcp_client_send_packet_Hook, __this, kcp_client, packet, method);
 	}
 }
 

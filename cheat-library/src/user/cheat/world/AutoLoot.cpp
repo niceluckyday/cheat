@@ -225,12 +225,12 @@ namespace cheat::feature
 		AutoLoot& autoLoot = AutoLoot::GetInstance();
 		bool canceled = autoLoot.OnCreateButton(entity);
 		if (!canceled)
-			callOrigin(LCSelectPickup_AddInteeBtnByID_Hook, __this, entity, method);
+			CALL_ORIGIN(LCSelectPickup_AddInteeBtnByID_Hook, __this, entity, method);
 	}
 
 	static bool LCSelectPickup_IsInPosition_Hook(void* __this, app::BaseEntity* entity, MethodInfo* method)
 	{
-		bool result = callOrigin(LCSelectPickup_IsInPosition_Hook, __this, entity, method);
+		bool result = CALL_ORIGIN(LCSelectPickup_IsInPosition_Hook, __this, entity, method);
 
 		AutoLoot& autoLoot = AutoLoot::GetInstance();
 		autoLoot.OnCheckIsInPosition(result, entity);
@@ -240,7 +240,7 @@ namespace cheat::feature
 
 	static bool LCSelectPickup_IsOutPosition_Hook(void* __this, app::BaseEntity* entity, MethodInfo* method)
 	{
-		bool result = callOrigin(LCSelectPickup_IsOutPosition_Hook, __this, entity, method);
+		bool result = CALL_ORIGIN(LCSelectPickup_IsOutPosition_Hook, __this, entity, method);
 
 		AutoLoot& autoLoot = AutoLoot::GetInstance();
 		autoLoot.OnCheckIsInPosition(result, entity);

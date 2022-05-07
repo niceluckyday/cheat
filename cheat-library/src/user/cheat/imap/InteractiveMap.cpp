@@ -763,7 +763,7 @@ namespace cheat::feature
 			}
 		}
 
-		callOrigin(GadgetModule_OnGadgetInteractRsp_Hook, __this, notify, method);
+		CALL_ORIGIN(GadgetModule_OnGadgetInteractRsp_Hook, __this, notify, method);
 	}
 
 	void InteractiveMap::OnItemGathered(game::Entity* entity)
@@ -1288,7 +1288,7 @@ namespace cheat::feature
 	static app::Rect s_MapViewRect = { 0, 0, 1, 1 };
 	void InteractiveMap::InLevelMapPageContext_UpdateView_Hook(app::InLevelMapPageContext* __this, MethodInfo* method)
 	{
-		callOrigin(InLevelMapPageContext_UpdateView_Hook, __this, method);
+		CALL_ORIGIN(InLevelMapPageContext_UpdateView_Hook, __this, method);
 		s_MapViewRect = __this->fields._mapViewRect;
 	}
 
@@ -1337,7 +1337,7 @@ namespace cheat::feature
 	void InteractiveMap::MonoMiniMap_Update_Hook(app::MonoMiniMap* __this, MethodInfo* method)
 	{
 		_monoMiniMap = __this;
-		callOrigin(MonoMiniMap_Update_Hook, __this, method);
+		CALL_ORIGIN(MonoMiniMap_Update_Hook, __this, method);
 	}
 
 	static bool IsMiniMapActive()
@@ -1673,7 +1673,7 @@ namespace cheat::feature
 		if (MouseInIMapWindow())
 			return;
 
-		return callOrigin(InLevelMapPageContext_ZoomMap_Hook, __this, value, method);
+		return CALL_ORIGIN(InLevelMapPageContext_ZoomMap_Hook, __this, value, method);
 	}
 
 	void InteractiveMap::OnWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool& cancelled)

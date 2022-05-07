@@ -58,7 +58,7 @@ namespace cheat::feature
         else
             data->currentWarningLocateRatio = 1.0;
         
-        callOrigin(SCameraModuleInitialize_SetWarningLocateRatio_Hook, __this, deltaTime, data, method);
+        CALL_ORIGIN(SCameraModuleInitialize_SetWarningLocateRatio_Hook, __this, deltaTime, data, method);
     }
 }
 
