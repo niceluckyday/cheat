@@ -3,6 +3,8 @@
 
 #include <cheat-base/render/gui-util.h>
 #include <cheat-base/render/renderer.h>
+#include <cheat-base/cheat/CheatManagerBase.h>
+
 namespace cheat::feature 
 {
     Settings::Settings() : Feature(),
@@ -30,6 +32,7 @@ namespace cheat::feature
 		
     {
 		renderer::SetGlobalFontSize(f_FontSize);
+		f_HotkeyExit.value().PressedEvent += MY_METHOD_HANDLER(Settings::OnExitKeyPressed);
     }
 
     const FeatureGUIInfo& Settings::GetGUIInfo() const
@@ -116,21 +119,8 @@ namespace cheat::feature
 
 			if (!f_FastExitEnable)
 				ImGui::EndDisabled();
-
-			FastExit();
 		}
 		EndGroupPanel();
-	}
-
-	void Settings::FastExit()
-	{
-		if (!f_FastExitEnable)
-			return;
-
-		if (f_HotkeyExit.value().IsPressed())
-		{
-			ExitProcess(0);
-		}
 	}
 
     Settings& Settings::GetInstance()
@@ -138,5 +128,13 @@ namespace cheat::feature
         static Settings instance;
         return instance;
     }
+
+	void Settings::OnExitKeyPressed()
+	{
+		if (!f_FastExitEnable || CheatManagerBase::IsMenuShowed())
+			return;
+
+		ExitProcess(0);
+	}
 }
 
