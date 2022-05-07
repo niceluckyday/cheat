@@ -73,12 +73,27 @@ namespace cheat::feature
 
 		// Eventing
 		cheat::events::GameUpdateEvent += MY_METHOD_HANDLER(InteractiveMap::OnGameUpdate);
-		cheat::events::WndProcEvent += MY_METHOD_HANDLER(InteractiveMap::OnWndProc);
-		cheat::events::KeyUpEvent += MY_METHOD_HANDLER(InteractiveMap::OnKeyUp);
+		::events::WndProcEvent += MY_METHOD_HANDLER(InteractiveMap::OnWndProc);
 
 		cheat::events::AccountChangedEvent += MY_METHOD_HANDLER(InteractiveMap::OnAccountChanged);
 		config::ProfileChanged += MY_METHOD_HANDLER(InteractiveMap::OnConfigProfileChanged);
 
+		f_CompleteNearestPoint.value().PressedEvent += LAMBDA_HANDLER(
+			[this]()
+			{
+				auto& manager = game::EntityManager::instance();
+				auto point = FindNearestPoint(manager.avatar()->levelPosition(), f_PointFindRange, f_CompleteOnlyViewed, false, game::GetCurrentPlayerSceneID());
+				if (point)
+					CompletePoint(point);
+			}
+		);
+
+		f_RevertLatestCompletion.value().PressedEvent += LAMBDA_HANDLER(
+			[this]()
+			{
+				RevertLatestPointCompleting();
+			}
+		);
 
 		// Hooking
 		HookManager::install(app::MonoMiniMap_Update, InteractiveMap::MonoMiniMap_Update_Hook);
@@ -1684,22 +1699,6 @@ namespace cheat::feature
 			break;
 		default:
 			break;
-		}
-	}
-
-	void InteractiveMap::OnKeyUp(short key, bool& cancelled)
-	{
-		if (f_CompleteNearestPoint.value().IsPressed(key))
-		{
-			auto& manager = game::EntityManager::instance();
-			auto point = FindNearestPoint(manager.avatar()->levelPosition(), f_PointFindRange, f_CompleteOnlyViewed, false, game::GetCurrentPlayerSceneID());
-			if (point)
-				CompletePoint(point);
-		}
-
-		if (f_RevertLatestCompletion.value().IsPressed(key))
-		{
-			RevertLatestPointCompleting();
 		}
 	}
 

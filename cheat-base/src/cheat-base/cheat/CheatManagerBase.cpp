@@ -9,19 +9,14 @@
 
 namespace cheat
 {
-	namespace events
-	{
-		TCancelableEvent<short> KeyUpEvent{};
-		TCancelableEvent<HWND, UINT, WPARAM, LPARAM> WndProcEvent{};
-	}
 
 	void CheatManagerBase::Init(LPBYTE pFontData, DWORD dFontDataSize)
 	{
-		renderer::events::RenderEvent += MY_METHOD_HANDLER(CheatManagerBase::OnRender);
-		cheat::events::KeyUpEvent += MY_METHOD_HANDLER(CheatManagerBase::OnKeyUp);
-		cheat::events::WndProcEvent += MY_METHOD_HANDLER(CheatManagerBase::OnWndProc);
-
 		renderer::Init(pFontData, dFontDataSize);
+
+		events::RenderEvent += MY_METHOD_HANDLER(CheatManagerBase::OnRender);
+		events::KeyUpEvent += MY_METHOD_HANDLER(CheatManagerBase::OnKeyUp);
+		events::WndProcEvent += MY_METHOD_HANDLER(CheatManagerBase::OnWndProc);
 	}
 
 	CheatManagerBase::CheatManagerBase():

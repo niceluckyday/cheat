@@ -42,4 +42,6 @@
 #include <cheat-base/events/handlers/functoreventhandler.hpp>
 #include <cheat-base/events/joins/handlereventjoin.hpp>
 #include <cheat-base/events/joins/eventjoinwrapper.hpp>
+
+#include <cheat-base/globals.h>
 #endif //PCH_H

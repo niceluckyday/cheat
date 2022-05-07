@@ -49,7 +49,7 @@ namespace cheat::feature
 
 		m_FontContrastColor = ImGui::CalcContrastColor(f_GlobalFontColor);
 
-		cheat::events::KeyUpEvent += MY_METHOD_HANDLER(ESP::OnKeyUp);
+		::events::KeyUpEvent += MY_METHOD_HANDLER(ESP::OnKeyUp);
 	}
 
 

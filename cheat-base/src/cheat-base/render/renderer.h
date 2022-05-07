@@ -19,10 +19,4 @@ namespace renderer
 	void AddInputLocker(void* id);
 	void RemoveInputLocker(void* id);
 	bool IsInputLocked();
-
-	namespace events 
-	{
-		extern TEvent<> RenderEvent;
-		// extern TCancelableEvent<HWND, UINT, WPARAM, LPARAM> WndProcEvent{};
-	};
 }

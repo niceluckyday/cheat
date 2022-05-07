@@ -11,12 +11,6 @@
 
 namespace cheat 
 {
-	namespace events
-	{
-		extern TCancelableEvent<short> KeyUpEvent;
-		extern TCancelableEvent<HWND, UINT, WPARAM, LPARAM> WndProcEvent;
-	}
-
 	class CheatManagerBase
 	{
 	public:

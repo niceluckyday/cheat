@@ -6,21 +6,12 @@
 
 #include <cheat-base/util.h>
 #include <cheat-base/render/backend/dx11-hook.h>
-
-#include <cheat-base/cheat/CheatManagerBase.h>
-
-#include "cheat-base/ResourceLoader.h"
+#include <cheat-base/ResourceLoader.h>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace renderer
 {
-	namespace events
-	{
-		TEvent<> RenderEvent = {};
-	}
-	
-
 	struct Data
 	{
 		LPBYTE data;
@@ -179,7 +170,7 @@ namespace renderer
 		io.FontDefault = GetFontBySize(_globalFontSize);
 		ImGui::NewFrame();
 
-		renderer::events::RenderEvent();
+		events::RenderEvent();
 
 		ImGui::EndFrame();
 		ImGui::Render();
@@ -199,7 +190,7 @@ namespace renderer
 
 		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
 
-		if (!cheat::events::WndProcEvent(hWnd, uMsg, wParam, lParam))
+		if (!events::WndProcEvent(hWnd, uMsg, wParam, lParam))
 			return true;
 
 		short key;
@@ -228,7 +219,7 @@ namespace renderer
 
 		bool canceled = false;
 		if (keyUpEvent)
-			canceled = !cheat::events::KeyUpEvent(key);
+			canceled = !events::KeyUpEvent(key);
 
 		if (IsInputLocked() || canceled)
 			return true;

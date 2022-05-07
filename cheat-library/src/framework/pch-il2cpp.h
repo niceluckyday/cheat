@@ -48,6 +48,8 @@
 
 #include <cheat-base/ResourceLoader.h>
 
+#include <cheat-base/globals.h>
+
 #include <imgui.h>
 #include <imgui_notify.h>
 
