@@ -27,13 +27,7 @@
     <ClInclude Include="src\cheat-base\PipeTransfer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\cheat-base\pipe\PacketData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\cheat-base\Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cheat-base\pipe\PacketModifyData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vendor\imgui\imgui.h">
@@ -251,16 +245,10 @@
     <ClCompile Include="src\cheat-base\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\cheat-base\pipe\PacketModifyData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="vendor\imgui\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vendor\imgui\backends\imgui_impl_dx11.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cheat-base\pipe\PacketData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\cheat-base\Patch.cpp">

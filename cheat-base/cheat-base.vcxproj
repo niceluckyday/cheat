@@ -210,10 +210,8 @@
     <ClInclude Include="src\cheat-base\Patch.h" />
     <ClInclude Include="src\cheat-base\thread-safe.h" />
     <ClInclude Include="src\cheat-base\util.h" />
-    <ClInclude Include="src\cheat-base\pipe\PacketData.h" />
     <ClInclude Include="src\cheat-base\Logger.h" />
     <ClInclude Include="src\cheat-base\PipeTransfer.h" />
-    <ClInclude Include="src\cheat-base\pipe\PacketModifyData.h" />
     <ClInclude Include="vendor\detours\detours.h" />
     <ClInclude Include="vendor\detours\detver.h" />
     <ClInclude Include="vendor\fmt\include\fmt\args.h" />
@@ -265,8 +263,6 @@
     <ClCompile Include="src\cheat-base\render\gui-util.cpp" />
     <ClCompile Include="src\cheat-base\render\renderer.cpp" />
     <ClCompile Include="src\cheat-base\Patch.cpp" />
-    <ClCompile Include="src\cheat-base\pipe\PacketData.cpp" />
-    <ClCompile Include="src\cheat-base\pipe\PacketModifyData.cpp" />
     <ClCompile Include="src\cheat-base\Logger.cpp" />
     <ClCompile Include="src\cheat-base\util.cpp" />
     <ClCompile Include="framework\pch.cpp">
