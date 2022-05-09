@@ -198,22 +198,22 @@
     <ClInclude Include="src\user\cheat\misc\sniffer\SnifferWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\cheat\misc\sniffer\messages\PacketData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\user\cheat\misc\sniffer\messages\ModifyData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\user\cheat\misc\sniffer\messages\MessageHeader.h">
+    <ClInclude Include="src\user\cheat\misc\sniffer\PacketParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\user\cheat\misc\sniffer\messages\MessageBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\cheat\misc\sniffer\MessageManager.h">
+    <ClInclude Include="src\user\cheat\misc\sniffer\messages\MessageHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\user\cheat\misc\sniffer\PacketParser.h">
+    <ClInclude Include="src\user\cheat\misc\sniffer\messages\ModifyData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\misc\sniffer\messages\PacketData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\misc\sniffer\MessageManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -372,22 +372,22 @@
     <ClCompile Include="src\user\cheat\misc\sniffer\SnifferWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\misc\sniffer\messages\PacketData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\user\cheat\misc\sniffer\messages\ModifyData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\user\cheat\misc\sniffer\messages\MessageHeader.cpp">
+    <ClCompile Include="src\user\cheat\misc\sniffer\PacketParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\user\cheat\misc\sniffer\messages\MessageBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\misc\sniffer\MessageManager.cpp">
+    <ClCompile Include="src\user\cheat\misc\sniffer\messages\MessageHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\user\cheat\misc\sniffer\PacketParser.cpp">
+    <ClCompile Include="src\user\cheat\misc\sniffer\messages\ModifyData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\misc\sniffer\messages\PacketData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\misc\sniffer\MessageManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -15,14 +15,35 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\user\cheat\misc\sniffer\PacketParser.h" />
-    <ClInclude Include="src\user\cheat\misc\sniffer\MessageManager.h" />
-    <ClInclude Include="src\user\cheat\misc\sniffer\messages\MessageBase.h" />
+    <ClInclude Include="src\user\cheat\misc\sniffer\MessageManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\misc\sniffer\messages\MessageBase.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\misc\sniffer\messages\MessageHeader.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\misc\sniffer\messages\ModifyData.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\misc\sniffer\messages\PacketData.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\user\cheat\misc\sniffer\PacketParser.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\user\cheat\GenshinCM.h" />
-    <ClInclude Include="src\user\cheat\misc\sniffer\messages\MessageHeader.h" />
-    <ClInclude Include="src\user\cheat\misc\sniffer\messages\PacketData.h" />
-    <ClInclude Include="src\user\cheat\misc\sniffer\messages\ModifyData.h" />
-    <ClInclude Include="src\user\cheat\misc\sniffer\SnifferWindow.h" />
+    <ClInclude Include="src\user\cheat\misc\sniffer\SnifferWindow.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\user\cheat\teleport\CustomTeleports.h" />
     <ClInclude Include="src\user\cheat\visuals\CameraZoom.h" />
     <ClInclude Include="src\user\cheat\visuals\FPSUnlock.h" />
@@ -97,13 +118,34 @@
     <Font Include="res\Ruda-ExtraBold.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\user\cheat\misc\sniffer\PacketParser.cpp" />
-    <ClCompile Include="src\user\cheat\misc\sniffer\MessageManager.cpp" />
-    <ClCompile Include="src\user\cheat\misc\sniffer\messages\MessageBase.cpp" />
-    <ClCompile Include="src\user\cheat\misc\sniffer\messages\MessageHeader.cpp" />
-    <ClCompile Include="src\user\cheat\misc\sniffer\messages\PacketData.cpp" />
-    <ClCompile Include="src\user\cheat\misc\sniffer\messages\ModifyData.cpp" />
-    <ClCompile Include="src\user\cheat\misc\sniffer\SnifferWindow.cpp" />
+    <ClCompile Include="src\user\cheat\misc\sniffer\MessageManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\misc\sniffer\messages\MessageBase.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\misc\sniffer\messages\MessageHeader.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\misc\sniffer\messages\ModifyData.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\misc\sniffer\messages\PacketData.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\misc\sniffer\PacketParser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\user\cheat\misc\sniffer\SnifferWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_WS|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\user\cheat\teleport\CustomTeleports.cpp" />
     <ClCompile Include="src\user\cheat\GenshinCM.cpp" />
     <ClCompile Include="src\user\cheat\visuals\CameraZoom.cpp" />
